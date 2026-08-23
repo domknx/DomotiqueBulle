@@ -69,7 +69,7 @@ Convention respectée : chaque conteneur a son propre dossier de données `NomDu
 
 2. Démarrer Home Assistant, Prometheus et VictoriaMetrics dans un premier temps (Grafana et cloudflared peuvent attendre) :
    ```bash
-   docker compose up -d ha_claude victoriametrics
+   docker compose up -d homeassistant victoriametrics
    ```
 
 3. Terminer l'onboarding Home Assistant sur `http://localhost:8123` (ou `http://<IP-du-Mac-mini>:8123` depuis un autre appareil du réseau local).
@@ -97,22 +97,19 @@ Convention respectée : chaque conteneur a son propre dossier de données `NomDu
 
 Remplace l'usage actuel de Tailscale pour l'accès à Home Assistant et Grafana : gratuit, aucun port à ouvrir, aucun client à installer/mettre à jour sur les appareils (accès via navigateur classique). Tailscale peut rester en usage secondaire (administration directe) si souhaité — les deux ne sont pas incompatibles.
 
-### 4.1 Choix du domaine
+### 4.1 Choix du domaine — décidé
 
-Le domaine disponible est `malnoy.com` (Gandi, utilisé aujourd'hui pour les emails). Deux options pour le déclarer sur Cloudflare :
+Le domaine disponible est `malnoy.com` (Gandi, utilisé aujourd'hui pour les emails). **Décision validée (23.08.2026) : sous-domaine dédié `bulle.malnoy.com`.** On délègue uniquement les enregistrements NS de ce sous-domaine à Cloudflare, en créant chez Gandi des enregistrements NS pour `bulle.malnoy.com` pointant vers les deux nameservers que Cloudflare attribuera. Le domaine racine `malnoy.com` et ses enregistrements email (MX, SPF, DKIM, DMARC) restent intégralement gérés par Gandi, sans aucun risque pour la messagerie. Les services sont accessibles via `home.bulle.malnoy.com`, `grafana.bulle.malnoy.com`, etc.
 
-- **Option recommandée — sous-domaine dédié** (ex. `bulle.malnoy.com`) : on délègue uniquement les enregistrements NS de ce sous-domaine à Cloudflare, en créant chez Gandi des enregistrements NS pour `bulle.malnoy.com` pointant vers les deux nameservers que Cloudflare attribuera. Le domaine racine `malnoy.com` et ses enregistrements email (MX, SPF, DKIM, DMARC) restent intégralement gérés par Gandi, sans aucun risque pour la messagerie. Les services seraient alors accessibles via `home.bulle.malnoy.com`, `grafana.bulle.malnoy.com`, etc.
-- **Option alternative — domaine complet sur Cloudflare** : basculer les nameservers de `malnoy.com` entier vers Cloudflare (plan gratuit). Cloudflare gère alors tout le DNS, y compris les emails. **Il faut impérativement recréer à l'identique tous les enregistrements email actuels de Gandi (MX, SPF, DKIM, DMARC, éventuels autres TXT) dans Cloudflare *avant* de changer les nameservers**, sous peine de coupure de la messagerie. Plus simple à terme (un seul endroit pour tout gérer) mais plus risqué à la bascule.
-
-→ Recommandation : partir sur l'option sous-domaine dédié, qui isole totalement le risque email. À valider avec toi avant exécution — cette étape se fait dans les interfaces web Gandi et Cloudflare, je ne peux pas l'effectuer à ta place.
+Étapes chez Gandi (à faire dans l'interface web, je ne peux pas l'effectuer à ta place) : une fois le sous-domaine ajouté côté Cloudflare (§4.2 étape 1), Cloudflare indique deux nameservers (ex. `xxx.ns.cloudflare.com`) — les déclarer chez Gandi comme enregistrements NS pour l'hôte `bulle` (pas sur le domaine racine).
 
 ### 4.2 Créer le tunnel
 
-1. Créer un compte Cloudflare gratuit si besoin, ajouter le domaine (ou le sous-domaine délégué).
+1. Créer un compte Cloudflare gratuit si besoin, ajouter le site `bulle.malnoy.com` (Cloudflare traite un sous-domaine ajouté ainsi comme une zone à part entière ; il fournira ses propres nameservers à déclarer chez Gandi, cf. §4.1).
 2. Dashboard Cloudflare → Zero Trust → Networks → Tunnels → **Create a tunnel** → type **Cloudflared** → nommer le tunnel (ex. `domotique-bulle`).
 3. Choisir l'option d'installation **Docker** : Cloudflare affiche une commande contenant un token — copier uniquement ce token dans `.env` (`CLOUDFLARE_TUNNEL_TOKEN`).
 4. Dans l'onglet **Public Hostnames** du tunnel, ajouter :
-   - `home.bulle.malnoy.com` → Service `HTTP` → `ha_claude:8123`
+   - `home.bulle.malnoy.com` → Service `HTTP` → `homeassistant:8123`
    - `grafana.bulle.malnoy.com` → Service `HTTP` → `grafana:3000`
 5. Démarrer le conteneur :
    ```bash

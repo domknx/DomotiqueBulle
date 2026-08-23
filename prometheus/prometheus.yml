@@ -14,7 +14,7 @@ scrape_configs:
     scheme: http
     scrape_interval: 30s
     static_configs:
-      - targets: ["ha_claude:8123"]
+      - targets: ["homeassistant:8123"]
     # Nécessite : intégration "prometheus" activée dans configuration.yaml
     # de Home Assistant, et un jeton d'accès longue durée créé dans HA
     # (Profil > Sécurité > Jetons d'accès longue durée), à placer dans

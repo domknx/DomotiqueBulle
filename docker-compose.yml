@@ -7,8 +7,8 @@ networks:
 
 services:
 
-  ha_claude:
-    container_name: ha_claude
+  homeassistant:
+    container_name: homeassistant
     image: homeassistant/home-assistant:stable
     restart: unless-stopped
     networks:
@@ -43,7 +43,7 @@ services:
       # base de stockage long terme (remote_write), Prometheus ne sert
       # ici que de collecteur/relais.
     depends_on:
-      - ha_claude
+      - homeassistant
       - victoriametrics
 
   victoriametrics:
@@ -87,5 +87,5 @@ services:
     environment:
       - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
     depends_on:
-      - ha_claude
+      - homeassistant
       - grafana

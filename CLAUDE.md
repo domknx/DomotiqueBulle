@@ -96,19 +96,22 @@ Services : `homeassistant`, `prometheus`, `victoriametrics`, `grafana`, `cloudfl
 
 **Accès distant** : Cloudflare Tunnel retenu (gratuit, aucun port ouvert sur le routeur, aucun client à installer/mettre à jour sur chaque appareil — contrairement à Tailscale, utilisé actuellement et jugé contraignant par l'utilisateur). Tailscale peut rester en usage secondaire si souhaité.
 
-**Domaine** : `malnoy.com` (Gandi, actuellement utilisé pour les emails). Décision de mise en œuvre à valider avec l'utilisateur (voir README §4.1) — option recommandée : sous-domaine dédié délégué à Cloudflare (ex. `bulle.malnoy.com`) pour ne pas toucher aux enregistrements email existants sur le domaine racine.
+**Domaine** : `malnoy.com` (Gandi, actuellement utilisé pour les emails). Décision validée (23.08.2026) : sous-domaine dédié `bulle.malnoy.com` délégué à Cloudflare via enregistrements NS chez Gandi, pour ne pas toucher aux enregistrements email existants sur le domaine racine (voir README §4.1).
+
+**Dépôt GitHub** : `git@github.com:domknx/DomotiqueBulle.git` (créé par l'utilisateur le 23.08.2026, dépôt vide au départ).
 
 **Point de vigilance KNX/réseau** : le réseau bridge Docker standard fonctionne si l'interface KNX est en mode tunneling (unicast). Si elle n'est qu'en mode routage (multicast), Docker Desktop pour Mac ne relaie pas correctement le multicast — à trancher lors de l'inventaire KNX (ETS).
 
 ## 8. État actuel du projet
 
-Architecture Docker de base conçue (v1, non encore déployée sur le Mac mini — fichiers commités en local, à valider et lancer). Dépôt GitHub pas encore créé.
+Architecture Docker v1 conçue et confirmée (fichiers commités en local ; dépôt GitHub créé, remote configuré, reste à pousser). Décisions accès distant, domaine et nommage du conteneur Home Assistant toutes validées. Stack pas encore déployée sur le Mac mini (`docker compose up -d` pas encore lancé).
 
 ### Prochaines étapes
 
-- Créer le dépôt GitHub (vide pour l'instant) et pousser le premier commit.
+- Pousser les commits vers `git@github.com:domknx/DomotiqueBulle.git` (remote configuré, push à faire depuis un terminal avec accès réseau — voir note dans l'historique des décisions).
+- Créer la zone `bulle.malnoy.com` sur Cloudflare, récupérer les nameservers, les déclarer chez Gandi pour l'hôte `bulle`.
+- Créer le tunnel Cloudflare (Zero Trust → Tunnels) et récupérer le `CLOUDFLARE_TUNNEL_TOKEN` (README §4.2).
 - Déployer la stack sur le Mac mini (`docker compose up -d`) et terminer l'onboarding Home Assistant.
-- Choisir et exécuter l'option de domaine Cloudflare (sous-domaine dédié vs domaine complet) puis configurer le tunnel.
 - Inventaire précis des adresses/groupes KNX existants (export ETS) pour établir le premier fichier de configuration KNX.
 - Mettre en place le journal/changelog (page web accessible) — piste envisagée : GitHub Pages à partir du même dépôt.
 - Concevoir les dashboards Home Assistant (Mac, iPad, iPhone, écran tactile).
@@ -117,3 +120,5 @@ Architecture Docker de base conçue (v1, non encore déployée sur le Mac mini �
 
 - 2026-08-23 — Création du fichier de contexte initial du projet.
 - 2026-08-23 — Architecture Docker v1 définie : `homeassistant` + `prometheus` + `victoriametrics` + `grafana` + `cloudflared` sur réseau `domotique_net`. Accès distant : Cloudflare Tunnel (remplace Tailscale, gratuit, sans port ouvert ni client à maintenir à jour). Domaine cible : `malnoy.com` (Gandi), avec recommandation de sous-domaine dédié pour préserver les DNS email — décision finale de l'utilisateur en attente. Dépôt GitHub pas encore créé.
+- 2026-08-23 — Conteneur Home Assistant temporairement renommé `ha_claude` (conflit avec un conteneur `homeassistant` déjà présent sur le Mac mini), puis remis à `homeassistant` sur demande de l'utilisateur : il gère lui-même le renommage de l'autre instance existante.
+- 2026-08-23 — Décisions validées par l'utilisateur : (1) Cloudflare Tunnel confirmé comme méthode d'accès distant ; (2) sous-domaine `bulle.malnoy.com` confirmé pour le domaine ; (3) dépôt GitHub créé par l'utilisateur : `git@github.com:domknx/DomotiqueBulle.git`, remote `origin` ajouté localement — le push initial doit se faire depuis un terminal ayant accès réseau à github.com (le shell distant utilisé par Claude sur le Mac mini n'a pas d'accès réseau sortant) ; (4) nom du conteneur Home Assistant remis à `homeassistant`.
