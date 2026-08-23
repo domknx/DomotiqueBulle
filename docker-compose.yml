@@ -48,7 +48,7 @@ services:
 
   victoriametrics:
     container_name: victoriametrics
-    image: victoriametrics/victoria-metrics:stable
+    image: victoriametrics/victoria-metrics:v1.150.0
     restart: unless-stopped
     networks:
       - domotique_net
