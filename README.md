@@ -97,21 +97,27 @@ Convention respectée : chaque conteneur a son propre dossier de données `NomDu
 
 Remplace l'usage actuel de Tailscale pour l'accès à Home Assistant et Grafana : gratuit, aucun port à ouvrir, aucun client à installer/mettre à jour sur les appareils (accès via navigateur classique). Tailscale peut rester en usage secondaire (administration directe) si souhaité — les deux ne sont pas incompatibles.
 
-### 4.1 Choix du domaine — décidé
+### 4.1 Choix du domaine — décidé (corrigé le 23.08.2026)
 
-Le domaine disponible est `malnoy.com` (Gandi, utilisé aujourd'hui pour les emails). **Décision validée (23.08.2026) : sous-domaine dédié `bulle.malnoy.com`.** On délègue uniquement les enregistrements NS de ce sous-domaine à Cloudflare, en créant chez Gandi des enregistrements NS pour `bulle.malnoy.com` pointant vers les deux nameservers que Cloudflare attribuera. Le domaine racine `malnoy.com` et ses enregistrements email (MX, SPF, DKIM, DMARC) restent intégralement gérés par Gandi, sans aucun risque pour la messagerie. Les services sont accessibles via `home.bulle.malnoy.com`, `grafana.bulle.malnoy.com`, etc.
+Le domaine disponible est `malnoy.com` (Gandi, utilisé aussi pour les emails). La piste initiale (déléguer uniquement un sous-domaine `bulle.malnoy.com` via NS chez Gandi, sans toucher au reste) s'est révélée **impossible** : ce "subdomain setup" est réservé au plan Cloudflare Enterprise, le formulaire "Add a Site" de Cloudflare rejette toute saisie de sous-domaine.
 
-Étapes chez Gandi (à faire dans l'interface web, je ne peux pas l'effectuer à ta place) : une fois le sous-domaine ajouté côté Cloudflare (§4.2 étape 1), Cloudflare indique deux nameservers (ex. `xxx.ns.cloudflare.com`) — les déclarer chez Gandi comme enregistrements NS pour l'hôte `bulle` (pas sur le domaine racine).
+**Décision finale : bascule complète de `malnoy.com` sur les nameservers Cloudflare** (seule option gratuite). Fait le 23.08.2026 :
+1. Inventaire complet des 16 enregistrements DNS existants chez Gandi (MX, SPF, DKIM ×3, SRV email ×5, site web, plus deux enregistrements existants `domotique.bulle`/`cloud` en Tailscale — voir mémoire du projet pour le détail).
+2. Domaine racine `malnoy.com` ajouté dans Cloudflare (plan Free), les 16 enregistrements recréés à l'identique (proxy désactivé partout, "DNS only") pour ne rien changer au comportement existant.
+3. DNSSEC vérifié désactivé chez Gandi avant la bascule (l'activer en cours de route aurait cassé la résolution DNS du domaine entier).
+4. Nameservers changés chez Gandi vers ceux fournis par Cloudflare. Zone confirmée **"Active"** côté Cloudflare le jour même. Emails testés et fonctionnels après la bascule (SPF/DKIM/MX intacts).
 
-### 4.2 Créer le tunnel
+Le registrar (propriété du nom de domaine, facturation) reste chez Gandi — seule la gestion DNS a changé de main. `malnoy.com` étant désormais le domaine racine sur Cloudflare, les nouveaux services sont de simples sous-domaines : **`domotique.bulle.malnoy.com`** (Home Assistant) et **`grafana.bulle.malnoy.com`** (Grafana).
 
-1. Créer un compte Cloudflare gratuit si besoin, ajouter le site `bulle.malnoy.com` (Cloudflare traite un sous-domaine ajouté ainsi comme une zone à part entière ; il fournira ses propres nameservers à déclarer chez Gandi, cf. §4.1).
-2. Dashboard Cloudflare → Zero Trust → Networks → Tunnels → **Create a tunnel** → type **Cloudflared** → nommer le tunnel (ex. `domotique-bulle`).
-3. Choisir l'option d'installation **Docker** : Cloudflare affiche une commande contenant un token — copier uniquement ce token dans `.env` (`CLOUDFLARE_TUNNEL_TOKEN`).
-4. Dans l'onglet **Public Hostnames** du tunnel, ajouter :
-   - `home.bulle.malnoy.com` → Service `HTTP` → `homeassistant:8123`
+### 4.2 Créer le tunnel — fait le 23.08.2026
+
+1. Compte Cloudflare (le même que pour la zone `malnoy.com`).
+2. Dashboard Cloudflare → **Zero Trust** (plan **Free**, suffisant : jusqu'à 50 utilisateurs, Cloudflare Tunnel est gratuit sans limite indépendamment du plan Zero Trust) → **Networks** → **Tunnels** → **Create a tunnel** → type **Cloudflared** → nommé `domotique-bulle`.
+3. Option d'installation **Docker** : token copié directement dans `.env` (`CLOUDFLARE_TUNNEL_TOKEN`) — fait.
+4. Dans l'onglet **Public Hostnames** du tunnel :
+   - `domotique.bulle.malnoy.com` → Service `HTTP` → `homeassistant:8123`
    - `grafana.bulle.malnoy.com` → Service `HTTP` → `grafana:3000`
-5. Démarrer le conteneur :
+5. Démarrer le conteneur (à faire lors du déploiement complet de la stack) :
    ```bash
    docker compose up -d cloudflared
    ```
