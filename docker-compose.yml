@@ -55,7 +55,7 @@ services:
     volumes:
       - ./VictoriaMetrics_Data:/victoria-metrics-data
     command:
-      - "--storagePath=/victoria-metrics-data"
+      - "--storageDataPath=/victoria-metrics-data"
       - "--retentionPeriod=5y"
     ports:
       - "127.0.0.1:8428:8428"  # accès local uniquement (debug/requêtes API), jamais exposé publiquement
