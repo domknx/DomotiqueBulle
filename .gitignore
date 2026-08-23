@@ -1,0 +1,17 @@
+# Secrets
+.env
+
+# Données persistantes des conteneurs (volumes locaux, pas versionnés)
+HomeAssistant_Data/
+Prometheus_Data/
+VictoriaMetrics_Data/
+Grafana_Data/
+
+# Jetons / secrets divers
+prometheus/ha_bearer_token
+
+# macOS
+.DS_Store
+
+# Divers
+*.log

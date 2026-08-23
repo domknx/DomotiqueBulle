@@ -1,0 +1,26 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+  external_labels:
+    origin: domotique-bulle
+
+# Relais de toutes les métriques vers VictoriaMetrics (stockage long terme).
+remote_write:
+  - url: "http://victoriametrics:8428/api/v1/write"
+
+scrape_configs:
+  - job_name: "home_assistant"
+    metrics_path: /api/prometheus
+    scheme: http
+    scrape_interval: 30s
+    static_configs:
+      - targets: ["homeassistant:8123"]
+    # Nécessite : intégration "prometheus" activée dans configuration.yaml
+    # de Home Assistant, et un jeton d'accès longue durée créé dans HA
+    # (Profil > Sécurité > Jetons d'accès longue durée), à placer dans
+    # ./prometheus/ha_bearer_token (fichier non versionné, voir .gitignore).
+    bearer_token_file: /etc/prometheus/ha_bearer_token
+
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]

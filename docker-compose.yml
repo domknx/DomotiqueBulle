@@ -1,0 +1,91 @@
+name: domotique-bulle
+
+networks:
+  domotique_net:
+    name: domotique_net
+    driver: bridge
+
+services:
+
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/home-assistant:stable
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    ports:
+      - "8123:8123"
+    volumes:
+      - ./HomeAssistant_Data:/config
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=${TZ}
+    # NOTE KNX : si l'interface KNX utilisée fonctionne en mode "routage"
+    # (multicast 224.0.23.12) plutôt qu'en "tunneling" (connexion unicast
+    # à une IP fixe), le réseau bridge de Docker Desktop pour Mac ne relaiera
+    # pas le multicast correctement. Voir README.md § "KNX et réseau Docker"
+    # avant de finaliser la configuration KNX.
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./Prometheus_Data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=2d"
+      # Rétention locale volontairement courte : VictoriaMetrics est la
+      # base de stockage long terme (remote_write), Prometheus ne sert
+      # ici que de collecteur/relais.
+    depends_on:
+      - homeassistant
+      - victoriametrics
+
+  victoriametrics:
+    container_name: victoriametrics
+    image: victoriametrics/victoria-metrics:stable
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    volumes:
+      - ./VictoriaMetrics_Data:/victoria-metrics-data
+    command:
+      - "--storagePath=/victoria-metrics-data"
+      - "--retentionPeriod=5y"
+    ports:
+      - "127.0.0.1:8428:8428"  # accès local uniquement (debug/requêtes API), jamais exposé publiquement
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Grafana_Data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    environment:
+      - TZ=${TZ}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    depends_on:
+      - victoriametrics
+
+  cloudflared:
+    container_name: cloudflared
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - homeassistant
+      - grafana
