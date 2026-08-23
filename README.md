@@ -69,7 +69,7 @@ Convention respectée : chaque conteneur a son propre dossier de données `NomDu
 
 2. Démarrer Home Assistant, Prometheus et VictoriaMetrics dans un premier temps (Grafana et cloudflared peuvent attendre) :
    ```bash
-   docker compose up -d homeassistant victoriametrics
+   docker compose up -d ha_claude victoriametrics
    ```
 
 3. Terminer l'onboarding Home Assistant sur `http://localhost:8123` (ou `http://<IP-du-Mac-mini>:8123` depuis un autre appareil du réseau local).
@@ -112,7 +112,7 @@ Le domaine disponible est `malnoy.com` (Gandi, utilisé aujourd'hui pour les ema
 2. Dashboard Cloudflare → Zero Trust → Networks → Tunnels → **Create a tunnel** → type **Cloudflared** → nommer le tunnel (ex. `domotique-bulle`).
 3. Choisir l'option d'installation **Docker** : Cloudflare affiche une commande contenant un token — copier uniquement ce token dans `.env` (`CLOUDFLARE_TUNNEL_TOKEN`).
 4. Dans l'onglet **Public Hostnames** du tunnel, ajouter :
-   - `home.bulle.malnoy.com` → Service `HTTP` → `homeassistant:8123`
+   - `home.bulle.malnoy.com` → Service `HTTP` → `ha_claude:8123`
    - `grafana.bulle.malnoy.com` → Service `HTTP` → `grafana:3000`
 5. Démarrer le conteneur :
    ```bash
