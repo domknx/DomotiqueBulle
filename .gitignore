@@ -15,3 +15,6 @@ prometheus/ha_bearer_token
 
 # Divers
 *.log
+
+# Fichiers verrous Git non nettoyables par l'environnement d'exécution distant
+_to_delete/
