@@ -87,6 +87,7 @@ Plusieurs dashboards Home Assistant doivent être créés, adaptés à différen
 - Nommage des entités : cohérent avec les noms de pièces déjà utilisés dans l'export ETS
 - Éviter de dupliquer une entité déjà migrée — vérifier l'existant avant création
 - Les données des container doivent toujours se trouver dans un répertoire dédié du type: ContainerName_Data (examples: HomeAssistant_Data, Grafana_Data, ...)
+- À la fin de chaque jalon principal (voir §10), exécuter `scripts/backup_jalon.sh "nom-du-jalon"` pour créer un point de restauration complet avant de poursuivre.
 
 ## 7. Architecture Docker (v1)
 
@@ -106,12 +107,16 @@ Services : `homeassistant`, `prometheus`, `victoriametrics`, `grafana`, `cloudfl
 
 ## 8. État actuel du projet
 
-Architecture Docker v1 conçue, confirmée et poussée sur GitHub (`main` synchronisé, 4 commits). Décisions accès distant, domaine et nommage du conteneur Home Assistant toutes validées. Stack pas encore déployée sur le Mac mini (`docker compose up -d` pas encore lancé).
+Stack déployée sur le Mac mini. `homeassistant` et `victoriametrics` tournent (`docker compose up -d`), onboarding Home Assistant terminé (utilisateur `fabrice`). Intégration `prometheus:` ajoutée dans `configuration.yaml`, jeton d'accès longue durée généré et stocké dans `prometheus/ha_bearer_token` (non versionné). `cloudflared` configuré (token dans `.env`, deux hostnames publics créés côté Cloudflare) mais pas démarré en continu pour l'instant — testé brièvement puis arrêté par l'utilisateur ; conteneurs `prometheus`, `grafana` et `cloudflared` restent à lancer.
+
+Incident résolu le 23–24.08.2026 : après ajout du bloc `http:`/`trusted_proxies` (nécessaire pour accepter le trafic via le futur tunnel Cloudflare), connexion à Home Assistant impossible pendant plusieurs heures, y compris après réinitialisation du mot de passe (`hass --script auth ... change_password`). Cause probable : état serveur bloqué en mémoire (les requêtes de connexion étaient systématiquement journalisées avec l'IP source `172.67.68.101`, y compris en accès direct `localhost:8123` sans aucun proxy actif), non résolu par un simple `restart` du conteneur. Résolu par un cycle complet `docker compose down` puis `up -d`. À l'occasion, `trusted_proxies` a été resserré de la plage large `172.16.0.0/12` au sous-réseau réel du réseau Docker `domotique_net` (`172.19.0.0/16`, vérifié via `docker network inspect`), par précaution avant la remise en route de `cloudflared`. Si ce blocage réapparaît après démarrage de `cloudflared`, envisager un `docker compose down && up -d` complet plutôt qu'un simple `restart`.
 
 ### Prochaines étapes
 
-- Déployer la stack sur le Mac mini (`docker compose up -d`) et terminer l'onboarding Home Assistant.
-- Tester l'accès externe via `domotique.bulle.malnoy.com` et `grafana.bulle.malnoy.com` une fois le tunnel démarré.
+- Démarrer `prometheus` (`docker compose up -d prometheus`) et vérifier le scraping (`http://localhost:9090/targets` ou logs).
+- Démarrer `grafana` et confirmer que la datasource VictoriaMetrics est bien provisionnée.
+- Démarrer `cloudflared` et valider l'accès externe via `domotique.bulle.malnoy.com` et `grafana.bulle.malnoy.com` (surveiller si le blocage de connexion réapparaît une fois le tunnel actif en continu).
+- Installer HACS et le serveur Home Assistant MCP dans Home Assistant — prérequis avant toute configuration/entité HA, KNX inclus (voir §10.1, jalon 1).
 - Inventaire précis des adresses/groupes KNX existants (export ETS) pour établir le premier fichier de configuration KNX.
 - Mettre en place le journal/changelog (page web accessible) — piste envisagée : GitHub Pages à partir du même dépôt.
 - Concevoir les dashboards Home Assistant (Mac, iPad, iPhone, écran tactile).
@@ -125,3 +130,49 @@ Architecture Docker v1 conçue, confirmée et poussée sur GitHub (`main` synchr
 - 2026-08-23 — Authentification SSH GitHub mise en place pour le compte `docker` du Mac mini : ancienne clé (`Key_Github_20251025`) inutilisable (passphrase indisponible, nom de fichier non standard). Nouvelle clé dédiée `id_ed25519_domotique` générée sans passphrase, ajoutée au compte GitHub `domknx`, configurée via `~/.ssh/config`. Premier `git push -u origin main` réussi — dépôt distant synchronisé.
 - 2026-08-23 — Correction de la décision domaine : la délégation d'un simple sous-domaine `bulle.malnoy.com` s'est révélée impossible gratuitement chez Cloudflare (fonctionnalité Enterprise uniquement). Bascule décidée sur le domaine racine `malnoy.com` entier. Inventaire complet des 16 enregistrements DNS Gandi établi et recréé à l'identique dans Cloudflare (dont 3 CNAME DKIM ratés par le scan automatique, ajoutés manuellement ; tous les enregistrements repassés en "DNS only"). DNSSEC activé par erreur chez Gandi puis désactivé avant la bascule (aurait cassé la résolution DNS du domaine entier). Nameservers changés chez Gandi vers `colin.ns.cloudflare.com` / `sydney.ns.cloudflare.com` — zone confirmée "Active" dans Cloudflare le jour même. Emails testés fonctionnels après bascule.
 - 2026-08-23 — Tunnel Cloudflare créé (Zero Trust, plan Free, nommé `domotique-bulle`), token placé dans `.env`. Hostnames publics choisis par l'utilisateur : `domotique.bulle.malnoy.com` (Home Assistant, plutôt que la suggestion initiale `home.bulle.malnoy.com`) et `grafana.bulle.malnoy.com` (Grafana).
+- 2026-08-23 — Stack déployée sur le Mac mini. Corrections apportées à `docker-compose.yml` : image VictoriaMetrics `:stable` (inexistante) fixée à `:v1.150.0`, option `--storagePath` corrigée en `--storageDataPath`. `homeassistant` et `victoriametrics` confirmés `Up`. Intégration `prometheus:` ajoutée dans `configuration.yaml`, jeton d'accès longue durée généré (`prometheus/ha_bearer_token`, non versionné).
+- 2026-08-23/24 — Incident de connexion à Home Assistant après ajout du bloc `http:`/`trusted_proxies: 172.16.0.0/12` (préparation pour `cloudflared`) : connexion impossible pendant plusieurs heures malgré réinitialisation du mot de passe. Cause probable : état serveur bloqué en mémoire, indépendant des identifiants (les tentatives, même en accès direct `localhost:8123`, étaient journalisées avec une IP Cloudflare figée). Résolu par un cycle complet `docker compose down` + `up -d` (un simple `restart` n'avait pas suffi). `trusted_proxies` resserré ensuite au sous-réseau réel `172.19.0.0/16` de `domotique_net` (au lieu de `172.16.0.0/12`), sauvegarde de `configuration.yaml` faite avant modification. Mot de passe changé par l'utilisateur après résolution.
+- 2026-08-24 — Définition des jalons principaux du projet et mise en place d'un système de sauvegarde/restauration complet (voir §10) : script `scripts/backup_jalon.sh` (tag Git + archive `.env`/`*_Data` vers `Backups/` local et le disque externe `Sauvegardes/0_Domotique/`, rétention 3 sauvegardes locales / historique complet sur le disque externe) et `scripts/backup_victoriametrics.sh` (snapshot natif hebdomadaire, indépendant des jalons, copié sur le disque externe). Ajout d'un prérequis explicite : installer HACS et le serveur Home Assistant MCP avant toute configuration HA (voir §10.1, jalon 1). Lancement d'une liste catégorisée d'intégrations/thèmes Home Assistant recommandés, publiée sur GitHub Pages et rafraîchie automatiquement tous les 3 mois (voir §10.5).
+
+## 10. Jalons du projet et sauvegardes
+
+### 10.1 Jalons principaux
+
+1. **Infrastructure Docker de base opérationnelle** — `homeassistant`, `prometheus`, `victoriametrics`, `grafana`, `cloudflared` tous démarrés en continu et validés ; **HACS** et le **serveur Home Assistant MCP** installés dans Home Assistant — prérequis avant toute configuration/entité HA, KNX inclus.
+2. **Intégration KNX complète** — tous les équipements des deux logements pilotables depuis Home Assistant, fichier de configuration KNX stabilisé.
+3. **Accès distant sécurisé validé en production** — tunnel Cloudflare stable dans la durée (pas de régression comme l'incident du 23–24.08.2026).
+4. **Intégrations complémentaires** — installation solaire, Tesla, sécurité/caméras.
+5. **Dashboards complets** — Mac, iPad, iPhone, écran tactile mural.
+6. **Journal/changelog publié en continu** — page web à jour (GitHub Pages).
+
+### 10.2 Sauvegarde de jalon (point de restauration complet)
+
+À la fin de chaque jalon validé (et avant toute modification structurelle majeure), exécuter, depuis la racine du projet sur le Mac mini :
+
+```
+./scripts/backup_jalon.sh "nom-du-jalon"
+```
+
+Ce script :
+- crée un tag Git horodaté sur le commit courant (`jalon_<nom>_<horodatage>`) ;
+- archive `.env` et les dossiers `*_Data` (hors `VictoriaMetrics_Data`, traité séparément — voir §10.3) dans `Backups/<date>_<nom-du-jalon>/` à la racine du projet (dossier hors Git, ignoré) ;
+- copie cette archive vers le disque externe `Sauvegardes/0_Domotique/jalons/` ;
+- conserve les 3 dernières sauvegardes de jalon en local (uniquement si déjà copiées sur le disque externe, par sécurité), et l'historique complet sur le disque externe.
+
+Si le disque externe n'est pas monté au moment de l'exécution, la sauvegarde reste disponible en local et rien n'est supprimé ; le script indique la commande à relancer une fois le disque connecté.
+
+### 10.3 Sauvegarde VictoriaMetrics (hebdomadaire, indépendante des jalons)
+
+Les données de séries temporelles (rétention 5 ans) évoluent en continu et ne sont pas liées à l'avancement du projet. `scripts/backup_victoriametrics.sh`, exécuté chaque semaine, crée un snapshot natif VictoriaMetrics et le copie vers `Sauvegardes/0_Domotique/victoriametrics/`, puis supprime le snapshot local pour ne pas accumuler. Politique de rétention côté disque externe à définir une fois le volume réel de données observé sur quelques semaines.
+
+### 10.4 Restauration à partir d'un jalon
+
+1. `docker compose down`
+2. Restaurer les dossiers `*_Data` et `.env` depuis l'archive choisie (`Backups/` local ou `Sauvegardes/0_Domotique/jalons/` sur le disque externe)
+3. `git checkout <tag-du-jalon>` (voir `git-tag.txt` dans l'archive, ou `git tag` pour lister)
+4. `docker compose up -d`
+5. Vérifier chaque service (`docker compose ps`, logs, accès web sur chaque hostname)
+
+### 10.5 Liste des intégrations et thèmes Home Assistant recommandés
+
+Une liste catégorisée (météo, chauffage, éclairage, volets, sécurité, caméras, énergie/solaire, véhicule, multimédia, présence, thèmes/dashboards) est maintenue sur la page GitHub Pages du dépôt (`docs/integrations-recommandees.html`), et rafraîchie automatiquement tous les 3 mois par une tâche planifiée. Sert de référence avant d'installer une nouvelle intégration ou un nouveau thème via HACS.

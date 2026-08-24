@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intégrations Home Assistant recommandées — Domotique Villa Bulle</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --fg: #1c1c1a; --muted: #6b6b66; --card: #ffffff; --border: #e4e3de;
+    --accent: #3a6b52; --badge-core-bg: #e6efe9; --badge-core-fg: #2c5a41;
+    --badge-hacs-bg: #eef0f6; --badge-hacs-fg: #38436b; --badge-paid-bg: #f6ece6; --badge-paid-fg: #8a4a20;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17181a; --fg: #e9e9e6; --muted: #9a9a94; --card: #202224; --border: #33352f;
+      --accent: #7fbf9e; --badge-core-bg: #1f3329; --badge-core-fg: #8fd6b0;
+      --badge-hacs-bg: #232840; --badge-hacs-fg: #a9b3e6; --badge-paid-bg: #3a2a1c; --badge-paid-fg: #e8b98a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.55; }
+  main { max-width: 860px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+  a { color: var(--accent); }
+  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  p.sub { color: var(--muted); margin-top: 0; }
+  nav.toc { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin: 1.75rem 0 2.5rem; font-size: 0.9rem; }
+  nav.toc a { display: inline-block; margin: 0.15rem 0.6rem 0.15rem 0; text-decoration: none; }
+  section.category { margin-bottom: 2.5rem; }
+  section.category h2 { font-size: 1.15rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+  ul.items { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.75rem; }
+  .item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.1rem; }
+  .item .head { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+  .item .name { font-weight: 600; }
+  .badge { font-size: 0.72rem; padding: 0.1rem 0.5rem; border-radius: 999px; font-weight: 600; }
+  .badge.core { background: var(--badge-core-bg); color: var(--badge-core-fg); }
+  .badge.hacs { background: var(--badge-hacs-bg); color: var(--badge-hacs-fg); }
+  .badge.paid { background: var(--badge-paid-bg); color: var(--badge-paid-fg); }
+  .item .desc { color: var(--muted); font-size: 0.92rem; margin-top: 0.3rem; }
+  .item a.link { font-size: 0.85rem; display: inline-block; margin-top: 0.35rem; }
+  .note { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.92rem; color: var(--muted); }
+  footer { margin-top: 3rem; color: var(--muted); font-size: 0.8rem; }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <p><a href="index.html">&larr; Domotique Villa Bulle</a></p>
+  <h1>Intégrations &amp; thèmes Home Assistant recommandés</h1>
+  <p class="sub">Sélection communautaire par catégorie, pour ce projet (bus KNX, solaire, Tesla, sécurité/caméras à venir). Dernière mise à jour : <strong>24 août 2026</strong> — rafraîchie automatiquement tous les 3 mois.</p>
+
+  <nav class="toc">
+    <a href="#meteo">Météo</a>
+    <a href="#chauffage">Chauffage / climat</a>
+    <a href="#eclairage">Éclairage</a>
+    <a href="#volets">Volets</a>
+    <a href="#securite">Sécurité</a>
+    <a href="#cameras">Caméras</a>
+    <a href="#energie">Énergie / solaire</a>
+    <a href="#tesla">Véhicule Tesla</a>
+    <a href="#multimedia">Multimédia</a>
+    <a href="#presence">Présence</a>
+    <a href="#themes">Thèmes &amp; dashboards</a>
+    <a href="#hacs">HACS</a>
+    <a href="#mcp">MCP Server</a>
+  </nav>
+
+  <section class="category" id="meteo">
+    <h2>Météo</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">Met.no</span><span class="badge core">Natif HA</span></div><div class="desc">Service météo norvégien utilisé par défaut par Home Assistant, bonnes prévisions pour l'Europe dont la Suisse.</div><a class="link" href="https://www.home-assistant.io/integrations/met/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">OpenWeatherMap</span><span class="badge core">Natif HA</span></div><div class="desc">Intégration météo alternative avec API gratuite, prévisions horaires/quotidiennes et alertes.</div><a class="link" href="https://www.home-assistant.io/integrations/openweathermap/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">AccuWeather</span><span class="badge core">Natif HA</span></div><div class="desc">Source météo tierce très précise, alternative à Met.no pour comparer les prévisions locales.</div><a class="link" href="https://www.home-assistant.io/integrations/accuweather/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Pirate Weather</span><span class="badge hacs">HACS</span></div><div class="desc">Remplaçant de l'ancienne intégration Dark Sky, prévisions granulaires (minute-by-minute) appréciées de la communauté.</div><a class="link" href="https://github.com/Pirate-Weather/pirate-weather-ha">Dépôt GitHub</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="chauffage">
+    <h2>Chauffage / climat (KNX et pilotage par zones)</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">KNX</span><span class="badge core">Natif HA</span></div><div class="desc">Intégration officielle du bus KNX, expose thermostats/vannes KNX comme entités climate natives.</div><a class="link" href="https://www.home-assistant.io/integrations/knx/#climate">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Versatile Thermostat</span><span class="badge hacs">HACS</span></div><div class="desc">Thermostat évolué se posant au-dessus des entités climate KNX : presets, détection fenêtre ouverte, présence, surpuissance par zone.</div><a class="link" href="https://github.com/jmcollin78/versatile_thermostat">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Generic Thermostat</span><span class="badge core">Natif HA (helper)</span></div><div class="desc">Permet de créer des thermostats logiciels par pièce à partir d'un capteur de température et d'un actionneur KNX.</div><a class="link" href="https://www.home-assistant.io/integrations/generic_thermostat/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Scheduler Component</span><span class="badge hacs">HACS</span></div><div class="desc">Planification avancée (horaires par zone/pièce) pilotable via une carte dédiée, idéal pour un chauffage multi-zones.</div><a class="link" href="https://github.com/nielsfaber/scheduler-component">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Climate Group Helper</span><span class="badge hacs">HACS</span></div><div class="desc">Regroupe plusieurs entités climate KNX en une seule zone logique pilotable d'un coup.</div><a class="link" href="https://bjrnptrsn.github.io/climate_group_helper/">Documentation</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="eclairage">
+    <h2>Éclairage</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">KNX</span><span class="badge core">Natif HA</span></div><div class="desc">Pilotage natif des sorties lumière/dimmer du bus KNX (on/off, variation, couleur DALI le cas échéant).</div><a class="link" href="https://www.home-assistant.io/integrations/knx/#light">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Adaptive Lighting</span><span class="badge hacs">HACS</span></div><div class="desc">Ajuste automatiquement luminosité et température de couleur selon l'heure du jour et le lever/coucher du soleil — l'intégration HACS la plus installée pour l'éclairage.</div><a class="link" href="https://github.com/basnijholt/adaptive-lighting">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Philips Hue</span><span class="badge core">Natif HA</span></div><div class="desc">Utile si des lampes d'appoint/décoratives Hue viennent compléter l'éclairage filaire KNX.</div><a class="link" href="https://www.home-assistant.io/integrations/hue/">Documentation</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="volets">
+    <h2>Volets roulants / stores</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">KNX</span><span class="badge core">Natif HA</span></div><div class="desc">Pilotage natif des actionneurs de volets KNX (montée/descente, position, lamelles).</div><a class="link" href="https://www.home-assistant.io/integrations/knx/#cover">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Adaptive Cover</span><span class="badge hacs">HACS</span></div><div class="desc">Calcule automatiquement la position idéale des stores selon la position du soleil, pour l'ombrage passif et les économies de chauffage/clim.</div><a class="link" href="https://github.com/kodymallory/adaptive-cover">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Cover Time Based</span><span class="badge hacs">HACS</span></div><div class="desc">Reconstitue une position précise (%) pour des volets pilotés en tout-ou-rien, utile si certains actionneurs KNX ne remontent pas de position absolue.</div><a class="link" href="https://github.com/Sese-Schneider/ha-cover-time-based">Dépôt GitHub</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="securite">
+    <h2>Sécurité / alarme</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">Alarmo</span><span class="badge hacs">HACS</span></div><div class="desc">Système d'alarme complet (armé/désarmé, zones, codes, notifications) directement dans HA — référence pour remplacer une centrale d'alarme propriétaire.</div><a class="link" href="https://github.com/nielsfaber/alarmo">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Manual Alarm Control Panel</span><span class="badge core">Natif HA</span></div><div class="desc">Panneau d'alarme basique intégré au cœur de HA, base sur laquelle Alarmo s'appuie, ou alternative légère.</div><a class="link" href="https://www.home-assistant.io/integrations/manual/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">KNX (binary_sensor)</span><span class="badge core">Natif HA</span></div><div class="desc">Remonte les contacts de porte/fenêtre et détecteurs câblés sur le bus KNX comme capteurs binaires utilisables par Alarmo.</div><a class="link" href="https://www.home-assistant.io/integrations/knx/#binary-sensor">Documentation</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="cameras">
+    <h2>Caméras (vidéosurveillance locale)</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">Frigate</span><span class="badge hacs">HACS + conteneur Docker</span></div><div class="desc">NVR local avec détection d'objets par IA (personne, véhicule, animal) sur GPU/Coral — la référence pour la vidéosurveillance self-hosted intégrée à HA.</div><a class="link" href="https://docs.frigate.video/integrations/home-assistant/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Reolink</span><span class="badge core">Natif HA</span></div><div class="desc">Intégration officielle pour caméras Reolink (marque répandue en auto-hébergement, compatible ONVIF/RTSP).</div><a class="link" href="https://www.home-assistant.io/integrations/reolink/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Generic Camera (RTSP/ONVIF)</span><span class="badge core">Natif HA</span></div><div class="desc">Permet de connecter n'importe quelle caméra IP standard via flux RTSP/MJPEG, sans dépendre d'une marque.</div><a class="link" href="https://www.home-assistant.io/integrations/generic/">Documentation</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="energie">
+    <h2>Énergie / solaire</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">Energy Dashboard</span><span class="badge core">Natif HA</span></div><div class="desc">Tableau de bord énergie intégré au cœur de HA : suivi production PV, consommation réseau, batterie, coûts.</div><a class="link" href="https://www.home-assistant.io/docs/energy/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Forecast.Solar</span><span class="badge core">Natif HA</span></div><div class="desc">Prévision de production solaire gratuite basée sur la position géographique et l'orientation des panneaux, sans compte externe.</div><a class="link" href="https://www.home-assistant.io/integrations/forecast_solar/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Solcast PV Forecast</span><span class="badge hacs">HACS</span></div><div class="desc">Prévisions solaires plus précises basées sur des données satellite — référence communautaire pour affiner la prévision de production PV.</div><a class="link" href="https://github.com/BJReplay/ha-solcast-solar">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Power Flow Card Plus</span><span class="badge hacs">HACS</span></div><div class="desc">Version enrichie de la carte de flux d'énergie native (maison/solaire/réseau/batterie/véhicule), très populaire pour visualiser la production PV.</div><a class="link" href="https://github.com/flixlix/energy-flow-card-plus">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">ApexCharts Card</span><span class="badge hacs">HACS</span></div><div class="desc">Graphiques avancés et personnalisables pour visualiser l'historique de consommation et de production solaire dans le temps.</div><a class="link" href="https://github.com/RomRider/apexcharts-card">Dépôt GitHub</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="tesla">
+    <h2>Véhicule Tesla</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">Tesla Fleet</span><span class="badge core">Natif HA</span></div><div class="desc">Intégration officielle basée sur l'API Fleet de Tesla (nécessite un compte développeur Tesla) — lecture d'état et contrôle basique gratuits.</div><a class="link" href="https://www.home-assistant.io/integrations/tesla_fleet/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Teslemetry</span><span class="badge paid">Service tiers payant</span></div><div class="desc">Proxy cloud simplifiant l'authentification Fleet API et la fiabilité des données Tesla — référence pour éviter la complexité de configuration développeur, mais nécessite un abonnement.</div><a class="link" href="https://www.home-assistant.io/integrations/teslemetry/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">TeslaMate</span><span class="badge hacs">Docker auto-hébergé (gratuit) + MQTT</span></div><div class="desc">Logging détaillé des trajets, charges, dégradation batterie, avec un dashboard dédié, connecté à HA via MQTT.</div><a class="link" href="https://docs.teslamate.org/docs/integrations/home_assistant/">Documentation</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="multimedia">
+    <h2>Multimédia</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">Google Cast</span><span class="badge core">Natif HA</span></div><div class="desc">Pilotage des Chromecast et enceintes/écrans Google Home/Nest, pratique pour diffuser sur l'écran mural.</div><a class="link" href="https://www.home-assistant.io/integrations/cast/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Music Assistant</span><span class="badge core">Natif HA (add-on)</span></div><div class="desc">Serveur multi-room unifiant le streaming (Spotify, etc.) vers plusieurs media players (Sonos, Cast, AirPlay) synchronisés.</div><a class="link" href="https://www.home-assistant.io/integrations/music_assistant">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Apple TV</span><span class="badge core">Natif HA</span></div><div class="desc">Utile pour intégrer un écran de contrôle/TV au sein de l'écosystème Mac/iPad/iPhone déjà en place.</div><a class="link" href="https://www.home-assistant.io/integrations/apple_tv/">Documentation</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="presence">
+    <h2>Présence / suivi de personnes</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">Home Assistant Companion App</span><span class="badge core">Natif HA</span></div><div class="desc">Géolocalisation et détection de présence natives sur iPhone/iPad, s'intègre directement dans l'écosystème Apple déjà prévu.</div><a class="link" href="https://companion.home-assistant.io/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">Bermuda BLE Trilateration</span><span class="badge hacs">HACS</span></div><div class="desc">Suivi de présence par pièce via Bluetooth LE (montres, téléphones, tags) — complément local et précis au GPS pour une grande villa.</div><a class="link" href="https://github.com/agittins/bermuda">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Life360</span><span class="badge hacs">HACS</span></div><div class="desc">Géolocalisation familiale via l'app Life360, alternative si tous les membres du foyer l'utilisent déjà.</div><a class="link" href="https://github.com/pnbruckner/ha-life360">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Nmap Tracker</span><span class="badge core">Natif HA</span></div><div class="desc">Détecte la présence des appareils connectés au réseau local (téléphones, Mac) comme méthode de présence de secours.</div><a class="link" href="https://www.home-assistant.io/integrations/nmap_tracker/">Documentation</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="themes">
+    <h2>Thèmes &amp; cartes de dashboard</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">Mushroom</span><span class="badge hacs">HACS</span></div><div class="desc">Collection de cartes minimalistes et cohérentes (lumière, climat, cover, capteur), très largement utilisée pour un dashboard moderne.</div><a class="link" href="https://github.com/piitaya/lovelace-mushroom">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Bubble Card</span><span class="badge hacs">HACS</span></div><div class="desc">Cartes avec pop-up et un « Module Store » intégré de plus de 100 modules communautaires — tendance forte en 2026 pour des dashboards épurés.</div><a class="link" href="https://github.com/Clooos/Bubble-Card">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">ApexCharts Card</span><span class="badge hacs">HACS</span></div><div class="desc">Graphiques riches et personnalisables pour historiques (température, énergie, etc.) — un standard des dashboards avancés.</div><a class="link" href="https://github.com/RomRider/apexcharts-card">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Button Card</span><span class="badge hacs">HACS</span></div><div class="desc">Carte bouton hautement personnalisable (templates, icônes dynamiques), brique de base de nombreux dashboards custom.</div><a class="link" href="https://github.com/custom-cards/button-card">Dépôt GitHub</a></li>
+      <li class="item"><div class="head"><span class="name">Kiosk Mode</span><span class="badge hacs">HACS</span></div><div class="desc">Masque la barre latérale/l'en-tête sur un écran mural ou une tablette dédiée — essentiel pour un écran de contrôle fixe.</div><a class="link" href="https://github.com/NemesisRE/kiosk-mode">Dépôt GitHub</a></li>
+    </ul>
+  </section>
+
+  <section class="category" id="hacs">
+    <h2>HACS (Home Assistant Community Store)</h2>
+    <div class="note">Gestionnaire de paquets communautaire qui ajoute un onglet dans Home Assistant pour installer, mettre à jour et gérer intégrations, cartes Lovelace, thèmes et add-ons développés par la communauté, absents du cœur officiel. C'est un prérequis avant d'installer la quasi-totalité des modules « HACS » listés ci-dessus (Frigate, Mushroom, Bubble Card, Alarmo, etc.) — sans lui, ces dépôts GitHub doivent être copiés manuellement dans <code>custom_components</code>/<code>www</code> et mis à jour à la main. Installation résumée pour une instance Docker : exécuter le script d'installation officiel dans le conteneur (ou copier manuellement le dossier <code>hacs</code> dans <code>config/custom_components</code>), redémarrer Home Assistant, ajouter l'intégration HACS depuis Paramètres → Appareils et services, puis s'authentifier via GitHub. <a href="https://www.hacs.xyz/docs/use/download/download/">Documentation d'installation</a></div>
+  </section>
+
+  <section class="category" id="mcp">
+    <h2>Home Assistant MCP Server (Model Context Protocol)</h2>
+    <ul class="items">
+      <li class="item"><div class="head"><span class="name">Model Context Protocol Server</span><span class="badge core">Natif HA</span></div><div class="desc">Expose les entités, services et automatisations de Home Assistant à un client MCP externe (comme Claude), permettant à un assistant IA de lire l'état de la maison et de déclencher des actions directement.</div><a class="link" href="https://www.home-assistant.io/integrations/mcp_server/">Documentation</a></li>
+      <li class="item"><div class="head"><span class="name">hass-mcp</span><span class="badge hacs">Projet communautaire (voska)</span></div><div class="desc">Serveur MCP alternatif orienté configuration/développement : permet à Claude de contrôler et interroger une instance HA en Docker pour écrire de la config YAML, diagnostiquer des entités KNX/Tesla, ou générer des automatisations directement depuis la conversation.</div><a class="link" href="https://github.com/voska/hass-mcp">Dépôt GitHub</a></li>
+    </ul>
+    <p class="note" style="margin-top:0.75rem;">Dans le contexte du projet (HA en Docker, bus KNX, Tesla à venir), ces deux briques permettent à Claude d'agir comme un « copilote de configuration » : lire les entités KNX existantes, proposer des automatisations de chauffage par zone, ou déboguer l'intégration Tesla/solaire sans copier-coller manuel de configuration.</p>
+  </section>
+
+  <footer>
+    Page générée et maintenue par Claude pour le projet <a href="https://github.com/domknx/DomotiqueBulle">domknx/DomotiqueBulle</a>. Rafraîchie automatiquement tous les 3 mois — voir <code>CLAUDE.md</code> §10.5.
+  </footer>
+</main>
+</body>
+</html>

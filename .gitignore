@@ -18,3 +18,6 @@ prometheus/ha_bearer_token
 
 # Fichiers verrous Git non nettoyables par l'environnement d'exécution distant
 _to_delete/
+
+# Sauvegardes locales de jalon (contiennent .env et les données des conteneurs — jamais commitées)
+Backups/
