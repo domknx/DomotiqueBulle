@@ -32,8 +32,11 @@ services:
     restart: unless-stopped
     networks:
       - domotique_net
+    ports:
+      - "127.0.0.1:9090:9090"  # accès local uniquement (debug/targets), jamais exposé publiquement
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/ha_bearer_token:/etc/prometheus/ha_bearer_token:ro
       - ./Prometheus_Data:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
