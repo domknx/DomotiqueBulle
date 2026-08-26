@@ -21,3 +21,12 @@ _to_delete/
 
 # Sauvegardes locales de jalon (contiennent .env et les données des conteneurs — jamais commitées)
 Backups/
+
+# Projet ETS KNX (.knxproj) : gros fichier binaire (zip) qui change entièrement à chaque
+# évolution régulière du projet -> pas de diff possible, gonflerait le dépôt GitHub sans
+# apporter de valeur. La version courante reste sur disque ici pour être reparsée à la
+# demande ; l'historique des versions successives est archivé dans Backups/knx_versions/
+# (local, hors Git) et sur le disque externe "Sauvegardes/0_Domotique/knx_versions/",
+# comme le reste du système de sauvegarde du projet. Ce qui EST versionné dans Git : les
+# CSV générés (knx/group_addresses/*.csv) et les fichiers YAML d'entités KNX.
+knx/ets_project/*.knxproj

@@ -1,0 +1,985 @@
+adresse,nom,description,dpt,chemin_groupe,piece_fonction,fonctions,appareils,emplacement_appareil
+0/0/1,SDB1 - Eclairage Spots - ON/OFF,,,Général > Salle de bain,,,,
+0/0/3,SB1 - Volets,Volets,,Général > Salle de bain,,,,
+0/0/4,Volet SDB - status current position,,DPST-5-1,Général > Salle de bain,,,,
+0/0/11,Spot SDB Etat on-off,,,Général > Salle de bain,,,,
+0/0/20,SDB1 - Bewegung,,,Général > Salle de bain,,,,
+0/0/30,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,Général > Salle de bain,,,,
+0/0/31,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,Général > Salle de bain,,,,
+0/0/32,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/33,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/34,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,Général > Salle de bain,,,,
+0/0/35,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,Général > Salle de bain,,,,
+0/0/36,Chauffage RDC - xxx -,,,Général > Salle de bain,,,,
+0/0/37,Chauffage RDC - xxx -,,,Général > Salle de bain,,,,
+0/0/38,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,Général > Salle de bain,,,,
+0/0/39,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,Général > Salle de bain,,,,
+0/0/40,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,Général > Salle de bain,,,,
+0/0/41,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,Général > Salle de bain,,,,
+0/0/42,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/43,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/44,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,Général > Salle de bain,,,,
+0/0/45,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,Général > Salle de bain,,,,
+0/0/46,Chauffage RDC - xxx -,,,Général > Salle de bain,,,,
+0/0/47,Chauffage RDC - xxx -,,,Général > Salle de bain,,,,
+0/0/48,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,Général > Salle de bain,,,,
+0/0/49,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,Général > Salle de bain,,,,
+0/0/50,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,Général > Salle de bain,,,,
+0/0/51,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,Général > Salle de bain,,,,
+0/0/52,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/53,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/54,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,Général > Salle de bain,,,,
+0/0/55,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,Général > Salle de bain,,,,
+0/0/56,Chauffage RDC - xxx -,,,Général > Salle de bain,,,,
+0/0/57,Chauffage RDC - xxx -,,,Général > Salle de bain,,,,
+0/0/58,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,Général > Salle de bain,,,,
+0/0/59,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,Général > Salle de bain,,,,
+0/0/60,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,Général > Salle de bain,,,,
+0/0/61,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,Général > Salle de bain,,,,
+0/0/62,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/63,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/64,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,Général > Salle de bain,,,,
+0/0/65,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,Général > Salle de bain,,,,
+0/0/66,Chauffage RDC - xxx -,,,Général > Salle de bain,,,,
+0/0/67,Chauffage RDC - xxx -,,,Général > Salle de bain,,,,
+0/0/68,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,Général > Salle de bain,,,,
+0/0/69,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,Général > Salle de bain,,,,
+0/0/70,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,Général > Salle de bain,,,,
+0/0/71,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,Général > Salle de bain,,,,
+0/0/72,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/73,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/74,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,Général > Salle de bain,,,,
+0/0/75,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,Général > Salle de bain,,,,
+0/0/76,Chauffage RDC - xxx -,,,Général > Salle de bain,,,,
+0/0/77,Chauffage RDC - xxx -  Control valve status,,DPST-20-102,Général > Salle de bain,,,,
+0/0/78,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,Général > Salle de bain,,,,
+0/0/79,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,Général > Salle de bain,,,,
+0/0/80,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,Général > Salle de bain,,,,
+0/0/81,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,Général > Salle de bain,,,,
+0/0/82,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/83,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,Général > Salle de bain,,,,
+0/0/84,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,Général > Salle de bain,,,,
+0/0/85,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,Général > Salle de bain,,,,
+0/0/86,Chauffage RDC - xxx - Preset Setpoint,,DPST-9-1,Général > Salle de bain,,,,
+0/0/87,Chauffage RDC - xxx -  Control valve status,,DPST-5-1,Général > Salle de bain,,,,
+0/0/88,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,Général > Salle de bain,,,,
+0/0/89,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,Général > Salle de bain,,,,
+0/0/90,Chauffage RDC - Mode Ete-Hiver,,DPST-1-1,Général > Salle de bain,,,,
+0/1/1,Sous-Sol - Lumière - On-Off,,,Général > Général - Lumière,,,,
+0/1/2,RDC - Lumière - On-Off,,,Général > Général - Lumière,,,,
+0/1/3,Etage - Lumière - On-Off,,,Général > Général - Lumière,,,,
+0/1/11,Sous-Sol - Lumière - Etat On-Off,,,Général > Général - Lumière,,,,
+0/1/12,RDC - Lumière - Etat On-Off,,,Général > Général - Lumière,,,,
+0/1/13,Etage - Lumière - Etat On-Off,,,Général > Général - Lumière,,,,
+0/2/20,Sous-Sol - Ouvrant Store - Ouvert-Fermé,,,Général > Général - Ouvrant Store,,,,
+0/2/21,RDC -Ouvrant Store - Ouvert-Fermé,,,Général > Général - Ouvrant Store,,,,
+0/2/22,Etage - Ouvrant Store - Ouvert-Fermé,,,Général > Général - Ouvrant Store,,,,
+0/3/1,Sous-Sol - Ouvrant Volet - Ouvert-Fermé,,,Général > Etage - Ouvrant Volet,,,,
+0/3/2,RDC - Ouvrant Volet - Ouvert-Fermé,1_RDC Volets RDC Tous,DPST-1-8,Général > Etage - Ouvrant Volet,Villa Bulle / Maison principale / 1_RDC,Volets RDC Tous (sun protection),DI-42 / Zone 1 / Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+0/3/3,Etage - Ouvrant Volet - Ouvert-Fermé,,DPST-1-8,Général > Etage - Ouvrant Volet,Villa Bulle / Maison principale / 2_Etage,Volets Etages Tous (sun protection),"Interrupteur Bureau
+ / Zone 3 / Zone 4",Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+0/3/4,RDC Salon WC - Ouvrant Volet - Ouvert-Fermé,,DPST-1-8,Général > Etage - Ouvrant Volet,,,Zone 2 / interrupteur face au poêle,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+0/3/11,Sous-Sol - Ouvrant Volet - Stop,,,Général > Etage - Ouvrant Volet,,,,
+0/3/12,RDC - Ouvrant Volet - Stop,,DPST-1-9,Général > Etage - Ouvrant Volet,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+0/3/13,Etage - Ouvrant Volet - Stop,,DPST-1-1,Général > Etage - Ouvrant Volet,Villa Bulle / Maison principale / 2_Etage,Volets Etages Tous (sun protection),Zone 3 / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+0/3/14,RDC Salon WC - Ouvrant Volet - Stop,,DPST-1-9,Général > Etage - Ouvrant Volet,,,Zone 2 / interrupteur face au poêle,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+0/4/1,Temperature extérieure,,,Général > Général - Chauffage,,,Régulateur de température - Chambre Léane,Villa Bulle / Maison principale / 2_Etage / Chambre Léane
+0/4/2,Chauffage RDC - Mode Ete-Hiver,1_RDC chauffage RDC Central,DPST-1-1,Général > Général - Chauffage,Villa Bulle / Maison principale / 1_RDC,chauffage RDC Central (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+0/4/12,Chauffage Etage - Mode Ete-Hiver,,DPST-1-1,Général > Général - Chauffage,,,Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+0/4/20,Chauffage Etage - Erreur au démarrage,,DPST-9-1,Général > Général - Chauffage,,,Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/0,Activation,,,Lumière > On-Off,,,,
+1/0/1,Entrée - Lumière - On-Off,Entrée Lumière,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,Lumière (switchable light),Interrupteurs entrée principale / Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée; Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/2,Entrée - Lumière Auto - On-Off,Entrée Lumière,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,Lumière (switchable light),Détecteur entrée principale / Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/3,Local Technique - Lumière 1 - On-Off,Local Technique Lumière,DPT-1,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),Détecteur local technique / Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/4,Local Technique - Lumière 2 - On-Off,Local Technique Lumière,DPT-1,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),Interrupteur Local Technique,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique
+1/0/5,Local Technique - Lumière 3 - On-Off,Local Technique Lumière,,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),,
+1/0/6,Garage - Lumière 1 - On-Off,Garage Lumière,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Garage,Lumière (switchable light),Détecteur Plafond Garage / Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Garage; Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/7,Garage - Lumière 2 - On-Off,Garage Lumière,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Garage,Lumière (switchable light),Détecteur Plafond Garage / Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Garage; Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/8,Garage - Lumière 3 - On-Off,Garage Lumière,,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Garage,Lumière (switchable light),,
+1/0/9,Garage - Lumière 4 - On-Off,Garage Lumière,,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Garage,Lumière (switchable light),,
+1/0/50,Escalier 1 - Lumière 1 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Escalier vers RDC,éclairage appliques escalier RDC  (switchable light),Zone 1  / interrupteur face au poêle,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+1/0/51,Cuisine - Lumière 1 - On-Off,Cuisine éclairage commutation évier,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Evier (switchable light),Interrupteur Cuisine Lumière et Volet vers evier / Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+1/0/52,Cuisine - Lumière 2 - On-Off,Cuisine Eclairage Bar,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Bar (switchable light),Interrupteur Cuisine Lumière et Volet vers evier / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+1/0/53,Cuisine - Lumière 3 - On-Off,Cuisine Eclairage Fenetre,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Fenetre (switchable light),Interrupteur Cuisine Lumière et Volet vers evier / Interrupteurs Cuisine Volets et Lumières vers Bar / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+1/0/54,Cuisine - Lumière 4 - On-Off,Cuisine Eclairage Cuisine tous,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Cuisine tous (switchable light),DI-42 / Interrupteur Cuisine Lumière et Volet vers evier / Zone 1 / Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+1/0/55,Cuisine - Lumière 5 - On-Off,,DPST-1-1,Lumière > On-Off,,,Zone 1 / Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/56,Cuisine - Lumière 6 - On-Off,,,Lumière > On-Off,,,,
+1/0/57,Salle à manger - Lumière 1 - On-Off,Salle à Manger éclairage commutation,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Table (switchable light),DI-42 / Interrupteur Salle à Manger côté terrasse / Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle à Manger
+1/0/58,Salle à manger - Lumière 2 - On-Off,Salle à Manger éclairage commutation Espace Centra,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),DI-42 / Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/59,Salle à manger - Lumière 3 - On-Off,Salle à Manger éclairage commutation Espace Centra,,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),,
+1/0/60,Salon - Lumière 1 - On-Off,éclairage spots canapé,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Salon,éclairage spots canapé (switchable light),Zone 2 / interrupteur face au poêle,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+1/0/61,Salon - Lumière 2 - On-Off,Salon éclairage spots piano,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Bureau et Bibliothèque; Villa Bulle / Maison principale / 1_RDC / Salon,éclairage Spots bibliothèque (switchable light) / éclairage spots piano (switchable light),Zone 2 / interrupteur face au poêle,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+1/0/62,Salon - Lumière 3 - On-Off,,,Lumière > On-Off,,,,
+1/0/63,Salon - Lumière 4 - On-Off,Salon éclairage spot placard,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Salon,éclairage spot placard (switchable light),Interrupteur Salle de Bain invité / Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité
+1/0/64,Salon - Lumière 5 - On-Off,,DPST-1-1,Lumière > On-Off,,,,
+1/0/65,Salon - Lumière 6 - On-Off,,,Lumière > On-Off,,,,
+1/0/66,Salon - Lumière 7 - On-Off,,,Lumière > On-Off,,,,
+1/0/67,Salle de Bain - Lumière 1 - On-Off,Salle de Bain invité éclairage commutation,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité,éclairage commutation (switchable light),Détecteur salle de bain invité / Interrupteur Salle de Bain invité / Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité
+1/0/68,Salle de Bain - Lumière 2 - On-Off,,,Lumière > On-Off,,,,
+1/0/100,Escalier 2 - Lumière 1 - On-Off,,,Lumière > On-Off,,,,
+1/0/101,Escalier 2 - Lumière 2 - On-Off,,,Lumière > On-Off,,,,
+1/0/102,Bureau - Lumière 1 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 2_Etage / Bureau,Eclairage Bureau (switchable light),"DI-55 / Interrupteur Bureau
+ / Zone 3",Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/103,Bureau - Lumière 2 - On-Off,,,Lumière > On-Off,,,,
+1/0/104,Chambre 1 - Lumière 1 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Eclairage Chambre Léane (switchable light),Chambe Léane / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Léane
+1/0/105,Chambre 1 - Lumière 2- On-Off,,,Lumière > On-Off,,,,
+1/0/106,Chambre 2 - Lumière 1 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Lumière parents (switchable light),Chambe Parents / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Parents
+1/0/107,Chambre 2 - Lumière 2 - On-Off,,,Lumière > On-Off,,,,
+1/0/108,Chambre 2 - Lumière 3 - On-Off,,,Lumière > On-Off,,,,
+1/0/109,Chambre 2 - Lumière 4 - On-Off,,,Lumière > On-Off,,,,
+1/0/110,Chambre 3 - Lumière 1 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Lumière Lily (switchable light),Interrupteurs Chambre Lily	 / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Lily
+1/0/111,Chambre 3 - Lumière 2- On-Off,,,Lumière > On-Off,,,,
+1/0/112,Salle de Bain - Lumière 1 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Lumière Salle de Bain (switchable light),Interrupteurs Salle de Bain étage / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/113,Salle de Bain - Lumière 2 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Lumière WC (switchable light),Détecteur SBD WC    / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/114,Salle de Bain  - Lumière 3 - On-Off,,,Lumière > On-Off,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Lumière Douche (switchable light),,
+1/0/115,Salle de Bain  - Lumière 4 - On-Off,,,Lumière > On-Off,,,,
+1/0/116,Salle de Bain  - Lumière 5 - On-Off,,,Lumière > On-Off,,,,
+1/0/117,Dressing - Lumière 1 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 2_Etage / Dressing,Lumière dressing (dimmable light),DI-55 / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/0/118,Dressing - Lumière 2 - On-Off,,,Lumière > On-Off,,,,
+1/0/119,Couloir - Lumière 1 - On-Off,,,Lumière > On-Off,,,,
+1/0/120,Couloir - Lumière 2 - On-Off,,,Lumière > On-Off,,,,
+1/0/121,Couloir - Lumière 3 - On-Off,,,Lumière > On-Off,,,,
+1/0/150,Extérieur - Lumière 1 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 4_Extérieur / Parking,Lumières - Appliques Facade (switchable light),Détecteur extérieur / Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 4_Extérieur / Parking
+1/0/151,Extérieur - Lumière 2 - On-Off,,DPST-1-1,Lumière > On-Off,Villa Bulle / Maison principale / 4_Extérieur / Parking,Lumières - Appliques Facade (switchable light),Interrupteur Salle à Manger côté terrasse / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle à Manger
+1/0/152,Extérieur - Lumière 3 - On-Off,,,Lumière > On-Off,,,,
+1/1/0,température actuelle,Entrée chauffage (variable en continu),DPST-9-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,chauffage (variable en continu) (heating (continuous variable)),,
+1/1/1,Entrée - Lumière - Etat On-Off,Entrée Lumière,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,Lumière (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/2,Entrée - Lumière - Etat On-Off,Entrée Lumière,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,Lumière (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/3,Local Technique - Lumière 1 - Etat On-Off,Local Technique Lumière,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/4,Local Technique - Lumière 2 - Etat On-Off,Local Technique Lumière,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),,
+1/1/5,Local Technique - Lumière 3 - Etat On-Off,Local Technique Lumière,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),,
+1/1/6,Garage - Lumière 1 - Etat On-Off,Garage Lumière,DPST-1-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Garage,Lumière (switchable light),Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/7,Garage - Lumière 2 - Etat On-Off,Garage Lumière,DPST-1-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Garage,Lumière (switchable light),Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/8,Garage - Lumière 3 - Etat On-Off,Garage Lumière,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Garage,Lumière (switchable light),,
+1/1/9,Garage - Lumière 4 - Etat On-Off,Garage Lumière,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Garage,Lumière (switchable light),,
+1/1/10,point de consigne de température,Entrée chauffage (variable en continu),DPST-9-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,chauffage (variable en continu) (heating (continuous variable)),,
+1/1/11,variable en continu,Entrée chauffage (variable en continu),DPST-5-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,chauffage (variable en continu) (heating (continuous variable)),,
+1/1/12,mode opérationnel,Entrée chauffage (variable en continu),DPST-20-102,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,chauffage (variable en continu) (heating (continuous variable)),,
+1/1/13,contact vitre,Entrée chauffage (variable en continu),DPST-1-19,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,chauffage (variable en continu) (heating (continuous variable)),,
+1/1/14,température actuelle,Local Technique Chauffage,DPST-9-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Chauffage (heating (continuous variable)),,
+1/1/15,point de consigne de température,Local Technique Chauffage,DPST-9-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Chauffage (heating (continuous variable)),,
+1/1/16,variable en continu,Local Technique Chauffage,DPST-5-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Chauffage (heating (continuous variable)),,
+1/1/17,mode opérationnel,Local Technique Chauffage,DPST-20-102,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Chauffage (heating (continuous variable)),,
+1/1/18,contact vitre,Local Technique Chauffage,DPST-1-19,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Chauffage (heating (continuous variable)),,
+1/1/19,commutation,Salon éclairage commutation,DPST-1-1,Lumière > Etat On-Off,,,,
+1/1/20,Statut,Salon éclairage commutation,DPST-1-1,Lumière > Etat On-Off,,,,
+1/1/21,mouvement,Salon Stores Salon Porte Coulissante,DPST-1-8,Lumière > Etat On-Off,,,,
+1/1/22,étape/arrêt,Salon Stores Salon Porte Coulissante,DPST-1-7,Lumière > Etat On-Off,,,,
+1/1/23,alerte de vent,Salon Stores Salon Porte Coulissante,DPST-1-5,Lumière > Etat On-Off,,,,
+1/1/24,alerte de pluie,Salon Stores Salon Porte Coulissante,DPST-1-5,Lumière > Etat On-Off,,,,
+1/1/25,position des stores,Salon Stores Salon Porte Coulissante,DPST-5-1,Lumière > Etat On-Off,,,,
+1/1/26,position des lames,Salon Stores Salon Porte Coulissante,DPST-5-1,Lumière > Etat On-Off,,,,
+1/1/27,mouvement,,DPST-1-8,Lumière > Etat On-Off,,,,
+1/1/28,étape/arrêt,,DPST-1-7,Lumière > Etat On-Off,,,,
+1/1/29,alerte de vent,,DPST-1-5,Lumière > Etat On-Off,,,,
+1/1/30,alerte de pluie,,DPST-1-5,Lumière > Etat On-Off,,,,
+1/1/31,position des stores,,DPST-5-1,Lumière > Etat On-Off,,,,
+1/1/32,position des lames,,DPST-5-1,Lumière > Etat On-Off,,,,
+1/1/33,mouvement,,DPST-1-8,Lumière > Etat On-Off,,,,
+1/1/34,étape/arrêt,,DPST-1-7,Lumière > Etat On-Off,,,,
+1/1/35,position des stores,,DPST-5-1,Lumière > Etat On-Off,,,,
+1/1/36,position des lames,,DPST-5-1,Lumière > Etat On-Off,,,,
+1/1/50,Escalier 1 - Lumière 1 - Etat On-Off,,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 0_Sous-Sol / Escalier vers RDC,éclairage appliques escalier RDC  (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/51,Cuisine - Lumière 1 - Etat On-Off,Cuisine éclairage Spots Evier,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Evier (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/52,Cuisine - Lumière 2 - Etat On-Off,Cuisine Eclairage Cusine Bar,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Bar (switchable light),,
+1/1/53,Cuisine - Lumière 3 - Etat On-Off,Cuisine Eclairage Fenetre,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Fenetre (switchable light),,
+1/1/54,Cuisine - Lumière 4 - Etat On-Off,Cuisine éclairage Spots tous,,Lumière > Etat On-Off,,,,
+1/1/55,Cuisine - Lumière 5 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/56,Cuisine - Lumière 6 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/57,Salle à manger - Lumière 1 - Etat On-Off,Salle à Manger éclairage commutation Table,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Table (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/58,Salle à manger - Lumière 2 - Etat On-Off,Salle à Manger éclairage commutation Espace Centra,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/59,Salle à manger - Lumière 3 - Etat On-Off,Salle à Manger éclairage commutation Espace Centra,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),,
+1/1/60,Salon - Lumière 1 - Etat On-Off,éclairage spots canapé,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 1_RDC / Salon,éclairage spots canapé (switchable light),Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/61,Salon - Lumière 2 - Etat On-Off,Salon éclairage Spots bibliothèque,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 1_RDC / Bureau et Bibliothèque,éclairage Spots bibliothèque (switchable light),Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/62,Salon - Lumière 3 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/63,Salon - Lumière 4 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/64,Salon - Lumière 5 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/65,Salon - Lumière 6 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/66,Salon - Lumière 7 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/67,Salle de Bain - Lumière 1 - Etat On-Off,Salle de Bain invité éclairage commutation,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité,éclairage commutation (switchable light),Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/68,Salle de Bain - Lumière 2 - Etat On-Off,,,Lumière > Etat On-Off,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/100,Escalier 2 - Lumière 1 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/101,Escalier 2 - Lumière 2 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/102,Bureau - Lumière 1 - Etat On-Off,,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 2_Etage / Bureau,Eclairage Bureau (switchable light),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/103,Bureau - Lumière 2 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/104,Chambre 1 - Lumière 1 - Etat On-Off,,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Eclairage Chambre Léane (switchable light),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/105,Chambre 1 - Lumière 2- Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/106,Chambre 2 - Lumière 1 - Etat On-Off,,DPST-1-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Lumière parents (switchable light),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/107,Chambre 2 - Lumière 2 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/108,Chambre 2 - Lumière 3 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/109,Chambre 2 - Lumière 4 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/110,Chambre 3 - Lumière 1 - Etat On-Off,,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Lumière Lily (switchable light),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/111,Chambre 3 - Lumière 2- Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/112,Salle de Bain - Lumière 1 - Etat On-Off,,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Lumière Salle de Bain (switchable light),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/113,Salle de Bain - Lumière 2 - Etat On-Off,,DPST-1-1,Lumière > Etat On-Off,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Lumière WC (switchable light),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/114,Salle de Bain  - Lumière 3 - Etat On-Off,,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Lumière Douche (switchable light),,
+1/1/115,Salle de Bain  - Lumière 4 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/116,Salle de Bain  - Lumière 5 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/117,Dressing - Lumière 1 - Etat On-Off,,,Lumière > Etat On-Off,Villa Bulle / Maison principale / 2_Etage / Dressing,Lumière dressing (dimmable light),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/1/118,Dressing - Lumière 2 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/119,Couloir - Lumière 1 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/120,Couloir - Lumière 2 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/121,Couloir - Lumière 3 - Etat On-Off,,,Lumière > Etat On-Off,,,,
+1/1/150,Extérieur - Lumière 1 - On-Off,,,Lumière > Etat On-Off,,,,
+1/1/151,Extérieur - Lumière 2 - On-Off,,,Lumière > Etat On-Off,,,,
+1/1/152,Extérieur - Lumière 3 - On-Off,,,Lumière > Etat On-Off,,,,
+1/5/1,Entrée - Lumière - Mesure Courant,,DPST-14-19,Lumière > Mesure Courant,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/2,Entrée - Lumière - Mesure Courant,,DPST-14-19,Lumière > Mesure Courant,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/3,Local Technique - Lumière 1 - Mesure Courant,Local Technique Lumière,DPST-14-19,Lumière > Mesure Courant,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/4,Local Technique - Lumière 2 - Mesure Courant,Local Technique Lumière,,Lumière > Mesure Courant,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),,
+1/5/5,Local Technique - Lumière 3 - Mesure Courant,Local Technique Lumière,,Lumière > Mesure Courant,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),,
+1/5/6,Garage - Lumière 1 - Mesure Courant,,DPST-14-19,Lumière > Mesure Courant,,,Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/7,Garage - Lumière 2 - Mesure Courant,,DPST-14-19,Lumière > Mesure Courant,,,Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/8,Garage - Lumière 3 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/9,Garage - Lumière 4 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/50,Escalier 1 - Lumière 1 - Mesure Courant,,DPST-14-19,Lumière > Mesure Courant,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/51,Cuisine - Lumière 1 - Mesure Courant,Cuisine Eclairage Cuisine Evier,,Lumière > Mesure Courant,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Evier (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/52,Cuisine - Lumière 2 - Mesure Courant,Cuisine Eclairage Cusine Bar,DPST-14-19,Lumière > Mesure Courant,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Bar (switchable light),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/53,Cuisine - Lumière 3 - Mesure Courant,Cuisine Eclairage Fenetre,DPST-14-19,Lumière > Mesure Courant,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Fenetre (switchable light),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/54,Cuisine - Lumière 4 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/55,Cuisine - Lumière 5 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/56,Cuisine - Lumière 6 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/57,Salle à manger - Lumière 1 - Mesure Courant,Salle à Manger éclairage commutation Table,DPST-14-19,Lumière > Mesure Courant,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Table (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/58,Salle à manger - Lumière 2 - Mesure Courant,Salle à Manger éclairage commutation Espace Centra,,Lumière > Mesure Courant,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),,
+1/5/59,Salle à manger - Lumière 3 - Mesure Courant,Salle à Manger éclairage commutation Espace Centra,,Lumière > Mesure Courant,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),,
+1/5/60,Salon - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/61,Salon - Lumière 2 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/62,Salon - Lumière 3 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/63,Salon - Lumière 4 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/64,Salon - Lumière 5 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/65,Salon - Lumière 6 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/66,Salon - Lumière 7 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/67,Salle de Bain - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/68,Salle de Bain - Lumière 2 - Mesure Courant,,DPST-14-19,Lumière > Mesure Courant,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/5/100,Escalier 2 - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/101,Escalier 2 - Lumière 2 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/102,Bureau - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/103,Bureau - Lumière 2 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/104,Chambre 1 - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/105,Chambre 1 - Lumière 2- Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/106,Chambre 2 - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/107,Chambre 2 - Lumière 2 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/108,Chambre 2 - Lumière 3 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/109,Chambre 2 - Lumière 4 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/110,Chambre 3 - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/111,Chambre 3 - Lumière 2- Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/112,Salle de Bain - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/113,Salle de Bain - Lumière 2 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/114,Salle de Bain  - Lumière 3 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/115,Salle de Bain  - Lumière 4 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/116,Salle de Bain  - Lumière 5 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/117,Dressing - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/118,Dressing - Lumière 2 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/119,Couloir - Lumière 1 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/120,Couloir - Lumière 2 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/121,Couloir - Lumière 3 - Mesure Courant,,,Lumière > Mesure Courant,,,,
+1/5/150,Extérieur - Lumière 1 - On-Off,,,Lumière > Mesure Courant,,,,
+1/5/151,Extérieur - Lumière 2 - On-Off,,,Lumière > Mesure Courant,,,,
+1/5/152,Extérieur - Lumière 3 - On-Off,,,Lumière > Mesure Courant,,,,
+1/6/1,Entrée - Lumière - Mesure Puissance,,,Lumière > Mesure Puissance,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/6/2,Entrée - Lumière - Mesure Puissance,,,Lumière > Mesure Puissance,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/6/3,Local Technique - Lumière 1 - Mesure Puissance,Local Technique Lumière,,Lumière > Mesure Puissance,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/6/4,Local Technique - Lumière 2 - Mesure Puissance,Local Technique Lumière,,Lumière > Mesure Puissance,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),,
+1/6/5,Local Technique - Lumière 3 - Mesure Puissance,Local Technique Lumière,,Lumière > Mesure Puissance,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),,
+1/6/6,Garage - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/6/7,Garage - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/6/8,Garage - Lumière 3 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/9,Garage - Lumière 4 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/50,Escalier 1 - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/6/51,Cuisine - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/6/52,Cuisine - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/53,Cuisine - Lumière 3 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/54,Cuisine - Lumière 4 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/55,Cuisine - Lumière 5 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/56,Cuisine - Lumière 6 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/57,Salle à manger - Lumière 1 - Mesure Puissance,Salle à Manger éclairage commutation Table,,Lumière > Mesure Puissance,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Table (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/6/58,Salle à manger - Lumière 2 - Mesure Puissance,Salle à Manger éclairage commutation Espace Centra,,Lumière > Mesure Puissance,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/6/59,Salle à manger - Lumière 3 - Mesure Puissance,Salle à Manger éclairage commutation Espace Centra,,Lumière > Mesure Puissance,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),,
+1/6/60,Salon - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/61,Salon - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/62,Salon - Lumière 3 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/63,Salon - Lumière 4 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/64,Salon - Lumière 5 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/65,Salon - Lumière 6 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/66,Salon - Lumière 7 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/67,Salle de Bain - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/68,Salle de Bain - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/100,Escalier 2 - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/101,Escalier 2 - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/102,Bureau - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/103,Bureau - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/104,Chambre 1 - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/105,Chambre 1 - Lumière 2- Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/106,Chambre 2 - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/107,Chambre 2 - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/108,Chambre 2 - Lumière 3 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/109,Chambre 2 - Lumière 4 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/110,Chambre 3 - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/111,Chambre 3 - Lumière 2- Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/112,Salle de Bain - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/113,Salle de Bain - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/114,Salle de Bain  - Lumière 3 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/115,Salle de Bain  - Lumière 4 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/116,Salle de Bain  - Lumière 5 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/117,Dressing - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/118,Dressing - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/119,Couloir - Lumière 1 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/120,Couloir - Lumière 2 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/121,Couloir - Lumière 3 - Mesure Puissance,,,Lumière > Mesure Puissance,,,,
+1/6/150,Extérieur - Lumière 1 - On-Off,,,Lumière > Mesure Puissance,,,,
+1/6/151,Extérieur - Lumière 2 - On-Off,,,Lumière > Mesure Puissance,,,,
+1/6/152,Extérieur - Lumière 3 - On-Off,,,Lumière > Mesure Puissance,,,,
+1/7/0,mouvement,Salle à Manger Stores Salle à Manger fenêtre,DPST-1-8,Lumière > Mesure Heures fonctionnement,,,,
+1/7/1,Entrée - Lumière - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/7/2,Entrée - Lumière - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/7/3,Local Technique - Lumière 1 - Mesure Heures Fonctionnement,Local Technique Lumière,,Lumière > Mesure Heures fonctionnement,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/7/4,Local Technique - Lumière 2 - Mesure Heures Fonctionnement,Local Technique Lumière,,Lumière > Mesure Heures fonctionnement,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),,
+1/7/5,Local Technique - Lumière 3 - Mesure Heures Fonctionnement,Local Technique Lumière,,Lumière > Mesure Heures fonctionnement,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière (switchable light),,
+1/7/6,Garage - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/7/7,Garage - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,Zone 5,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/7/8,Garage - Lumière 3 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/9,Garage - Lumière 4 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/10,étape/arrêt,Salle à Manger Stores Salle à Manger fenêtre,DPST-1-7,Lumière > Mesure Heures fonctionnement,,,,
+1/7/11,alerte de vent,Salle à Manger Stores Salle à Manger fenêtre,DPST-1-5,Lumière > Mesure Heures fonctionnement,,,,
+1/7/12,alerte de pluie,Salle à Manger Stores Salle à Manger fenêtre,DPST-1-5,Lumière > Mesure Heures fonctionnement,,,,
+1/7/13,position des stores,Salle à Manger Stores Salle à Manger fenêtre,DPST-5-1,Lumière > Mesure Heures fonctionnement,,,,
+1/7/14,position des lames,Salle à Manger Stores Salle à Manger fenêtre,DPST-5-1,Lumière > Mesure Heures fonctionnement,,,,
+1/7/50,Escalier 1 - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/7/51,Cuisine - Lumière 1 - Mesure Heures Fonctionnement,Cuisine éclairage commutation,,Lumière > Mesure Heures fonctionnement,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Evier (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/7/52,Cuisine - Lumière 2 - Mesure Heures Fonctionnement,Cuisine Eclairage Bar,,Lumière > Mesure Heures fonctionnement,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Bar (switchable light),,
+1/7/53,Cuisine - Lumière 3 - Mesure Heures Fonctionnement,Cuisine Eclairage Fenetre,,Lumière > Mesure Heures fonctionnement,Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Fenetre (switchable light),,
+1/7/54,Cuisine - Lumière 4 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/55,Cuisine - Lumière 5 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/56,Cuisine - Lumière 6 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/57,Salle à manger - Lumière 1 - Mesure Heures Fonctionnement,Salle à Manger éclairage commutation Table,,Lumière > Mesure Heures fonctionnement,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Table (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/7/58,Salle à manger - Lumière 2 - Mesure Heures Fonctionnement,Salle à Manger éclairage commutation Espace Centra,,Lumière > Mesure Heures fonctionnement,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),Zone 1 ,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+1/7/59,Salle à manger - Lumière 3 - Mesure Heures Fonctionnement,Salle à Manger éclairage commutation Espace Centra,,Lumière > Mesure Heures fonctionnement,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central (switchable light),,
+1/7/60,Salon - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/61,Salon - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/62,Salon - Lumière 3 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/63,Salon - Lumière 4 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/64,Salon - Lumière 5 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/65,Salon - Lumière 6 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/66,Salon - Lumière 7 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/67,Salle de Bain - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/68,Salle de Bain - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/100,Escalier 2 - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/101,Escalier 2 - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/102,Bureau - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/103,Bureau - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/104,Chambre 1 - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/105,Chambre 1 - Lumière 2- Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/106,Chambre 2 - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/107,Chambre 2 - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/108,Chambre 2 - Lumière 3 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/109,Chambre 2 - Lumière 4 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/110,Chambre 3 - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/111,Chambre 3 - Lumière 2- Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/112,Salle de Bain - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/113,Salle de Bain - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/114,Salle de Bain  - Lumière 3 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/115,Salle de Bain  - Lumière 4 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/116,Salle de Bain  - Lumière 5 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/117,Dressing - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/118,Dressing - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/119,Couloir - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/120,Couloir - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/121,Couloir - Lumière 3 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/150,Extérieur - Lumière 1 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/151,Extérieur - Lumière 2 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+1/7/152,Extérieur - Lumière 3 - Mesure Heures Fonctionnement,,,Lumière > Mesure Heures fonctionnement,,,,
+2/0/1,Cuisine - Store Fenêtre - Ouvert-Fermé,Cuisine Stores Cuisine,DPST-1-8,Ouvrant Store > Store Ouvert-Fermé,Villa Bulle / Maison principale / 1_RDC / Cuisine,Store Cuisine  (sun protection),Interrupteur Cuisine Lumière et Volet vers evier / Interrupteurs Cuisine Volets et Lumières vers Bar / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+2/0/2,Salle à Manger - Store Grande Fenêtre - Ouvert-Fermé,Salle à Manger Stores Salle à Manger Grande Fenêtr,DPST-1-8,Ouvrant Store > Store Ouvert-Fermé,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Grande Fenêtre (sun protection),Interrupteurs Cuisine Volets et Lumières vers Bar / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+2/0/3,Salle à Manger - Store Porte Coulissante - Ouvert-Fermé,Salle à Manger Stores Salle à Manger Porte Couliss,DPST-1-8,Ouvrant Store > Store Ouvert-Fermé,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Coulissante (sun protection),Interrupteur Salle à Manger côté terrasse / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle à Manger
+2/0/4,Salle à Manger - Store Porte Fenêtre - Ouvert-Fermé,Salle à Manger Stores Salle à Manger Porte Fenêtre,DPST-1-8,Ouvrant Store > Store Ouvert-Fermé,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Fenêtre (sun protection),Interrupteur Salle à Manger côté terrasse / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle à Manger
+2/0/5,Salon - Store Porte Coulissante - Ouvert-Fermé,Salon Stores Salon Porte Coulissante,DPST-1-8,Ouvrant Store > Store Ouvert-Fermé,Villa Bulle / Maison principale / 1_RDC / Salon,Store Salon Porte Coulissante (sun protection),Zone 2 / interrupteur salon à côté piano,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+2/1/1,Cuisine - Store Fenêtre - Stop,Cuisine Stores Cuisine,DPST-1-1,Ouvrant Store > Store Stop,Villa Bulle / Maison principale / 1_RDC / Cuisine,Store Cuisine  (sun protection),Interrupteur Cuisine Lumière et Volet vers evier / Interrupteurs Cuisine Volets et Lumières vers Bar / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+2/1/2,Salle à Manger - Store Grande Fenêtre - Stop,Salle à Manger Stores Salle à Manger Grande Fenêtr,DPST-1-9,Ouvrant Store > Store Stop,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Grande Fenêtre (sun protection),Interrupteurs Cuisine Volets et Lumières vers Bar / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+2/1/3,Salle à Manger - Store Porte Coulissante - Stop,Salle à Manger Stores Salle à Manger Porte Couliss,DPST-1-9,Ouvrant Store > Store Stop,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Coulissante (sun protection),Interrupteur Salle à Manger côté terrasse / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle à Manger
+2/1/4,Salle à Manger - Store Porte Fenêtre - Stop,Salle à Manger Stores Salle à Manger Porte Fenêtre,DPST-1-9,Ouvrant Store > Store Stop,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Fenêtre (sun protection),Interrupteur Salle à Manger côté terrasse / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle à Manger
+2/1/5,Salon - Store Porte Coulissante - Stop,Salon Stores Salon Porte Coulissante,DPST-1-9,Ouvrant Store > Store Stop,Villa Bulle / Maison principale / 1_RDC / Salon,Store Salon Porte Coulissante (sun protection),Zone 2 / interrupteur salon à côté piano,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+2/2/1,Cuisine - Store Fenêtre - Statut direction actuelle,Cuisine Stores Cuisine,DPST-1-8,Ouvrant Store > Store Statut direction actuelle,Villa Bulle / Maison principale / 1_RDC / Cuisine,Store Cuisine  (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/2/2,Salle à Manger - Store Grande Fenêtre - Statut direction actuelle,Salle à Manger Stores Salle à Manger Grande Fenêtr,DPST-1-8,Ouvrant Store > Store Statut direction actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Grande Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/2/3,Salle à Manger - Store Porte Coulissante - Statut direction actuelle,Salle à Manger Stores Salle à Manger Porte Couliss,DPST-1-8,Ouvrant Store > Store Statut direction actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Coulissante (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/2/4,Salle à Manger - Store Porte Fenêtre - Statut direction actuelle,Salle à Manger Stores Salle à Manger Porte Fenêtre,DPST-1-8,Ouvrant Store > Store Statut direction actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/2/5,Salon - Store Porte Coulissante - Statut direction actuelle,Salon Stores Salon Porte Coulissante,DPST-1-8,Ouvrant Store > Store Statut direction actuelle,Villa Bulle / Maison principale / 1_RDC / Salon,Store Salon Porte Coulissante (sun protection),,
+2/3/1,Cuisine - Store Fenêtre - Position absolue,Cuisine Stores Cuisine,DPST-5-1,Ouvrant Store > Store Position absolue,Villa Bulle / Maison principale / 1_RDC / Cuisine,Store Cuisine  (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/3/2,Salle à Manger - Store Grande Fenêtre - Position absolue,Salle à Manger Stores Salle à Manger Grande Fenêtr,DPST-5-1,Ouvrant Store > Store Position absolue,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Grande Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/3/3,Salle à Manger - Store Porte Coulissante - Position absolue,Salle à Manger Stores Salle à Manger Porte Couliss,DPST-5-1,Ouvrant Store > Store Position absolue,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Coulissante (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/3/4,Salle à Manger - Store Porte Fenêtre - Position absolue,Salle à Manger Stores Salle à Manger Porte Fenêtre,DPST-5-1,Ouvrant Store > Store Position absolue,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/3/5,Salon - Store Porte Coulissante - Position absolue,Salon Stores Salon Porte Coulissante,DPST-5-1,Ouvrant Store > Store Position absolue,Villa Bulle / Maison principale / 1_RDC / Salon,Store Salon Porte Coulissante (sun protection),,
+2/4/1,Cuisine - Store Fenêtre - Statut position actuelle,Cuisine Stores Cuisine,DPST-5-1,Ouvrant Store > Store statut Position actuelle,Villa Bulle / Maison principale / 1_RDC / Cuisine,Store Cuisine  (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/4/2,Salle à Manger - Store Grande Fenêtre - Statut position actuelle,Salle à Manger Stores Salle à Manger Grande Fenêtr,DPST-5-1,Ouvrant Store > Store statut Position actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Grande Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/4/3,Salle à Manger - Store Porte Coulissante - Statut position actuelle,Salle à Manger Stores Salle à Manger Porte Couliss,DPST-5-1,Ouvrant Store > Store statut Position actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Coulissante (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/4/4,Salle à Manger - Store Porte Fenêtre - Statut position actuelle,Salle à Manger Stores Salle à Manger Porte Fenêtre,DPST-5-1,Ouvrant Store > Store statut Position actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/4/5,Salon - Store Porte Coulissante - Statut position actuelle,Salon Stores Salon Porte Coulissante,DPST-5-1,Ouvrant Store > Store statut Position actuelle,Villa Bulle / Maison principale / 1_RDC / Salon,Store Salon Porte Coulissante (sun protection),,
+2/5/1,Cuisine - Store Fenêtre - Position absolue lamelles,Cuisine Stores Cuisine,DPST-5-1,Ouvrant Store > Store Position absolue lamelles,Villa Bulle / Maison principale / 1_RDC / Cuisine,Store Cuisine  (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/5/2,Salle à Manger - Store Grande Fenêtre - Position absolue lamelles,Salle à Manger Stores Salle à Manger Grande Fenêtr,DPST-5-1,Ouvrant Store > Store Position absolue lamelles,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Grande Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/5/3,Salle à Manger - Store Porte Coulissante - Position absolue lamelles,Salle à Manger Stores Salle à Manger Porte Couliss,DPST-5-1,Ouvrant Store > Store Position absolue lamelles,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Coulissante (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/5/4,Salle à Manger - Store Porte Fenêtre - Position absolue lamelles,Salle à Manger Stores Salle à Manger Porte Fenêtre,DPST-5-1,Ouvrant Store > Store Position absolue lamelles,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/5/5,Salon - Store Porte Coulissante - Position absolue lamelles,Salon Stores Salon Porte Coulissante,DPST-5-1,Ouvrant Store > Store Position absolue lamelles,Villa Bulle / Maison principale / 1_RDC / Salon,Store Salon Porte Coulissante (sun protection),,
+2/6/1,Cuisine - Store Fenêtre - Statut position lamelles actuelle,Cuisine Stores Cuisine,DPST-5-1,Ouvrant Store > Store Statut position lamelles actuelle,Villa Bulle / Maison principale / 1_RDC / Cuisine,Store Cuisine  (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/6/2,Salle à Manger - Store Grande Fenêtre - Statut position lamelles actuelle,Salle à Manger Stores Salle à Manger Grande Fenêtr,DPST-5-1,Ouvrant Store > Store Statut position lamelles actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Grande Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/6/3,Salle à Manger - Store Porte Coulissante - Statut position lamelles actuelle,Salle à Manger Stores Salle à Manger Porte Couliss,DPST-5-1,Ouvrant Store > Store Statut position lamelles actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Coulissante (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/6/4,Salle à Manger - Store Porte Fenêtre - Statut position lamelles actuelle,Salle à Manger Stores Salle à Manger Porte Fenêtre,DPST-5-1,Ouvrant Store > Store Statut position lamelles actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Fenêtre (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/6/5,Salon - Store Porte Coulissante - Statut position lamelles actuelle,Salon Stores Salon Porte Coulissante,DPST-5-1,Ouvrant Store > Store Statut position lamelles actuelle,Villa Bulle / Maison principale / 1_RDC / Salon,Store Salon Porte Coulissante (sun protection),,
+2/7/1,Cuisine - Store Fenêtre - Autres,Cuisine Stores Cuisine,DPST-1-1,Ouvrant Store > Store Autres,Villa Bulle / Maison principale / 1_RDC / Cuisine,Store Cuisine  (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+2/7/2,Salle à Manger - Store Grande Fenêtre - Autres,Salle à Manger Stores Salle à Manger Grande Fenêtr,,Ouvrant Store > Store Autres,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Grande Fenêtre (sun protection),,
+2/7/3,Salle à Manger - Store Porte Coulissante - Autres,Salle à Manger Stores Salle à Manger Porte Fenêtre,,Ouvrant Store > Store Autres,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Coulissante (sun protection) / Store Salle à Manger Porte Fenêtre (sun protection),,
+2/7/4,Salle à Manger - Store Porte Fenêtre - Autres,,,Ouvrant Store > Store Autres,,,,
+2/7/5,Salon - Store Porte Coulissante - Autres,Salon Stores Salon Porte Coulissante,,Ouvrant Store > Store Autres,Villa Bulle / Maison principale / 1_RDC / Salon,Store Salon Porte Coulissante (sun protection),,
+3/0/0,commutation,Salon éclairage spots piano,DPST-1-1,Ouvrant Volet > Volet Ouvert-Fermé,,,,
+3/0/1,Studio - Volet Fenêtre Salon - Ouvert-Fermé,,,Ouvrant Volet > Volet Ouvert-Fermé,,,,
+3/0/2,Studio - Volet Porte Fenêtre Salon - Ouvert-Fermé,,,Ouvrant Volet > Volet Ouvert-Fermé,,,,
+3/0/3,Studio - Volet Chambre - Ouvert-Fermé,,,Ouvrant Volet > Volet Ouvert-Fermé,,,,
+3/0/4,Studio - Reserve - Ouvert-Fermé,,,Ouvrant Volet > Volet Ouvert-Fermé,,,,
+3/0/5,Cuisine - Volet évier - Ouvert-Fermé,Cuisine Volet Cuisine,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 1_RDC / Cuisine,Volet Cuisine (sun protection),Interrupteur Cuisine Lumière et Volet vers evier / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+3/0/6,Salon - Volet Fenêtre - Ouvert-Fermé,Salon Volet Salon Fenêtre,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 1_RDC / Salon,Volet Salon Fenêtre (sun protection),Zone 2 / interrupteur salon à côté piano,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+3/0/7,Bibliothèque - Volet Porte Fenêtre - Ouvert-Fermé,Bureau et Bibliothèque Volet Salon Porte Fenêtre,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 1_RDC / Bureau et Bibliothèque,Volet Salon Porte Fenêtre (sun protection),Zone 2 / interrupteur salon à côté piano,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+3/0/8,Salle de Bain visiteur - Volet Fenêtre - Ouvert-Fermé,,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,,,Interrupteur Salle de Bain invité / Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité
+3/0/9,Bureau - Volet Fenêtre - Ouvert-Fermé,,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 2_Etage / Bureau,Volet Bureau (sun protection),"Interrupteur Bureau
+ / Zone 3",Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/0/10,Chambre Léane - Volet Petite Fenêtre - Ouvert-Fermé,,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Est (sun protection),Chambe Léane / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Léane
+3/0/11,Chambre Léane - Volet Grande Fenêtre - Ouvert-Fermé,,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Sud (sun protection),Chambe Léane / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Léane
+3/0/12,Chambre Parent - Volet Grande Fenêtre - Ouvert-Fermé,,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Volet Parents (sun protection),Chambe Parents / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Parents
+3/0/13,Chambre Lily - Volet Petite Fenêtre - Ouvert-Fermé,,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Ouest (sun protection),Interrupteurs Chambre Lily	 / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Lily
+3/0/14,Chambre Lily - Volet Grande Fenêtre - Ouvert-Fermé,,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Sud (sun protection),Interrupteurs Chambre Lily	 / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Lily
+3/0/15,Salle de Bain - Volet Petite Fenêtre - Ouvert-Fermé,,DPST-1-8,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Volet Salle de bain (sun protection),Interrupteurs Salle de Bain étage / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/0/16,Chambre Léane - 2 Volets - Ouvert-Fermé,2 Volets Léane,DPST-1-1,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volets tous Léane (sun protection),Chambe Léane / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Léane
+3/0/17,Chambre Lily - 2 Volets - Ouvert-Fermé,"2 Volets Lily
+",DPST-1-1,Ouvrant Volet > Volet Ouvert-Fermé,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volets tous Lily (sun protection),Interrupteurs Chambre Lily	 / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Lily
+3/1/1,Studio - Salon - Stop,,,Ouvrant Volet > Volet Stop,,,,
+3/1/2,Studio - Salle à manger - Stop,,,Ouvrant Volet > Volet Stop,,,,
+3/1/3,Studio - Chambre - Stop,,,Ouvrant Volet > Volet Stop,,,,
+3/1/4,Studio - Reserve - Stop,,,Ouvrant Volet > Volet Stop,,,,
+3/1/5,Cuisine - Volet évier - Stop,Cuisine Volet Cuisine,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 1_RDC / Cuisine,Volet Cuisine (sun protection),Interrupteur Cuisine Lumière et Volet vers evier / Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Cuisine
+3/1/6,Salon - Volet Fenêtre - Stop,Salon Volet Salon Fenêtre,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 1_RDC / Salon,Volet Salon Fenêtre (sun protection),Zone 2 / interrupteur salon à côté piano,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+3/1/7,Bilbiothèque - Volet Porte Fenêtre - Stop,Bureau et Bibliothèque Volet Salon Porte Fenêtre,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 1_RDC / Bureau et Bibliothèque,Volet Salon Porte Fenêtre (sun protection),Zone 2 / interrupteur salon à côté piano,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salon
+3/1/8,Salle de Bain visiteur - Volet Fenêtre - Stop,,DPST-1-1,Ouvrant Volet > Volet Stop,,,Interrupteur Salle de Bain invité / Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité
+3/1/9,Bureau - Volet Fenêtre - Stop,,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 2_Etage / Bureau,Volet Bureau (sun protection),"Interrupteur Bureau
+ / Zone 3",Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/1/10,Chambre Léane - Volet Petite Fenêtre - Stop,,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Est (sun protection),Chambe Léane / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Léane
+3/1/11,Chambre Léane - Volet Grande Fenêtre - Stop,,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Sud (sun protection),Chambe Léane / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Léane
+3/1/12,Chambre Parent - Volet Grande Fenêtre - Stop,,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Volet Parents (sun protection),Chambe Parents / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Parents
+3/1/13,Chambre Lily - Volet Petite Fenêtre - Stop,,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Ouest (sun protection),Interrupteurs Chambre Lily	 / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Lily
+3/1/14,Chambre Lily - Volet Grande Fenêtre - Stop,,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Sud (sun protection),Interrupteurs Chambre Lily	 / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Lily
+3/1/15,Salle de Bain - Volet Petite Fenêtre - Stop,,DPST-1-1,Ouvrant Volet > Volet Stop,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Volet Salle de bain (sun protection),Interrupteurs Salle de Bain étage / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/1,Studio - Salon - Statut direction actuelle,,,Ouvrant Volet > Volet Statut direction actuelle,,,,
+3/2/2,Studio - Salle à manger - Statut direction actuelle,,,Ouvrant Volet > Volet Statut direction actuelle,,,,
+3/2/3,Studio - Chambre - Statut direction actuelle,,,Ouvrant Volet > Volet Statut direction actuelle,,,,
+3/2/4,Studio - Reserve - Statut direction actuelle,,,Ouvrant Volet > Volet Statut direction actuelle,,,,
+3/2/5,Cuisine - Volet évier - Statut direction actuelle,Cuisine Volet Cuisine,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,,,Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/6,Salon - Volet Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/7,Bureau salon - Volet Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/8,Salle de Bain visiteur - Volet Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/9,Bureau - Volet Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,Villa Bulle / Maison principale / 2_Etage / Bureau,Volet Bureau (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/10,Chambre Léane - Volet Petite Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Est (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/11,Chambre Léane - Volet Grande Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Sud (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/12,Chambre Parent - Volet Grande Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Volet Parents (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/13,Chambre Lily - Volet Petite Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Ouest (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/14,Chambre Lily - Volet Grande Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Sud (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/2/15,Salle de Bain - Volet Petite Fenêtre - Statut direction actuelle,,DPST-1-8,Ouvrant Volet > Volet Statut direction actuelle,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Volet Salle de bain (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/1,Studio - Salon - Position absolue,,,Ouvrant Volet > Volet Position absolue,,,,
+3/3/2,Studio - Salle à manger - Position absolue,,,Ouvrant Volet > Volet Position absolue,,,,
+3/3/3,Studio - Chambre - Position absolue,,,Ouvrant Volet > Volet Position absolue,,,,
+3/3/4,Studio - Reserve - Position absolue,,,Ouvrant Volet > Volet Position absolue,,,,
+3/3/5,Cuisine - Volet évier - Position absolue,Cuisine Volet Cuisine,DPST-5-1,Ouvrant Volet > Volet Position absolue,Villa Bulle / Maison principale / 1_RDC / Cuisine,Volet Cuisine (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/6,Salon - Volet Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/7,Bureau salon - Volet Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/8,Salle de Bain visiteur - Volet Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/9,Bureau - Volet Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,Villa Bulle / Maison principale / 2_Etage / Bureau,Volet Bureau (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/10,Chambre Léane - Volet Petite Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Est (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/11,Chambre Léane - Volet Grande Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Sud (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/12,Chambre Parent - Volet Grande Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Volet Parents (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/13,Chambre Lily - Volet Petite Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Ouest (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/14,Chambre Lily - Volet Grande Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Sud (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/3/15,Salle de Bain - Volet Petite Fenêtre - Position absolue,,DPST-5-1,Ouvrant Volet > Volet Position absolue,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Volet Salle de bain (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/1,Studio - Salon - Statut position actuelle,,,Ouvrant Volet > Volet Statut position actuelle,,,,
+3/4/2,Studio - Salle à manger - Statut position actuelle,,,Ouvrant Volet > Volet Statut position actuelle,,,,
+3/4/3,Studio - Chambre - Statut position actuelle,,,Ouvrant Volet > Volet Statut position actuelle,,,,
+3/4/4,Studio - Reserve - Statut position actuelle,,,Ouvrant Volet > Volet Statut position actuelle,,,,
+3/4/5,Cuisine - Volet évier - Statut position actuelle,Cuisine Volet Cuisine,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,Villa Bulle / Maison principale / 1_RDC / Cuisine,Volet Cuisine (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/6,Salon - Volet Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/7,Bureau salon - Volet Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/8,Salle de Bain visiteur - Volet Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/9,Bureau - Volet Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,Villa Bulle / Maison principale / 2_Etage / Bureau,Volet Bureau (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/10,Chambre Léane - Volet Petite Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Est (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/11,Chambre Léane - Volet Grande Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Sud (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/12,Chambre Parent - Volet Grande Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Volet Parents (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/13,Chambre Lily - Volet Petite Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Ouest (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/14,Chambre Lily - Volet Grande Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Sud (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/4/15,Salle de Bain - Volet Petite Fenêtre - Statut position actuelle,,DPST-5-1,Ouvrant Volet > Volet Statut position actuelle,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Volet Salle de bain (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/1,Studio - Salon - Position haut,,,Ouvrant Volet > Volet Position haut,,,,
+3/5/2,Studio - Salle à manger - Position haut,,,Ouvrant Volet > Volet Position haut,,,,
+3/5/3,Studio - Chambre - Position haut,,,Ouvrant Volet > Volet Position haut,,,,
+3/5/4,Studio - Reserve - Position haut,,,Ouvrant Volet > Volet Position haut,,,,
+3/5/5,Cuisine - Volet évier - Position haut,Cuisine Volet Cuisine,,Ouvrant Volet > Volet Position haut,Villa Bulle / Maison principale / 1_RDC / Cuisine,Volet Cuisine (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/6,Salon - Volet Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/7,Bureau salon - Volet Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/8,Salle de Bain visiteur - Volet Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/9,Bureau - Volet Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,Villa Bulle / Maison principale / 2_Etage / Bureau,Volet Bureau (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/10,Chambre Léane - Volet Petite Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Est (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/11,Chambre Léane - Volet Grande Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Sud (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/12,Chambre Parent - Volet Grande Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Volet Parents (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/13,Chambre Lily - Volet Petite Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Ouest (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/14,Chambre Lily - Volet Grande Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Sud (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/5/15,Salle de Bain - Volet Petite Fenêtre - Position haut,,,Ouvrant Volet > Volet Position haut,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Volet Salle de bain (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/0,commutation,Cuisine Bar,DPST-1-1,Ouvrant Volet > Volet Position bas,,,,
+3/6/1,Studio - Salon - Position bas,,,Ouvrant Volet > Volet Position bas,,,,
+3/6/2,Studio - Salle à manger - Position bas,,,Ouvrant Volet > Volet Position bas,,,,
+3/6/3,Studio - Chambre - Position bas,,,Ouvrant Volet > Volet Position bas,,,,
+3/6/4,Studio - Reserve - Position bas,,,Ouvrant Volet > Volet Position bas,,,,
+3/6/5,Cuisine - Volet évier - Position bas,Cuisine Volet Cuisine,,Ouvrant Volet > Volet Position bas,Villa Bulle / Maison principale / 1_RDC / Cuisine,Volet Cuisine (sun protection),Zone 1,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/6,Salon - Volet Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/7,Bureau salon - Volet Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/8,Salle de Bain visiteur - Volet Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,,,Zone 2,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/9,Bureau - Volet Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,Villa Bulle / Maison principale / 2_Etage / Bureau,Volet Bureau (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/10,Chambre Léane - Volet Petite Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Est (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/11,Chambre Léane - Volet Grande Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Sud (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/12,Chambre Parent - Volet Grande Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Volet Parents (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/13,Chambre Lily - Volet Petite Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Ouest (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/14,Chambre Lily - Volet Grande Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Sud (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/15,Salle de Bain - Volet Petite Fenêtre - Position bas,,,Ouvrant Volet > Volet Position bas,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Volet Salle de bain (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/6/16,Statut,Cuisine Bar,DPST-1-1,Ouvrant Volet > Volet Position bas,,,,
+3/6/17,mouvement,1_RDC Volets Tous,DPST-1-8,Ouvrant Volet > Volet Position bas,,,,
+3/6/18,étape/arrêt,1_RDC Volets Tous,DPST-1-7,Ouvrant Volet > Volet Position bas,,,,
+3/6/19,alerte de vent,1_RDC Volets Tous,DPST-1-5,Ouvrant Volet > Volet Position bas,,,,
+3/6/20,alerte de pluie,1_RDC Volets Tous,DPST-1-5,Ouvrant Volet > Volet Position bas,,,,
+3/6/21,position des stores,1_RDC Volets Tous,DPST-5-1,Ouvrant Volet > Volet Position bas,,,,
+3/6/22,position des lames,1_RDC Volets Tous,DPST-5-1,Ouvrant Volet > Volet Position bas,,,,
+3/7/0,Nouvelle adresse de groupe,,,Ouvrant Volet > Volet autres,,,,
+3/7/1,Studio - Salon - Autres,,,Ouvrant Volet > Volet autres,,,,
+3/7/2,Studio - Salle Ã  manger - Autres,,,Ouvrant Volet > Volet autres,,,,
+3/7/3,Studio - Chambre - Autres,,,Ouvrant Volet > Volet autres,,,,
+3/7/4,Studio - Reserve - Autres,,,Ouvrant Volet > Volet autres,,,,
+3/7/5,Cuisine - Volet Ã©vier - Autres,Cuisine Volet Cuisine,,Ouvrant Volet > Volet autres,,,,
+3/7/6,Salon - Volet Fenêtre - Autres,,,Ouvrant Volet > Volet autres,,,,
+3/7/7,Bureau salon - Volet Fenêtre - Autres,,,Ouvrant Volet > Volet autres,,,,
+3/7/8,Salle de Bain visiteur - Volet Fenêtre - Autres,,,Ouvrant Volet > Volet autres,,,,
+3/7/9,Bureau - Volet Fenêtre - Autres,,DPST-1-1,Ouvrant Volet > Volet autres,Villa Bulle / Maison principale / 2_Etage / Bureau,Volet Bureau (sun protection),"Interrupteur Bureau
+ / Zone 3",Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/7/10,Chambre Léane - Volet Petite Fenêtre - Autres,,DPST-1-1,Ouvrant Volet > Volet autres,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Est (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/7/11,Chambre Léane - Volet Grande Fenêtre - Autres,,DPST-1-1,Ouvrant Volet > Volet autres,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Sud (sun protection),Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/7/12,Chambre Parent - Volet Grande Fenêtre - Autres,,DPST-1-1,Ouvrant Volet > Volet autres,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Volet Parents (sun protection),Chambe Parents / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Parents
+3/7/13,Chambre Lily - Volet Petite Fenêtre - Autres,,DPST-1-1,Ouvrant Volet > Volet autres,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Ouest (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/7/14,Chambre Lily - Volet Grande Fenêtre - Autres,,DPST-1-1,Ouvrant Volet > Volet autres,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Sud (sun protection),Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/7/15,Salle de Bain - Volet Petite Fenêtre - Autres,,DPST-1-1,Ouvrant Volet > Volet autres,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Volet Salle de bain (sun protection),Interrupteurs Salle de Bain étage / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+3/7/16,Chambre Léane - 2 Volets - Autres,,DPST-1-8,Ouvrant Volet > Volet autres,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volets tous Léane (sun protection),Chambe Léane / Zone 3,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Léane
+3/7/17,Chambre Lily - 2 Volets - Autres,,DPST-1-7,Ouvrant Volet > Volet autres,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volets tous Lily (sun protection),Interrupteurs Chambre Lily	 / Zone 4,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Lily
+3/7/18,température actuelle,,DPST-9-1,Ouvrant Volet > Volet autres,,,,
+3/7/19,point de consigne de température,,DPST-9-1,Ouvrant Volet > Volet autres,,,,
+3/7/20,variable en continu,,DPST-5-1,Ouvrant Volet > Volet autres,,,,
+3/7/21,mode opérationnel,,DPST-20-102,Ouvrant Volet > Volet autres,,,,
+3/7/22,contact vitre,,DPST-1-19,Ouvrant Volet > Volet autres,,,,
+4/0/1,Studio Salon/Cuisine - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,,,,
+4/0/2,Studio Salle de Bain - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,,,,
+4/0/3,Studio Chambre - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,,,,
+4/0/4,Entrée - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,,,,
+4/0/5,Local Techique - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,,,,
+4/0/6,Cuisine - Statut commande chauffage,Cuisine Chauffage Cuisine,DPST-1-1,Chauffage > Chauffage Statut commande chauffage,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),,
+4/0/7,Salle à Manger - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Table (heating (continuous variable)),,
+4/0/8,Espace central - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Espace Central (heating (continuous variable)),,
+4/0/9,Salon - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,,,,
+4/0/10,Bibliothèque - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,,,,
+4/0/11,Salle de Bain invité - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,,,,
+4/0/12,Bureau - Statut commande chauffage,,DPST-1-11,Chauffage > Chauffage Statut commande chauffage,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/0/13,Chambre Léane - Statut commande chauffage,,DPST-1-11,Chauffage > Chauffage Statut commande chauffage,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/0/14,Chambre Parent - Statut commande chauffage,,DPST-1-11,Chauffage > Chauffage Statut commande chauffage,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/0/15,Chambre Lily - Statut commande chauffage,,DPST-1-11,Chauffage > Chauffage Statut commande chauffage,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/0/16,Salle de Bain - Statut commande chauffage,,DPST-1-5,Chauffage > Chauffage Statut commande chauffage,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/0/17,réserve - Statut commande chauffage,,,Chauffage > Chauffage Statut commande chauffage,,,,
+4/1/1,Studio Salon/Cuisine - Température actuelle,,,Chauffage > Chauffage Température actuelle,,,,
+4/1/2,Studio Salle de Bain - Température actuelle,,,Chauffage > Chauffage Température actuelle,,,,
+4/1/3,Studio Chambre - Température actuelle,,,Chauffage > Chauffage Température actuelle,,,,
+4/1/4,Entrée - Température actuelle,,,Chauffage > Chauffage Température actuelle,,,,
+4/1/5,Local Techique - Température actuelle,,DPST-9-1,Chauffage > Chauffage Température actuelle,,,,
+4/1/6,Cuisine - Température actuelle,Cuisine Chauffage Cuisine,DPST-9-1,Chauffage > Chauffage Température actuelle,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),Chauffage RDC / DI-42,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/1/7,Salle à Manger - Température actuelle,Salle à Manger chauffage Table,DPST-9-1,Chauffage > Chauffage Température actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Table (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/1/8,Espace central - Température actuelle,Salle à Manger chauffage Espace Central,DPST-9-1,Chauffage > Chauffage Température actuelle,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Espace Central (heating (continuous variable)),Chauffage RDC / DI-42,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/1/9,Salon - Température actuelle,Salon chauffage Salon,DPST-9-1,Chauffage > Chauffage Température actuelle,Villa Bulle / Maison principale / 1_RDC / Salon,chauffage Salon (heating (continuous variable)),DI-42,
+4/1/10,Bibliothèque - Température actuelle,,DPST-9-1,Chauffage > Chauffage Température actuelle,,,DI-42,
+4/1/11,Salle de Bain invité - Température actuelle,,DPST-9-1,Chauffage > Chauffage Température actuelle,,,DI-42,
+4/1/12,Bureau - Température actuelle,,DPST-9-1,Chauffage > Chauffage Température actuelle,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/1/13,Chambre Léane - Température actuelle,,DPST-9-1,Chauffage > Chauffage Température actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage / Régulateur de température - Chambre Léane,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Léane
+4/1/14,Chambre Parent - Température actuelle,,DPST-9-1,Chauffage > Chauffage Température actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),"Chauffage Etage / Régulateur de température - Chambre Parents
+",Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Parents
+4/1/15,Chambre Lily - Température actuelle,,DPST-9-1,Chauffage > Chauffage Température actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),"Chauffage Etage / Régulateur de température - Chambre Lily
+",Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique; Villa Bulle / Maison principale / 2_Etage / Chambre Lily
+4/1/16,Salle de Bain - Température actuelle,Salle de Bain invité chauffage Sallle de Bain invité,DPST-9-1,Chauffage > Chauffage Température actuelle,Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité; Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)) / chauffage Sallle de Bain invité (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/1/17,réserve - Température actuelle,,,Chauffage > Chauffage Température actuelle,,,,
+4/2/1,Studio Salon/Cuisine - Température cible,,,Chauffage > Chauffage Température cible,,,,
+4/2/2,Studio Salle de Bain - Température cible,,,Chauffage > Chauffage Température cible,,,,
+4/2/3,Studio Chambre - Température cible,,,Chauffage > Chauffage Température cible,,,,
+4/2/4,Entrée - Température cible,,,Chauffage > Chauffage Température cible,,,,
+4/2/5,Local Techique - Température cible,,,Chauffage > Chauffage Température cible,,,,
+4/2/6,Cuisine - Température cible,Cuisine Chauffage Cuisine,DPST-9-1,Chauffage > Chauffage Température cible,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/2/7,Salle à Manger - Température cible,,DPST-9-1,Chauffage > Chauffage Température cible,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Table (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/2/8,Espace central - Température cible,,DPST-9-2,Chauffage > Chauffage Température cible,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Espace Central (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/2/9,Salon - Température cible,,,Chauffage > Chauffage Température cible,,,,
+4/2/10,Bibliothèque - Température cible,,,Chauffage > Chauffage Température cible,,,,
+4/2/11,Salle de Bain invité - Température cible,,,Chauffage > Chauffage Température cible,,,,
+4/2/12,Bureau - Température cible,,DPST-9-1,Chauffage > Chauffage Température cible,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/2/13,Chambre Léane - Température cible,,DPST-9-1,Chauffage > Chauffage Température cible,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/2/14,Chambre Parent - Température cible,,DPST-9-1,Chauffage > Chauffage Température cible,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/2/15,Chambre Lily - Température cible,,DPST-9-1,Chauffage > Chauffage Température cible,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/2/16,Salle de Bain - Température cible,,DPST-9-1,Chauffage > Chauffage Température cible,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/2/17,réserve - Température cible,,,Chauffage > Chauffage Température cible,,,,
+4/3/1,Studio Salon/Cuisine - Delta Température cible,,,Chauffage > Chauffage Delta température cible,,,,
+4/3/2,Studio Salle de Bain - Delta Température cible,,,Chauffage > Chauffage Delta température cible,,,,
+4/3/3,Studio Chambre - Delta Température cible,,,Chauffage > Chauffage Delta température cible,,,,
+4/3/4,Entrée - Delta Température cible,,,Chauffage > Chauffage Delta température cible,,,,
+4/3/5,Local Techique - Delta Température cible,,,Chauffage > Chauffage Delta température cible,,,,
+4/3/6,Cuisine - Delta Température cible,Cuisine Chauffage Cuisine,DPST-9-2,Chauffage > Chauffage Delta température cible,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/3/7,Salle à Manger - Delta Température cible,,DPST-9-2,Chauffage > Chauffage Delta température cible,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Table (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/3/8,Espace central - Delta Température cible,,DPST-9-1,Chauffage > Chauffage Delta température cible,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Espace Central (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/3/9,Salon - Delta Température cible,,,Chauffage > Chauffage Delta température cible,,,,
+4/3/10,Bibliothèque - Delta Température cible,,,Chauffage > Chauffage Delta température cible,,,,
+4/3/11,Salle de Bain invité - Delta Température cible,,,Chauffage > Chauffage Delta température cible,,,,
+4/3/12,Bureau - Delta Température cible,,DPST-9-2,Chauffage > Chauffage Delta température cible,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/3/13,Chambre Léane - Delta Température cible,,DPST-9-2,Chauffage > Chauffage Delta température cible,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/3/14,Chambre Parent - Delta Température cible,,DPST-9-2,Chauffage > Chauffage Delta température cible,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/3/15,Chambre Lily - Delta Température cible,,DPST-9-2,Chauffage > Chauffage Delta température cible,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/3/16,Salle de Bain - Delta Température cible,,DPST-9-2,Chauffage > Chauffage Delta température cible,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/3/17,réserve - Delta Température cible,,,Chauffage > Chauffage Delta température cible,,,,
+4/4/1,Studio Salon/Cuisine - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/2,Studio Salle de Bain - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/3,Studio Chambre - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/4,Entrée - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/5,Local Techique - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/6,Cuisine - Statut delta température cible,Cuisine Chauffage Cuisine,DPST-9-2,Chauffage > Chauffage Statut delta température cible,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),,
+4/4/7,Salle à Manger - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/8,Espace central - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/9,Salon - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/10,Bibliothèque - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/11,Salle de Bain invité - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/4/12,Bureau - Statut delta température cible,,DPST-9-2,Chauffage > Chauffage Statut delta température cible,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/4/13,Chambre Léane - Statut delta température cible,,DPST-9-2,Chauffage > Chauffage Statut delta température cible,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/4/14,Chambre Parent - Statut delta température cible,,DPST-9-2,Chauffage > Chauffage Statut delta température cible,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/4/15,Chambre Lily - Statut delta température cible,,DPST-9-2,Chauffage > Chauffage Statut delta température cible,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/4/16,Salle de Bain - Statut delta température cible,,DPST-9-2,Chauffage > Chauffage Statut delta température cible,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/4/17,réserve - Statut delta température cible,,,Chauffage > Chauffage Statut delta température cible,,,,
+4/5/1,Studio Salon/Cuisine - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/2,Studio Salle de Bain - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/3,Studio Chambre - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/4,Entrée - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/5,Local Techique - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/6,Cuisine - Température cible actuelle,Cuisine Chauffage Cuisine,DPST-9-1,Chauffage > Chauffage Température cible actuelle,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),,
+4/5/7,Salle à Manger - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/8,Espace central - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/9,Salon - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/10,Bibliothèque - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/11,Salle de Bain invité - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/5/12,Bureau - Température cible actuelle,,DPST-9-1,Chauffage > Chauffage Température cible actuelle,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),,
+4/5/13,Chambre Léane - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),,
+4/5/14,Chambre Parent - Température cible actuelle,,DPST-9-1,Chauffage > Chauffage Température cible actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),,
+4/5/15,Chambre Lily - Température cible actuelle,,DPST-9-1,Chauffage > Chauffage Température cible actuelle,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),,
+4/5/16,Salle de Bain - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),,
+4/5/17,réserve - Température cible actuelle,,,Chauffage > Chauffage Température cible actuelle,,,,
+4/6/1,Studio Salon/Cuisine - Position valve,,,Chauffage > Chauffage Position valve,,,,
+4/6/2,Studio Salle de Bain - Position valve,,,Chauffage > Chauffage Position valve,,,,
+4/6/3,Studio Chambre - Position valve,,,Chauffage > Chauffage Position valve,,,,
+4/6/4,Entrée - Position valve,,,Chauffage > Chauffage Position valve,,,,
+4/6/5,Local Techique - Position valve,,,Chauffage > Chauffage Position valve,,,,
+4/6/6,Cuisine - Position valve,Cuisine Chauffage Cuisine,DPST-5-1,Chauffage > Chauffage Position valve,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/6/7,Salle à Manger - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Table (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/6/8,Espace central - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Espace Central (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/6/9,Salon - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,,,,
+4/6/10,Bibliothèque - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,,,,
+4/6/11,Salle de Bain invité - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,,,,
+4/6/12,Bureau - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/6/13,Chambre Léane - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/6/14,Chambre Parent - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/6/15,Chambre Lily - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/6/16,Salle de Bain - Position valve,,DPST-5-1,Chauffage > Chauffage Position valve,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/6/17,réserve - Position valve,,,Chauffage > Chauffage Position valve,,,,
+4/7/1,Studio Salon/Cuisine - Force position valve,,,Chauffage > Chauffage Force position valve,,,,
+4/7/2,Studio Salle de Bain - Force position valve,,,Chauffage > Chauffage Force position valve,,,,
+4/7/3,Studio Chambre - Force position valve,,,Chauffage > Chauffage Force position valve,,,,
+4/7/4,Entrée - Force position valve,,,Chauffage > Chauffage Force position valve,,,,
+4/7/5,Local Techique - Force position valve,,,Chauffage > Chauffage Force position valve,,,,
+4/7/6,Cuisine - Force position valve,Cuisine Chauffage Cuisine,DPST-1-5,Chauffage > Chauffage Force position valve,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/7/7,Salle à Manger - Force position valve,,DPST-1-5,Chauffage > Chauffage Force position valve,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Table (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/7/8,Espace central - Force position valve,,DPST-1-5,Chauffage > Chauffage Force position valve,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Espace Central (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/7/9,Salon - Force position valve,,DPST-1-5,Chauffage > Chauffage Force position valve,,,,
+4/7/10,Bibliothèque - Force position valve,Bureau et Bibliothèque chauffage Bibliothèque,DPST-1-5,Chauffage > Chauffage Force position valve,Villa Bulle / Maison principale / 1_RDC / Bureau et Bibliothèque,chauffage Bibliothèque (heating (continuous variable)),,
+4/7/11,Salle de Bain invité - Force position valve,,DPST-1-5,Chauffage > Chauffage Force position valve,,,,
+4/7/12,Bureau - Force position valve,,DPST-1-5,Chauffage > Chauffage Force position valve,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/7/13,Chambre Léane - Force position valve,,DPST-1-5,Chauffage > Chauffage Force position valve,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/7/14,Chambre Parent - Force position valve,,DPST-1-5,Chauffage > Chauffage Force position valve,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/7/15,Chambre Lily - Force position valve,,DPST-1-5,Chauffage > Chauffage Force position valve,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/7/16,Salle de Bain - Force position valve,,DPST-1-5,Chauffage > Chauffage Force position valve,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+4/7/17,réserve - Force position valve,,,Chauffage > Chauffage Force position valve,,,,
+5/0/12,Bureau - Mode Erreur,,DPST-1-5,Chauffage Mode > Chauffage Mode Erreur,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/0/13,Chambre Léane - Mode Erreur,,DPST-1-5,Chauffage Mode > Chauffage Mode Erreur,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/0/14,Chambre Parent - Mode erreur ,,DPST-1-5,Chauffage Mode > Chauffage Mode Erreur,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/0/15,Chambre Lily - Mode Erreur,,DPST-1-5,Chauffage Mode > Chauffage Mode Erreur,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/0/16,Salle de Bain - Mode Erreur,,DPST-1-5,Chauffage Mode > Chauffage Mode Erreur,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/1/0,Nouvelle adresse de groupe,Cuisine Chauffage Cuisine,,Chauffage Mode > Chauffage Mode Sélection,,,DI-42,
+5/1/1,Studio Salon/Cuisine - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/2,Studio Salle de Bain - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/3,Studio Chambre - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/4,Entrée - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/5,Local Techique - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/6,Cuisine - Mode Selection,Cuisine Chauffage Cuisine,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/1/7,Salle à Manger - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Table (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/1/8,Espace central - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Espace Central (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/1/9,Salon - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/10,Bibliothèque - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/11,Salle de Bain invité - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/12,Bureau - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/1/13,Chambre Léane - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/1/14,Chambre Parent - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/1/15,Chambre Lily - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/1/16,Salle de Bain - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/1/17,réserve - Mode Sélection,,DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/18,température actuelle,1_RDC chauffage (variable en continu),DPST-9-1,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/19,point de consigne de température,1_RDC chauffage (variable en continu),DPST-9-1,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/20,variable en continu,1_RDC chauffage (variable en continu),DPST-5-1,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/21,mode opérationnel,1_RDC chauffage (variable en continu),DPST-20-102,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/1/22,contact vitre,1_RDC chauffage (variable en continu),DPST-1-19,Chauffage Mode > Chauffage Mode Sélection,,,,
+5/2/6,Cuisine - Mode Confort,Cuisine Chauffage Cuisine,DPST-1-1,Chauffage Mode > Chauffage Mode confort,,,,
+5/2/15,Chambre Lily - Mode Confort,,DPST-1-1,Chauffage Mode > Chauffage Mode confort,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/3/6,Cuisine - Mode Nuit,,,Chauffage Mode > Chauffage Mode nuit,,,,
+5/3/15,Chambre Lily - Mode Nuit,,DPST-1-1,Chauffage Mode > Chauffage Mode nuit,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/5/1,Studio Salon/Cuisine - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,,,,
+5/5/2,Studio Salle de Bain - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,,,,
+5/5/3,Studio Chambre - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,,,,
+5/5/4,Entrée - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,,,,
+5/5/5,Local Techique - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,,,,
+5/5/6,Cuisine - Chauffage Mode Statut mode,Cuisine Chauffage Cuisine,DPST-20-102,Chauffage Mode > Chauffage Mode Statut mode,Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/5/7,Salle à Manger - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Table (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/5/8,Espace central - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Espace Central (heating (continuous variable)),Chauffage RDC,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/5/9,Salon - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,,,,
+5/5/10,Bibliothèque - Chauffage Mode Statut mode,,DPST-16-1,Chauffage Mode > Chauffage Mode Statut mode,,,,
+5/5/11,Salle de Bain invité - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,,,,
+5/5/12,Bureau - Chauffage Mode Statut mode,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut mode,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/5/13,Chambre Léane - Chauffage Mode Statut mode,,DPST-5-1,Chauffage Mode > Chauffage Mode Statut mode,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/5/14,Chambre Parent - Chauffage Mode Statut mode,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut mode,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/5/15,Chambre Lily - Chauffage Mode Statut mode,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut mode,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/5/16,Salle de Bain - Chauffage Mode Statut mode,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut mode,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/5/17,réserve - Chauffage Mode Statut mode,,,Chauffage Mode > Chauffage Mode Statut mode,,,,
+5/6/1,Studio Salon/Cuisine - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/2,Studio Salle de Bain - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/3,Studio Chambre - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/4,Entrée - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/5,Local Techique - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/6,Cuisine - Mode Statut erreur diagnostique,,DPST-16-1,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/7,Salle à Manger - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/8,Espace central - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/9,Salon - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/10,Bibliothèque - Mode Statut erreur diagnostique,,DPST-16-1,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/11,Salle de Bain invité - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/6/12,Bureau - Mode Statut erreur diagnostique,,DPST-16-1,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/6/13,Chambre Léane - Mode Statut erreur diagnostique,,DPST-16-1,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/6/14,Chambre Parent - Mode Statut erreur diagnostique,,DPST-16-1,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/6/15,Chambre Lily - Mode Statut erreur diagnostique,,DPST-16-1,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/6/16,Salle de Bain - Mode Statut erreur diagnostique,,DPST-16-1,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu) (heating (continuous variable)),Chauffage Etage,Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique / Tableau Electrique et Domotique
+5/6/17,réserve - Mode Statut erreur diagnostique,,DPST-20-102,Chauffage Mode > Chauffage Mode Statut erreur diagnostique,,,,
+5/7/15,Chambre Lily - Status actif,,DPST-1-11,Chauffage Mode > Chauffage Mode Status actif,Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu) (heating (continuous variable)),,
+8/0/5,Détecteur WC Etage,,,Sécurité > Détecteur Present-Absent,,,Détecteur SBD WC   ,
+8/1/5,Luminance WC Etage,"WC Etage
+",,Sécurité > Luminance,,,Détecteur SBD WC   ,
+9/0/1,Garage - Prise 1 - Activation,,,Prise > Activation,,,,
+9/0/2,Garage - Prise 2 - Activation,,,Prise > Activation,,,,
+9/0/3,Garage - Prise 3 - Activation,,,Prise > Activation,,,,
+9/0/4,Garage - Prise 4 - Activation,,,Prise > Activation,,,,
+9/0/5,Local - Prise 1 - Activation,,,Prise > Activation,,,,
+9/0/6,Local - Prise 2 - Etat Activation,,,Prise > Activation,,,,
+9/0/10,Cuiisine - Prise 1 - Activation ,,,Prise > Activation,,,,
+9/0/11,Cuiisine - Prise 2 - Activation ,,,Prise > Activation,,,,
+9/0/12,Cuiisine - Prise 3 - Activation ,,,Prise > Activation,,,,
+9/0/13,Salle a Manger - Prise 1 - Activation ,,,Prise > Activation,,,,
+9/0/14,Salle a Manger - Prise 2 - Activation ,,,Prise > Activation,,,,
+9/0/15,Salon - Prise 1 - Activation ,,,Prise > Activation,,,,
+9/0/16,Salon - Prise 2 - Activation ,,,Prise > Activation,,,,
+9/0/17,Salon - Prise 3 - Activation ,,,Prise > Activation,,,,
+9/0/18,Salle de Bain - Prise 1 - Activation ,,,Prise > Activation,,,,
+9/1/1,Garage - Prise 1 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/2,Garage - Prise 2 -Etat Activation,,,Prise > Etat Activation,,,,
+9/1/3,Garage - Prise 3 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/4,Garage - Prise 4 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/5,Local - Prise 1 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/6,Local - Prise 2 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/10,Cuiisine - Prise 1 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/11,Cuiisine - Prise 2 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/12,Cuiisine - Prise 3 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/13,Salle a Manger - Prise 1 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/14,Salle a Manger - Prise 2 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/15,Salon - Prise 1 -Etat Activation,,,Prise > Etat Activation,,,,
+9/1/16,Salon - Prise 2 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/17,Salon - Prise 3 - Etat Activation,,,Prise > Etat Activation,,,,
+9/1/18,Salle de Bain - Prise 1 - Etat Activation,,,Prise > Etat Activation,,,,
+9/2/1,Garage - Prise 1 - Mesure Courant,,,Prise > Mesure Courant,,,,
+9/3/1,Garage - Prise 1 - MEsure Puissance,,,Prise > Mesure Puissance,,,,
+9/4/0,Activation,,,Prise > Nouveau groupe médian,,,,
+9/4/1,Statut,,,Prise > Nouveau groupe médian,,,,
+9/5/0,Activation,,,Prise > Nouveau groupe médian,,,,
+9/5/1,Statut,,,Prise > Nouveau groupe médian,,,,
+9/6/0,Activation,,,Prise > Nouveau groupe médian,,,,
+9/6/1,Statut,,,Prise > Nouveau groupe médian,,,,
+9/7/0,Activation,,,Prise > Nouveau groupe médian,,,,
+9/7/1,Statut,,,Prise > Nouveau groupe médian,,,,
+10/0/0,Activation,,,Ventilation > Nouveau groupe médian,,,,
+10/0/1,Statut,,,Ventilation > Nouveau groupe médian,,,,
+10/1/0,commutation,Local Technique Lumière,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/1/1,Statut,Local Technique Lumière,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/2/0,commutation,Garage Lumière,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/2/1,Statut,Garage Lumière,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/3/0,commutation,Cuisine éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/3/1,Statut,Cuisine éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/3/2,température actuelle,Cuisine chauffage (variable en continu),DPST-9-1,Ventilation > Nouveau groupe médian,,,,
+10/3/3,point de consigne de température,Cuisine chauffage (variable en continu),DPST-9-1,Ventilation > Nouveau groupe médian,,,,
+10/3/4,variable en continu,Cuisine chauffage (variable en continu),DPST-5-1,Ventilation > Nouveau groupe médian,,,,
+10/3/5,mode opérationnel,Cuisine chauffage (variable en continu),DPST-20-102,Ventilation > Nouveau groupe médian,,,,
+10/3/6,contact vitre,Cuisine chauffage (variable en continu),DPST-1-19,Ventilation > Nouveau groupe médian,,,,
+10/3/7,mouvement,Cuisine protection solaire,DPST-1-8,Ventilation > Nouveau groupe médian,,,,
+10/3/8,étape/arrêt,Cuisine protection solaire,DPST-1-7,Ventilation > Nouveau groupe médian,,,,
+10/3/9,alerte de vent,Cuisine protection solaire (1),DPST-1-5,Ventilation > Nouveau groupe médian,,,,
+10/3/10,alerte de pluie,Cuisine protection solaire (1),DPST-1-5,Ventilation > Nouveau groupe médian,,,,
+10/3/11,position des stores,Cuisine protection solaire,DPST-5-1,Ventilation > Nouveau groupe médian,,,,
+10/3/12,position des lames,Cuisine protection solaire,DPST-5-1,Ventilation > Nouveau groupe médian,,,,
+10/3/13,mouvement,Cuisine protection solaire (1),DPST-1-8,Ventilation > Nouveau groupe médian,,,,
+10/3/14,étape/arrêt,Cuisine protection solaire (1),DPST-1-7,Ventilation > Nouveau groupe médian,,,,
+10/3/15,position des stores,Cuisine protection solaire (1),DPST-5-1,Ventilation > Nouveau groupe médian,,,,
+10/3/16,position des lames,Cuisine protection solaire (1),DPST-5-1,Ventilation > Nouveau groupe médian,,,,
+10/3/17,température actuelle,Cuisine Chauffage Cuisine,DPST-9-1,Ventilation > Nouveau groupe médian,,,,
+10/3/18,point de consigne de température,Cuisine Chauffage Cuisine,DPST-9-1,Ventilation > Nouveau groupe médian,,,,
+10/3/19,variable en continu,Cuisine Chauffage Cuisine,DPST-5-1,Ventilation > Nouveau groupe médian,,,,
+10/3/20,mode opérationnel,Cuisine Chauffage Cuisine,DPST-20-102,Ventilation > Nouveau groupe médian,,,,
+10/3/21,contact vitre,Cuisine Chauffage Cuisine,DPST-1-19,Ventilation > Nouveau groupe médian,,,,
+10/4/0,commutation,Escalier Sous-Sol RDC éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/4/1,Statut,Escalier Sous-Sol RDC éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/5/0,commutation,Salle à Manger éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/5/1,Statut,Salle à Manger éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/6/0,commutation,Salon éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/6/1,Statut,Salon éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/7/0,commutation,Salle de Bain invité éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+10/7/1,Statut,Salle de Bain invité éclairage commutation,DPST-1-1,Ventilation > Nouveau groupe médian,,,,
+11/0/0,commutation,Espace centrale éclairage commutation,DPST-1-1,Nouveau groupe principal > Nouveau groupe médian,,,,
+11/0/1,Statut,Espace centrale éclairage commutation,DPST-1-1,Nouveau groupe principal > Nouveau groupe médian,,,,
+11/1/0,commutation,4_Extérieur t,DPST-1-1,Nouveau groupe principal > Nouveau groupe médian,,,,
+11/1/1,Statut,4_Extérieur t,DPST-1-1,Nouveau groupe principal > Nouveau groupe médian,,,,
+11/2/0,commutation,Couloir Eclairage Couloir,DPST-1-1,Nouveau groupe principal > Nouveau groupe médian,,,,
+11/2/1,Statut,Couloir Eclairage Couloir,DPST-1-1,Nouveau groupe principal > Nouveau groupe médian,,,,
+12/0/0,commutation,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/0/1,Statut,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/0/2,mouvement,,DPST-1-8,chauffage_old > Nouveau groupe médian,,,,
+12/0/3,étape/arrêt,,DPST-1-7,chauffage_old > Nouveau groupe médian,,,,
+12/0/4,alerte de vent,,DPST-1-5,chauffage_old > Nouveau groupe médian,,,,
+12/0/5,alerte de pluie,,DPST-1-5,chauffage_old > Nouveau groupe médian,,,,
+12/0/6,position des stores,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/0/7,position des lames,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/1/0,commutation,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/1/1,Statut,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/2/0,mouvement,,DPST-1-8,chauffage_old > Nouveau groupe médian,,,,
+12/2/1,étape/arrêt,,DPST-1-7,chauffage_old > Nouveau groupe médian,,,,
+12/2/2,alerte de vent,,DPST-1-5,chauffage_old > Nouveau groupe médian,,,,
+12/2/3,alerte de pluie,,DPST-1-5,chauffage_old > Nouveau groupe médian,,,,
+12/2/4,position des stores,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/2/5,position des lames,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/3/0,commutation,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/3/1,Statut,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/3/2,mouvement,,DPST-1-8,chauffage_old > Nouveau groupe médian,,,,
+12/3/3,étape/arrêt,,DPST-1-7,chauffage_old > Nouveau groupe médian,,,,
+12/3/4,alerte de vent,,DPST-1-5,chauffage_old > Nouveau groupe médian,,,,
+12/3/5,alerte de pluie,,DPST-1-5,chauffage_old > Nouveau groupe médian,,,,
+12/3/6,position des stores,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/3/7,position des lames,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/3/8,mouvement,,DPST-1-8,chauffage_old > Nouveau groupe médian,,,,
+12/3/9,étape/arrêt,,DPST-1-7,chauffage_old > Nouveau groupe médian,,,,
+12/3/10,position des stores,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/3/11,position des lames,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/0,mouvement,,DPST-1-8,chauffage_old > Nouveau groupe médian,,,,
+12/4/1,étape/arrêt,,DPST-1-7,chauffage_old > Nouveau groupe médian,,,,
+12/4/2,alerte de vent,,DPST-1-5,chauffage_old > Nouveau groupe médian,,,,
+12/4/3,alerte de pluie,,DPST-1-5,chauffage_old > Nouveau groupe médian,,,,
+12/4/4,position des stores,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/5,position des lames,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/6,commutation,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/7,Statut,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/8,commutation,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/9,Statut,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/10,commutation,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/11,Statut,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/12,mouvement,,DPST-1-8,chauffage_old > Nouveau groupe médian,,,,
+12/4/13,étape/arrêt,,DPST-1-7,chauffage_old > Nouveau groupe médian,,,,
+12/4/14,position des stores,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/4/15,position des lames,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/5/0,température actuelle,,DPST-9-1,chauffage_old > Nouveau groupe médian,,,,
+12/5/1,point de consigne de température,,DPST-9-1,chauffage_old > Nouveau groupe médian,,,,
+12/5/2,variable en continu,,DPST-5-1,chauffage_old > Nouveau groupe médian,,,,
+12/5/3,mode opérationnel,,DPST-20-102,chauffage_old > Nouveau groupe médian,,,,
+12/5/4,contact vitre,,DPST-1-19,chauffage_old > Nouveau groupe médian,,,,
+12/6/0,commutation,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/6/1,Statut,,DPST-1-1,chauffage_old > Nouveau groupe médian,,,,
+12/7/1,SDB1 - Eclairage Spots - ON/OFF,,,chauffage_old > Salle de bain,,,,
+12/7/3,SB1 - Volets,Volets,,chauffage_old > Salle de bain,,,,
+12/7/4,Volet SDB - status current position,,DPST-5-1,chauffage_old > Salle de bain,,,,
+12/7/11,Spot SDB Etat on-off,,,chauffage_old > Salle de bain,,,,
+12/7/20,SDB1 - Bewegung,,,chauffage_old > Salle de bain,,,,
+12/7/30,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/31,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,chauffage_old > Salle de bain,,,,
+12/7/32,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/33,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/34,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,chauffage_old > Salle de bain,,,,
+12/7/35,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/36,Chauffage RDC - xxx -,,,chauffage_old > Salle de bain,,,,
+12/7/37,Chauffage RDC - xxx -,,,chauffage_old > Salle de bain,,,,
+12/7/38,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,chauffage_old > Salle de bain,,,,
+12/7/39,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,chauffage_old > Salle de bain,,,,
+12/7/40,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/41,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,chauffage_old > Salle de bain,,,,
+12/7/42,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/43,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/44,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,chauffage_old > Salle de bain,,,,
+12/7/45,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/46,Chauffage RDC - xxx -,,,chauffage_old > Salle de bain,,,,
+12/7/47,Chauffage RDC - xxx -,,,chauffage_old > Salle de bain,,,,
+12/7/48,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,chauffage_old > Salle de bain,,,,
+12/7/49,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,chauffage_old > Salle de bain,,,,
+12/7/50,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/51,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,chauffage_old > Salle de bain,,,,
+12/7/52,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/53,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/54,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,chauffage_old > Salle de bain,,,,
+12/7/55,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/56,Chauffage RDC - xxx -,,,chauffage_old > Salle de bain,,,,
+12/7/57,Chauffage RDC - xxx -,,,chauffage_old > Salle de bain,,,,
+12/7/58,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,chauffage_old > Salle de bain,,,,
+12/7/59,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,chauffage_old > Salle de bain,,,,
+12/7/60,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/61,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,chauffage_old > Salle de bain,,,,
+12/7/62,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/63,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/64,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,chauffage_old > Salle de bain,,,,
+12/7/65,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/66,Chauffage RDC - xxx -,,,chauffage_old > Salle de bain,,,,
+12/7/67,Chauffage RDC - xxx -,,,chauffage_old > Salle de bain,,,,
+12/7/68,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,chauffage_old > Salle de bain,,,,
+12/7/69,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,chauffage_old > Salle de bain,,,,
+12/7/70,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/71,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,chauffage_old > Salle de bain,,,,
+12/7/72,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/73,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/74,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,chauffage_old > Salle de bain,,,,
+12/7/75,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/76,Chauffage RDC - xxx -,,,chauffage_old > Salle de bain,,,,
+12/7/77,Chauffage RDC - xxx -  Control valve status,,DPST-20-102,chauffage_old > Salle de bain,,,,
+12/7/78,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,chauffage_old > Salle de bain,,,,
+12/7/79,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,chauffage_old > Salle de bain,,,,
+12/7/80,Chauffage RDC - xxx - Receive Temperature Value,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/81,Chauffage RDC - xxx - Send Control Value Heating,,DPST-1-1,chauffage_old > Salle de bain,,,,
+12/7/82,Chauffage RDC - xxx - Manual Setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/83,Chauffage RDC - xxx - Send Status of setpoint shift,,DPST-9-2,chauffage_old > Salle de bain,,,,
+12/7/84,Chauffage RDC - xxx - Mode Selection,,DPST-20-102,chauffage_old > Salle de bain,,,,
+12/7/85,Chauffage RDC - xxx - Send Current Setpoint,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/86,Chauffage RDC - xxx - Preset Setpoint,,DPST-9-1,chauffage_old > Salle de bain,,,,
+12/7/87,Chauffage RDC - xxx -  Control valve status,,DPST-5-1,chauffage_old > Salle de bain,,,,
+12/7/88,Chauffage RDC - xxx -  Forced Position,,DPST-1-5,chauffage_old > Salle de bain,,,,
+12/7/89,Chauffage RDC - xxx -  Diagnosis Status,,DPST-16-1,chauffage_old > Salle de bain,,,,
+12/7/90,Chauffage RDC - Mode Ete-Hiver,,DPST-1-1,chauffage_old > Salle de bain,,,,
+13/0/0,commutation,,DPST-1-1,Nouveau groupe principal > Nouveau groupe médian,,,,
+13/0/1,statut,,DPST-1-1,Nouveau groupe principal > Nouveau groupe médian,,,,
+13/0/2,atténuation,,DPST-3-7,Nouveau groupe principal > Nouveau groupe médian,,,,
+13/0/3,valeur de variation,,DPST-5-1,Nouveau groupe principal > Nouveau groupe médian,,,,
+13/0/4,valeur,,DPST-5-1,Nouveau groupe principal > Nouveau groupe médian,,,,

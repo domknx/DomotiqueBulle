@@ -1,0 +1,60 @@
+piece,fonction,type_fonction,adresses_groupe
+Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,Lumière,switchable light,"1/0/1, 1/1/1, 1/0/2, 1/1/2"
+Villa Bulle / Maison principale / 0_Sous-Sol / Entrée,chauffage (variable en continu),heating (continuous variable),"1/1/0, 1/1/10, 1/1/11, 1/1/12, 1/1/13"
+Villa Bulle / Maison principale / 0_Sous-Sol / Escalier vers RDC,éclairage appliques escalier RDC ,switchable light,"1/0/50, 1/1/50"
+Villa Bulle / Maison principale / 0_Sous-Sol / Garage,Lumière,switchable light,"1/0/6, 1/0/7, 1/0/8, 1/0/9, 1/1/6, 1/1/7, 1/1/8, 1/1/9"
+Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Chauffage,heating (continuous variable),"1/1/14, 1/1/15, 1/1/16, 1/1/17, 1/1/18"
+Villa Bulle / Maison principale / 0_Sous-Sol / Local Technique,Lumière,switchable light,"1/0/3, 1/0/4, 1/0/5, 1/1/3, 1/1/4, 1/1/5, 1/5/3, 1/5/4, 1/5/5, 1/6/3, 1/6/4, 1/6/5, 1/7/3, 1/7/4, 1/7/5"
+Villa Bulle / Maison principale / 1_RDC,Volets RDC Tous,sun protection,0/3/2
+Villa Bulle / Maison principale / 1_RDC,chauffage RDC Central,heating (continuous variable),0/4/2
+Villa Bulle / Maison principale / 1_RDC / Bureau et Bibliothèque,Volet Salon Porte Fenêtre,sun protection,"3/0/7, 3/1/7"
+Villa Bulle / Maison principale / 1_RDC / Bureau et Bibliothèque,chauffage Bibliothèque,heating (continuous variable),4/7/10
+Villa Bulle / Maison principale / 1_RDC / Bureau et Bibliothèque,éclairage Spots bibliothèque,switchable light,"1/0/61, 1/1/61"
+Villa Bulle / Maison principale / 1_RDC / Cuisine,Chauffage Cuisine,heating (continuous variable),"4/1/6, 4/0/6, 4/2/6, 4/3/6, 4/4/6, 4/5/6, 4/6/6, 4/7/6, 5/1/6, 5/5/6"
+Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Bar,switchable light,"1/0/52, 1/1/52, 1/5/52, 1/7/52"
+Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Cuisine tous,switchable light,1/0/54
+Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Evier,switchable light,"1/0/51, 1/1/51, 1/7/51, 1/5/51"
+Villa Bulle / Maison principale / 1_RDC / Cuisine,Eclairage Fenetre,switchable light,"1/0/53, 1/1/53, 1/5/53, 1/7/53"
+Villa Bulle / Maison principale / 1_RDC / Cuisine,Store Cuisine ,sun protection,"2/0/1, 2/1/1, 2/2/1, 2/3/1, 2/4/1, 2/5/1, 2/6/1, 2/7/1"
+Villa Bulle / Maison principale / 1_RDC / Cuisine,Volet Cuisine,sun protection,"3/0/5, 3/1/5, 3/3/5, 3/4/5, 3/5/5, 3/6/5"
+Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité,Store Salle de Bain invité,sun protection,
+Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité,chauffage Sallle de Bain invité,heating (continuous variable),4/1/16
+Villa Bulle / Maison principale / 1_RDC / Salle de Bain invité,éclairage commutation,switchable light,"1/0/67, 1/1/67"
+Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Grande Fenêtre,sun protection,"2/0/2, 2/1/2, 2/2/2, 2/3/2, 2/4/2, 2/5/2, 2/6/2, 2/7/2"
+Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Coulissante,sun protection,"2/0/3, 2/1/3, 2/2/3, 2/3/3, 2/4/3, 2/5/3, 2/6/3, 2/7/3"
+Villa Bulle / Maison principale / 1_RDC / Salle à Manger,Store Salle à Manger Porte Fenêtre,sun protection,"2/0/4, 2/1/4, 2/2/4, 2/3/4, 2/4/4, 2/5/4, 2/6/4, 2/7/3"
+Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Espace Central,heating (continuous variable),"4/1/8, 4/2/8, 4/3/8, 4/0/8, 4/6/8, 4/7/8, 5/1/8, 5/5/8"
+Villa Bulle / Maison principale / 1_RDC / Salle à Manger,chauffage Table,heating (continuous variable),"4/1/7, 4/0/7, 4/2/7, 4/3/7, 4/6/7, 4/7/7, 5/1/7, 5/5/7"
+Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Espace Central,switchable light,"1/0/58, 1/0/59, 1/1/58, 1/1/59, 1/5/58, 1/5/59, 1/6/58, 1/6/59, 1/7/58, 1/7/59"
+Villa Bulle / Maison principale / 1_RDC / Salle à Manger,éclairage commutation Table,switchable light,"1/0/57, 1/1/57, 1/5/57, 1/6/57, 1/7/57"
+Villa Bulle / Maison principale / 1_RDC / Salon,Store Salon Porte Coulissante,sun protection,"2/7/5, 2/6/5, 2/5/5, 2/4/5, 2/3/5, 2/2/5, 2/1/5, 2/0/5"
+Villa Bulle / Maison principale / 1_RDC / Salon,Volet Salon Fenêtre,sun protection,"3/1/6, 3/0/6"
+Villa Bulle / Maison principale / 1_RDC / Salon,chauffage Salon,heating (continuous variable),4/1/9
+Villa Bulle / Maison principale / 1_RDC / Salon,éclairage spot placard,switchable light,1/0/63
+Villa Bulle / Maison principale / 1_RDC / Salon,éclairage spots canapé,switchable light,"1/0/60, 1/1/60"
+Villa Bulle / Maison principale / 1_RDC / Salon,éclairage spots piano,switchable light,1/0/61
+Villa Bulle / Maison principale / 2_Etage,Volets Etages Tous,sun protection,"0/3/3, 0/3/13"
+Villa Bulle / Maison principale / 2_Etage / Bureau,Eclairage Bureau,switchable light,"1/0/102, 1/1/102"
+Villa Bulle / Maison principale / 2_Etage / Bureau,Volet Bureau,sun protection,"3/0/9, 3/1/9, 3/3/9, 3/4/9, 3/5/9, 3/6/9, 3/7/9, 3/2/9"
+Villa Bulle / Maison principale / 2_Etage / Bureau,chauffage (variable en continu),heating (continuous variable),"4/0/12, 4/1/12, 4/2/12, 4/3/12, 4/4/12, 4/5/12, 4/6/12, 4/7/12, 5/0/12, 5/5/12, 5/6/12, 5/1/12"
+Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Lumière Lily,switchable light,"1/1/110, 1/0/110"
+Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Ouest,sun protection,"3/0/13, 3/1/13, 3/2/13, 3/3/13, 3/4/13, 3/5/13, 3/6/13, 3/7/13"
+Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volet Sud,sun protection,"3/0/14, 3/1/14, 3/2/14, 3/3/14, 3/4/14, 3/5/14, 3/6/14, 3/7/14"
+Villa Bulle / Maison principale / 2_Etage / Chambre Lily,Volets tous Lily,sun protection,"3/0/17, 3/7/17"
+Villa Bulle / Maison principale / 2_Etage / Chambre Lily,chauffage (variable en continu),heating (continuous variable),"4/0/15, 4/1/15, 4/2/15, 4/3/15, 4/4/15, 4/6/15, 4/7/15, 5/1/15, 5/2/15, 5/3/15, 5/6/15, 5/5/15, 5/7/15, 5/0/15, 4/5/15"
+Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Eclairage Chambre Léane,switchable light,"1/0/104, 1/1/104"
+Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Est,sun protection,"3/0/10, 3/1/10, 3/2/10, 3/3/10, 3/4/10, 3/5/10, 3/7/10, 3/6/10"
+Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volet Léane Sud,sun protection,"3/0/11, 3/1/11, 3/2/11, 3/3/11, 3/4/11, 3/5/11, 3/7/11, 3/6/11"
+Villa Bulle / Maison principale / 2_Etage / Chambre Léane,Volets tous Léane,sun protection,"3/0/16, 3/7/16"
+Villa Bulle / Maison principale / 2_Etage / Chambre Léane,chauffage (variable en continu),heating (continuous variable),"4/0/13, 4/1/13, 4/2/13, 4/3/13, 4/5/13, 4/6/13, 4/7/13, 5/0/13, 5/6/13, 5/5/13, 5/1/13, 4/4/13"
+Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Lumière parents,switchable light,"1/0/106, 1/1/106"
+Villa Bulle / Maison principale / 2_Etage / Chambre Parents,Volet Parents,sun protection,"3/2/12, 3/1/12, 3/0/12, 3/3/12, 3/4/12, 3/5/12, 3/6/12, 3/7/12"
+Villa Bulle / Maison principale / 2_Etage / Chambre Parents,chauffage (variable en continu),heating (continuous variable),"4/0/14, 4/1/14, 4/2/14, 4/3/14, 4/4/14, 4/5/14, 4/6/14, 4/7/14, 5/0/14, 5/6/14, 5/5/14, 5/1/14"
+Villa Bulle / Maison principale / 2_Etage / Dressing,Lumière dressing,dimmable light,"1/0/117, 1/1/117"
+Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Lumière Douche,switchable light,"1/0/114, 1/1/114"
+Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Lumière Salle de Bain,switchable light,"1/0/112, 1/1/112"
+Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Lumière WC,switchable light,"1/0/113, 1/1/113"
+Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,Volet Salle de bain,sun protection,"3/0/15, 3/1/15, 3/2/15, 3/3/15, 3/4/15, 3/5/15, 3/6/15, 3/7/15"
+Villa Bulle / Maison principale / 2_Etage / Salle de Bain principale,chauffage (variable en continu),heating (continuous variable),"4/0/16, 4/1/16, 4/2/16, 4/3/16, 4/4/16, 4/5/16, 4/6/16, 4/7/16, 5/0/16, 5/5/16, 5/6/16, 5/1/16"
+Villa Bulle / Maison principale / 4_Extérieur / Parking,Lumières - Appliques Facade,switchable light,"1/0/150, 1/0/151"
+Villa Bulle / Maison principale / Escalier Sous-Sol RDC,éclairage commutation,switchable light,
