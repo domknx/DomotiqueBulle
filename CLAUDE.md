@@ -139,7 +139,7 @@ Incident résolu le 23–24.08.2026 : après ajout du bloc `http:`/`trusted_prox
 
 ### 10.1 Jalons principaux
 
-1. **Infrastructure Docker de base opérationnelle** — `homeassistant`, `prometheus`, `victoriametrics`, `grafana`, `cloudflared` tous démarrés en continu et validés ; **HACS** et le **serveur Home Assistant MCP** installés dans Home Assistant — prérequis avant toute configuration/entité HA, KNX inclus.
+1. ✅ **Infrastructure Docker de base opérationnelle** — CLOS le 26.08.2026 (tag Git `jalon_jalon-1-infra-de-base_20260826_181432`, sauvegarde complète confirmée locale + disque externe). `homeassistant`, `prometheus`, `victoriametrics`, `grafana`, `cloudflared` tous démarrés en continu et validés en externe ; **HACS** installé (authentifié GitHub) et le composant **ha-mcp** (`homeassistant-ai/ha-mcp-integration`, via HACS) installé et configuré — endpoint MCP confirmé joignable via le tunnel (405 sur GET, comportement attendu d'un webhook JSON-RPC).
 2. **Intégration KNX complète** — tous les équipements des deux logements pilotables depuis Home Assistant, fichier de configuration KNX stabilisé.
 3. **Accès distant sécurisé validé en production** — tunnel Cloudflare stable dans la durée (pas de régression comme l'incident du 23–24.08.2026).
 4. **Intégrations complémentaires** — installation solaire, Tesla, sécurité/caméras.
