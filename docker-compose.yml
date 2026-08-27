@@ -81,6 +81,22 @@ services:
     depends_on:
       - victoriametrics
 
+  knx-docs:
+    container_name: knx-docs
+    image: nginx:alpine
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    ports:
+      - "8090:80"  # accès LAN direct (docbulle.malnoy.com passe par le tunnel Cloudflare + Cloudflare Access)
+    volumes:
+      - ./docs_site:/usr/share/nginx/html:ro
+    # Documentation du projet (jalon 2 : inventaire KNX interactif). Contenu régénéré par
+    # knx/scripts/build_html_report.py, jamais édité à la main dans docs_site/. Exposé
+    # publiquement sur docbulle.malnoy.com via le tunnel Cloudflare (Public Hostname à
+    # ajouter côté dashboard Zero Trust) et protégé par une politique Cloudflare Access
+    # (email + code à usage unique) — voir README.md.
+
   cloudflared:
     container_name: cloudflared
     image: cloudflare/cloudflared:latest
@@ -93,3 +109,4 @@ services:
     depends_on:
       - homeassistant
       - grafana
+      - knx-docs

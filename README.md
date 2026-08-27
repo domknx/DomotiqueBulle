@@ -129,6 +129,30 @@ Le registrar (propriété du nom de domaine, facturation) reste chez Gandi — s
        - 172.16.0.0/12   # plage par défaut des réseaux Docker
    ```
 
+### 4.3 Section documentation du projet — `docbulle.malnoy.com` (ajouté au jalon 2, KNX)
+
+Sert le contenu de `docs_site/` (page d'accueil + inventaire KNX interactif régénéré par
+`knx/scripts/build_html_report.py`) via un conteneur `knx-docs` (nginx) dédié, séparé du
+dossier `docs/` utilisé pour les GitHub Pages publiques — cette documentation contient la
+structure du bus KNX (pièces, adresses de groupe) et n'est donc pas destinée à être publique.
+
+1. Démarrer le conteneur (inclus dans la stack, rien de spécifique à faire au-delà du
+   déploiement habituel) :
+   ```bash
+   docker compose up -d knx-docs
+   ```
+2. Dashboard Cloudflare → **Zero Trust** → **Networks** → **Tunnels** → `domotique-bulle` →
+   **Public Hostnames** → **Add a public hostname** :
+   - Subdomain : `docbulle`
+   - Domain : `malnoy.com`
+   - Service : `HTTP` → `knx-docs:80`
+3. **Zero Trust** → **Access** → **Applications** → **Add an application** → **Self-hosted** :
+   - Domain : `docbulle.malnoy.com`
+   - Policy **Allow** → Include → **Emails** → l'adresse email à autoriser
+   - Session duration : selon préférence (ex. 24h)
+   - À la première visite : code à 6 chiffres envoyé par email, valable 15 minutes.
+4. Accès direct sur le réseau local (sans passer par le tunnel) : `http://<IP du Mac mini>:8090`.
+
 ## 5. KNX et réseau Docker — point de vigilance
 
 Le réseau utilisé ici (`domotique_net`, bridge Docker standard) fonctionne sans restriction si l'interface KNX est une **interface IP en mode tunneling** (connexion unicast vers une IP fixe — c'est le mode recommandé pour une installation en conteneur, y compris par la doc officielle de l'intégration KNX de Home Assistant).
