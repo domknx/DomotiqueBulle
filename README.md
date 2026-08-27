@@ -132,20 +132,20 @@ Le registrar (propriété du nom de domaine, facturation) reste chez Gandi — s
 ### 4.3 Section documentation du projet — `docbulle.malnoy.com` (ajouté au jalon 2, KNX)
 
 Sert le contenu de `docs_site/` (page d'accueil + inventaire KNX interactif régénéré par
-`knx/scripts/build_html_report.py`) via un conteneur `knx-docs` (nginx) dédié, séparé du
+`knx/scripts/build_html_report.py`) via un conteneur `doc-knx` (nginx) dédié, séparé du
 dossier `docs/` utilisé pour les GitHub Pages publiques — cette documentation contient la
 structure du bus KNX (pièces, adresses de groupe) et n'est donc pas destinée à être publique.
 
 1. Démarrer le conteneur (inclus dans la stack, rien de spécifique à faire au-delà du
    déploiement habituel) :
    ```bash
-   docker compose up -d knx-docs
+   docker compose up -d doc-knx
    ```
 2. Dashboard Cloudflare → **Zero Trust** → **Networks** → **Tunnels** → `domotique-bulle` →
    **Public Hostnames** → **Add a public hostname** :
    - Subdomain : `docbulle`
    - Domain : `malnoy.com`
-   - Service : `HTTP` → `knx-docs:80`
+   - Service : `HTTP` → `doc-knx:80`
 3. **Zero Trust** → **Access** → **Applications** → **Add an application** → **Self-hosted** :
    - Domain : `docbulle.malnoy.com`
    - Policy **Allow** → Include → **Emails** → l'adresse email à autoriser

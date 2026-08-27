@@ -81,8 +81,8 @@ services:
     depends_on:
       - victoriametrics
 
-  knx-docs:
-    container_name: knx-docs
+  doc-knx:
+    container_name: doc-knx
     image: nginx:alpine
     restart: unless-stopped
     networks:
@@ -109,4 +109,4 @@ services:
     depends_on:
       - homeassistant
       - grafana
-      - knx-docs
+      - doc-knx

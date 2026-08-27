@@ -46,7 +46,7 @@ def main():
     print(f"-> {out_path} ({len(final)//1024} Ko)")
 
     # Copie déployée pour le site de documentation auto-hébergé (docbulle.malnoy.com),
-    # servie telle quelle par le conteneur knx-docs (nginx, volume ./docs_site).
+    # servie telle quelle par le conteneur doc-knx (nginx, volume ./docs_site).
     if len(sys.argv) <= 3:  # seulement quand on utilise le chemin de sortie par défaut
         os.makedirs(os.path.dirname(DEFAULT_DOCS_SITE_OUT), exist_ok=True)
         with open(DEFAULT_DOCS_SITE_OUT, 'w', encoding='utf-8') as f:
