@@ -91,6 +91,7 @@ services:
       - "8090:80"  # accès LAN direct (docbulle.malnoy.com passe par le tunnel Cloudflare + Cloudflare Access)
     volumes:
       - ./docs_site:/usr/share/nginx/html:ro
+      - ./docs_site_nginx/charset.conf:/etc/nginx/conf.d/charset.conf:ro
     # Documentation du projet (jalon 2 : inventaire KNX interactif). Contenu régénéré par
     # knx/scripts/build_html_report.py, jamais édité à la main dans docs_site/. Exposé
     # publiquement sur docbulle.malnoy.com via le tunnel Cloudflare (Public Hostname à
