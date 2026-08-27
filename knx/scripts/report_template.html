@@ -1,0 +1,648 @@
+<title>KNX Villa Bulle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Design tokens ---------- */
+  :root{
+    --bg:#F2F5F3;
+    --surface:#FFFFFF;
+    --surface-2:#E7ECE9;
+    --surface-3:#DCE4DF;
+    --border:#D2DAD5;
+    --ink:#16211C;
+    --ink-muted:#4E5B54;
+    --ink-faint:#7C8981;
+    --accent:#1F6F54;
+    --accent-strong:#134D39;
+    --accent-soft:#DCEEE6;
+    --accent-ink:#0E3A2B;
+    --warn:#A9631C;
+    --warn-soft:#F3E2CC;
+    --warn-ink:#5B380F;
+    --info:#33638A;
+    --info-soft:#DCE7EF;
+    --info-ink:#1D3B52;
+    --shadow: 0 1px 2px rgba(20,30,25,0.06), 0 6px 20px -8px rgba(20,30,25,0.14);
+    --radius: 10px;
+    --font-display:"IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+    --font-body:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    --font-mono:"IBM Plex Mono", "SF Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F1512;
+      --surface:#171F1A;
+      --surface-2:#1D2721;
+      --surface-3:#26312A;
+      --border:#2C3A32;
+      --ink:#E9F1EC;
+      --ink-muted:#A7B7AE;
+      --ink-faint:#748179;
+      --accent:#59C79A;
+      --accent-strong:#7FDBB4;
+      --accent-soft:#1C3A2E;
+      --accent-ink:#B9EDD6;
+      --warn:#E2A15B;
+      --warn-soft:#3B2A16;
+      --warn-ink:#F3CE9E;
+      --info:#7EB4D9;
+      --info-soft:#1C2F3C;
+      --info-ink:#BFE0F3;
+      --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 10px 28px -10px rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F1512;
+    --surface:#171F1A;
+    --surface-2:#1D2721;
+    --surface-3:#26312A;
+    --border:#2C3A32;
+    --ink:#E9F1EC;
+    --ink-muted:#A7B7AE;
+    --ink-faint:#748179;
+    --accent:#59C79A;
+    --accent-strong:#7FDBB4;
+    --accent-soft:#1C3A2E;
+    --accent-ink:#B9EDD6;
+    --warn:#E2A15B;
+    --warn-soft:#3B2A16;
+    --warn-ink:#F3CE9E;
+    --info:#7EB4D9;
+    --info-soft:#1C2F3C;
+    --info-ink:#BFE0F3;
+    --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 10px 28px -10px rgba(0,0,0,0.55);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:14.5px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent-soft); color:var(--accent-ink); }
+  a{ color:var(--accent); }
+  button{ font-family:inherit; }
+  *:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  h1,h2,h3{ font-family:var(--font-display); font-weight:700; letter-spacing:0.01em; text-wrap:balance; margin:0; color:var(--ink); }
+
+  code, .mono, .addr{ font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:20;
+    display:flex; align-items:center; gap:20px;
+    padding:14px 22px;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+    flex-wrap:wrap;
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; margin-right:4px; }
+  .brand .eyebrow{ font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); }
+  .brand h1{ font-size:20px; }
+  .stats{ display:flex; gap:8px; flex-wrap:wrap; }
+  .stat-chip{
+    display:flex; align-items:baseline; gap:5px;
+    background:var(--surface-2); border:1px solid var(--border);
+    border-radius:999px; padding:5px 12px;
+    font-size:12.5px; color:var(--ink-muted);
+  }
+  .stat-chip b{ font-family:var(--font-mono); color:var(--ink); font-size:13px; }
+  .topbar .search-wrap{ margin-left:auto; min-width:220px; flex:1 1 260px; max-width:380px; }
+  .search-input{
+    width:100%; padding:9px 12px 9px 34px; border-radius:999px;
+    border:1px solid var(--border); background:var(--surface-2); color:var(--ink);
+    font-size:13.5px;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNEU1QjU0IiBzdHJva2Utd2lkdGg9IjEuOCI+PGNpcmNsZSBjeD0iNi41IiBjeT0iNi41IiByPSI1Ii8+PGxpbmUgeDE9IjEwLjMiIHkxPSIxMC4zIiB4Mj0iMTQuNSIgeTI9IjE0LjUiLz48L3N2Zz4=");
+    background-repeat:no-repeat; background-position:11px center;
+  }
+  .search-input:focus{ background-color:var(--surface); border-color:var(--accent); }
+
+  /* ---------- Layout ---------- */
+  .layout{ display:grid; grid-template-columns:252px 1fr; min-height:calc(100% - 60px); }
+  @media (max-width:860px){ .layout{ grid-template-columns:1fr; } .sidebar{ position:static; border-right:none; border-bottom:1px solid var(--border); } }
+
+  .sidebar{
+    position:sticky; top:60px; align-self:start;
+    height:calc(100vh - 60px); overflow-y:auto;
+    border-right:1px solid var(--border);
+    padding:18px 16px 40px;
+    display:flex; flex-direction:column; gap:22px;
+  }
+  .filter-group h3{ font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-faint); margin-bottom:9px; }
+  .chip-list{ display:flex; flex-direction:column; gap:3px; }
+  .chip{
+    display:flex; align-items:center; gap:8px;
+    padding:6px 8px; border-radius:7px; cursor:pointer;
+    border:1px solid transparent; background:transparent;
+    font-size:13px; color:var(--ink-muted); text-align:left; width:100%;
+  }
+  .chip:hover{ background:var(--surface-2); color:var(--ink); }
+  .chip.active{ background:var(--accent-soft); color:var(--accent-ink); border-color:var(--accent); font-weight:500; }
+  .chip .n{ margin-left:auto; font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); }
+  .chip.active .n{ color:var(--accent-ink); opacity:0.75; }
+  .dot{ width:7px; height:7px; border-radius:50%; flex:none; background:var(--ink-faint); }
+  .dot.linked{ background:var(--accent); }
+  .dot.device_only{ background:var(--info); }
+  .dot.orphan{ background:var(--warn); }
+
+  .room-tree{ display:flex; flex-direction:column; gap:1px; max-height:340px; overflow-y:auto; padding-right:4px; }
+  .room-node{ font-size:13px; }
+  .room-row{ display:flex; align-items:center; gap:6px; padding:5px 7px; border-radius:7px; cursor:pointer; color:var(--ink-muted); }
+  .room-row:hover{ background:var(--surface-2); color:var(--ink); }
+  .room-row.active{ background:var(--accent-soft); color:var(--accent-ink); font-weight:500; }
+  .room-row .n{ margin-left:auto; font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); }
+  .room-children{ margin-left:14px; border-left:1px dashed var(--border); padding-left:6px; }
+
+  .reset-link{ background:none; border:none; color:var(--accent); font-size:12.5px; cursor:pointer; padding:0; text-align:left; }
+
+  /* ---------- Main ---------- */
+  main{ padding:22px 26px 60px; min-width:0; }
+  .tabs{ display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:18px; }
+  .tab-btn{
+    background:none; border:none; padding:10px 16px; cursor:pointer;
+    font-family:var(--font-display); font-weight:600; font-size:14px; color:var(--ink-faint);
+    border-bottom:2px solid transparent; margin-bottom:-1px;
+  }
+  .tab-btn:hover{ color:var(--ink); }
+  .tab-btn.active{ color:var(--accent-strong); border-bottom-color:var(--accent); }
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+
+  .result-count{ font-size:12.5px; color:var(--ink-faint); margin-bottom:14px; }
+  .result-count b{ color:var(--ink-muted); font-family:var(--font-mono); }
+
+  /* Function cards, grouped by room */
+  .room-group{ margin-bottom:26px; }
+  .room-group-title{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:10px;
+    font-family:var(--font-display); font-weight:700; font-size:15.5px;
+    padding-bottom:6px; border-bottom:1px solid var(--border);
+  }
+  .room-group-title .path-muted{ font-weight:500; font-size:12px; color:var(--ink-faint); font-family:var(--font-body); }
+  .func-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:10px; }
+  .func-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:12px 14px; box-shadow:var(--shadow);
+  }
+  .func-card-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:8px; }
+  .func-name{ font-weight:600; font-size:13.5px; }
+  .func-type{ font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.04em; }
+  .ga-chips{ display:flex; flex-wrap:wrap; gap:5px; }
+  .ga-chip{
+    font-family:var(--font-mono); font-size:11.5px; padding:2px 7px; border-radius:5px;
+    background:var(--surface-2); color:var(--ink-muted); border:1px solid var(--border);
+  }
+
+  /* Address table */
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); }
+  table{ border-collapse:collapse; width:100%; font-size:13px; min-width:920px; }
+  thead th{
+    position:sticky; top:0; background:var(--surface-2);
+    text-align:left; font-family:var(--font-display); font-weight:600; font-size:11.5px;
+    text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-muted);
+    padding:9px 12px; border-bottom:1px solid var(--border); white-space:nowrap;
+  }
+  tbody td{ padding:8px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  tbody tr:hover{ background:var(--surface-2); }
+  tbody tr:last-child td{ border-bottom:none; }
+  td.addr{ white-space:nowrap; color:var(--accent-strong); font-weight:500; }
+  td.name{ max-width:260px; }
+  .muted{ color:var(--ink-faint); }
+  .status-pill{
+    display:inline-flex; align-items:center; gap:5px; font-size:11px; padding:2px 8px;
+    border-radius:999px; white-space:nowrap; font-weight:500;
+  }
+  .status-pill.linked{ background:var(--accent-soft); color:var(--accent-ink); }
+  .status-pill.device_only{ background:var(--info-soft); color:var(--info-ink); }
+  .status-pill.orphan{ background:var(--warn-soft); color:var(--warn-ink); }
+
+  /* Structure tab */
+  .prose{ max-width:66ch; }
+  .prose p{ color:var(--ink-muted); margin:0 0 14px; }
+  .structure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin:22px 0 30px; }
+  @media (max-width:760px){ .structure-grid{ grid-template-columns:1fr; } }
+  .level-card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); }
+  .level-card .lvl-num{ font-family:var(--font-mono); font-size:11px; color:var(--accent); letter-spacing:0.06em; }
+  .level-card h3{ font-size:15px; margin:4px 0 6px; }
+  .level-card p{ font-size:12.5px; color:var(--ink-muted); margin:0; }
+  .example-addr{ display:flex; align-items:center; gap:2px; font-family:var(--font-mono); font-size:26px; font-weight:600; margin:18px 0 22px; flex-wrap:wrap; }
+  .example-addr .seg{ padding:4px 10px; border-radius:8px; }
+  .example-addr .seg.main{ background:var(--accent-soft); color:var(--accent-ink); }
+  .example-addr .seg.mid{ background:var(--info-soft); color:var(--info-ink); }
+  .example-addr .seg.sub{ background:var(--warn-soft); color:var(--warn-ink); }
+  .example-addr .slash{ color:var(--ink-faint); }
+  .example-labels{ display:flex; gap:4px; font-family:var(--font-display); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-faint); margin-top:-14px; margin-bottom:24px; flex-wrap:wrap; }
+  .example-labels span{ padding:0 10px; min-width:0; }
+
+  .range-tree{ font-size:13px; }
+  .range-node{ display:flex; align-items:center; gap:8px; padding:5px 8px; border-radius:6px; }
+  .range-node:hover{ background:var(--surface-2); }
+  .range-node .rname{ flex:1; }
+  .range-node .rrange{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); }
+  .range-node.legacy .rname{ color:var(--warn-ink); }
+  .range-node.legacy .rrange{ color:var(--warn); }
+  .range-children{ margin-left:16px; border-left:1px dashed var(--border); padding-left:8px; }
+  .callout{
+    border-left:3px solid var(--warn); background:var(--warn-soft); color:var(--warn-ink);
+    padding:12px 14px; border-radius:0 8px 8px 0; font-size:13px; margin:18px 0;
+  }
+  .callout b{ display:block; margin-bottom:3px; font-family:var(--font-display); font-size:11.5px; text-transform:uppercase; letter-spacing:0.05em; }
+
+  .bar-list{ display:flex; flex-direction:column; gap:7px; margin:16px 0 6px; }
+  .bar-row{ display:grid; grid-template-columns:150px 1fr 46px; align-items:center; gap:10px; font-size:12.5px; }
+  .bar-row .lbl{ color:var(--ink-muted); text-align:right; }
+  .bar-track{ background:var(--surface-2); border-radius:5px; height:9px; overflow:hidden; }
+  .bar-fill{ height:100%; background:var(--accent); border-radius:5px; }
+  .bar-row .val{ font-family:var(--font-mono); color:var(--ink-faint); }
+
+  .empty-state{ padding:50px 10px; text-align:center; color:var(--ink-faint); font-size:13.5px; }
+
+  @media (prefers-reduced-motion:no-preference){
+    .func-card, .chip, .room-row{ transition: background 0.12s ease, border-color 0.12s ease; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="eyebrow">Bus KNX &middot; Villa Bulle</span>
+    <h1>Inventaire des adresses de groupe</h1>
+  </div>
+  <div class="stats" id="statChips"></div>
+  <div class="search-wrap">
+    <input id="searchInput" class="search-input" type="text" placeholder="Rechercher une pi&egrave;ce, une fonction, une adresse&hellip;" />
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="filter-group">
+      <button class="reset-link" id="resetFilters">&larr; R&eacute;initialiser les filtres</button>
+    </div>
+    <div class="filter-group">
+      <h3>Statut</h3>
+      <div class="chip-list" id="statusFilters"></div>
+    </div>
+    <div class="filter-group">
+      <h3>Domaine</h3>
+      <div class="chip-list" id="domainFilters"></div>
+    </div>
+    <div class="filter-group">
+      <h3>Pi&egrave;ces &amp; zones</h3>
+      <div class="room-tree" id="roomTree"></div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="functions">Fonctions par pi&egrave;ce</button>
+      <button class="tab-btn" data-tab="addresses">Toutes les adresses</button>
+      <button class="tab-btn" data-tab="structure">Structure des adresses</button>
+    </div>
+
+    <section class="panel active" id="panel-functions">
+      <div class="result-count" id="funcCount"></div>
+      <div id="funcResults"></div>
+    </section>
+
+    <section class="panel" id="panel-addresses">
+      <div class="result-count" id="addrCount"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Adresse</th>
+              <th>Nom</th>
+              <th>DPT</th>
+              <th>Domaine</th>
+              <th>Pi&egrave;ce (fonction)</th>
+              <th>Fonction(s)</th>
+              <th>Appareil</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="addrTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-structure">
+      <div class="prose">
+        <p>Cette num&eacute;rotation n'est pas impos&eacute;e par KNX &mdash; c'est une convention d&eacute;finie dans ce projet ETS, d&eacute;duite ici automatiquement en analysant les 975 adresses de groupe, leurs fonctions et leurs appareils li&eacute;s.</p>
+      </div>
+
+      <div class="example-addr" id="exampleAddr"></div>
+      <div class="example-labels">
+        <span>Groupe principal &mdash; domaine fonctionnel</span>
+        <span>Groupe moyen &mdash; r&ocirc;le</span>
+        <span>Sous-groupe &mdash; instance / pi&egrave;ce</span>
+      </div>
+
+      <div class="structure-grid">
+        <div class="level-card">
+          <div class="lvl-num">NIVEAU 1</div>
+          <h3>Groupe principal (0&ndash;31)</h3>
+          <p>Le domaine fonctionnel&nbsp;: &Eacute;clairage, Volets, Store, Chauffage, Prise, Ventilation, S&eacute;curit&eacute;&hellip; Chaque domaine occupe une plage de 2048 adresses.</p>
+        </div>
+        <div class="level-card">
+          <div class="lvl-num">NIVEAU 2</div>
+          <h3>Groupe moyen (0&ndash;7)</h3>
+          <p>Le r&ocirc;le au sein du domaine&nbsp;: commande (On/Off), &eacute;tat/retour, mesure, position, mode&hellip; Le m&ecirc;me sous-groupe partag&eacute; entre deux r&ocirc;les d&eacute;signe le m&ecirc;me point physique.</p>
+        </div>
+      </div>
+
+      <div class="callout" id="legacyCallout"></div>
+
+      <h3 style="margin-bottom:10px;">R&eacute;partition des adresses par domaine</h3>
+      <div class="bar-list" id="domainBars"></div>
+
+      <h3 style="margin:26px 0 10px;">Arborescence compl&egrave;te des groupes ETS</h3>
+      <div class="range-tree" id="rangeTree"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+const DATA = /*__KNX_DATA_JSON__*/{};
+
+const state = { search:'', status:new Set(), domain:new Set(), room:'' };
+
+function domainOf(ga){ return (ga.group_path || 'Sans domaine').split(' > ')[0] || 'Sans domaine'; }
+function statusOf(ga){ return ga.linked ? 'linked' : (ga.device_linked ? 'device_only' : 'orphan'); }
+const STATUS_LABEL = { linked:'Liée à une fonction', device_only:'Liée à un appareil', orphan:'Orpheline' };
+
+/* ---------- derive lookups ---------- */
+const domainCounts = {};
+DATA.group_addresses.forEach(g=>{
+  const d = domainOf(g);
+  domainCounts[d] = (domainCounts[d]||0)+1;
+});
+const domainsSorted = Object.entries(domainCounts).sort((a,b)=>b[1]-a[1]);
+
+const statusCounts = {linked:0, device_only:0, orphan:0};
+DATA.group_addresses.forEach(g=>{ statusCounts[statusOf(g)]++; });
+
+function buildRoomTree(){
+  const root = {};
+  DATA.functions.forEach(f=>{
+    if(!f.room) return;
+    const parts = f.room.split(' / ');
+    let node = root;
+    let pathAcc = [];
+    parts.forEach(p=>{
+      pathAcc.push(p);
+      node.children = node.children || {};
+      node.children[p] = node.children[p] || { name:p, path:pathAcc.join(' / '), count:0, children:undefined };
+      node = node.children[p];
+      node.count++;
+    });
+  });
+  return root;
+}
+const roomTree = buildRoomTree();
+
+/* ---------- render: stat chips ---------- */
+function renderStats(){
+  const s = DATA.meta.stats;
+  const chips = [
+    [s.group_addresses, 'adresses'],
+    [s.functions, 'fonctions'],
+    [s.rooms, 'pièces'],
+    [s.devices, 'appareils'],
+  ];
+  document.getElementById('statChips').innerHTML = chips.map(([n,l])=>
+    `<span class="stat-chip"><b>${n}</b> ${l}</span>`).join('');
+}
+
+/* ---------- render: sidebar filters ---------- */
+function renderStatusFilters(){
+  const el = document.getElementById('statusFilters');
+  el.innerHTML = Object.keys(STATUS_LABEL).map(key=>{
+    const active = state.status.has(key);
+    return `<button class="chip ${active?'active':''}" data-status="${key}">
+      <span class="dot ${key}"></span>${STATUS_LABEL[key]}<span class="n">${statusCounts[key]}</span>
+    </button>`;
+  }).join('');
+  el.querySelectorAll('[data-status]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k = btn.dataset.status;
+      state.status.has(k) ? state.status.delete(k) : state.status.add(k);
+      renderAll();
+    });
+  });
+}
+
+function renderDomainFilters(){
+  const el = document.getElementById('domainFilters');
+  el.innerHTML = domainsSorted.map(([name,count])=>{
+    const active = state.domain.has(name);
+    return `<button class="chip ${active?'active':''}" data-domain="${name}">
+      <span>${name}</span><span class="n">${count}</span>
+    </button>`;
+  }).join('');
+  el.querySelectorAll('[data-domain]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k = btn.dataset.domain;
+      state.domain.has(k) ? state.domain.delete(k) : state.domain.add(k);
+      renderAll();
+    });
+  });
+}
+
+function renderRoomTree(){
+  const el = document.getElementById('roomTree');
+  function renderNode(node, depth){
+    if(!node.children) return '';
+    return Object.values(node.children).sort((a,b)=>a.name.localeCompare(b.name)).map(n=>{
+      const active = state.room === n.path;
+      const childHtml = n.children ? `<div class="room-children">${renderNode(n, depth+1)}</div>` : '';
+      return `<div class="room-node">
+        <div class="room-row ${active?'active':''}" data-room="${n.path.replace(/"/g,'&quot;')}">
+          <span>${n.name}</span><span class="n">${n.count}</span>
+        </div>
+        ${childHtml}
+      </div>`;
+    }).join('');
+  }
+  el.innerHTML = renderNode(roomTree, 0);
+  el.querySelectorAll('[data-room]').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const r = row.dataset.room;
+      state.room = (state.room === r) ? '' : r;
+      renderAll();
+    });
+  });
+}
+
+/* ---------- filtering ---------- */
+function matchesSearch(hay, needle){
+  if(!needle) return true;
+  return hay.toLowerCase().includes(needle);
+}
+function gaSearchBlob(g){
+  return [g.address, g.name, g.description, g.room, g.functions.join(' '), g.devices.join(' '), g.dpt].join(' ').toLowerCase();
+}
+function filterGAs(){
+  const q = state.search.trim().toLowerCase();
+  return DATA.group_addresses.filter(g=>{
+    if(state.status.size && !state.status.has(statusOf(g))) return false;
+    if(state.domain.size && !state.domain.has(domainOf(g))) return false;
+    if(state.room && !(g.room === state.room || g.room.startsWith(state.room+' / '))) return false;
+    if(q && !matchesSearch(gaSearchBlob(g), q)) return false;
+    return true;
+  });
+}
+function filterFunctions(){
+  const q = state.search.trim().toLowerCase();
+  return DATA.functions.filter(f=>{
+    if(state.room && !(f.room === state.room || f.room.startsWith(state.room+' / '))) return false;
+    if(state.domain.size){
+      const gas = f.group_addresses.map(a=>DATA.gaByAddress[a]).filter(Boolean);
+      const doms = new Set(gas.map(domainOf));
+      let ok=false; state.domain.forEach(d=>{ if(doms.has(d)) ok=true; });
+      if(!ok) return false;
+    }
+    if(q){
+      const blob = [f.room, f.name, f.type, f.group_addresses.join(' ')].join(' ').toLowerCase();
+      if(!matchesSearch(blob, q)) return false;
+    }
+    return true;
+  });
+}
+
+/* ---------- render: functions tab ---------- */
+function renderFunctions(){
+  const list = filterFunctions();
+  document.getElementById('funcCount').innerHTML = `<b>${list.length}</b> fonction${list.length>1?'s':''} affichée${list.length>1?'s':''} sur ${DATA.functions.length}`;
+  const byRoom = {};
+  list.forEach(f=>{ (byRoom[f.room] = byRoom[f.room] || []).push(f); });
+  const rooms = Object.keys(byRoom).sort();
+  if(!rooms.length){
+    document.getElementById('funcResults').innerHTML = `<div class="empty-state">Aucune fonction ne correspond à ces filtres.</div>`;
+    return;
+  }
+  document.getElementById('funcResults').innerHTML = rooms.map(room=>{
+    const parts = room.split(' / ');
+    const short = parts[parts.length-1] || room;
+    const crumbs = parts.slice(0,-1).join(' / ');
+    const cards = byRoom[room].map(f=>{
+      const chips = f.group_addresses.map(a=>{
+        const g = DATA.gaByAddress[a];
+        const dpt = g && g.dpt ? ` &middot; ${g.dpt.replace('DPST-','')}` : '';
+        return `<span class="ga-chip" title="${g?(g.name||'').replace(/"/g,'&quot;'):''}">${a}${dpt}</span>`;
+      }).join('');
+      return `<div class="func-card">
+        <div class="func-card-head">
+          <div>
+            <div class="func-name">${f.name || '(sans nom)'}</div>
+            <div class="func-type">${f.type||''}</div>
+          </div>
+        </div>
+        <div class="ga-chips">${chips}</div>
+      </div>`;
+    }).join('');
+    return `<div class="room-group">
+      <div class="room-group-title">${short} ${crumbs?`<span class="path-muted">${crumbs}</span>`:''}</div>
+      <div class="func-grid">${cards}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- render: addresses tab ---------- */
+function renderAddresses(){
+  const list = filterGAs();
+  document.getElementById('addrCount').innerHTML = `<b>${list.length}</b> adresse${list.length>1?'s':''} affichée${list.length>1?'s':''} sur ${DATA.group_addresses.length}`;
+  if(!list.length){
+    document.getElementById('addrTbody').innerHTML = `<tr><td colspan="8"><div class="empty-state">Aucune adresse ne correspond à ces filtres.</div></td></tr>`;
+    return;
+  }
+  document.getElementById('addrTbody').innerHTML = list.map(g=>{
+    const st = statusOf(g);
+    return `<tr>
+      <td class="addr">${g.address}</td>
+      <td class="name">${g.name||'<span class="muted">&mdash;</span>'}</td>
+      <td class="mono muted">${g.dpt ? g.dpt.replace('DPST-','') : '&mdash;'}</td>
+      <td class="muted">${domainOf(g)}</td>
+      <td>${g.room || '<span class="muted">&mdash;</span>'}</td>
+      <td class="muted">${g.functions.join(', ')||'&mdash;'}</td>
+      <td class="muted">${g.devices.join(', ')||'&mdash;'}</td>
+      <td><span class="status-pill ${st}">${STATUS_LABEL[st]}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ---------- render: structure tab (static content, computed once) ---------- */
+function renderStructure(){
+  document.getElementById('exampleAddr').innerHTML =
+    `<span class="seg main">1</span><span class="slash">/</span><span class="seg mid">0</span><span class="slash">/</span><span class="seg sub">1</span>`;
+
+  const legacy = DATA.group_ranges.filter(r=>/old|nouveau groupe/i.test(r.name));
+  const legacyCount = DATA.group_addresses.filter(g=>/old|nouveau groupe/i.test(g.group_path)).length;
+  document.getElementById('legacyCallout').innerHTML = `<b>Zones à statut incertain</b>
+    Les groupes principaux <code>chauffage_old</code> et les <code>Nouveau groupe principal/médian</code> encore au nom par défaut d'ETS
+    représentent à eux seuls environ <b>${legacyCount}</b> adresses de groupe, la plupart orphelines. Avant toute génération d'entités
+    Home Assistant, il faudra confirmer avec vous s'il s'agit de câblage historique à ignorer ou de plages encore à finaliser.`;
+
+  document.getElementById('domainBars').innerHTML = domainsSorted.map(([name,count])=>{
+    const pct = Math.round(count/DATA.meta.stats.group_addresses*100);
+    return `<div class="bar-row">
+      <div class="lbl">${name}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+      <div class="val">${count}</div>
+    </div>`;
+  }).join('');
+
+  function renderRangeNode(node){
+    const isLegacy = /old|nouveau groupe/i.test(node.name);
+    const children = (node.children && node.children.length)
+      ? `<div class="range-children">${node.children.map(renderRangeNode).join('')}</div>` : '';
+    return `<div class="range-node ${isLegacy?'legacy':''}">
+      <span class="rname">${node.name || '(sans nom)'}</span>
+      <span class="rrange">${node.start}&ndash;${node.end}</span>
+    </div>${children}`;
+  }
+  document.getElementById('rangeTree').innerHTML = DATA.group_ranges.map(renderRangeNode).join('');
+}
+
+/* ---------- wiring ---------- */
+function renderAll(){
+  renderStatusFilters();
+  renderDomainFilters();
+  renderRoomTree();
+  renderFunctions();
+  renderAddresses();
+}
+
+document.getElementById('searchInput').addEventListener('input', e=>{
+  state.search = e.target.value;
+  renderAll();
+});
+document.getElementById('resetFilters').addEventListener('click', ()=>{
+  state.search=''; state.status.clear(); state.domain.clear(); state.room='';
+  document.getElementById('searchInput').value='';
+  renderAll();
+});
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* index by address for quick lookup */
+DATA.gaByAddress = {};
+DATA.group_addresses.forEach(g=>{ DATA.gaByAddress[g.address] = g; });
+
+renderStats();
+renderAll();
+renderStructure();
+</script>
