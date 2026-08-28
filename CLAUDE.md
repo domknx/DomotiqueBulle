@@ -88,6 +88,7 @@ Plusieurs dashboards Home Assistant doivent être créés, adaptés à différen
 - Éviter de dupliquer une entité déjà migrée — vérifier l'existant avant création
 - Les données des container doivent toujours se trouver dans un répertoire dédié du type: ContainerName_Data (examples: HomeAssistant_Data, Grafana_Data, ...)
 - À la fin de chaque jalon principal (voir §10), exécuter `scripts/backup_jalon.sh "nom-du-jalon"` pour créer un point de restauration complet avant de poursuivre.
+- **Toute page HTML doit être responsive** (mobile, tablette, desktop) : tester mentalement au moins un point de rupture ≤480px (iPhone) avant de livrer. Attention particulière à l'ordre des règles CSS dans la feuille de style — une règle `@media` doit toujours être placée *après* la règle de base qu'elle surcharge, sinon elle perd la bataille de spécificité/ordre sur mobile (bug vécu le 27.08.2026 : sidebar de filtres du rapport KNX qui restait en `position:sticky` plein écran et chevauchait le contenu sur iPhone, car le `@media (max-width:860px)` était placé avant la règle `.sidebar` de base).
 
 ## 7. Architecture Docker (v1)
 

@@ -21,24 +21,37 @@ DEFAULT_OUT = os.path.join('knx', 'group_addresses', 'knx_report.html')
 DEFAULT_DOCS_SITE_OUT = os.path.join('docs_site', 'knx', 'index.html')
 
 PLACEHOLDER = '/*__KNX_DATA_JSON__*/{}'
+PLACEHOLDER_SUGGESTIONS = '/*__KNX_SUGGESTIONS_JSON__*/{}'
 
 
 def main():
     template_path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_TEMPLATE
     json_path = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_JSON
     out_path = sys.argv[3] if len(sys.argv) > 3 else DEFAULT_OUT
+    suggestions_path = os.path.join(os.path.dirname(json_path) or '.', 'suggestions.json')
 
     with open(json_path, encoding='utf-8') as f:
         raw_json = f.read()
     json.loads(raw_json)  # valide avant d'injecter
+
+    if os.path.exists(suggestions_path):
+        with open(suggestions_path, encoding='utf-8') as f:
+            raw_suggestions = f.read()
+        json.loads(raw_suggestions)  # valide avant d'injecter
+    else:
+        raw_suggestions = '{"generated_from":"","stats":{},"clusters":[]}'
+        print(f"(pas de {suggestions_path} — onglet Suggestions vide ; lancer analyze_suggestions.py pour le peupler)")
 
     with open(template_path, encoding='utf-8') as f:
         template = f.read()
 
     if PLACEHOLDER not in template:
         raise SystemExit(f"Marqueur {PLACEHOLDER!r} introuvable dans {template_path}")
+    if PLACEHOLDER_SUGGESTIONS not in template:
+        raise SystemExit(f"Marqueur {PLACEHOLDER_SUGGESTIONS!r} introuvable dans {template_path}")
 
     final = template.replace(PLACEHOLDER, raw_json)
+    final = final.replace(PLACEHOLDER_SUGGESTIONS, raw_suggestions)
 
     os.makedirs(os.path.dirname(out_path) or '.', exist_ok=True)
     with open(out_path, 'w', encoding='utf-8') as f:

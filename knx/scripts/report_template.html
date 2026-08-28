@@ -128,7 +128,6 @@
 
   /* ---------- Layout ---------- */
   .layout{ display:grid; grid-template-columns:252px 1fr; min-height:calc(100% - 60px); }
-  @media (max-width:860px){ .layout{ grid-template-columns:1fr; } .sidebar{ position:static; border-right:none; border-bottom:1px solid var(--border); } }
 
   .sidebar{
     position:sticky; top:60px; align-self:start;
@@ -136,6 +135,50 @@
     border-right:1px solid var(--border);
     padding:18px 16px 40px;
     display:flex; flex-direction:column; gap:22px;
+  }
+  .filters-toggle{
+    display:none; align-items:center; gap:7px; padding:8px 14px; border-radius:999px;
+    border:1px solid var(--border); background:var(--surface-2); color:var(--ink);
+    font-size:13px; font-weight:500; cursor:pointer; font-family:var(--font-body);
+  }
+  .filters-toggle svg{ width:15px; height:15px; flex:none; }
+  .filters-toggle .badge{
+    display:none; align-items:center; justify-content:center; min-width:16px; height:16px;
+    padding:0 4px; border-radius:999px; background:var(--accent); color:#fff;
+    font-size:10px; font-weight:600; font-family:var(--font-mono);
+  }
+  .sidebar-backdrop{
+    display:none; position:fixed; inset:0; background:rgba(10,16,13,0.45);
+    z-index:39; opacity:0; transition:opacity 0.2s ease;
+  }
+  .sidebar-backdrop.show{ display:block; opacity:1; }
+  .sidebar-mobile-head{
+    display:none; align-items:center; justify-content:space-between;
+    margin:-18px -16px 14px; padding:14px 16px; border-bottom:1px solid var(--border);
+  }
+  .sidebar-mobile-head h2{ font-family:var(--font-display); font-size:16px; margin:0; }
+  .sidebar-close{ background:none; border:none; font-size:24px; line-height:1; color:var(--ink-faint); cursor:pointer; padding:2px 6px; }
+  .sidebar-apply{
+    display:none; margin-top:auto; position:sticky; bottom:0;
+    background:var(--accent); color:#fff; border:none; border-radius:999px;
+    padding:12px; font-family:var(--font-display); font-weight:600; font-size:14px;
+    cursor:pointer; box-shadow:0 -8px 16px -8px rgba(0,0,0,0.15);
+  }
+  /* Règle responsive : cette surcharge doit rester APRÈS toutes les règles de base
+     qu'elle modifie (.layout, .sidebar) — sinon, à spécificité égale, la règle de
+     base placée plus bas dans la feuille de style regagne la main sur mobile. */
+  @media (max-width:860px){
+    .layout{ grid-template-columns:1fr; }
+    .filters-toggle{ display:inline-flex; }
+    .sidebar{
+      position:fixed; top:0; left:0; height:100%; width:86%; max-width:340px;
+      z-index:40; background:var(--surface); border-right:1px solid var(--border);
+      transform:translateX(-100%); transition:transform 0.25s ease;
+      box-shadow:0 0 40px rgba(0,0,0,0.3);
+    }
+    .sidebar.open{ transform:translateX(0); }
+    .sidebar-mobile-head{ display:flex; }
+    .sidebar-apply{ display:block; }
   }
   .filter-group h3{ font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-faint); margin-bottom:9px; }
   .chip-list{ display:flex; flex-direction:column; gap:3px; }
@@ -269,6 +312,53 @@
   @media (prefers-reduced-motion:no-preference){
     .func-card, .chip, .room-row{ transition: background 0.12s ease, border-color 0.12s ease; }
   }
+
+  /* ---------- Domain icon badges (iOS style) ---------- */
+  .dbadge{
+    position:relative; overflow:hidden; flex:none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .dbadge::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(255,255,255,0.38), rgba(255,255,255,0) 58%);
+  }
+  .dbadge svg{ position:relative; z-index:1; }
+  .dbadge.sz-sm{ width:22px; height:22px; border-radius:7px; }
+  .dbadge.sz-sm svg{ width:14px; height:14px; }
+  .dbadge.sz-md{ width:30px; height:30px; border-radius:9px; }
+  .dbadge.sz-md svg{ width:19px; height:19px; }
+  .db-light{ background:linear-gradient(135deg,#FFDE7A,#FF9F1C); box-shadow:0 3px 8px -2px rgba(255,159,28,0.55); }
+  .db-heat{ background:linear-gradient(135deg,#FF9A6C,#E9531E); box-shadow:0 3px 8px -2px rgba(233,83,30,0.55); }
+  .db-heat-old{ background:linear-gradient(135deg,#C3CBC5,#8E9A93); box-shadow:0 3px 8px -2px rgba(120,130,124,0.4); }
+  .db-shutter{ background:linear-gradient(135deg,#7FD0F7,#2E86DE); box-shadow:0 3px 8px -2px rgba(46,134,222,0.5); }
+  .db-awning{ background:linear-gradient(135deg,#FFCE9E,#D97A34); box-shadow:0 3px 8px -2px rgba(217,122,52,0.5); }
+  .db-plug{ background:linear-gradient(135deg,#C9A6FF,#7C4DFF); box-shadow:0 3px 8px -2px rgba(124,77,255,0.5); }
+  .db-vent{ background:linear-gradient(135deg,#8FF3E0,#14B8A6); box-shadow:0 3px 8px -2px rgba(20,184,166,0.5); }
+  .db-security{ background:linear-gradient(135deg,#FF8A8A,#E63946); box-shadow:0 3px 8px -2px rgba(230,57,70,0.5); }
+  .db-general{ background:linear-gradient(135deg,#B9C4BC,#6D7A72); box-shadow:0 3px 8px -2px rgba(90,100,94,0.4); }
+  .db-unassigned{ background:linear-gradient(135deg,#C7CFC9,#98A39B); box-shadow:0 3px 8px -2px rgba(110,120,114,0.35); }
+  .func-card-head-icon{ display:flex; align-items:center; gap:10px; }
+  .conf-pill{ display:inline-flex; align-items:center; gap:5px; font-size:11px; padding:2px 8px; border-radius:999px; white-space:nowrap; font-weight:500; }
+  .conf-pill.haute{ background:var(--accent-soft); color:var(--accent-ink); }
+  .conf-pill.moyenne{ background:var(--info-soft); color:var(--info-ink); }
+  .conf-pill.faible{ background:var(--warn-soft); color:var(--warn-ink); }
+  .sugg-summary{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+  .sugg-group-title{ font-family:var(--font-display); font-weight:700; font-size:15.5px; margin:26px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--border); display:flex; align-items:baseline; gap:10px; }
+  .sugg-group-title .n{ font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); font-weight:400; }
+  .sugg-grid{ display:flex; flex-direction:column; gap:10px; }
+  .sugg-card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; box-shadow:var(--shadow); }
+  .sugg-card-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
+  .sugg-card-head .lhs{ display:flex; align-items:center; gap:10px; }
+  .sugg-domain{ font-family:var(--font-display); font-weight:600; font-size:13px; }
+  .sugg-room{ font-size:13px; margin:2px 0; }
+  .sugg-room b{ color:var(--ink); }
+  .sugg-room.muted{ color:var(--ink-faint); }
+  .sugg-func{ font-size:13px; margin:2px 0 8px; }
+  .sugg-func b{ color:var(--ink); }
+  .sugg-names{ display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; }
+  .sugg-name-chip{ font-size:11.5px; padding:2px 7px; border-radius:5px; background:var(--surface-2); color:var(--ink-muted); border:1px solid var(--border); }
+  .sugg-name-chip .a{ font-family:var(--font-mono); color:var(--accent-strong); margin-right:5px; }
+  .sugg-note{ font-size:12px; color:var(--warn-ink); margin-top:6px; }
 </style>
 
 <div class="topbar">
@@ -277,13 +367,26 @@
     <h1>Inventaire des adresses de groupe</h1>
   </div>
   <div class="stats" id="statChips"></div>
+  <button class="filters-toggle" id="filtersToggle" type="button">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <line x1="3" y1="6" x2="17" y2="6"/><circle cx="8" cy="6" r="1.8" fill="currentColor" stroke="none"/>
+      <line x1="3" y1="10" x2="17" y2="10"/><circle cx="13" cy="10" r="1.8" fill="currentColor" stroke="none"/>
+      <line x1="3" y1="14" x2="17" y2="14"/><circle cx="10" cy="14" r="1.8" fill="currentColor" stroke="none"/>
+    </svg>
+    Filtres<span class="badge" id="filtersBadge"></span>
+  </button>
   <div class="search-wrap">
     <input id="searchInput" class="search-input" type="text" placeholder="Rechercher une pi&egrave;ce, une fonction, une adresse&hellip;" />
   </div>
 </div>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <div class="layout">
   <aside class="sidebar">
+    <div class="sidebar-mobile-head">
+      <h2>Filtres</h2>
+      <button class="sidebar-close" id="sidebarClose" type="button" aria-label="Fermer">&times;</button>
+    </div>
     <div class="filter-group">
       <button class="reset-link" id="resetFilters">&larr; R&eacute;initialiser les filtres</button>
     </div>
@@ -299,6 +402,7 @@
       <h3>Pi&egrave;ces &amp; zones</h3>
       <div class="room-tree" id="roomTree"></div>
     </div>
+    <button class="sidebar-apply" id="sidebarApply" type="button">Voir les r&eacute;sultats</button>
   </aside>
 
   <main>
@@ -306,6 +410,7 @@
       <button class="tab-btn active" data-tab="functions">Fonctions par pi&egrave;ce</button>
       <button class="tab-btn" data-tab="addresses">Toutes les adresses</button>
       <button class="tab-btn" data-tab="structure">Structure des adresses</button>
+      <button class="tab-btn" data-tab="suggestions">Suggestions</button>
     </div>
 
     <section class="panel active" id="panel-functions">
@@ -367,17 +472,45 @@
       <h3 style="margin:26px 0 10px;">Arborescence compl&egrave;te des groupes ETS</h3>
       <div class="range-tree" id="rangeTree"></div>
     </section>
+
+    <section class="panel" id="panel-suggestions">
+      <div class="prose">
+        <p>Adresses de groupe non rattach&eacute;es &agrave; une Function ETS, regroup&eacute;es automatiquement par sous-groupe et associ&eacute;es &agrave; une pi&egrave;ce/fonction d&eacute;duite du texte des noms. Ce sont des propositions &agrave; v&eacute;rifier &mdash; rien n'est modifi&eacute; automatiquement dans le projet ETS ni dans Home&nbsp;Assistant, &agrave; vous de les reporter dans ETS si elles sont correctes.</p>
+      </div>
+      <div class="sugg-summary" id="suggSummary"></div>
+      <div id="suggResults"></div>
+    </section>
   </main>
 </div>
 
 <script>
 const DATA = /*__KNX_DATA_JSON__*/{};
+const SUGGESTIONS = /*__KNX_SUGGESTIONS_JSON__*/{};
 
 const state = { search:'', status:new Set(), domain:new Set(), room:'' };
 
 function domainOf(ga){ return (ga.group_path || 'Sans domaine').split(' > ')[0] || 'Sans domaine'; }
 function statusOf(ga){ return ga.linked ? 'linked' : (ga.device_linked ? 'device_only' : 'orphan'); }
 const STATUS_LABEL = { linked:'Liée à une fonction', device_only:'Liée à un appareil', orphan:'Orpheline' };
+
+const DOMAIN_ICON = {
+  'Lumière': { cls:'db-light', svg:'<circle cx="16" cy="12.5" r="6.5"/><path d="M12,19 L20,19 L19,23 L13,23 Z"/><line x1="12.6" y1="20.3" x2="19.4" y2="20.3"/><path d="M13.5,16 L15,11 L16.5,15 L18,11" stroke-width="1.9"/>' },
+  'Chauffage': { cls:'db-heat', svg:'<rect x="9" y="12" width="14" height="14" rx="2"/><line x1="13" y1="13" x2="13" y2="25"/><line x1="19" y1="13" x2="19" y2="25"/><path d="M11,10 C12,6.5 14,6.5 15,10" stroke-width="1.9"/><path d="M17,10 C18,6.5 20,6.5 21,10" stroke-width="1.9"/>' },
+  'Chauffage Mode': { cls:'db-heat', svg:'<circle cx="16" cy="17" r="8"/><path d="M16,17 L16,11"/><path d="M16,17 L20,19"/><circle cx="16" cy="17" r="1.4" fill="#fff" stroke="none"/><path d="M13,6 L13,9 M19,6 L19,9" stroke-width="1.6"/>' },
+  'chauffage_old': { cls:'db-heat-old', svg:'<rect x="9" y="12" width="14" height="14" rx="2"/><line x1="13" y1="13" x2="13" y2="25"/><line x1="19" y1="13" x2="19" y2="25"/><path d="M11,10 C12,6.5 14,6.5 15,10" stroke-width="1.9"/><path d="M17,10 C18,6.5 20,6.5 21,10" stroke-width="1.9"/>' },
+  'Ouvrant Volet': { cls:'db-shutter', svg:'<rect x="7" y="6" width="18" height="20" rx="2.5"/><line x1="7" y1="12" x2="25" y2="12"/><line x1="7" y1="17.3" x2="25" y2="17.3"/><line x1="7" y1="22.6" x2="25" y2="22.6"/>' },
+  'Ouvrant Store': { cls:'db-awning', svg:'<path d="M6,8 H26" stroke-width="2.3"/><path d="M7,8 L25,20 L7,20 Z"/><path d="M11,8 L11,20 M15.5,8 L18.5,20 M20,8 L23.5,20" stroke-width="1.5"/>' },
+  'Prise': { cls:'db-plug', svg:'<path d="M12,6 V13 M20,6 V13" stroke-width="2.3"/><path d="M9,13 H23 V18 A7,7 0 0 1 9,18 Z"/><path d="M16,25 V21"/>' },
+  'Ventilation': { cls:'db-vent', svg:'<circle cx="16" cy="16" r="2.1"/><path d="M16,14.3 Q21.5,9.5 23.5,13 Q20,17 16,14.3"/><path d="M14.3,16 Q9.5,10.5 13,8.5 Q17,12 14.3,16"/><path d="M17.7,17.5 Q22.5,22.5 19,24.5 Q15,20.5 17.7,17.5"/>' },
+  'Sécurité': { cls:'db-security', svg:'<path d="M16,6 L24,9 V16 C24,21.5 20.5,24.5 16,26 C11.5,24.5 8,21.5 8,16 V9 Z"/><path d="M12.5,16.5 L15,19 L20,13.5" stroke-width="1.9"/>' },
+  'Général': { cls:'db-general', svg:'<path d="M7,16 L16,8 L25,16"/><path d="M9.5,14 V25 H22.5 V14"/><path d="M13,25 V19 H19 V25"/>' },
+  'Nouveau groupe principal': { cls:'db-unassigned', svg:'<circle cx="16" cy="16" r="10" stroke-dasharray="2.6 3.2"/><path d="M13,12.5 C13,9.5 19,9.5 19,12.5 C19,15 16,14.5 16,17.5" stroke-width="2"/><circle cx="16" cy="21" r="1" fill="#fff" stroke="none"/>' },
+  '__default__': { cls:'db-general', svg:'<path d="M7,16 L16,8 L25,16"/><path d="M9.5,14 V25 H22.5 V14"/><path d="M13,25 V19 H19 V25"/>' }
+};
+function domainBadge(name, size){
+  const d = DOMAIN_ICON[name] || DOMAIN_ICON['__default__'];
+  return '<span class="dbadge '+size+' '+d.cls+'"><svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">'+d.svg+'</svg></span>';
+}
 
 /* ---------- derive lookups ---------- */
 const domainCounts = {};
@@ -445,7 +578,7 @@ function renderDomainFilters(){
   el.innerHTML = domainsSorted.map(([name,count])=>{
     const active = state.domain.has(name);
     return `<button class="chip ${active?'active':''}" data-domain="${name}">
-      <span>${name}</span><span class="n">${count}</span>
+      ${domainBadge(name,'sz-sm')}<span>${name}</span><span class="n">${count}</span>
     </button>`;
   }).join('');
   el.querySelectorAll('[data-domain]').forEach(btn=>{
@@ -539,8 +672,12 @@ function renderFunctions(){
         const dpt = g && g.dpt ? ` &middot; ${g.dpt.replace('DPST-','')}` : '';
         return `<span class="ga-chip" title="${g?(g.name||'').replace(/"/g,'&quot;'):''}">${a}${dpt}</span>`;
       }).join('');
+      const gasForDomain = f.group_addresses.map(a=>DATA.gaByAddress[a]).filter(Boolean);
+      const fdom = gasForDomain.length ? domainOf(gasForDomain[0]) : null;
+      const badge = fdom ? domainBadge(fdom,'sz-md') : '';
       return `<div class="func-card">
-        <div class="func-card-head">
+        <div class="func-card-head func-card-head-icon">
+          ${badge}
           <div>
             <div class="func-name">${f.name || '(sans nom)'}</div>
             <div class="func-type">${f.type||''}</div>
@@ -612,14 +749,93 @@ function renderStructure(){
   document.getElementById('rangeTree').innerHTML = DATA.group_ranges.map(renderRangeNode).join('');
 }
 
+/* ---------- render: suggestions tab ---------- */
+function renderSuggestions(){
+  const s = SUGGESTIONS || {};
+  const clusters = s.clusters || [];
+  const stats = s.stats || {};
+  document.getElementById('suggSummary').innerHTML = [
+    [stats.total_unlinked||0, 'adresses non rattach\u00e9es'],
+    [stats.total_clusters||0, 'propositions'],
+    [stats.clusters_haute||0, 'confiance haute'],
+    [stats.clusters_moyenne||0, 'confiance moyenne'],
+    [stats.clusters_faible||0, 'confiance faible'],
+  ].map(([n,l])=>`<span class="stat-chip"><b>${n}</b> ${l}</span>`).join('');
+
+  const groups = [
+    { key:'haute', label:'Confiance haute', items: clusters.filter(c=>c.confidence==='haute') },
+    { key:'moyenne', label:'Confiance moyenne \u2014 pi\u00e8ce ambigu\u00eb ou incoh\u00e9rente entre r\u00f4les', items: clusters.filter(c=>c.confidence==='moyenne') },
+    { key:'faible-actif', label:'Confiance faible \u2014 \u00e0 identifier manuellement', items: clusters.filter(c=>c.confidence==='faible' && !c.legacy) },
+    { key:'faible-legacy', label:'Confiance faible \u2014 plage historique probablement obsol\u00e8te (chauffage_old / Nouveau groupe principal)', items: clusters.filter(c=>c.confidence==='faible' && c.legacy) },
+  ];
+
+  const html = groups.filter(g=>g.items.length).map(g=>{
+    const cards = g.items.map(c=>{
+      const badge = domainBadge(c.domain, 'sz-md');
+      const roomHtml = c.proposed_room
+        ? `<div class="sugg-room">Pi\u00e8ce propos\u00e9e\u00a0: <b>${c.proposed_room}</b></div>`
+        : `<div class="sugg-room muted">Pi\u00e8ce non d\u00e9termin\u00e9e</div>`;
+      const ambigNote = c.ambiguous_room
+        ? `<div class="sugg-note">Mot-cl\u00e9 ambigu dans le nom (${c.matched_tokens.join(', ')}) \u2014 plusieurs pi\u00e8ces possibles, \u00e0 confirmer.</div>` : '';
+      const legacyNote = c.legacy
+        ? `<div class="sugg-note">Plage historique (${c.domain}) \u2014 v\u00e9rifier s'il s'agit encore de c\u00e2blage actif avant d'attribuer une pi\u00e8ce.</div>` : '';
+      const names = c.members.map(m=>`<span class="sugg-name-chip"><span class="a">${m.address}</span>${m.name || '<span class="muted">(sans nom)</span>'}</span>`).join('');
+      return `<div class="sugg-card">
+        <div class="sugg-card-head">
+          <div class="lhs">${badge}<div>
+            <div class="sugg-domain">${c.domain}</div>
+            ${roomHtml}
+          </div></div>
+          <span class="conf-pill ${c.confidence}">${c.confidence}</span>
+        </div>
+        <div class="sugg-func">Fonction propos\u00e9e\u00a0: <b>${c.proposed_function}</b></div>
+        ${ambigNote}${legacyNote}
+        <div class="sugg-names">${names}</div>
+      </div>`;
+    }).join('');
+    return `<div class="sugg-group-title">${g.label}<span class="n">${g.items.length}</span></div>
+      <div class="sugg-grid">${cards}</div>`;
+  }).join('');
+
+  document.getElementById('suggResults').innerHTML = html || `<div class="empty-state">Aucune adresse orpheline \u2014 tout est d\u00e9j\u00e0 rattach\u00e9 \u00e0 une Function ETS.</div>`;
+}
+
 /* ---------- wiring ---------- */
+function updateFiltersBadge(){
+  const el = document.getElementById('filtersBadge');
+  if(!el) return;
+  const n = state.status.size + state.domain.size + (state.room ? 1 : 0);
+  el.textContent = n ? String(n) : '';
+  el.style.display = n ? 'inline-flex' : 'none';
+}
+
 function renderAll(){
   renderStatusFilters();
   renderDomainFilters();
   renderRoomTree();
   renderFunctions();
   renderAddresses();
+  updateFiltersBadge();
 }
+
+/* ---------- mobile filter panel (off-canvas) ---------- */
+const sidebarEl = document.querySelector('.sidebar');
+const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+function openSidebar(){
+  sidebarEl.classList.add('open');
+  sidebarBackdrop.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeSidebar(){
+  sidebarEl.classList.remove('open');
+  sidebarBackdrop.classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.getElementById('filtersToggle').addEventListener('click', openSidebar);
+sidebarBackdrop.addEventListener('click', closeSidebar);
+document.getElementById('sidebarClose').addEventListener('click', closeSidebar);
+document.getElementById('sidebarApply').addEventListener('click', closeSidebar);
+window.addEventListener('resize', ()=>{ if(window.innerWidth > 860) closeSidebar(); });
 
 document.getElementById('searchInput').addEventListener('input', e=>{
   state.search = e.target.value;
@@ -646,4 +862,5 @@ DATA.group_addresses.forEach(g=>{ DATA.gaByAddress[g.address] = g; });
 renderStats();
 renderAll();
 renderStructure();
+renderSuggestions();
 </script>
