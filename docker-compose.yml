@@ -78,8 +78,10 @@ services:
       - TZ=${TZ}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
       - GF_SERVER_ROOT_URL=https://grafanabulle.malnoy.com
+      - TESLAMATE_DB_PASSWORD=${TESLAMATE_DB_PASSWORD}  # utilisé par grafana/provisioning/datasources/teslamate.yml
     depends_on:
       - victoriametrics
+      - teslamate-db
 
   doc-knx:
     container_name: doc-knx
@@ -98,6 +100,80 @@ services:
     # ajouter côté dashboard Zero Trust) et protégé par une politique Cloudflare Access
     # (email + code à usage unique) — voir README.md.
 
+  tesla-key:
+    container_name: tesla-key
+    image: nginx:alpine
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    ports:
+      - "8091:80"  # accès LAN direct ; exposé publiquement sur teslabulle.malnoy.com via le tunnel Cloudflare
+    volumes:
+      - ./tesla_key_nginx:/usr/share/nginx/html:ro
+    # Héberge la clé publique Tesla (jalon 4, intégration Tesla) à l'URL exigée par Tesla :
+    # /.well-known/appspecific/com.tesla.3p.public-key.pem — nécessaire pour l'enregistrement
+    # de l'app développeur Tesla (developer.tesla.com), même si la Model S (pré-2021) ne
+    # nécessite pas la signature de commandes (clé virtuelle) pour le contrôle de base.
+    # Clé privée correspondante : tesla/private/private-key.pem (non versionnée).
+
+  teslamate-db:
+    container_name: teslamate-db
+    image: postgres:18-trixie
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    environment:
+      - POSTGRES_USER=teslamate
+      - POSTGRES_PASSWORD=${TESLAMATE_DB_PASSWORD}
+      - POSTGRES_DB=teslamate
+    volumes:
+      - ./TeslaMate_DB_Data:/var/lib/postgresql
+
+  teslamate-mosquitto:
+    container_name: teslamate-mosquitto
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    command: mosquitto -c /mosquitto-no-auth.conf
+    volumes:
+      - ./TeslaMate_Mosquitto_Data/config:/mosquitto/config
+      - ./TeslaMate_Mosquitto_Data/data:/mosquitto/data
+    # Broker MQTT interne à TeslaMate (pas lié à la Fleet Telemetry Tesla, non supportée sur
+    # Model S pré-2021) — utilisé pour la communication interne entre les composants TeslaMate.
+
+  teslamate:
+    container_name: teslamate
+    image: teslamate/teslamate:latest
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    ports:
+      - "4000:4000"  # interface web TeslaMate (login Tesla, réglages) — accès LAN direct, pas exposé via le tunnel
+    environment:
+      - ENCRYPTION_KEY=${TESLAMATE_ENCRYPTION_KEY}
+      - DATABASE_USER=teslamate
+      - DATABASE_PASS=${TESLAMATE_DB_PASSWORD}
+      - DATABASE_NAME=teslamate
+      - DATABASE_HOST=teslamate-db
+      - MQTT_HOST=teslamate-mosquitto
+      - TESLA_AUTH_CLIENT_ID=${TESLA_CLIENT_ID}
+      - TESLA_API_HOST=https://fleet-api.prd.eu.vn.cloud.tesla.com
+      - TESLA_AUTH_HOST=https://auth.tesla.com
+      - TESLA_AUTH_PATH=/oauth2/v3
+    volumes:
+      - ./TeslaMate_Import:/opt/app/import
+    cap_drop:
+      - all
+    depends_on:
+      - teslamate-db
+      - teslamate-mosquitto
+    # Historique/analytique (jalon 4) : trajets, charges, efficacité, via la Fleet API (pas le
+    # streaming temps réel, non supporté sur Model S pré-2021 — désactiver "Use Fleet
+    # Telemetry" dans les réglages TeslaMate après le premier login). Grafana bundlé
+    # volontairement omis : dashboards importés dans le Grafana existant (datasource
+    # "TeslaMate" provisionnée automatiquement, voir grafana/provisioning/).
+
   cloudflared:
     container_name: cloudflared
     image: cloudflare/cloudflared:latest
@@ -111,3 +187,4 @@ services:
       - homeassistant
       - grafana
       - doc-knx
+      - tesla-key

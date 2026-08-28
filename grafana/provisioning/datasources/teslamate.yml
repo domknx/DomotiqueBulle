@@ -1,0 +1,21 @@
+apiVersion: 1
+
+datasources:
+  - name: TeslaMate
+    type: postgres
+    url: teslamate-db:5432
+    database: teslamate
+    user: teslamate
+    secureJsonData:
+      password: '$TESLAMATE_DB_PASSWORD'
+    jsonData:
+      sslmode: 'disable'
+      maxOpenConns: 100
+      maxIdleConns: 100
+      connMaxLifetime: 14400
+      postgresVersion: 1500
+      timescaledb: false
+    isDefault: false
+    editable: false
+    # Datasource pour les dashboards TeslaMate (jalon 4) importés manuellement dans ce Grafana
+    # existant (voir README.md §6) plutôt que d'utiliser le Grafana bundlé de TeslaMate.

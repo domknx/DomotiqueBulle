@@ -50,11 +50,19 @@ Domotique_Claude_Docker/
 ├── grafana/
 │   └── provisioning/
 │       └── datasources/
-│           └── victoriametrics.yml
+│           ├── victoriametrics.yml
+│           └── teslamate.yml
+├── tesla/
+│   └── private/
+│       └── private-key.pem   # clé privée Tesla, non versionnée
+├── tesla_key_nginx/
+│   └── .well-known/appspecific/com.tesla.3p.public-key.pem
 ├── HomeAssistant_Data/       # volume HA (config.yaml, .storage, etc.) — non versionné
 ├── Prometheus_Data/          # volume Prometheus — non versionné
 ├── VictoriaMetrics_Data/     # volume VictoriaMetrics — non versionné
-└── Grafana_Data/             # volume Grafana — non versionné
+├── Grafana_Data/             # volume Grafana — non versionné
+├── TeslaMate_DB_Data/        # volume Postgres TeslaMate — non versionné
+└── TeslaMate_Mosquitto_Data/ # volume Mosquitto TeslaMate — non versionné
 ```
 
 Convention respectée : chaque conteneur a son propre dossier de données `NomDuConteneur_Data`.
@@ -153,13 +161,94 @@ structure du bus KNX (pièces, adresses de groupe) et n'est donc pas destinée �
    - À la première visite : code à 6 chiffres envoyé par email, valable 15 minutes.
 4. Accès direct sur le réseau local (sans passer par le tunnel) : `http://<IP du Mac mini>:8090`.
 
+### 4.4 Hébergement de la clé publique Tesla — `teslabulle.malnoy.com` (ajouté au jalon 4, Tesla)
+
+Héberge le fichier exigé par Tesla pour l'enregistrement de l'app développeur
+(`developer.tesla.com`), via un conteneur `tesla-key` (nginx) dédié, même modèle que
+`doc-knx`. Nécessaire même si la Model S (pré-2021) ne nécessite pas la signature de
+commandes (clé virtuelle) pour le contrôle de base — Tesla vérifie ce fichier lors de
+l'enregistrement de l'app quel que soit le véhicule. Détails complets : §6.
+
+1. Démarrer le conteneur :
+   ```bash
+   docker compose up -d tesla-key
+   ```
+2. Vérifier en local que le fichier est bien servi : `http://<IP du Mac mini>:8091/.well-known/appspecific/com.tesla.3p.public-key.pem`
+3. Dashboard Cloudflare → **Zero Trust** → **Networks** → **Tunnels** → `domotique-bulle` →
+   **Public Hostnames** → **Add a public hostname** :
+   - Subdomain : `teslabulle`
+   - Domain : `malnoy.com`
+   - Service : `HTTP` → `tesla-key:80`
+4. Accès public sans Cloudflare Access (contrairement à `docbulle.malnoy.com`) : ce fichier
+   doit être accessible sans authentification pour que Tesla puisse le lire.
+
 ## 5. KNX et réseau Docker — point de vigilance
 
 Le réseau utilisé ici (`domotique_net`, bridge Docker standard) fonctionne sans restriction si l'interface KNX est une **interface IP en mode tunneling** (connexion unicast vers une IP fixe — c'est le mode recommandé pour une installation en conteneur, y compris par la doc officielle de l'intégration KNX de Home Assistant).
 
 Si l'interface KNX ne fonctionne qu'en **mode routage** (multicast `224.0.23.12`), le réseau bridge de Docker Desktop pour Mac ne relaiera pas correctement le trafic multicast (limitation connue de Docker Desktop, qui fait tourner les conteneurs dans une VM Linux légère, contrairement à Docker sur Linux natif). Dans ce cas il faudra revoir la configuration réseau (ex. réseau `macvlan`, ou passerelle KNX→IP dédiée) — point à trancher lors de l'inventaire des adresses/groupes KNX (prochaine étape listée dans `CLAUDE.md`).
 
-## 6. Prochaines étapes
+## 6. Intégration Tesla — Model S (jalon 4)
+
+Contrôle/automatisations dans Home Assistant (intégration officielle **Tesla Fleet**) +
+historique/dashboards dans le Grafana existant via **TeslaMate** (datasource `TeslaMate`
+provisionnée automatiquement, voir `grafana/provisioning/datasources/teslamate.yml`).
+
+**Véhicule** : Model S antérieure à 2021 → ne supporte ni la signature de commandes (clé
+virtuelle) ni la Fleet Telemetry (streaming temps réel). Conséquences : pas de pairage de
+clé virtuelle nécessaire sur le véhicule lui-même, mais l'intégration HA interroge le
+véhicule par polling régulier (empêche la mise en veille — HA met en pause le polling après
+15 min d'inactivité). TeslaMate doit utiliser la Fleet API classique, pas le streaming
+(désactiver "Use Fleet Telemetry" dans ses réglages après le premier login).
+
+### 6.1 Créer l'app développeur Tesla (une seule fois, partagée HA + TeslaMate)
+
+1. https://developer.tesla.com/request → se connecter avec le compte Tesla du propriétaire
+   du véhicule.
+2. Nom/description de l'app (ex. "Domotique Villa Bulle"), grant type **Authorization Code
+   and Machine-to-Machine**.
+3. **Allowed Origin URL(s)** : `https://teslabulle.malnoy.com/`
+4. **Allowed Redirect URI(s)** :
+   - `https://my.home-assistant.io/redirect/oauth` (si l'intégration "My Home Assistant" est
+     activée dans HA — recommandé, le plus simple), ou
+   - `https://domotiquebulle.malnoy.com/auth/external/callback` sinon.
+5. **Allowed Returned URL(s)** : laisser vide.
+6. Scopes : au minimum Vehicle Information + Vehicle Commands + Vehicle Location (cocher
+   aussi Energy Product Information si utile plus tard pour le solaire, jalon 4 également).
+7. Noter le **Client ID** et le **Client Secret** générés.
+8. Renseigner `TESLA_CLIENT_ID` dans `.env`.
+9. Démarrer `tesla-key` et créer le hostname Cloudflare **avant** de valider l'app côté Tesla
+   (§4.4) — Tesla doit pouvoir lire le fichier `.well-known` pendant la vérification du
+   domaine. La clé a déjà été générée dans `tesla/private/private-key.pem` /
+   `tesla_key_nginx/.well-known/appspecific/com.tesla.3p.public-key.pem`.
+
+### 6.2 Intégration Home Assistant — "Tesla Fleet"
+
+1. Paramètres → Appareils et services → **Identifiants d'application** → Ajouter →
+   **Tesla Fleet** → renseigner Client ID / Client Secret de l'app créée en §6.1.
+2. Paramètres → Appareils et services → **Ajouter une intégration** → **Tesla Fleet** →
+   suivre le flux OAuth (connexion au compte Tesla, autorisation des scopes).
+3. Vérifier l'apparition des entités du véhicule (charge, climatisation, verrouillage,
+   position...).
+
+### 6.3 TeslaMate — historique et dashboards Grafana
+
+1. Compléter `.env` : `TESLAMATE_DB_PASSWORD` et `TESLAMATE_ENCRYPTION_KEY` (générer par ex.
+   avec `openssl rand -base64 32`).
+2. Démarrer la pile TeslaMate :
+   ```bash
+   docker compose up -d teslamate-db teslamate-mosquitto teslamate
+   ```
+3. Ouvrir `http://<IP du Mac mini>:4000`, suivre l'assistant de connexion Tesla (même app
+   développeur qu'en §6.1).
+4. Dans les réglages TeslaMate : **désactiver "Use Fleet Telemetry"** (non supporté par cette
+   Model S) — la synchronisation se fera par interrogation régulière (polling).
+5. Importer les dashboards TeslaMate dans le Grafana existant (`grafanabulle.malnoy.com`) :
+   Dashboards → New → Import → coller l'URL/JSON brut d'un dashboard du dépôt
+   [teslamate-org/teslamate](https://github.com/teslamate-org/teslamate/tree/main/grafana/dashboards)
+   → sélectionner la datasource **TeslaMate** pour chacun.
+
+## 7. Prochaines étapes
 
 - Créer le dépôt GitHub (vide pour l'instant) et pousser ce premier commit.
 - Choisir et exécuter l'option de domaine Cloudflare (§4.1).

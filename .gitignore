@@ -30,3 +30,9 @@ Backups/
 # comme le reste du système de sauvegarde du projet. Ce qui EST versionné dans Git : les
 # CSV générés (knx/group_addresses/*.csv) et les fichiers YAML d'entités KNX.
 knx/ets_project/*.knxproj
+
+# Intégration Tesla (jalon 4) : clé privée + données persistantes
+tesla/private/
+TeslaMate_DB_Data/
+TeslaMate_Mosquitto_Data/
+TeslaMate_Import/
