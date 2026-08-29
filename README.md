@@ -161,7 +161,7 @@ structure du bus KNX (pièces, adresses de groupe) et n'est donc pas destinée �
    - À la première visite : code à 6 chiffres envoyé par email, valable 15 minutes.
 4. Accès direct sur le réseau local (sans passer par le tunnel) : `http://<IP du Mac mini>:8090`.
 
-### 4.4 Hébergement de la clé publique Tesla — `teslabulle.malnoy.com` (ajouté au jalon 4, Tesla)
+### 4.4 Hébergement de la clé publique Tesla — `vehiculebulle.malnoy.com` (ajouté au jalon 4, Tesla)
 
 Héberge le fichier exigé par Tesla pour l'enregistrement de l'app développeur
 (`developer.tesla.com`), via un conteneur `tesla-key` (nginx) dédié, même modèle que
@@ -176,7 +176,7 @@ l'enregistrement de l'app quel que soit le véhicule. Détails complets : §6.
 2. Vérifier en local que le fichier est bien servi : `http://<IP du Mac mini>:8091/.well-known/appspecific/com.tesla.3p.public-key.pem`
 3. Dashboard Cloudflare → **Zero Trust** → **Networks** → **Tunnels** → `domotique-bulle` →
    **Public Hostnames** → **Add a public hostname** :
-   - Subdomain : `teslabulle`
+   - Subdomain : `vehiculebulle`
    - Domain : `malnoy.com`
    - Service : `HTTP` → `tesla-key:80`
 4. Accès public sans Cloudflare Access (contrairement à `docbulle.malnoy.com`) : ce fichier
@@ -207,7 +207,7 @@ véhicule par polling régulier (empêche la mise en veille — HA met en pause 
    du véhicule.
 2. Nom/description de l'app (ex. "Domotique Villa Bulle"), grant type **Authorization Code
    and Machine-to-Machine**.
-3. **Allowed Origin URL(s)** : `https://teslabulle.malnoy.com/`
+3. **Allowed Origin URL(s)** : `https://vehiculebulle.malnoy.com/`
 4. **Allowed Redirect URI(s)** : `https://my.home-assistant.io/redirect/oauth`
    **Confirmé le 28.08.2026 par observation directe** (URL réellement envoyée par HA,
    capturée dans la barre d'adresse au moment de la redirection vers Tesla) : l'intégration
@@ -239,7 +239,7 @@ de configuration de l'intégration les demande directement à la première étap
    automatiquement si un identifiant est déjà enregistré).
 3. Connexion/autorisation sur le compte Tesla (flux OAuth).
 4. Redirection vers Home Assistant.
-5. Saisie du domaine (`teslabulle.malnoy.com`) et enregistrement de la clé publique.
+5. Saisie du domaine (`vehiculebulle.malnoy.com`) et enregistrement de la clé publique.
 6. Vérifier l'apparition des entités du véhicule (charge, climatisation, verrouillage,
    position...).
 
