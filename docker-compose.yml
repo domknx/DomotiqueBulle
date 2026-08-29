@@ -107,7 +107,7 @@ services:
     networks:
       - domotique_net
     ports:
-      - "8091:80"  # accès LAN direct ; exposé publiquement sur teslabulle.malnoy.com via le tunnel Cloudflare
+      - "8091:80"  # accès LAN direct ; exposé publiquement sur vehiculebulle.malnoy.com via le tunnel Cloudflare
     volumes:
       - ./tesla_key_nginx:/usr/share/nginx/html:ro
     # Héberge la clé publique Tesla (jalon 4, intégration Tesla) à l'URL exigée par Tesla :
