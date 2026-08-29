@@ -224,11 +224,16 @@ véhicule par polling régulier (empêche la mise en veille — HA met en pause 
 
 ### 6.2 Intégration Home Assistant — "Tesla Fleet"
 
-1. Paramètres → Appareils et services → **Identifiants d'application** → Ajouter →
-   **Tesla Fleet** → renseigner Client ID / Client Secret de l'app créée en §6.1.
-2. Paramètres → Appareils et services → **Ajouter une intégration** → **Tesla Fleet** →
-   suivre le flux OAuth (connexion au compte Tesla, autorisation des scopes).
-3. Vérifier l'apparition des entités du véhicule (charge, climatisation, verrouillage,
+Pas besoin d'ajouter les identifiants d'application séparément au préalable — l'assistant
+de configuration de l'intégration les demande directement à la première étape.
+
+1. Paramètres → Appareils et services → **Ajouter une intégration** → **Tesla Fleet**.
+2. Saisir le **Client ID** et le **Client Secret** de l'app créée en §6.1 (étape sautée
+   automatiquement si un identifiant est déjà enregistré).
+3. Connexion/autorisation sur le compte Tesla (flux OAuth).
+4. Redirection vers Home Assistant.
+5. Saisie du domaine (`teslabulle.malnoy.com`) et enregistrement de la clé publique.
+6. Vérifier l'apparition des entités du véhicule (charge, climatisation, verrouillage,
    position...).
 
 ### 6.3 TeslaMate — historique et dashboards Grafana
