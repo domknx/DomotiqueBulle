@@ -208,10 +208,17 @@ véhicule par polling régulier (empêche la mise en veille — HA met en pause 
 2. Nom/description de l'app (ex. "Domotique Villa Bulle"), grant type **Authorization Code
    and Machine-to-Machine**.
 3. **Allowed Origin URL(s)** : `https://teslabulle.malnoy.com/`
-4. **Allowed Redirect URI(s)** :
-   - `https://my.home-assistant.io/redirect/oauth` (si l'intégration "My Home Assistant" est
-     activée dans HA — recommandé, le plus simple), ou
-   - `https://domotiquebulle.malnoy.com/auth/external/callback` sinon.
+4. **Allowed Redirect URI(s)** : `https://my.home-assistant.io/redirect/oauth`
+   **Confirmé le 28.08.2026 par observation directe** (URL réellement envoyée par HA,
+   capturée dans la barre d'adresse au moment de la redirection vers Tesla) : l'intégration
+   "Tesla Fleet" de HA utilise **systématiquement** cette URL "My Home Assistant", quelle
+   que soit l'URL externe configurée sur l'instance — malgré une doc communautaire (et une
+   première recherche de Claude) suggérant `<HOME_ASSISTANT_URL>/auth/external/callback`
+   comme alternative. Cette dernière n'a jamais fonctionné dans notre cas (erreur Tesla
+   "The redirect_uri supplied is not registered for this client_id" à chaque tentative tant
+   que seule `.../auth/external/callback` était enregistrée). Ajouter les deux ne coûte rien
+   si un doute subsiste, mais seule `my.home-assistant.io/redirect/oauth` s'est avérée
+   nécessaire.
 5. **Allowed Returned URL(s)** : laisser vide.
 6. Scopes : au minimum Vehicle Information + Vehicle Commands + Vehicle Location (cocher
    aussi Energy Product Information si utile plus tard pour le solaire, jalon 4 également).
