@@ -115,7 +115,9 @@ Le domaine disponible est `malnoy.com` (Gandi, utilisé aussi pour les emails). 
 3. DNSSEC vérifié désactivé chez Gandi avant la bascule (l'activer en cours de route aurait cassé la résolution DNS du domaine entier).
 4. Nameservers changés chez Gandi vers ceux fournis par Cloudflare. Zone confirmée **"Active"** côté Cloudflare le jour même. Emails testés et fonctionnels après la bascule (SPF/DKIM/MX intacts).
 
-Le registrar (propriété du nom de domaine, facturation) reste chez Gandi — seule la gestion DNS a changé de main. `malnoy.com` étant désormais le domaine racine sur Cloudflare, les nouveaux services sont de simples sous-domaines : **`domotique.bulle.malnoy.com`** (Home Assistant) et **`grafana.bulle.malnoy.com`** (Grafana).
+Le registrar (propriété du nom de domaine, facturation) reste chez Gandi — seule la gestion DNS a changé de main. `malnoy.com` étant désormais le domaine racine sur Cloudflare, les nouveaux services sont de simples sous-domaines : **`domotiquebulle.malnoy.com`** (Home Assistant) et **`grafanabulle.malnoy.com`** (Grafana).
+
+**Note (24.08.2026)** : ces sous-domaines sont volontairement à **un seul niveau** (pas `domotique.bulle.malnoy.com`) — le certificat Universal SSL gratuit de Cloudflare ne couvre que `malnoy.com` et `*.malnoy.com`, pas un second niveau de sous-domaine. Tout nouveau sous-domaine (`docbulle.malnoy.com`, etc.) doit suivre la même règle.
 
 ### 4.2 Créer le tunnel — fait le 23.08.2026
 
@@ -123,8 +125,8 @@ Le registrar (propriété du nom de domaine, facturation) reste chez Gandi — s
 2. Dashboard Cloudflare → **Zero Trust** (plan **Free**, suffisant : jusqu'à 50 utilisateurs, Cloudflare Tunnel est gratuit sans limite indépendamment du plan Zero Trust) → **Networks** → **Tunnels** → **Create a tunnel** → type **Cloudflared** → nommé `domotique-bulle`.
 3. Option d'installation **Docker** : token copié directement dans `.env` (`CLOUDFLARE_TUNNEL_TOKEN`) — fait.
 4. Dans l'onglet **Public Hostnames** du tunnel :
-   - `domotique.bulle.malnoy.com` → Service `HTTP` → `homeassistant:8123`
-   - `grafana.bulle.malnoy.com` → Service `HTTP` → `grafana:3000`
+   - `domotiquebulle.malnoy.com` → Service `HTTP` → `homeassistant:8123`
+   - `grafanabulle.malnoy.com` → Service `HTTP` → `grafana:3000`
 5. Démarrer le conteneur (à faire lors du déploiement complet de la stack) :
    ```bash
    docker compose up -d cloudflared
@@ -298,7 +300,7 @@ docker compose up -d glasshome
 ```
 1. Ouvrir `http://<IP du Mac mini>:3123`.
 2. Assistant de configuration : renseigner l'URL Home Assistant
-   `https://domotique.bulle.malnoy.com` et un **jeton d'accès longue durée** (Home Assistant
+   `https://domotiquebulle.malnoy.com` et un **jeton d'accès longue durée** (Home Assistant
    → profil utilisateur, bas de page → *Jetons d'accès longue durée* → *Créer un jeton* ;
    un jeton dédié par application tierce est recommandé, plus facile à révoquer
    individuellement).
@@ -327,7 +329,7 @@ cd Tunet
 docker compose up -d --build
 ```
 1. Ouvrir `http://<IP du Mac mini>:3002`.
-2. Configurer la connexion Home Assistant : URL `https://domotique.bulle.malnoy.com` + un
+2. Configurer la connexion Home Assistant : URL `https://domotiquebulle.malnoy.com` + un
    jeton d'accès longue durée dédié (même principe qu'en §7.2).
 3. Construire la page principale et la vue Chambre Léane dans l'éditeur Tunet (configuration
    manuelle également, pas pilotable par API).
