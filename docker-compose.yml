@@ -26,6 +26,27 @@ services:
     # pas le multicast correctement. Voir README.md § "KNX et réseau Docker"
     # avant de finaliser la configuration KNX.
 
+  glasshome:
+    container_name: glasshome
+    image: ghcr.io/glasshome/dash:latest
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    ports:
+      - "3123:3123"  # interface web GlassHome — accès LAN direct ; exposition publique via le tunnel
+                      # Cloudflare (Public Hostname à ajouter côté dashboard Zero Trust) possible plus
+                      # tard si besoin, comme pour doc-knx / tesla-key.
+    volumes:
+      - ./GlassHome_Data:/data
+    depends_on:
+      - homeassistant
+    # Jalon 5 (dashboards) — "Piste GlassHome" du comparatif à 3 technologies (GlassHome / Tunet /
+    # cartes natives HA, cf. dashboard "test-dashboards" dans HA). La connexion à Home Assistant
+    # (token d'accès longue durée) et la mise en page des pages se configurent depuis l'interface
+    # web GlassHome (http://<IP-du-serveur>:3123), pas dans ce fichier. Version gratuite (core)
+    # utilisée pour la comparaison ; passage à la version PRO (39.99$ à vie, achat unique) possible
+    # plus tard sans changer cette configuration Docker.
+
   prometheus:
     container_name: prometheus
     image: prom/prometheus:latest
