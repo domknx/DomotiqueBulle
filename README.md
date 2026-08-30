@@ -260,10 +260,92 @@ de configuration de l'intégration les demande directement à la première étap
    [teslamate-org/teslamate](https://github.com/teslamate-org/teslamate/tree/main/grafana/dashboards)
    → sélectionner la datasource **TeslaMate** pour chacun.
 
-## 7. Prochaines étapes
+## 7. Jalon 5 — Dashboards (comparatif GlassHome / Tunet / cartes natives HA)
+
+Objectif : comparer 3 approches sur une **même structure** (une page principale + une pièce
+pilote entièrement réalisée dans les 3 technologies) avant de choisir la solution retenue
+long terme pour les dashboards de la Villa Bulle. Pièce pilote choisie : **Chambre Léane**
+(inventaire d'entités le plus complet — éclairage, 2 volets, thermostat, diagnostic,
+switch — voir mémoire du projet). Backup de référence pris avant de démarrer : tag
+`jalon_jalon-5-dashboards-base_20260830_140743`.
+
+### 7.1 Piste 1 — Cartes natives HA (réalisée via l'API, aucune action manuelle requise)
+
+- Nouveau dashboard HA **`test-dashboards`** (icône flacon, visible dans la barre latérale),
+  deux vues :
+  - **Accueil (test)** (`test-dashboards/accueil-test`) : navigation vers les 4 étages du
+    dashboard `villa-bulle` existant, tuiles des 3 groupes de volets, diagnostics Chambre
+    Léane, prévisions météo.
+  - **Chambre Léane (test)** (`test-dashboards/leane-test`, vue "subview" avec bouton
+    retour) : toutes les entités de la pièce (éclairage, thermostat, 2 volets, diagnostic
+    défaut chauffage, forçage de position de vanne).
+- Rendu "glassmorphism" (fond translucide + flou) obtenu avec 3 ressources HACS installées
+  automatiquement : **Mushroom**, **Bubble Card**, **card-mod**.
+- ⚠️ Après l'installation de nouvelles ressources HACS, un **rafraîchissement complet du
+  cache navigateur** est nécessaire pour charger les nouveaux fichiers JS (Ctrl+Maj+R /
+  Cmd+Maj+R, ou navigation privée) avant de voir le rendu.
+- La fonctionnalité bêta "capture d'écran de dashboard" n'est pas activée sur cette instance
+  → vérification visuelle à faire directement dans le navigateur.
+- ⚠️ Point de vigilance maintenance : `card-mod` agit par CSS interne aux composants HA —
+  c'est la technique la plus fragile aux montées de version HA (à retester après chaque
+  mise à jour, voir §5 pour l'esprit général de vigilance réseau/mises à jour).
+
+### 7.2 Piste 2 — GlassHome (Docker, configuration manuelle dans son interface)
+
+Service ajouté à `docker-compose.yml` :
+```bash
+docker compose up -d glasshome
+```
+1. Ouvrir `http://<IP du Mac mini>:3123`.
+2. Assistant de configuration : renseigner l'URL Home Assistant
+   `https://domotique.bulle.malnoy.com` et un **jeton d'accès longue durée** (Home Assistant
+   → profil utilisateur, bas de page → *Jetons d'accès longue durée* → *Créer un jeton* ;
+   un jeton dédié par application tierce est recommandé, plus facile à révoquer
+   individuellement).
+3. Construire la page principale et la vue Chambre Léane dans l'éditeur visuel GlassHome —
+   contrairement à la piste 1, cette mise en page ne peut pas être pilotée par l'API HA,
+   elle se fait à la main dans l'interface GlassHome (voir §"Répartition du travail" en
+   mémoire du projet).
+4. Version gratuite (core) suffisante pour ce comparatif ; passage à la version **PRO**
+   (39,99 $, achat unique) possible plus tard sans changer cette configuration Docker si ce
+   design est retenu.
+- Le volume `GlassHome_Data` conserve la configuration/les pages entre redémarrages.
+- Pas d'exposition publique via le tunnel Cloudflare pour l'instant (comparatif interne au
+  réseau local) ; possible plus tard en ajoutant un Public Hostname, comme pour
+  `doc-knx`/`tesla-key` (§4.3/4.4).
+
+### 7.3 Piste 3 — Tunet (build from source, déploiement séparé hors de ce dépôt)
+
+Tunet ne fournit pas d'image Docker officielle prête à l'emploi (build from source) → à
+déployer dans un **dossier séparé**, volontairement hors de ce dépôt (le clone Tunet n'est
+pas versionné ici) :
+
+```bash
+cd ~
+git clone https://github.com/oyvhov/Tunet.git
+cd Tunet
+docker compose up -d --build
+```
+1. Ouvrir `http://<IP du Mac mini>:3002`.
+2. Configurer la connexion Home Assistant : URL `https://domotique.bulle.malnoy.com` + un
+   jeton d'accès longue durée dédié (même principe qu'en §7.2).
+3. Construire la page principale et la vue Chambre Léane dans l'éditeur Tunet (configuration
+   manuelle également, pas pilotable par API).
+- Licence GPLv3 (contrairement à GlassHome, à cœur propriétaire) ; projet plus jeune, à
+  surveiller dans la durée en termes de rythme de maintenance.
+
+### 7.4 Comparaison et décision
+
+Une fois les 3 pistes visibles côte à côte sur la Chambre Léane (dashboard HA
+`test-dashboards`, GlassHome sur le port 3123, Tunet sur le port 3002) : comparer avant de
+choisir la solution retenue pour le dashboard définitif de la Villa Bulle. Le dashboard
+`test-dashboards` et les containers `glasshome`/`tunet` sont temporaires (piste de
+comparaison) — à nettoyer une fois la décision prise.
+
+## 8. Prochaines étapes
 
 - Créer le dépôt GitHub (vide pour l'instant) et pousser ce premier commit.
 - Choisir et exécuter l'option de domaine Cloudflare (§4.1).
 - Inventaire précis des adresses/groupes KNX (export ETS) pour construire la config KNX de Home Assistant.
 - Mettre en place le journal/changelog (page web accessible) — ex. GitHub Pages à partir de ce même dépôt.
-- Dashboards Home Assistant pour Mac, iPad, iPhone, écran tactile.
+- Dashboards Home Assistant pour Mac, iPad, iPhone, écran tactile — en cours (jalon 5, §7).
