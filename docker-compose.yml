@@ -201,6 +201,14 @@ services:
     restart: unless-stopped
     networks:
       - domotique_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      # Nécessaire pour que cloudflared puisse relayer vers des services qui ne sont
+      # PAS sur domotique_net (ex. Tunet, jalon 5 dashboards — port 3002 publié sur
+      # l'hôte mais conteneur sur un autre réseau Docker). Sans ce host_gateway
+      # explicite, host.docker.internal n'est pas garanti résolvable depuis ce
+      # conteneur (constaté le 30.08.2026 : 502 sur visubulle.malnoy.com sans cette
+      # entrée, alors que Tunet lui-même en a besoin pour l'inverse — joindre HA).
     command: tunnel --no-autoupdate run
     environment:
       - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
