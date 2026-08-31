@@ -6,6 +6,8 @@ HomeAssistant_Data/
 Prometheus_Data/
 VictoriaMetrics_Data/
 Grafana_Data/
+GlassHome_Data/
+
 
 # Jetons / secrets divers
 prometheus/ha_bearer_token
@@ -36,3 +38,8 @@ tesla/private/
 TeslaMate_DB_Data/
 TeslaMate_Mosquitto_Data/
 TeslaMate_Import/
+
+# Jalon 5 (dashboards) : Tunet est cloné et démarré ici comme piste de comparaison, mais
+# reste volontairement un dépôt Git indépendant (pas un sous-module, pas de contenu
+# versionné dans ce repo) — voir README.md §7.3 / infra_architecture.md.
+Tunet/
