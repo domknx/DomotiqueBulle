@@ -2,7 +2,7 @@
 
 Document vivant, tenu à jour par Claude au fil des décisions. Référence structurelle versionnée dans le repo — complète `custom_dashboard.md` (mémoire projet côté Claude), qui garde l'historique des itérations visuelles.
 
-**Statut : v3 (03.09.2026)** — réécriture complète sur retour explicite de l'utilisateur : la v2 ("simulation") manquait de structure et d'exigences précises. Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), et le modèle de configuration.
+**Statut : v3 (03.09.2026)**, mise à jour le 03.09.2026 (backend confirmé en Python) — réécriture complète sur retour explicite de l'utilisateur : la v2 ("simulation") manquait de structure et d'exigences précises. Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), et le modèle de configuration.
 
 ## Sommaire
 
@@ -132,7 +132,7 @@ Le prototype actuel (les Artifacts) code les données et les identifiants d'enti
 
 ```mermaid
 flowchart LR
-  HA["Home Assistant\n(conteneur existant)"] <-->|"WebSocket API\njeton longue durée"| API["dashboard-api\nNode.js"]
+  HA["Home Assistant\n(conteneur existant)"] <-->|"WebSocket API\njeton longue durée"| API["dashboard-api\nPython · FastAPI"]
   CFG[("Configuration YAML\nrooms · navigation · scenes\nsuggestions · theme")] --> API
   API <-->|"WebSocket + REST\nmodèle de domaine du dashboard"| WEB["dashboard-web\nnginx + build statique"]
   WEB <-->|HTTPS| CF["Tunnel Cloudflare\n(existant)"]
@@ -141,14 +141,14 @@ flowchart LR
 
 **Couche 1 — Home Assistant.** Inchangée. Reste la source de vérité pour les entités KNX, capteurs, scènes existantes.
 
-**Couche 2 — `dashboard-api` (nouveau service, à créer).** Un petit service Node.js qui :
-- se connecte à HA en WebSocket avec la librairie officielle `home-assistant-js-websocket` (celle utilisée par le frontend natif de HA — mature, maintenue, gère la reconnexion) ;
+**Couche 2 — `dashboard-api` (nouveau service, à créer).** Un petit service **Python (FastAPI, `asyncio`)** qui :
+- se connecte à HA en WebSocket (authentification par jeton longue durée, `subscribe_events`, `call_service`) — le protocole est documenté et assez simple pour être implémenté directement avec `websockets`/`aiohttp`, en s'appuyant sur la logique de reconnexion et d'authentification de `home-assistant-js-websocket` (la librairie officielle JS) comme référence de conception ;
 - lit la configuration YAML (§5) pour savoir quels `entity_id` correspondent à quelle pièce, quel capteur, quelle scène ;
-- traduit les états HA bruts vers un **modèle de domaine propre au dashboard** (`Room`, `Device`, `Scene`, `EnergyReading`, …) — c'est ici, et seulement ici, que vit la connaissance de Home Assistant ;
-- pousse les mises à jour en temps réel au frontend (WebSocket), et expose une API REST pour les actions ponctuelles (changer une scène, régler un volet) et pour la configuration au démarrage ;
+- traduit les états HA bruts vers un **modèle de domaine propre au dashboard** (`Room`, `Device`, `Scene`, `EnergyReading`, …, modélisé en Pydantic) — c'est ici, et seulement ici, que vit la connaissance de Home Assistant ;
+- pousse les mises à jour en temps réel au frontend (WebSocket natif FastAPI), et expose une API REST pour les actions ponctuelles (changer une scène, régler un volet) et pour la configuration au démarrage ;
 - porte le moteur de suggestions contextuelles (T6) — c'est de la logique serveur, pas de l'UI.
 
-**Pourquoi Node.js plutôt que Python** (déjà utilisé côté scripts KNX de ce projet) : la librairie officielle de connexion à HA est en JavaScript et représente l'implémentation la plus robuste disponible (c'est celle de HA lui-même) ; un service Node.js orienté Webocket/événements est aussi le choix le plus direct pour du temps réel bidirectionnel. Une alternative Python (`homeassistant-api` ou appel REST direct) reste possible si l'utilisateur préfère rester sur un seul langage côté serveur — à trancher si ce choix pose problème (point ouvert §10).
+**Python confirmé le 03.09.2026** (décision de l'utilisateur, après comparatif détaillé avec Node.js) : le principal atout de Node.js — la librairie officielle `home-assistant-js-websocket` — ne compense pas, pour un projet de cette taille, l'avantage de garder **un seul langage sur l'ensemble du projet** (les scripts KNX existants sont déjà en Python) : un seul écosystème de dépendances à suivre, une seule famille d'image Docker, moins de contexte à réapprendre d'une session à l'autre. Le protocole WebSocket de HA reste assez simple pour être porté proprement en Python, et FastAPI apporte des équivalents modernes (WebSocket natif, modèles Pydantic, documentation d'API générée) à ce que Node aurait apporté.
 
 **Couche 3 — `dashboard-web` (nouveau service, à créer).** Une interface **Vue 3** (build via Vite, sortie en fichiers statiques servis par nginx — même schéma que `doc-knx`). Chaque section du dashboard (Maison, Étage, Pièce, Énergie, Tesla, Sécurité, Météo, Fonctions) est un **module Vue indépendant**, enregistré dans un petit registre de sections piloté par `navigation.yaml`. Ajouter une section = ajouter un composant + une entrée de configuration, sans toucher aux sections existantes — c'est ce qui rend le dashboard modulaire au sens du §1.
 
@@ -221,6 +221,7 @@ Ces trois maquettes sont volontairement des simulations en données statiques �
 2. Contenu précis de l'écran **Extérieur** (§3.5).
 3. Le **Mac** doit-il être un format cible ?
 4. Contenu de l'écran **Fonctions** : quelles scènes/actions prioritaires (§3.6) ?
-5. Node.js est proposé pour `dashboard-api` (§4.2) — confirmé, ou préférence pour rester en Python comme les scripts KNX existants ?
-6. Nom du futur sous-domaine Cloudflare pour le dashboard (ex. `dashboardbulle.malnoy.com`) ?
-7. Les suggestions contextuelles et le mode veille ambiant (§3.1, T5/T6) sont-ils souhaités tels quels ?
+5. Nom du futur sous-domaine Cloudflare pour le dashboard (ex. `dashboardbulle.malnoy.com`) ?
+6. Les suggestions contextuelles et le mode veille ambiant (§3.1, T5/T6) sont-ils souhaités tels quels ?
+
+*(Point résolu le 03.09.2026 : `dashboard-api` sera en Python/FastAPI, voir §4.2.)*
