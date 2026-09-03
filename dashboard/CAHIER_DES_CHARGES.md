@@ -10,12 +10,14 @@ Document vivant, tenu à jour par Claude au fil des décisions. Référence stru
 2. Périmètre et contraintes
 3. Exigences fonctionnelles par écran
 4. Architecture logicielle
-5. Modèle de configuration — ce qui doit être configurable
-6. Système visuel
-7. Maquettes visuelles livrées
-8. Hors scope actuel
-9. Feuille de route proposée
-10. Points ouverts
+5. Sécurité et gestion des accès
+6. Stratégie de test et de vérification
+7. Modèle de configuration — ce qui doit être configurable
+8. Système visuel
+9. Maquettes visuelles livrées
+10. Hors scope actuel
+11. Feuille de route proposée
+12. Points ouverts
 
 ---
 
@@ -30,14 +32,14 @@ Document vivant, tenu à jour par Claude au fil des décisions. Référence stru
 
 ## 2. Périmètre et contraintes
 
-- **Appareils cibles** : écran mural tactile (référence), iPad/tablette, iPhone — un seul jeu de composants, breakpoints CSS. Mac hors périmètre pour l'instant (point ouvert, §10).
+- **Appareils cibles** : écran mural tactile (référence), iPad/tablette, iPhone — un seul jeu de composants, breakpoints CSS. Mac hors périmètre pour l'instant (point ouvert, §12).
 - **Contrainte d'hébergement** : suit le pattern déjà établi sur ce projet (services Docker indépendants sur `domotique_net`, exposition via le tunnel Cloudflare existant, un sous-domaine `*.malnoy.com` à un seul niveau).
 - **Contrainte d'équipe** : Claude écrit le code, la configuration et les fichiers Docker ; l'utilisateur exécute `docker compose up`, gère les jetons d'accès HA et les réglages Cloudflare — même répartition que pour `doc-knx` et l'intégration Tesla.
 - **Contrainte de données** : au lancement, aucune donnée réelle n'est branchée — le backend décrit en §4 doit fonctionner aussi bien avec des données de démonstration (mode `mock`) qu'avec une vraie instance HA, pour permettre de continuer à itérer visuellement avant le branchement réel.
 
 ## 3. Exigences fonctionnelles par écran
 
-Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de données du modèle de configuration (§5), pas à un entity_id HA — c'est tout le sens du découplage (§4).
+Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de données du modèle de configuration (§7), pas à un entity_id HA — c'est tout le sens du découplage (§4).
 
 ### 3.1 Transversal (tous les écrans)
 
@@ -65,7 +67,7 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 |---|---|---|---|
 | E1 | Grille des pièces de l'étage | Une tuile par pièce configurée pour cet étage. | `rooms` (filtré par `floor`) |
 | E2 | État résumé par tuile | Au minimum : température actuelle, indicateur lumière allumée/éteinte, position du volet. | `rooms[].sensors`, `rooms[].lights`, `rooms[].covers` |
-| E3 | Entrée dans une pièce | Toucher une tuile ouvre la vue détaillée de la pièce (transition selon le concept de navigation retenu, §7). | — |
+| E3 | Entrée dans une pièce | Toucher une tuile ouvre la vue détaillée de la pièce (transition selon le concept de navigation retenu, §9). | — |
 | E4 | Pièce sans donnée réelle | Une pièce présente dans la configuration mais sans entités mappées s'affiche en mode "maquette" explicite plutôt que masquée ou vide. | — |
 
 ### 3.4 Vue pièce (ex. Chambre Léane)
@@ -83,7 +85,7 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 
 | ID | Exigence | Détail | Source |
 |---|---|---|---|
-| X1 | Contenu à définir avec l'utilisateur | Terrasse, éclairage extérieur, volets, piscine, jardin — liste exacte non tranchée (point ouvert §10). | `rooms` (floor = extérieur) |
+| X1 | Contenu à définir avec l'utilisateur | Terrasse, éclairage extérieur, volets, piscine, jardin — liste exacte non tranchée (point ouvert §12). | `rooms` (floor = extérieur) |
 
 ### 3.6 Fonctions (scènes & actions rapides)
 
@@ -143,7 +145,7 @@ flowchart LR
 
 **Couche 2 — `dashboard-api` (nouveau service, à créer).** Un petit service **Python (FastAPI, `asyncio`)** qui :
 - se connecte à HA en WebSocket (authentification par jeton longue durée, `subscribe_events`, `call_service`) — le protocole est documenté et assez simple pour être implémenté directement avec `websockets`/`aiohttp`, en s'appuyant sur la logique de reconnexion et d'authentification de `home-assistant-js-websocket` (la librairie officielle JS) comme référence de conception ;
-- lit la configuration YAML (§5) pour savoir quels `entity_id` correspondent à quelle pièce, quel capteur, quelle scène ;
+- lit la configuration YAML (§7) pour savoir quels `entity_id` correspondent à quelle pièce, quel capteur, quelle scène ;
 - traduit les états HA bruts vers un **modèle de domaine propre au dashboard** (`Room`, `Device`, `Scene`, `EnergyReading`, …, modélisé en Pydantic) — c'est ici, et seulement ici, que vit la connaissance de Home Assistant ;
 - pousse les mises à jour en temps réel au frontend (WebSocket natif FastAPI), et expose une API REST pour les actions ponctuelles (changer une scène, régler un volet) et pour la configuration au démarrage ;
 - porte le moteur de suggestions contextuelles (T6) — c'est de la logique serveur, pas de l'UI.
@@ -167,10 +169,57 @@ Le jeton HA (Long-Lived Access Token) reste une étape manuelle utilisateur, com
 
 - Renommer un entity_id dans HA → une ligne à changer dans `rooms.yaml`, zéro ligne de code touchée.
 - Ajouter la pièce "Buanderie" → une entrée dans `rooms.yaml`, aucune modification du composant Vue de la vue d'étage.
-- Changer complètement de modèle de navigation (v1 / Concept A / Concept B, §7) → ça touche uniquement `dashboard-web`, `dashboard-api` et la configuration ne bougent pas.
+- Changer complètement de modèle de navigation (v1 / Concept A / Concept B, §9) → ça touche uniquement `dashboard-web`, `dashboard-api` et la configuration ne bougent pas.
 - Faire évoluer Home Assistant (nouvelle intégration, migration de version) → tant que les entités mappées dans la configuration restent valides, le dashboard continue de fonctionner sans modification.
 
-## 5. Modèle de configuration — ce qui doit être configurable
+## 5. Sécurité et gestion des accès
+
+### 5.1 Le jeton Home Assistant
+
+Le jeton d'accès longue durée (Long-Lived Access Token) HA ne vit **que** dans `.env`, lu uniquement par `dashboard-api` — jamais commité, jamais transmis au frontend, jamais visible depuis le navigateur. Sa génération reste un geste manuel de l'utilisateur dans l'interface HA, comme pour toute intégration précédente sur ce projet (Tesla, etc.) : Claude ne génère ni ne stocke de jeton à la place de l'utilisateur.
+
+### 5.2 Surface exposée au réseau
+
+Seul `dashboard-web` est exposé publiquement, via le tunnel Cloudflare existant. `dashboard-api` reste interne à `domotique_net`, jamais publié directement — même logique que Prometheus aujourd'hui (`127.0.0.1:9090`, jamais sur le tunnel). Le frontend ne parle qu'à `dashboard-api`, qui seul parle à Home Assistant.
+
+### 5.3 Protection de l'accès au dashboard
+
+Contrairement à `docbulle.malnoy.com` (documentation en lecture seule, protégée par Cloudflare Access), ce dashboard **agit** sur la maison (lumières, volets, scènes) — le niveau de protection doit en tenir compte. Deux options, à trancher (point ouvert §12) :
+- s'appuyer sur la même protection que `domotiquebulle.malnoy.com` aujourd'hui (réseau local + authentification native de ce qui est exposé) ;
+- ajouter une **Cloudflare Access Application** dédiée (email + code, même mécanisme que `docbulle.malnoy.com`) pour tout accès distant au dashboard, par prudence puisqu'il permet d'agir et pas seulement de consulter.
+
+### 5.4 Actions sensibles
+
+Reprend et généralise l'exigence F2 (§3.6) : toute action qui modifie un état physique notable (scène marquée `confirm: true` en configuration) doit être confirmée avant exécution — c'est autant une exigence de sécurité que d'ergonomie, pour éviter qu'un geste accidentel sur un écran mural déclenche une action non voulue.
+
+### 5.5 Mode invité
+
+Un mode d'accès restreint (pièces communes uniquement, pas de Sécurité/Tesla/Fonctions sensibles) peut être activé pour un panneau mural visible par des visiteurs — piloté par `features.yaml` (§7), pas par un compte utilisateur séparé (pas de vraie gestion multi-utilisateurs à ce stade, voir §10).
+
+### 5.6 Journalisation
+
+`dashboard-api` journalise les actions déclenchées (quelle scène, quel volet, à quelle heure) — utile pour le débogage et pour repérer une action inattendue, sans ambition d'audit de sécurité formel à l'échelle de ce projet.
+
+## 6. Stratégie de test et de vérification
+
+Ce chapitre formalise une discipline déjà appliquée sur ce projet lors des itérations visuelles (voir `custom_dashboard.md`), pour qu'elle s'applique aussi à `dashboard-api`/`dashboard-web` une fois le code réel écrit.
+
+### 6.1 Principe directeur
+
+**Une vérification technique confirme l'exécution, pas le goût** — et seule une interaction rejouée pour de vrai confirme l'exécution. Une relecture de code, aussi attentive soit-elle, a déjà laissé passer deux bugs sur ce projet (`.room-dock` qui volait les clics, cadran de température non re-thématisé) : les deux n'ont été détectés qu'en rejouant de vrais clics avec Playwright headless, jamais en relisant le code seul.
+
+### 6.2 Règles concrètes
+
+- Toute modification touchant l'interaction ou un effet visuel dynamique se vérifie par un test Playwright headless qui **rejoue de vrais clics/gestes** (jamais en posant un état directement en JS, ex. `dataset.skin = ...`, qui peut masquer un bug de câblage entre l'UI et l'état — déjà arrivé sur le cadran de température).
+- Une animation continue (chauffage, volet, respiration) se vérifie en lisant `getComputedStyle` à plusieurs instants pour confirmer qu'elle progresse réellement dans le temps, pas seulement que l'état final est correct.
+- Capture d'écran systématique après toute modification visuelle, sur les principaux états croisés (Iso/Photo, thèmes, volet ouvert/mi-clos/fermé) — déjà pratiqué sur le prototype, à garder comme réflexe.
+- Une fois `dashboard-api` codé : tests d'intégration qui simulent de vrais événements HA en mode `mock` (§11, étape 2) plutôt que d'injecter un état directement dans le modèle de domaine — même principe que pour le frontend, appliqué côté backend.
+
+### 6.3 Portée assumée
+
+Projet mono-utilisateur, pas de suite de tests automatisée lourde (CI, couverture de code) à ce stade — la discipline ci-dessus reste manuelle mais systématique à chaque changement, proportionnée à la taille du projet plutôt qu'à celle d'un produit commercial.
+
+## 7. Modèle de configuration — ce qui doit être configurable
 
 Fichiers YAML versionnés dans `dashboard/config/`, dans le même esprit que le fichier de configuration KNX déjà maintenu par Claude pour ce projet.
 
@@ -186,11 +235,11 @@ Fichiers YAML versionnés dans `dashboard/config/`, dans le même esprit que le 
 
 Principe : **toute donnée qui décrit "notre maison" (quelles pièces, quelles entités, quelles scènes) vit en configuration, jamais dans le code.** Le code ne décrit que "comment afficher une pièce en général", pas "ce qu'est la Chambre Léane".
 
-## 6. Système visuel
+## 8. Système visuel
 
 Palette : Nuit `#0b0e16`, Brume `#eef1f6`, Ambre `#ff9c54`, Glacier `#5ac8fa`, Mousse `#6fcf97`, Cuivre `#caa06b`. Typo : Fraunces (affichage) / Inter (interface) / IBM Plex Mono (données). Thème sombre unique assumé. Détail des effets déjà validés (chauffage au sol, éclairage de pièce) dans `custom_dashboard.md`.
 
-## 7. Maquettes visuelles livrées
+## 9. Maquettes visuelles livrées
 
 Trois prototypes Artifact existent à ce jour, chacun avec un rôle différent :
 
@@ -198,24 +247,24 @@ Trois prototypes Artifact existent à ce jour, chacun avec un rôle différent :
 - **Concept A "Strates"** — exploration d'une navigation spatiale par scroll vertical continu (parallax, zoom-through, rail d'ascenseur), avec démonstration de l'effet volet piloté par pourcentage. URL : `https://claude.ai/code/artifact/e6922690-86d0-45c5-8bff-8646e66c2726`.
 - **Concept B "Respiration"** — exploration d'un hub ambiant façon magazine (cartes contextuelles, pièces qui "respirent", panneau coulissant, dock bas), pensé mobile-first. URL : `https://claude.ai/code/artifact/abfd1791-c389-4419-a71f-e0efc2f63d5d`.
 
-Ces trois maquettes sont volontairement des simulations en données statiques — leur rôle est de trancher la direction de navigation (§10, point 1) avant de porter le résultat dans l'architecture modulaire du §4. Une fois la direction choisie, chaque écran listé au §3 sera repris comme composant Vue réel, alimenté par `dashboard-api`.
+Ces trois maquettes sont volontairement des simulations en données statiques — leur rôle est de trancher la direction de navigation (§12, point 1) avant de porter le résultat dans l'architecture modulaire du §4. Une fois la direction choisie, chaque écran listé au §3 sera repris comme composant Vue réel, alimenté par `dashboard-api`.
 
-## 8. Hors scope actuel
+## 10. Hors scope actuel
 
 - Matériel sécurité/caméras (pas installé) → module désactivé par défaut (`features.yaml`).
 - Photos réelles des pièces autres que Chambre Léane (pas encore fournies).
-- Authentification/gestion multi-utilisateurs sur le dashboard (à évaluer si l'accès dépasse le réseau local + tunnel).
+- Authentification multi-utilisateurs avec comptes individuels (la protection d'accès de base retenue pour l'instant est traitée en §5).
 - Retour haptique/sonore sur les volets.
 
-## 9. Feuille de route proposée
+## 11. Feuille de route proposée
 
-1. Trancher le modèle de navigation (§10.1) à partir des maquettes existantes.
+1. Trancher le modèle de navigation (§12.1) à partir des maquettes existantes.
 2. Écrire le squelette `dashboard-api` (connexion HA en mode `mock` d'abord, sans jeton réel) + `dashboard-web` (structure Vue/Vite, sans design final) — poser l'architecture avant de porter le visuel.
 3. Porter les écrans validés (§3) comme composants Vue, alimentés par les données `mock` de `dashboard-api`.
 4. Écrire `rooms.yaml` avec les vraies pièces et, une fois le jeton HA fourni par l'utilisateur, brancher `dashboard-api` en mode réel.
 5. Ajouter les services Docker à `docker-compose.yml`, déploiement par l'utilisateur, exposition Cloudflare.
 
-## 10. Points ouverts à trancher ensemble
+## 12. Points ouverts à trancher ensemble
 
 1. Quel modèle de navigation entre v1, Concept A et Concept B (ou une synthèse des trois) ?
 2. Contenu précis de l'écran **Extérieur** (§3.5).
