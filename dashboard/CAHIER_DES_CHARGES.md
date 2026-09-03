@@ -2,7 +2,7 @@
 
 Document vivant, tenu à jour par Claude au fil des décisions. Référence structurelle versionnée dans le repo — complète `custom_dashboard.md` (mémoire projet côté Claude), qui garde l'historique des itérations visuelles.
 
-**Statut : v3 (03.09.2026)**, mise à jour le 03.09.2026 (backend confirmé en Python) — réécriture complète sur retour explicite de l'utilisateur : la v2 ("simulation") manquait de structure et d'exigences précises. Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), et le modèle de configuration.
+**Statut : v3 (03.09.2026)**, mise à jour le 03.09.2026 — réécriture complète sur retour explicite de l'utilisateur (la v2 "simulation" manquait de structure et d'exigences précises), backend confirmé en Python (§4.2), chapitres Sécurité (§5) et Stratégie de test (§6) ajoutés, gabarit de navigation retenu via la maquette "Boussole" (§9), accès depuis internet et alignement Mac précisés (§1, §2). Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), le modèle de configuration, la sécurité et la stratégie de test.
 
 ## Sommaire
 
@@ -24,6 +24,7 @@ Document vivant, tenu à jour par Claude au fil des décisions. Référence stru
 ## 1. Objectifs et principes directeurs
 
 - Dashboard domotique sur-mesure pour la Villa Bulle, codé de A à Z, en projet parallèle à Tunet (qui reste la solution active au quotidien jusqu'à bascule complète).
+- Accessible depuis internet, pas seulement sur le réseau local de la villa — via le tunnel Cloudflare déjà en place (§2), au même titre que `docbulle.malnoy.com` aujourd'hui.
 - Quatre principes non négociables pour la suite du projet :
   1. **Modulaire** : ajouter une pièce, un écran ou une section ne doit jamais nécessiter de modifier le code des sections existantes.
   2. **Découplé de Home Assistant** : aucune partie de l'interface ne doit connaître un `entity_id` HA en dur. Si une entité est renommée côté HA (déjà arrivé sur ce projet), seule la configuration doit changer.
@@ -32,7 +33,7 @@ Document vivant, tenu à jour par Claude au fil des décisions. Référence stru
 
 ## 2. Périmètre et contraintes
 
-- **Appareils cibles** : écran mural tactile (référence), iPad/tablette, iPhone — un seul jeu de composants, breakpoints CSS. Mac hors périmètre pour l'instant (point ouvert, §12).
+- **Appareils cibles** : écran mural tactile (référence), iPad/tablette, iPhone, Mac — un seul jeu de composants, breakpoints CSS. Le Mac utilise la même configuration tactile que l'écran mural : pas de version dédiée (résolu le 03.09.2026).
 - **Contrainte d'hébergement** : suit le pattern déjà établi sur ce projet (services Docker indépendants sur `domotique_net`, exposition via le tunnel Cloudflare existant, un sous-domaine `*.malnoy.com` à un seul niveau).
 - **Contrainte d'équipe** : Claude écrit le code, la configuration et les fichiers Docker ; l'utilisateur exécute `docker compose up`, gère les jetons d'accès HA et les réglages Cloudflare — même répartition que pour `doc-knx` et l'intégration Tesla.
 - **Contrainte de données** : au lancement, aucune donnée réelle n'est branchée — le backend décrit en §4 doit fonctionner aussi bien avec des données de démonstration (mode `mock`) qu'avec une vraie instance HA, pour permettre de continuer à itérer visuellement avant le branchement réel.
@@ -51,6 +52,9 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 | T4 | Accessibilité mouvement | Toute animation (scroll, volet, respiration, veille) respecte `prefers-reduced-motion` : saut direct à l'état final. | — |
 | T5 | Mode veille ambiant | Après une période d'inactivité configurable, affichage minimal (horloge + météo). Toucher l'écran restaure la vue précédente. | Ne doit jamais couper l'alimentation ni fermer l'app — c'est un habillage visuel, pas une mise en veille système. |
 | T6 | Suggestions contextuelles | Bandeau non intrusif proposant une action selon une règle configurée (ex. météo + présence + volet). Jamais d'action automatique sans confirmation explicite. | Une suggestion ignorée ne doit pas se réafficher en boucle dans la même session. |
+| T7 | Écran d'accueil obligatoire | Quel que soit l'appareil (écran mural, iPad, iPhone, Mac en configuration tactile), il existe toujours un écran principal / écran d'accueil, point de départ commun à tous les appareils. | — |
+| T8 | Retour à l'accueil depuis toute page secondaire | Chaque écran secondaire affiche une icône visible et constante permettant de revenir à l'écran d'accueil en un geste. | — |
+| T9 | Gabarit-cadre commun (décidé, voir maquette "Boussole", §9) | Rail vertical gauche = fonctions (Accueil, Énergie, Tesla, Sécurité, Météo, Fonctions…) ; rail vertical droit = étages, défilement vertical pour changer d'étage ; barre horizontale du haut = pièces de l'étage en cours, avec le statut des habitants dans le coin en haut à droite ; barre horizontale du bas = réservée, sans fonction pour l'instant. | Le rail droit (étages) ne s'affiche que sur les vues où la notion d'étage a un sens (vue intérieure / pièce) ; masqué sur les écrans transversaux (Énergie, Tesla, Sécurité, Météo, Fonctions). |
 
 ### 3.2 Accueil (Maison)
 
@@ -241,13 +245,14 @@ Palette : Nuit `#0b0e16`, Brume `#eef1f6`, Ambre `#ff9c54`, Glacier `#5ac8fa`, M
 
 ## 9. Maquettes visuelles livrées
 
-Trois prototypes Artifact existent à ce jour, chacun avec un rôle différent :
+Quatre prototypes Artifact existent à ce jour, chacun avec un rôle différent :
 
 - **Prototype v1 "Bulle Console"** — direction visuelle et système de composants déjà validés par l'utilisateur (nav gauche + swipe, effet chauffage au sol). URL : `https://claude.ai/code/artifact/3cbd1c1d-9a57-4394-bf2a-d8827d42ea2b`.
 - **Concept A "Strates"** — exploration d'une navigation spatiale par scroll vertical continu (parallax, zoom-through, rail d'ascenseur), avec démonstration de l'effet volet piloté par pourcentage. URL : `https://claude.ai/code/artifact/e6922690-86d0-45c5-8bff-8646e66c2726`.
 - **Concept B "Respiration"** — exploration d'un hub ambiant façon magazine (cartes contextuelles, pièces qui "respirent", panneau coulissant, dock bas), pensé mobile-first. URL : `https://claude.ai/code/artifact/abfd1791-c389-4419-a71f-e0efc2f63d5d`.
+- **Boussole** — maquette du gabarit-cadre retenu (T9, §3.1) : rail gauche pour les fonctions, rail droit pour les étages (défilement vertical), barre du haut pour les pièces de l'étage en cours et le statut des habitants (coin en haut à droite), barre du bas réservée. Écran d'accueil commun à tous les appareils, avec retour à l'accueil disponible depuis toute page secondaire (T7, T8). URL : `https://claude.ai/code/artifact/4e2c616a-a866-4ae1-930f-35b74fb2335d`.
 
-Ces trois maquettes sont volontairement des simulations en données statiques — leur rôle est de trancher la direction de navigation (§12, point 1) avant de porter le résultat dans l'architecture modulaire du §4. Une fois la direction choisie, chaque écran listé au §3 sera repris comme composant Vue réel, alimenté par `dashboard-api`.
+Le gabarit général de Boussole (rails + barres) est la structure de navigation retenue. Concept A et Concept B restent des références pour les effets de transition et d'ambiance à l'intérieur de ce cadre (scroll parallax, respiration des tuiles, panneau coulissant) — leur intégration précise dans le gabarit reste à raffiner au moment du portage Vue (§11, étape 3). Une fois cette intégration précisée, chaque écran listé au §3 sera repris comme composant Vue réel, alimenté par `dashboard-api`.
 
 ## 10. Hors scope actuel
 
@@ -266,11 +271,11 @@ Ces trois maquettes sont volontairement des simulations en données statiques �
 
 ## 12. Points ouverts à trancher ensemble
 
-1. Quel modèle de navigation entre v1, Concept A et Concept B (ou une synthèse des trois) ?
-2. Contenu précis de l'écran **Extérieur** (§3.5).
-3. Le **Mac** doit-il être un format cible ?
-4. Contenu de l'écran **Fonctions** : quelles scènes/actions prioritaires (§3.6) ?
-5. Nom du futur sous-domaine Cloudflare pour le dashboard (ex. `dashboardbulle.malnoy.com`) ?
-6. Les suggestions contextuelles et le mode veille ambiant (§3.1, T5/T6) sont-ils souhaités tels quels ?
+1. Contenu précis de l'écran **Extérieur** (§3.5).
+2. Contenu de l'écran **Fonctions** : quelles scènes/actions prioritaires (§3.6) ?
+3. Nom du futur sous-domaine Cloudflare pour le dashboard (ex. `dashboardbulle.malnoy.com`) ?
+4. Les suggestions contextuelles et le mode veille ambiant (§3.1, T5/T6) sont-ils souhaités tels quels ?
+5. Protection d'accès au dashboard depuis internet : réseau local + authentification existante, ou Cloudflare Access dédiée (§5.3) ?
+6. Comment intégrer précisément les effets de Concept A/B (parallax, respiration, panneau coulissant) dans le gabarit Boussole retenu (§9) ?
 
-*(Point résolu le 03.09.2026 : `dashboard-api` sera en Python/FastAPI, voir §4.2.)*
+*(Points résolus le 03.09.2026 : `dashboard-api` en Python/FastAPI, voir §4.2 ; gabarit de navigation retenu — maquette "Boussole", voir §3.1 T9 et §9 ; Mac aligné sur la configuration écran tactile mural, pas de version dédiée, voir §2.)*
