@@ -2,7 +2,7 @@
 
 Document vivant, tenu à jour par Claude au fil des décisions. Référence structurelle versionnée dans le repo — complète `custom_dashboard.md` (mémoire projet côté Claude), qui garde l'historique des itérations visuelles.
 
-**Statut : v3 (03.09.2026)**, mise à jour le 03.09.2026 — réécriture complète sur retour explicite de l'utilisateur (la v2 "simulation" manquait de structure et d'exigences précises), backend confirmé en Python (§4.2), chapitres Sécurité (§5) et Stratégie de test (§6) ajoutés, gabarit de navigation retenu via la maquette "Boussole" (§9), accès depuis internet et alignement Mac précisés (§1, §2). Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), le modèle de configuration, la sécurité et la stratégie de test.
+**Statut : v3 (04.09.2026)**, mise à jour le 04.09.2026 — réécriture complète sur retour explicite de l'utilisateur (la v2 "simulation" manquait de structure et d'exigences précises), backend confirmé en Python (§4.2), chapitres Sécurité (§5) et Stratégie de test (§6) ajoutés, gabarit de navigation retenu via la maquette "Boussole" (§9), accès depuis internet et alignement Mac précisés (§1, §2), sketches de structure ajoutés pour les écrans Accueil/Étage-RDC/Pièce (§3.2-3.4). Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), le modèle de configuration, la sécurité et la stratégie de test.
 
 ## Sommaire
 
@@ -65,6 +65,10 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 | A3 | Accès rapide aux scènes | Liste de scènes configurées (ex. Mode nuit, Je pars), déclenchables en un geste. | `scenes` |
 | A4 | Salutation contextuelle | Message d'accueil qui peut varier selon l'heure ou un événement notable (ex. pièce ensoleillée et vide). | dérivé de `rooms` + `weather` |
 
+![Structure — Écran d'accueil](diagrams/structure-accueil.svg)
+
+*Sketch de structure, pas une maquette pixel-exacte (celle-ci reste "Boussole", §9) — sert à fixer le gabarit et le placement des exigences ci-dessus. Rail droit et barre du haut masqués : pas de notion d'étage sur cet écran (T9).*
+
 ### 3.3 Vue d'étage / RDC
 
 | ID | Exigence | Détail | Source |
@@ -73,6 +77,10 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 | E2 | État résumé par tuile | Au minimum : température actuelle, indicateur lumière allumée/éteinte, position du volet. | `rooms[].sensors`, `rooms[].lights`, `rooms[].covers` |
 | E3 | Entrée dans une pièce | Toucher une tuile ouvre la vue détaillée de la pièce (transition selon le concept de navigation retenu, §9). | — |
 | E4 | Pièce sans donnée réelle | Une pièce présente dans la configuration mais sans entités mappées s'affiche en mode "maquette" explicite plutôt que masquée ou vide. | — |
+
+![Structure — Vue d'étage / RDC](diagrams/structure-etage.svg)
+
+*Gabarit complet (rail droit + barre du haut actifs, T9) : c'est la même structure que la vue pièce ci-dessous, avec une grille de tuiles en zone principale.*
 
 ### 3.4 Vue pièce (ex. Chambre Léane)
 
@@ -84,6 +92,10 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 | P4 | Effet chauffage au sol | Glow animé en continu tant que le mode confort est actif (déjà implémenté et validé visuellement). | `rooms[].climate` |
 | P5 | Choix de représentation | Bascule Iso / Photo quand une photo réelle existe pour la pièce. | `rooms[].photo` (optionnel) |
 | P6 | Pièce sans photo réelle | Repli automatique et silencieux sur la vue isométrique (SVG paramétrique générique) si aucune photo n'est fournie. | — |
+
+![Structure — Vue pièce](diagrams/structure-piece.svg)
+
+*Zone principale scindée en deux : visuel de la pièce à gauche (P4-P6), rangée d'icônes rapides + panneau de détail à droite (P1-P3) — reprend directement la vue pièce enrichie de "Boussole" (§9).*
 
 ### 3.5 Extérieur
 

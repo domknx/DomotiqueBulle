@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800">
+<rect x="0" y="0" width="1280" height="800" fill="#f7f6f2"/>
+<text x="44.0" y="36.0" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="700" fill="#2a2f3d" text-anchor="start">Structure — Vue pièce (ex. Chambre Léane)</text>
+<text x="44.0" y="56.0" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#6b7280" text-anchor="start">Gabarit-cadre T9 · exigences P1–P6 · schéma, pas une maquette pixel-exacte</text>
+<rect x="34.0" y="100.0" width="1212.0" height="610.0" rx="22" fill="#e5e2d8" stroke="#2a2f3d" stroke-width="2" opacity="1"/>
+<rect x="44.0" y="110.0" width="1192.0" height="590.0" rx="14" fill="#ffffff" stroke="#2a2f3d" stroke-width="1.6" opacity="1"/>
+<rect x="44.0" y="110.0" width="108.0" height="590.0" rx="10" fill="#efece4" stroke="#2a2f3d" stroke-width="1.6" opacity="1"/>
+<rect x="76.0" y="144.0" width="44.0" height="40.0" rx="12" fill="#ffffff" stroke="#6b7280" stroke-width="1.5" opacity="1"/>
+<text x="98.0" y="199.0" font-family="Consolas, 'Courier New', monospace" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">Accueil</text>
+<line x1="64.0" y1="218.0" x2="132.0" y2="218.0" stroke="#d8d5cb" stroke-width="1"/>
+<rect x="76.0" y="240.0" width="44.0" height="40.0" rx="12" fill="#f0ddc9" stroke="#c9793f" stroke-width="1.5" opacity="1"/>
+<text x="98.0" y="295.0" font-family="Consolas, 'Courier New', monospace" font-size="9" font-weight="400" fill="#c9793f" text-anchor="middle">Intérieur</text>
+<rect x="76.0" y="314.0" width="44.0" height="40.0" rx="12" fill="#ffffff" stroke="#6b7280" stroke-width="1.5" opacity="1"/>
+<text x="98.0" y="369.0" font-family="Consolas, 'Courier New', monospace" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">Extérieur</text>
+<rect x="76.0" y="388.0" width="44.0" height="40.0" rx="12" fill="#ffffff" stroke="#6b7280" stroke-width="1.5" opacity="1"/>
+<text x="98.0" y="443.0" font-family="Consolas, 'Courier New', monospace" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">Système</text>
+<rect x="76.0" y="462.0" width="44.0" height="40.0" rx="12" fill="#ffffff" stroke="#6b7280" stroke-width="1.5" opacity="1"/>
+<text x="98.0" y="517.0" font-family="Consolas, 'Courier New', monospace" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">Fonctions</text>
+<line x1="64.0" y1="536.0" x2="132.0" y2="536.0" stroke="#d8d5cb" stroke-width="1"/>
+<rect x="76.0" y="558.0" width="44.0" height="40.0" rx="12" fill="#ffffff" stroke="#6b7280" stroke-width="1.5" opacity="1"/>
+<text x="98.0" y="613.0" font-family="Consolas, 'Courier New', monospace" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">Thèmes</text>
+<text x="98.0" y="734.0" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#2a2f3d" text-anchor="middle">Rail gauche — fonctions</text>
+<text x="98.0" y="752.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="middle">toujours visible (T1, T7–T9)</text>
+<rect x="1128.0" y="110.0" width="108.0" height="590.0" rx="10" fill="#efece4" stroke="#2a2f3d" stroke-width="1.6" opacity="1"/>
+<text x="1182.0" y="136.0" font-family="Consolas, 'Courier New', monospace" font-size="9.5" font-weight="400" fill="#6b7280" text-anchor="middle" letter-spacing="1px">ÉTAGES</text>
+<circle cx="1182.0" cy="374.0" r="20.0" fill="#c9793f" stroke="#c9793f" stroke-width="1.6"/>
+<text x="1182.0" y="378.0" font-family="Consolas, 'Courier New', monospace" font-size="11" font-weight="700" fill="#f7f6f2" text-anchor="middle">ÉTA</text>
+<circle cx="1182.0" cy="436.0" r="20.0" fill="#ffffff" stroke="#6b7280" stroke-width="1.6"/>
+<text x="1182.0" y="440.0" font-family="Consolas, 'Courier New', monospace" font-size="11" font-weight="700" fill="#2a2f3d" text-anchor="middle">RDC</text>
+<text x="1182.0" y="734.0" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#2a2f3d" text-anchor="middle">Rail droit — étages</text>
+<text x="1182.0" y="752.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="middle">défilement vertical (T9)</text>
+<rect x="152.0" y="110.0" width="976.0" height="88.0" rx="10" fill="#efece4" stroke="#2a2f3d" stroke-width="1.6" opacity="1"/>
+<rect x="174.0" y="138.0" width="137.0" height="32.0" rx="16" fill="#f0ddc9" stroke="#c9793f" stroke-width="1.4" opacity="1"/>
+<text x="242.5" y="159.0" font-family="Arial, Helvetica, sans-serif" font-size="11.5" font-weight="400" fill="#c9793f" text-anchor="middle">Chambre Léane</text>
+<rect x="323.0" y="138.0" width="65.0" height="32.0" rx="16" fill="#ffffff" stroke="#6b7280" stroke-width="1.4" opacity="1"/>
+<text x="355.5" y="159.0" font-family="Arial, Helvetica, sans-serif" font-size="11.5" font-weight="400" fill="#2a2f3d" text-anchor="middle">Salon</text>
+<rect x="400.0" y="138.0" width="74.0" height="32.0" rx="16" fill="#ffffff" stroke="#6b7280" stroke-width="1.4" opacity="1"/>
+<text x="437.0" y="159.0" font-family="Arial, Helvetica, sans-serif" font-size="11.5" font-weight="400" fill="#2a2f3d" text-anchor="middle">Bureau</text>
+<rect x="486.0" y="138.0" width="137.0" height="32.0" rx="16" fill="#ffffff" stroke="#6b7280" stroke-width="1.4" opacity="1"/>
+<text x="554.5" y="159.0" font-family="Arial, Helvetica, sans-serif" font-size="11.5" font-weight="400" fill="#2a2f3d" text-anchor="middle">Salle de bain</text>
+<circle cx="1098.0" cy="154.0" r="15.0" fill="#ffffff" stroke="#2a2f3d" stroke-width="1.4"/>
+<text x="1098.0" y="158.0" font-family="Consolas, 'Courier New', monospace" font-size="10.5" font-weight="700" fill="#2a2f3d" text-anchor="middle">L</text>
+<circle cx="1078.0" cy="154.0" r="15.0" fill="#ffffff" stroke="#2a2f3d" stroke-width="1.4"/>
+<text x="1078.0" y="158.0" font-family="Consolas, 'Courier New', monospace" font-size="10.5" font-weight="700" fill="#2a2f3d" text-anchor="middle">F</text>
+<text x="1052.0" y="158.0" font-family="Consolas, 'Courier New', monospace" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="end">2 à la maison</text>
+<text x="162.0" y="98.0" font-family="Arial, Helvetica, sans-serif" font-size="12.5" font-weight="700" fill="#2a2f3d" text-anchor="start">Barre du haut — pièces de l'étage + statut habitants (coin haut-droit, T9)</text>
+<rect x="152.0" y="656.0" width="976.0" height="44.0" rx="8" fill="#eceae3" stroke="#c7c3b8" stroke-width="1.4" stroke-dasharray="6,4" opacity="1"/>
+<text x="640.0" y="682.0" font-family="Consolas, 'Courier New', monospace" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle">barre du bas — réservée, sans fonction actuelle</text>
+<rect x="152.0" y="198.0" width="976.0" height="458.0" rx="10" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4" opacity="1"/>
+<rect x="182.0" y="224.0" width="507.5" height="406.0" rx="18" fill="#efece4" stroke="#2a2f3d" stroke-width="1.6" opacity="1"/>
+<rect x="198.0" y="240.0" width="118.0" height="30.0" rx="15" fill="#ffffff" stroke="#6b7280" stroke-width="1.2" opacity="1"/>
+<text x="227.0" y="260.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#2a2f3d" text-anchor="middle">Iso</text>
+<text x="272.0" y="260.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle">Photo</text>
+<rect x="198.0" y="276.0" width="66.0" height="20.0" rx="10" fill="#f0ddc9" stroke="#c9793f" stroke-width="1.2" opacity="1"/>
+<text x="231.0" y="290.0" font-family="Consolas, 'Courier New', monospace" font-size="11" font-weight="700" fill="#c9793f" text-anchor="middle">P5 / P6</text>
+<ellipse cx="435.8" cy="590.0" rx="142.1" ry="26" fill="#c9793f" opacity="0.18"/>
+<text x="435.8" y="616.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="middle" font-style="italic">glow chauffage au sol, animé (P4)</text>
+<text x="198.0" y="540.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#6b7280" text-anchor="start" font-style="italic">vue iso / photo réelle de la pièce</text>
+<rect x="715.5" y="224.0" width="382.5" height="406.0" rx="18" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4" opacity="1"/>
+<text x="735.5" y="254.0" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#2a2f3d" text-anchor="start">Chambre Léane</text>
+<rect x="735.5" y="280.0" width="78.0" height="44.0" rx="12" fill="#f0ddc9" stroke="#c9793f" stroke-width="1.4" opacity="1"/>
+<text x="774.5" y="307.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="400" fill="#c9793f" text-anchor="middle">Temp</text>
+<rect x="823.5" y="280.0" width="78.0" height="44.0" rx="12" fill="#efece4" stroke="#6b7280" stroke-width="1.4" opacity="1"/>
+<text x="862.5" y="307.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle">Lumière</text>
+<rect x="911.5" y="280.0" width="78.0" height="44.0" rx="12" fill="#efece4" stroke="#6b7280" stroke-width="1.4" opacity="1"/>
+<text x="950.5" y="307.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle">Volet</text>
+<rect x="999.5" y="280.0" width="78.0" height="44.0" rx="12" fill="#efece4" stroke="#6b7280" stroke-width="1.4" opacity="1"/>
+<text x="1038.5" y="307.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle">Confort</text>
+<rect x="735.5" y="332.0" width="50.0" height="20.0" rx="10" fill="#f0ddc9" stroke="#c9793f" stroke-width="1.2" opacity="1"/>
+<text x="760.5" y="346.0" font-family="Consolas, 'Courier New', monospace" font-size="11" font-weight="700" fill="#c9793f" text-anchor="middle">P1–P4</text>
+<circle cx="906.8" cy="473.0" r="78.0" fill="#ffffff" stroke="#d8d5cb" stroke-width="10"/>
+<circle cx="906.8" cy="473.0" r="78.0" fill="none" stroke="#c9793f" stroke-width="10" stroke-linecap="round" stroke-dasharray="304 490" transform="rotate(-215 906.8 473.0)"/>
+<text x="906.8" y="469.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#2a2f3d" text-anchor="middle">21.5°</text>
+<text x="906.8" y="491.0" font-family="Consolas, 'Courier New', monospace" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="middle">consigne</text>
+<text x="906.8" y="610.0" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="400" fill="#6b7280" text-anchor="middle" font-style="italic">cadran SVG — couleur pilotée par token CSS (leçon v1)</text>
+</svg>
