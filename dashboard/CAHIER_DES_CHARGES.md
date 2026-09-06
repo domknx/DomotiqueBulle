@@ -2,7 +2,7 @@
 
 Document vivant, tenu à jour par Claude au fil des décisions. Référence structurelle versionnée dans le repo — complète `custom_dashboard.md` (mémoire projet côté Claude), qui garde l'historique des itérations visuelles.
 
-**Statut : v3 (06.09.2026)**, mise à jour le 06.09.2026 — réécriture complète sur retour explicite de l'utilisateur (la v2 "simulation" manquait de structure et d'exigences précises), backend confirmé en Python (§4.2), chapitres Sécurité (§5) et Stratégie de test (§6) ajoutés, gabarit de navigation retenu via la maquette "Boussole" (§9), accès depuis internet et alignement Mac précisés (§1, §2), sketches de structure ajoutés pour les écrans Accueil/Étage-RDC/Pièce (§3.2-3.4), gabarit-cadre révisé avec barres latérales gauche/droite persistantes (jour/heure/fête/anniversaire/navigation à gauche, météo/calendrier par invité à droite — T9/T10), nouvelles exigences A5-A8 (températures, batteries solaire/voiture, production solaire sur l'accueil). Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), le modèle de configuration, la sécurité et la stratégie de test.
+**Statut : v3 (06.09.2026)**, mise à jour le 06.09.2026 — réécriture complète sur retour explicite de l'utilisateur (la v2 "simulation" manquait de structure et d'exigences précises), backend confirmé en Python (§4.2), chapitres Sécurité (§5) et Stratégie de test (§6) ajoutés, gabarit de navigation retenu via la maquette "Boussole" (§9), accès depuis internet et alignement Mac précisés (§1, §2), sketches de structure ajoutés pour les écrans Accueil/Étage-RDC/Pièce (§3.2-3.4), gabarit-cadre révisé avec barres latérales gauche/droite persistantes (jour/heure/fête/anniversaire/navigation à gauche, météo/calendrier par invité à droite — T9/T10), nouvelles exigences A5-A8 (températures, batteries solaire/voiture, production solaire sur l'accueil), navigation gauche portée à 7 entrées (Configuration puis Météo ajoutées), bibliothèque de médias `assets/photos-images-icons` définie (§7.1). Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), le modèle de configuration, la sécurité et la stratégie de test.
 
 ## Sommaire
 
@@ -258,6 +258,22 @@ Fichiers YAML versionnés dans `dashboard/config/`, dans le même esprit que le 
 | `.env` (non versionné) | Jeton HA longue durée, URL de l'instance HA. | `HA_URL, HA_TOKEN` |
 
 Principe : **toute donnée qui décrit "notre maison" (quelles pièces, quelles entités, quelles scènes) vit en configuration, jamais dans le code.** Le code ne décrit que "comment afficher une pièce en général", pas "ce qu'est la Chambre Léane".
+
+### 7.1 Bibliothèque de médias (photos, images, icônes)
+
+Les visuels utilisés par le dashboard sont rangés dans `dashboard/assets/`, en trois catégories (décidé le 06.09.2026) :
+
+| Dossier | Contenu | Format |
+|---|---|---|
+| `assets/photos/` | Photos réelles de la maison et des pièces. | JPEG compressé (~80-85%, ~1400-1600px de large) — même traitement que les photos déjà fournies (maison, Chambre Léane). |
+| `assets/images/` | Images ou photos générées par IA (illustrations, visuels d'ambiance). | JPEG ou PNG selon le besoin de transparence. |
+| `assets/icons/` | Icônes de l'interface (navigation, états des pièces). | SVG de préférence — redimensionnable sans perte, teintable en CSS (`currentColor`) pour se re-thémer sans code dédié. |
+
+Nommage : kebab-case descriptif, aligné sur les identifiants utilisés dans `rooms.yaml`/`navigation.yaml` une fois ces fichiers écrits (ex. `photos/chambre-leane.jpg`, `icons/nav-accueil.svg`) — c'est ce qui permettra à `rooms.yaml` (`photo`) et `navigation.yaml` (`icon`) de référencer directement un fichier de cette bibliothèque plutôt qu'un chemin en dur dans le code.
+
+En attendant que `dashboard-web` existe (les maquettes actuelles sont des pages Artifact, qui ne peuvent pas charger d'image externe — voir §9), les fichiers de `assets/` servent de bibliothèque source stable : chaque photo/image utilisée dans une maquette y est d'abord rangée, puis encodée en data URI au moment de construire la page concernée, plutôt que collée directement dans le HTML sans trace ailleurs.
+
+Point de vigilance (pas bloquant) : les gros binaires versionnés alourdissent l'historique Git au fil du temps — à surveiller si la bibliothèque grossit beaucoup ; un passage à Git LFS pourra être envisagé plus tard si besoin.
 
 ## 8. Système visuel
 
