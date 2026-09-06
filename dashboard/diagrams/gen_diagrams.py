@@ -167,7 +167,8 @@ def left_sidebar(s, active_key):
     y += 24
 
     items = [("home", "Accueil"), ("pieces", "Pièces"), ("lumiere", "Lumière"),
-             ("temperature", "Température"), ("energie", "Energie"), ("config", "Configuration")]
+             ("temperature", "Température"), ("energie", "Energie"), ("meteo", "Météo"),
+             ("config", "Configuration")]
     row_h = 58
     for key, label in items:
         active = (key == active_key)
