@@ -2,7 +2,7 @@
 
 Document vivant, tenu à jour par Claude au fil des décisions. Référence structurelle versionnée dans le repo — complète `custom_dashboard.md` (mémoire projet côté Claude), qui garde l'historique des itérations visuelles.
 
-**Statut : v3 (04.09.2026)**, mise à jour le 04.09.2026 — réécriture complète sur retour explicite de l'utilisateur (la v2 "simulation" manquait de structure et d'exigences précises), backend confirmé en Python (§4.2), chapitres Sécurité (§5) et Stratégie de test (§6) ajoutés, gabarit de navigation retenu via la maquette "Boussole" (§9), accès depuis internet et alignement Mac précisés (§1, §2), sketches de structure ajoutés pour les écrans Accueil/Étage-RDC/Pièce (§3.2-3.4). Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), le modèle de configuration, la sécurité et la stratégie de test.
+**Statut : v3 (06.09.2026)**, mise à jour le 06.09.2026 — réécriture complète sur retour explicite de l'utilisateur (la v2 "simulation" manquait de structure et d'exigences précises), backend confirmé en Python (§4.2), chapitres Sécurité (§5) et Stratégie de test (§6) ajoutés, gabarit de navigation retenu via la maquette "Boussole" (§9), accès depuis internet et alignement Mac précisés (§1, §2), sketches de structure ajoutés pour les écrans Accueil/Étage-RDC/Pièce (§3.2-3.4), gabarit-cadre révisé avec barres latérales gauche/droite persistantes (jour/heure/fête/anniversaire/navigation à gauche, météo/calendrier par invité à droite — T9/T10), nouvelles exigences A5-A8 (températures, batteries solaire/voiture, production solaire sur l'accueil). Ce document couvre : les exigences fonctionnelles écran par écran, les maquettes visuelles livrées, l'architecture logicielle (proposition technique de Claude pour découpler le dashboard de Home Assistant), le modèle de configuration, la sécurité et la stratégie de test.
 
 ## Sommaire
 
@@ -54,7 +54,8 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 | T6 | Suggestions contextuelles | Bandeau non intrusif proposant une action selon une règle configurée (ex. météo + présence + volet). Jamais d'action automatique sans confirmation explicite. | Une suggestion ignorée ne doit pas se réafficher en boucle dans la même session. |
 | T7 | Écran d'accueil obligatoire | Quel que soit l'appareil (écran mural, iPad, iPhone, Mac en configuration tactile), il existe toujours un écran principal / écran d'accueil, point de départ commun à tous les appareils. | — |
 | T8 | Retour à l'accueil depuis toute page secondaire | Chaque écran secondaire affiche une icône visible et constante permettant de revenir à l'écran d'accueil en un geste. | — |
-| T9 | Gabarit-cadre commun (décidé, voir maquette "Boussole", §9) | Rail vertical gauche = fonctions (Accueil, Énergie, Tesla, Sécurité, Météo, Fonctions…) ; rail vertical droit = étages, défilement vertical pour changer d'étage ; barre horizontale du haut = pièces de l'étage en cours, avec le statut des habitants dans le coin en haut à droite ; barre horizontale du bas = réservée, sans fonction pour l'instant. | Le rail droit (étages) ne s'affiche que sur les vues où la notion d'étage a un sens (vue intérieure / pièce) ; masqué sur les écrans transversaux (Énergie, Tesla, Sécurité, Météo, Fonctions). |
+| T9 | Gabarit-cadre commun (révisé le 06.09.2026, voir maquette "Boussole", §9 — mise à jour de l'artifact à suivre) | **Barre latérale gauche, persistante sur tous les écrans** : de haut en bas, jour, heure, fête du jour, anniversaire du jour si présent dans le calendrier, puis la navigation — une icône + un libellé texte par entrée (Accueil, Pièces, Lumière, Température, Energie). **Barre latérale droite, persistante sur tous les écrans** : météo simplifiée du jour, puis le calendrier de la semaine (T10). Barre horizontale du bas : réservée, sans fonction pour l'instant. | Remplace l'ancien rail droit "étages" : la notion d'étage (RDC/Étage/Extérieur) devient un contrôle interne à l'écran "Pièces" plutôt qu'une colonne dédiée (voir §3.3). Le devenir des anciennes entrées Extérieur/Énergie/Tesla/Sécurité/Météo/Fonctions dans cette nouvelle navigation à 5 entrées n'est pas encore tranché (point ouvert §12). |
+| T10 | Calendrier persistant, trié par invité | Le calendrier de la barre latérale droite affiche les rendez-vous de la semaine, lus depuis le calendrier Apple (iCloud, protocole CalDAV avec mot de passe d'application dédié — pas de connecteur natif disponible) et regroupés par invité/participant sur chaque événement, pas par calendrier source. | Identifiants et fréquence de rafraîchissement à définir en §4/§7 une fois la connexion testée ; un événement sans invité identifiable s'affiche dans un groupe "Autre"/sans personne plutôt que d'être masqué. |
 
 ### 3.2 Accueil (Maison)
 
@@ -64,15 +65,20 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 | A2 | Résumé météo courant | Température, description courte. | `weather` |
 | A3 | Accès rapide aux scènes | Liste de scènes configurées (ex. Mode nuit, Je pars), déclenchables en un geste. | `scenes` |
 | A4 | Salutation contextuelle | Message d'accueil qui peut varier selon l'heure ou un événement notable (ex. pièce ensoleillée et vide). | dérivé de `rooms` + `weather` |
+| A5 | Températures principales de la maison | Un sous-ensemble configuré de capteurs clés (pas toutes les pièces), lecture seule à ce niveau. | `rooms[].sensors` (sous-ensemble configuré) |
+| A6 | État de la batterie solaire | Pourcentage + indicateur charge/décharge, si l'installation est disponible. Même source que S2 (§3.7) — résumé compact, pas de duplication de logique. | `energy.battery` |
+| A7 | État de la batterie de la voiture | Pourcentage + autonomie estimée. Même source que S5 (§3.8). | `tesla.battery`, `tesla.range` |
+| A8 | Production solaire instantanée | Valeur en kW, mise à jour en direct. Même source que S1 (§3.7). | `energy.production` |
 
 ![Structure — Écran d'accueil](diagrams/structure-accueil.svg)
 
-*Sketch de structure, pas une maquette pixel-exacte (celle-ci reste "Boussole", §9) — sert à fixer le gabarit et le placement des exigences ci-dessus. Rail droit et barre du haut masqués : pas de notion d'étage sur cet écran (T9).*
+*Sketch de structure, pas une maquette pixel-exacte (celle-ci reste "Boussole", §9) — sert à fixer le gabarit et le placement des exigences ci-dessus. Barres latérales gauche et droite persistantes (T9/T10) ; la zone principale ci-dessous est propre à l'écran d'accueil.*
 
 ### 3.3 Vue d'étage / RDC
 
 | ID | Exigence | Détail | Source |
 |---|---|---|---|
+| E0 | Sélecteur d'étage/zone intégré à l'écran | Contrôle RDC / Étage / Extérieur en haut de l'écran (remplace l'ancien rail droit dédié, T9). Comment gérer précisément les étages ici reste à définir — pas urgent (point ouvert §12). | `navigation.yaml` (floors) |
 | E1 | Grille des pièces de l'étage | Une tuile par pièce configurée pour cet étage. | `rooms` (filtré par `floor`) |
 | E2 | État résumé par tuile | Au minimum : température actuelle, indicateur lumière allumée/éteinte, position du volet. | `rooms[].sensors`, `rooms[].lights`, `rooms[].covers` |
 | E3 | Entrée dans une pièce | Toucher une tuile ouvre la vue détaillée de la pièce (transition selon le concept de navigation retenu, §9). | — |
@@ -80,7 +86,7 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 
 ![Structure — Vue d'étage / RDC](diagrams/structure-etage.svg)
 
-*Gabarit complet (rail droit + barre du haut actifs, T9) : c'est la même structure que la vue pièce ci-dessous, avec une grille de tuiles en zone principale.*
+*Barres gauche/droite persistantes (T9/T10) ; le sélecteur d'étage (E0) vit maintenant dans la zone principale, au-dessus de la grille de tuiles.*
 
 ### 3.4 Vue pièce (ex. Chambre Léane)
 
@@ -95,7 +101,7 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 
 ![Structure — Vue pièce](diagrams/structure-piece.svg)
 
-*Zone principale scindée en deux : visuel de la pièce à gauche (P4-P6), rangée d'icônes rapides + panneau de détail à droite (P1-P3) — reprend directement la vue pièce enrichie de "Boussole" (§9).*
+*Barres gauche/droite persistantes (T9/T10). Zone principale scindée en deux : visuel de la pièce à gauche (P4-P6), rangée d'icônes rapides + panneau de détail à droite (P1-P3) — reprend directement la vue pièce enrichie de "Boussole" (§9).*
 
 ### 3.5 Extérieur
 
@@ -289,5 +295,9 @@ Le gabarit général de Boussole (rails + barres) est la structure de navigation
 4. Les suggestions contextuelles et le mode veille ambiant (§3.1, T5/T6) sont-ils souhaités tels quels ?
 5. Protection d'accès au dashboard depuis internet : réseau local + authentification existante, ou Cloudflare Access dédiée (§5.3) ?
 6. Comment intégrer précisément les effets de Concept A/B (parallax, respiration, panneau coulissant) dans le gabarit Boussole retenu (§9) ?
+7. Devenir des anciennes entrées Extérieur/Énergie/Tesla/Sécurité/Météo/Fonctions dans la nouvelle navigation à 5 entrées (Accueil/Pièces/Lumière/Température/Energie, T9) — fondues dedans, gardées à part, ou autre ? Pas urgent.
+8. Comment gérer précisément les étages maintenant que leur sélecteur est intégré à l'écran Pièces (E0) plutôt que dans une colonne dédiée ? Pas urgent, à revoir plus tard (confirmé par l'utilisateur le 06.09.2026).
+9. Connexion effective au calendrier Apple via CalDAV (T10) : mot de passe d'application à générer par l'utilisateur, puis test de connexion à faire.
+10. L'artifact interactif "Boussole" (§9) reflète encore l'ancien gabarit (rail droit = étages) — à resynchroniser avec le T9 révisé une fois les points 7-8 clarifiés.
 
 *(Points résolus le 03.09.2026 : `dashboard-api` en Python/FastAPI, voir §4.2 ; gabarit de navigation retenu — maquette "Boussole", voir §3.1 T9 et §9 ; Mac aligné sur la configuration écran tactile mural, pas de version dédiée, voir §2.)*
