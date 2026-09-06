@@ -6,8 +6,35 @@ jour au fur et à mesure que les points ouverts du cahier des charges se
 tranchent."""
 
 import os
+import io
+import base64
+from PIL import Image
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), "diagrams")
+ASSETS_PHOTOS_DIR = os.path.join(os.path.dirname(__file__), "assets", "photos")
+
+
+def photo_b64(filename, target_w, target_h, quality=68):
+    """Charge une photo réelle depuis assets/photos/, la recadre/redimensionne au
+    format demandé et la renvoie en JPEG base64 — pour l'illustrer directement
+    dans un sketch une fois qu'une photo est décidée pour un emplacement."""
+    path = os.path.join(ASSETS_PHOTOS_DIR, filename)
+    im = Image.open(path).convert("RGB")
+    w, h = im.size
+    target_ratio = target_w / target_h
+    src_ratio = w / h
+    if src_ratio > target_ratio:
+        new_w = int(h * target_ratio)
+        x0 = (w - new_w) // 2
+        im = im.crop((x0, 0, x0 + new_w, h))
+    else:
+        new_h = int(w / target_ratio)
+        y0 = (h - new_h) // 2
+        im = im.crop((0, y0, w, y0 + new_h))
+    im = im.resize((target_w, target_h), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, "JPEG", quality=quality, optimize=True)
+    return base64.b64encode(buf.getvalue()).decode()
 
 # ---------- page de documentation (hors écran) ----------
 PAPER = "#f7f6f2"
@@ -92,6 +119,25 @@ class SVG:
         dash = "" if decided else ' stroke-dasharray="5,4"'
         self.raw(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" fill="url(#{gid})" '
                   f'stroke="{stroke}" stroke-width="1.5"{dash} filter="url(#glassShadow)"/>')
+
+    def photo(self, x, y, w, h, b64_jpeg, rx=16):
+        """Carte photo réelle (décidée) : image recadrée en plein cadre + voile
+        sombre en bas pour la lisibilité du texte posé dessus (même principe que
+        --scrim-rgb dans les autres prototypes du projet)."""
+        cid = self.new_id("clip")
+        gid = self.new_id("scrim")
+        self.defs.append(f'<clipPath id="{cid}"><rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{rx}"/></clipPath>')
+        self.defs.append(
+            f'<linearGradient id="{gid}" x1="0" y1="0" x2="0" y2="1">'
+            f'<stop offset="0" stop-color="rgba(8,10,16,0.10)"/><stop offset="1" stop-color="rgba(5,7,12,0.75)"/></linearGradient>'
+        )
+        self.raw(f'<g clip-path="url(#{cid})">'
+                  f'<image x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" '
+                  f'href="data:image/jpeg;base64,{b64_jpeg}" preserveAspectRatio="xMidYMid slice"/>'
+                  f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" fill="url(#{gid})"/>'
+                  f'</g>')
+        self.raw(f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{rx}" fill="none" '
+                  f'stroke="{GLASS_STROKE_DECIDED}" stroke-width="1.6" filter="url(#glassShadow)"/>')
 
     def line(self, x1, y1, x2, y2, stroke="rgba(255,255,255,0.28)", sw=1.2):
         self.raw(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{stroke}" stroke-width="{sw}"/>')
@@ -248,7 +294,8 @@ def build_accueil():
     reserved_bottom(s)
 
     m = MAIN
-    s.glass(m["x"] + 8, m["y"] + 8, m["w"] - 16, 92, rx=16, decided=True)
+    hero_b64 = photo_b64("maison-facade-jardin-2.jpg", 700, 92)
+    s.photo(m["x"] + 8, m["y"] + 8, m["w"] - 16, 92, hero_b64, rx=16)
     s.text(m["x"] + 32, m["y"] + 44, "Bonsoir, Fab.", size=24, fill=TEXT_WHITE, family=FONT_SERIF, weight="700")
     s.text(m["x"] + 32, m["y"] + 68, "Le salon est ensoleillé et vide — fermer le volet ?", size=11.5, fill=TEXT_DIM, family=FONT)
     s.tag(m["x"] + 32, m["y"] + 82, "A4")

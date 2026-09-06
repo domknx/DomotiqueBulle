@@ -64,7 +64,7 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 | A1 | Heure et date en direct | Horloge lisible à distance (écran mural), mise à jour sans rechargement de page. | horloge système |
 | A2 | Résumé météo courant | Température, description courte. | `weather` |
 | A3 | Accès rapide aux scènes | Liste de scènes configurées (ex. Mode nuit, Je pars), déclenchables en un geste. | `scenes` |
-| A4 | Salutation contextuelle | Message d'accueil qui peut varier selon l'heure ou un événement notable (ex. pièce ensoleillée et vide). | dérivé de `rooms` + `weather` |
+| A4 | Salutation contextuelle | Message d'accueil qui peut varier selon l'heure ou un événement notable (ex. pièce ensoleillée et vide). Fond photo réel de la maison (décidé le 06.09.2026, voir §7.1) : `assets/photos/maison-facade-jardin-2.jpg`, avec voile sombre en bas pour la lisibilité du texte — remplace l'ancienne photo unique "Maison" du 31.08.2026, supersédée par le jeu de 4 photos façade/jardin fourni le 06.09.2026. | dérivé de `rooms` + `weather` |
 | A5 | Températures principales de la maison | Un sous-ensemble configuré de capteurs clés (pas toutes les pièces), lecture seule à ce niveau. | `rooms[].sensors` (sous-ensemble configuré) |
 | A6 | État de la batterie solaire | Pourcentage + indicateur charge/décharge, si l'installation est disponible. Même source que S2 (§3.7) — résumé compact, pas de duplication de logique. | `energy.battery` |
 | A7 | État de la batterie de la voiture | Pourcentage + autonomie estimée. Même source que S5 (§3.8). | `tesla.battery`, `tesla.range` |
