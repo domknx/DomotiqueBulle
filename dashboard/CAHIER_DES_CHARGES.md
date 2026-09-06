@@ -70,6 +70,8 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 | A7 | État de la batterie de la voiture | Pourcentage + autonomie estimée. Même source que S5 (§3.8). | `tesla.battery`, `tesla.range` |
 | A8 | Production solaire instantanée | Valeur en kW, mise à jour en direct. Même source que S1 (§3.7). | `energy.production` |
 
+*Convention des sketches ci-dessous et dans le reste du §3 (demandée par l'utilisateur le 06.09.2026) : rendu "verre dépoli", un élément avec du texte/contenu est une exigence déjà décidée, un emplacement en verre vide à bordure pointillée est un espace réservé pas encore décidé (typiquement un point ouvert §12) — à mettre à jour au fur et à mesure que ces points se tranchent.*
+
 ![Structure — Écran d'accueil](diagrams/structure-accueil.svg)
 
 *Sketch de structure, pas une maquette pixel-exacte (celle-ci reste "Boussole", §9) — sert à fixer le gabarit et le placement des exigences ci-dessus. Barres latérales gauche et droite persistantes (T9/T10) ; la zone principale ci-dessous est propre à l'écran d'accueil.*
