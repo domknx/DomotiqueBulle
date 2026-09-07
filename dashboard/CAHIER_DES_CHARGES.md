@@ -69,6 +69,7 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 | A6 | État de la batterie solaire | Pourcentage + indicateur charge/décharge, si l'installation est disponible. Même source que S2 (§3.7) — résumé compact, pas de duplication de logique. | `energy.battery` |
 | A7 | État de la batterie de la voiture | Pourcentage + autonomie estimée. Même source que S5 (§3.8). | `tesla.battery`, `tesla.range` |
 | A8 | Production solaire instantanée | Valeur en kW, mise à jour en direct. Même source que S1 (§3.7). | `energy.production` |
+| A9 | Grille "Pièces — aperçu rapide" | Jusqu'à 6 blocs (icône + nom, température, icône lampe + nombre si ≥1 allumée, icône chauffage colorée si actif, icône volet ouvert/fermé/intermédiaire + nombre de volets). Décidé le 06.09.2026 (voir `custom_dashboard.md` pour l'historique des itérations). Icônes de pièce : voir §7.1. | `rooms` (sous-ensemble affiché sur l'accueil) |
 
 *Convention des sketches ci-dessous et dans le reste du §3 (demandée par l'utilisateur le 06.09.2026) : rendu "verre dépoli", un élément avec du texte/contenu est une exigence déjà décidée, un emplacement en verre vide à bordure pointillée est un espace réservé pas encore décidé (typiquement un point ouvert §12) — à mettre à jour au fur et à mesure que ces points se tranchent.*
 
@@ -275,6 +276,8 @@ En attendant que `dashboard-web` existe (les maquettes actuelles sont des pages 
 
 Point de vigilance (pas bloquant) : les gros binaires versionnés alourdissent l'historique Git au fil du temps — à surveiller si la bibliothèque grossit beaucoup ; un passage à Git LFS pourra être envisagé plus tard si besoin.
 
+**Icônes de pièces (décidé le 06.09.2026)** : après une exploration en 4 itérations (voir `custom_dashboard.md`), les icônes retenues viennent de [Lucide](https://lucide.dev) (licence ISC, libre et gratuite), choisies par l'utilisateur en parcourant la bibliothèque réelle. Fichiers dans `assets/icons/` : `chambre.svg` (bed-double), `cuisine.svg` (chef-hat), `salon.svg` (sofa), `salle-de-bain.svg` (bath), `douche.svg` (shower-head), `bureau.svg` (laptop), `salle-a-manger.svg` (utensils). Utilisées dans la grille A9 (§3.2) via la fonction `icon()` de `gen_diagrams.py` (chemins SVG copiés tels quels, contour seul, teintable). Restent à faire : icônes de navigation (T9) et icônes d'état (lampe/chauffage/volet), une fois un style choisi pour celles-ci.
+
 ## 8. Système visuel
 
 Palette : Nuit `#0b0e16`, Brume `#eef1f6`, Ambre `#ff9c54`, Glacier `#5ac8fa`, Mousse `#6fcf97`, Cuivre `#caa06b`. Typo : Fraunces (affichage) / Inter (interface) / IBM Plex Mono (données). Thème sombre unique assumé. Détail des effets déjà validés (chauffage au sol, éclairage de pièce) dans `custom_dashboard.md`.
@@ -315,7 +318,7 @@ Le gabarit général de Boussole (rails + barres) est la structure de navigation
 6. Comment intégrer précisément les effets de Concept A/B (parallax, respiration, panneau coulissant) dans le gabarit Boussole retenu (§9) ?
 7. Devenir des anciennes entrées Extérieur/Énergie/Tesla/Sécurité/Fonctions dans la navigation gauche (T9, désormais 7 entrées : Accueil/Pièces/Lumière/Température/Energie/Météo/Configuration) — fondues dedans, gardées à part, ou autre ? Météo a déjà sa propre entrée (ajoutée le 06.09.2026) et n'est donc plus concernée par cette question. Pas urgent.
 8. Comment gérer précisément les étages maintenant que leur sélecteur est intégré à l'écran Pièces (E0) plutôt que dans une colonne dédiée ? Pas urgent, à revoir plus tard (confirmé par l'utilisateur le 06.09.2026).
-9. Connexion effective au calendrier Apple via CalDAV (T10) : mot de passe d'application généré et fichier d'identifiants en place côté utilisateur (06.09.2026), mais test de connexion bloqué pour l'instant par une restriction réseau au niveau de l'organisation Claude (accès sortant refusé vers `caldav.icloud.com` et `pypi.org` dans les deux environnements d'exécution disponibles) — pas un problème d'identifiants. À retester dans une nouvelle session une fois la politique réseau effective.
-10. L'artifact interactif "Boussole" (§9) reflète encore l'ancien gabarit (rail droit = étages) — à resynchroniser avec le T9 révisé une fois les points 7-8 clarifiés.
+9. L'artifact interactif "Boussole" (§9) reflète encore l'ancien gabarit (rail droit = étages) et n'a pas de photo sur son écran d'accueil — à resynchroniser avec le T9 révisé une fois les points 7-8 clarifiés, en même temps que l'ajout de la photo hero (§3.2, A4).
+10. Icônes de navigation (T9) et icônes d'état lampe/chauffage/volet (A9, E1/E2) — le principe (Lucide, libre/gratuit, choix en parcourant la bibliothèque réelle) est acquis depuis le choix des icônes de pièces (§7.1), reste à répéter la même démarche pour celles-ci.
 
-*(Points résolus le 03.09.2026 : `dashboard-api` en Python/FastAPI, voir §4.2 ; gabarit de navigation retenu — maquette "Boussole", voir §3.1 T9 et §9 ; Mac aligné sur la configuration écran tactile mural, pas de version dédiée, voir §2.)*
+*(Points résolus le 03.09.2026 : `dashboard-api` en Python/FastAPI, voir §4.2 ; gabarit de navigation retenu — maquette "Boussole", voir §3.1 T9 et §9 ; Mac aligné sur la configuration écran tactile mural, pas de version dédiée, voir §2.)* Connexion CalDAV (T10) testée et validée de bout en bout le 06.09.2026 après-midi (voir `custom_dashboard.md`) — retiré de cette liste. Grille A9 et icônes de pièces (§3.2, §7.1) décidées et intégrées le 07.09.2026 — retirées de cette liste.*

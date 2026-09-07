@@ -10,8 +10,8 @@ import io
 import base64
 from PIL import Image
 
-OUT_DIR = os.path.join(os.path.dirname(__file__), "diagrams")
-ASSETS_PHOTOS_DIR = os.path.join(os.path.dirname(__file__), "assets", "photos")
+OUT_DIR = os.path.dirname(__file__)
+ASSETS_PHOTOS_DIR = os.path.join(os.path.dirname(__file__), "..", "assets", "photos")
 
 
 def photo_b64(filename, target_w, target_h, quality=68):
@@ -141,6 +141,20 @@ class SVG:
 
     def line(self, x1, y1, x2, y2, stroke="rgba(255,255,255,0.28)", sw=1.2):
         self.raw(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{stroke}" stroke-width="{sw}"/>')
+
+    def icon(self, cx, cy, size, paths, stroke="rgba(255,255,255,0.92)", sw=2):
+        """Icône Lucide (viewBox 24x24, contour seul, licence ISC) centrée en
+        (cx,cy), mise à l'échelle à `size` px. `paths` = liste de `d` copiés
+        tels quels depuis lucide.dev (stroke-linecap/linejoin round)."""
+        scale = size / 24.0
+        tx = cx - size / 2
+        ty = cy - size / 2
+        self.raw(f'<g transform="translate({tx:.1f},{ty:.1f}) scale({scale:.4f})" '
+                  f'fill="none" stroke="{stroke}" stroke-width="{sw/scale:.3f}" '
+                  f'stroke-linecap="round" stroke-linejoin="round">')
+        for d in paths:
+            self.raw(f'<path d="{esc(d)}"/>')
+        self.raw('</g>')
 
     def text(self, x, y, s, size=13, fill=TEXT_WHITE, family=FONT, weight="400", anchor="start", spacing=None, style=None):
         sp = f' letter-spacing="{spacing}"' if spacing else ""
@@ -274,6 +288,113 @@ def right_sidebar(s, people):
            family=FONT, weight="700", anchor="middle")
 
 
+def shutter_icon(s, x, y, size, closed_frac):
+    """Pictogramme volet schématique : cadre + lattes, avec un voile qui monte
+    depuis le haut proportionnellement à closed_frac (0 = ouvert, 1 = fermé,
+    0.5 = intermédiaire). Évite de trancher le glyphe final tout en montrant
+    clairement l'état — le nombre de volets s'affiche à côté."""
+    s.raw(f'<rect x="{x:.1f}" y="{y:.1f}" width="{size:.1f}" height="{size:.1f}" rx="3" '
+          f'fill="rgba(255,255,255,0.14)" stroke="{GLASS_STROKE_DECIDED}" stroke-width="1.3"/>')
+    for j in range(1, 4):
+        yy = y + size * j / 4
+        s.line(x + 2, yy, x + size - 2, yy, stroke="rgba(255,255,255,0.35)", sw=1)
+    if closed_frac > 0:
+        oh = size * closed_frac
+        s.raw(f'<rect x="{x:.1f}" y="{y:.1f}" width="{size:.1f}" height="{oh:.1f}" rx="3" '
+              f'fill="rgba(20,22,28,0.55)"/>')
+
+
+# Icônes de pièces — Lucide (lucide.dev, licence ISC, libre et gratuite),
+# choisies par Fab le 06.09.2026 après une exploration en 4 itérations
+# (voir custom_dashboard.md). Chemins copiés tels quels depuis lucide.dev.
+ROOM_ICONS = {
+    "chambre": [  # bed-double
+        "M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8",
+        "M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4",
+        "M12 4v6",
+        "M2 18h20",
+    ],
+    "cuisine": [  # chef-hat
+        "M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 "
+        "5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z",
+        "M6 17h12",
+    ],
+    "salon": [  # sofa
+        "M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3",
+        "M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z",
+        "M4 18v2",
+        "M20 18v2",
+        "M12 4v9",
+    ],
+    "salle-de-bain": [  # bath
+        "M10 4 8 6",
+        "M17 19v2",
+        "M2 12h20",
+        "M7 19v2",
+        "M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5",
+    ],
+    "douche": [  # shower-head
+        "m4 4 2.5 2.5",
+        "M13.5 6.5a4.95 4.95 0 0 0-7 7",
+        "M15 5 5 15",
+        "M14 17v.01",
+        "M10 16v.01",
+        "M13 13v.01",
+        "M16 10v.01",
+        "M11 20v.01",
+        "M17 14v.01",
+        "M20 11v.01",
+    ],
+    "bureau": [  # laptop
+        "M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45"
+        "l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z",
+        "M20.054 15.987H3.946",
+    ],
+    "salle-a-manger": [  # utensils
+        "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2",
+        "M7 2v20",
+        "M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7",
+    ],
+}
+
+
+def room_block(s, x, y, w, h, name, temp, lamps_on, lamps_total, heating_on, volets_total, volets_closed_frac, icon_key=None):
+    """Bloc résumé pièce/personne (A9) : icone (glyphe pas encore décidé) + nom
+    + température + lampe (teinte chaude si ≥1 allumée, avec le nombre) +
+    chauffage (teinte chaude si actif) + volet (remplissage = fermeture, avec
+    le nombre de volets). L'état lui-même est décidé ; seul le glyphe des
+    icones reste ouvert (§12)."""
+    s.glass(x, y, w, h, rx=14, decided=True)
+    s.glass_circle(x + 22, y + 22, 13, decided=icon_key is not None)
+    if icon_key:
+        s.icon(x + 22, y + 22, 17, ROOM_ICONS[icon_key])
+    s.text(x + 42, y + 19, name, size=12.5, fill=TEXT_WHITE, family=FONT, weight="700")
+    s.text(x + w - 14, y + 27, temp, size=15, fill=TEXT_WHITE, family=FONT, weight="700", anchor="end")
+
+    iy = y + h - 20
+    lamp_on = lamps_on > 0
+    s.glass_circle(x + 20, iy, 10, decided=True, tint=(ACCENT_GLASS_TOP, ACCENT_GLASS_BOTTOM) if lamp_on else None)
+    s.text(x + 34, iy + 4, str(lamps_on), size=11, fill=(ACCENT if lamp_on else TEXT_DIM), family=FONT, weight="700")
+
+    hx = x + w * 0.42
+    s.glass_circle(hx, iy, 10, decided=True, tint=(ACCENT_GLASS_TOP, ACCENT_GLASS_BOTTOM) if heating_on else None)
+
+    vx = x + w - 38
+    shutter_icon(s, vx, iy - 10, 20, volets_closed_frac)
+    s.text(vx + 26, iy + 4, str(volets_total), size=11, fill=TEXT_DIM, family=FONT, weight="700")
+
+
+ROOMS_EXAMPLE = [
+    # name, temp, lamps_on, lamps_total, heating_on, volets_total, volets_closed_frac, icon_key
+    ("Cuisine", "21.2°", 2, 2, False, 2, 0.5, "cuisine"),
+    ("Salon", "20.8°", 1, 3, True, 2, 0.0, "salon"),
+    ("Salle de Bain", "22.5°", 0, 1, True, 1, 1.0, "salle-de-bain"),
+    ("Lily", "21.0°", 1, 1, False, 2, 1.0, "chambre"),
+    ("Léane", "20.5°", 2, 2, True, 2, 0.5, "chambre"),
+    ("Bureau", "19.9°", 0, 2, False, 1, 0.0, "bureau"),
+]
+
+
 def write(name, s):
     os.makedirs(OUT_DIR, exist_ok=True)
     path = os.path.join(OUT_DIR, name)
@@ -288,7 +409,7 @@ def write(name, s):
 def build_accueil():
     s = SVG()
     base_canvas(s, "Structure — Écran d'accueil",
-                "Style verre — texte = décidé, verre vide = pas encore décidé · T7, A1–A8")
+                "Style verre — texte = décidé, verre vide = pas encore décidé · T7, A1–A9")
     left_sidebar(s, "home")
     right_sidebar(s, PEOPLE)
     reserved_bottom(s)
@@ -320,6 +441,21 @@ def build_accueil():
         s.glass(sx, m["y"] + 260, 132, 44, rx=14, decided=False)
         sx += 146
     s.tag(m["x"] + 8, m["y"] + 310, "A3")
+
+    header_y = m["y"] + 352
+    s.text(m["x"] + 8, header_y, "PIÈCES — APERÇU RAPIDE", size=10, fill="rgba(255,255,255,0.55)",
+           family=FONT_MONO, spacing="0.5px")
+    s.tag(m["x"] + m["w"] - 36, header_y - 14, "A9")
+
+    grid_y = header_y + 14
+    row_h, gap = 64, 8
+    bw = (m["w"] - 16 - 2 * 14) / 3
+    bx0 = m["x"] + 8
+    for i, (name, temp, lamps_on, lamps_total, heating_on, volets_total, closed_frac, icon_key) in enumerate(ROOMS_EXAMPLE):
+        col, row = i % 3, i // 3
+        bx = bx0 + col * (bw + 14)
+        by = grid_y + row * (row_h + gap)
+        room_block(s, bx, by, bw, row_h, name, temp, lamps_on, lamps_total, heating_on, volets_total, closed_frac, icon_key)
 
     s.glass(m["x"] + 8, m["y"] + m["h"] - 60, m["w"] - 16, 40, rx=12, decided=False)
     s.tag(m["x"] + 16, m["y"] + m["h"] - 54, "T6")
