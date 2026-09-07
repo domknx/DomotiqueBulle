@@ -155,6 +155,8 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 
 Le prototype actuel (les Artifacts) code les données et les identifiants d'entités en dur dans le HTML. C'est correct pour explorer une direction visuelle, mais ça viole les quatre principes du §1 : impossible à faire évoluer sans tout réécrire, aucune séparation entre "ce que HA expose" et "ce que le dashboard affiche". La demande explicite de l'utilisateur est de proposer une vraie architecture logicielle pour que **Home Assistant et le dashboard puissent évoluer indépendamment l'un de l'autre**.
 
+> **Périmètre de ce chapitre** : uniquement la nouvelle couche `dashboard-api`/`dashboard-web` et son branchement sur Home Assistant. L'architecture Docker globale existante (Home Assistant, bases de données, Grafana, accès externe Cloudflare et sous-domaines, intégration TeslaMate, etc.) est documentée avec schéma complet dans `README.md` (§1) et `CLAUDE.md` (§7) à la racine du projet — volontairement pas dupliquée ici, ce chapitre s'appuie dessus sans la réécrire.
+
 ### 4.2 Proposition — architecture à trois couches
 
 ```mermaid

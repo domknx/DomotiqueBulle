@@ -4,35 +4,74 @@ Stack domotique pour la villa (habitation principale + studio annexe), entièrem
 
 ## 1. Vue d'ensemble
 
-```
-                        Internet
-                            │
-                    Cloudflare Tunnel
-                    (pas de port ouvert
-                     sur le routeur)
-                            │
-                     ┌──────┴──────┐
-                     │ cloudflared │
-                     └──────┬──────┘
-                            │  domotique_net (réseau Docker)
-        ┌───────────────────┼────────────────────┐
-        │                   │                     │
-┌───────┴────────┐  ┌───────┴────────┐   ┌────────┴────────┐
-│ Home Assistant  │  │   Prometheus    │──▶│  VictoriaMetrics │
-│  (bus KNX)      │  │ (scrape + relai)│   │ (stockage long   │
-└─────────────────┘  └────────────────┘   │  terme, 5 ans)   │
-                                            └────────┬────────┘
-                                                     │
-                                              ┌──────┴──────┐
-                                              │   Grafana   │
-                                              └─────────────┘
+```mermaid
+flowchart TB
+  subgraph INTERNET["Internet"]
+    USER["Utilisateurs\n(Mac / iPad / iPhone / écran mural)"]
+    TESLACLOUD["Tesla Fleet API\n(cloud Tesla)"]
+  end
+
+  subgraph CF["Cloudflare — zone malnoy.com (Zero Trust, Free)"]
+    TUNNEL["cloudflared\n(tunnel sortant, aucun port ouvert sur le routeur)"]
+  end
+
+  USER -->|HTTPS| TUNNEL
+
+  subgraph MAC["Mac mini M1 — Docker (réseau domotique_net)"]
+    HA["homeassistant :8123\n(bus KNX, Z-Wave, solaire, Tesla Fleet)"]
+    GLASS["glasshome :3123\n(essai dashboard, LAN uniquement)"]
+    PROM["prometheus :9090 (LAN)\nscrape HA, relais 2j"]
+    VM[("victoriametrics :8428 (LAN)\nstockage 5 ans")]
+    GRAF["grafana :3000"]
+    DOCKNX["doc-knx :8090\n(nginx — rapport KNX)"]
+    TESLAKEY["tesla-key :8091\n(nginx — clé publique Tesla)"]
+    TMDB[("teslamate-db\nPostgres")]
+    TMMQ["teslamate-mosquitto\n(MQTT interne)"]
+    TM["teslamate :4000 (LAN)"]
+    DAPI["dashboard-api — prévu\nPython · FastAPI"]
+    DWEB["dashboard-web — prévu\nnginx + Vue 3"]
+  end
+
+  subgraph AUTRE["Autre réseau Docker"]
+    TUNET["Tunet :3002"]
+  end
+
+  TUNNEL -->|domotiquebulle.malnoy.com| HA
+  TUNNEL -->|grafanabulle.malnoy.com| GRAF
+  TUNNEL -->|"docbulle.malnoy.com\n(+ Cloudflare Access)"| DOCKNX
+  TUNNEL -->|vehiculebulle.malnoy.com| TESLAKEY
+  TUNNEL -->|visubulle.malnoy.com| TUNET
+  TUNNEL -.->|"dashboardbulle.malnoy.com\n(à confirmer)"| DWEB
+
+  HA -->|"/api/prometheus"| PROM
+  PROM -->|remote_write| VM
+  VM -->|datasource VictoriaMetrics| GRAF
+  TMDB -->|datasource TeslaMate| GRAF
+
+  TM --> TMDB
+  TM --> TMMQ
+  TM <-->|Fleet API| TESLACLOUD
+  HA <-->|intégration Tesla Fleet| TESLACLOUD
+
+  GLASS -->|jeton longue durée| HA
+
+  DAPI <-->|WebSocket, jeton longue durée| HA
+  DWEB <--> DAPI
 ```
 
-- **Home Assistant** : cœur domotique (KNX, solaire, Tesla, futurs capteurs).
-- **Prometheus** : interroge l'endpoint `/api/prometheus` de Home Assistant et relaie (`remote_write`) toutes les métriques vers VictoriaMetrics. Ne garde localement que 2 jours de données (buffer), ce n'est pas la base de stockage.
-- **VictoriaMetrics** : base de séries temporelles indépendante, stockage long terme (5 ans configurés), source de vérité pour l'historique.
-- **Grafana** : visualisation, branché sur VictoriaMetrics (API compatible Prometheus).
-- **cloudflared** : tunnel sortant vers Cloudflare, expose Home Assistant et Grafana sur Internet sans ouvrir aucun port sur la box/le routeur et sans app cliente à installer/maintenir à jour sur chaque appareil (contrairement à Tailscale).
+Ce diagramme couvre l'intégralité de la stack Docker actuelle sur le Mac mini, plus la couche `dashboard-api`/`dashboard-web` **prévue** (pas encore construite — voir `dashboard/CAHIER_DES_CHARGES.md` §4, projet suivi séparément) qui viendra se brancher sur Home Assistant exactement comme GlassHome le fait déjà aujourd'hui, avec son propre sous-domaine Cloudflare à confirmer.
+
+- **Home Assistant** (`homeassistant`) : cœur domotique (bus KNX filaire, Z-Wave via un Raspberry Pi dédié, solaire, intégration Tesla Fleet, futurs capteurs). Exposé sur `domotiquebulle.malnoy.com`.
+- **GlassHome** (`glasshome`) : un des trois essais de dashboard comparés au jalon 5 (avec Tunet et les cartes natives HA), connecté à HA par jeton longue durée. LAN uniquement pour l'instant, pas exposé via le tunnel.
+- **Prometheus** (`prometheus`) : interroge l'endpoint `/api/prometheus` de Home Assistant et relaie (`remote_write`) toutes les métriques vers VictoriaMetrics. Ne garde localement que 2 jours de données (buffer), ce n'est pas la base de stockage. Accès LAN uniquement (port `9090`), jamais exposé publiquement.
+- **VictoriaMetrics** (`victoriametrics`) : base de séries temporelles indépendante, stockage long terme (5 ans configurés), source de vérité pour l'historique domotique. Accès LAN uniquement (port `8428`).
+- **Grafana** (`grafana`) : visualisation, avec deux sources de données provisionnées automatiquement — VictoriaMetrics (API compatible Prometheus, historique domotique) et TeslaMate (Postgres, historique véhicule). Exposé sur `grafanabulle.malnoy.com`.
+- **doc-knx** (`doc-knx`) : nginx servant la documentation technique du projet (rapport KNX interactif, régénéré par script, jamais édité à la main). Exposé sur `docbulle.malnoy.com`, protégé par une politique Cloudflare Access (email + code à usage unique) car il contient la structure du bus KNX.
+- **tesla-key** (`tesla-key`) : nginx hébergeant la clé publique Tesla requise par l'enregistrement de l'app développeur Tesla. Exposé sans authentification (Tesla doit pouvoir la lire) sur `vehiculebulle.malnoy.com`.
+- **TeslaMate** (`teslamate` + `teslamate-db` Postgres + `teslamate-mosquitto` MQTT interne) : historique/analytique du véhicule (trajets, charges, efficacité) via la Fleet API Tesla, dashboards importés dans le Grafana existant plutôt que dans un Grafana dédié. Interface web LAN uniquement (port `4000`), pas exposée via le tunnel.
+- **Tunet** (`Tunet`) : dashboard existant, sur un réseau Docker séparé — joint via `host.docker.internal` (nécessite un `extra_hosts` explicite côté `cloudflared`, voir historique du 30.08.2026). Exposé sur `visubulle.malnoy.com`.
+- **cloudflared** (`cloudflared`) : tunnel sortant vers Cloudflare, expose les services publics sur Internet sans ouvrir aucun port sur la box/le routeur et sans app cliente à installer/maintenir à jour sur chaque appareil (contrairement à Tailscale, gardé en usage secondaire).
+- **dashboard-api / dashboard-web** (prévu, pas encore construit) : nouvelle couche applicative pour le dashboard sur-mesure de l'écran mural — voir `dashboard/CAHIER_DES_CHARGES.md` pour le détail complet de cette architecture (elle n'est pas dupliquée ici). Se connectera à Home Assistant en WebSocket, comme GlassHome aujourd'hui, et suivra la même procédure de sous-domaine Cloudflare à un seul niveau que les autres services.
 
 ## 2. Structure des dossiers
 
