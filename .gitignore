@@ -43,3 +43,8 @@ TeslaMate_Import/
 # reste volontairement un dépôt Git indépendant (pas un sous-module, pas de contenu
 # versionné dans ce repo) — voir README.md §7.3 / infra_architecture.md.
 Tunet/
+
+# dashboard-api (Python) : artefacts locaux, jamais versionnés
+dashboard/api/__pycache__/
+dashboard/api/**/__pycache__/
+dashboard/api/.venv/

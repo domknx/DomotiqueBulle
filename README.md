@@ -28,7 +28,8 @@ flowchart TB
     TMDB[("teslamate-db\nPostgres")]
     TMMQ["teslamate-mosquitto\n(MQTT interne)"]
     TM["teslamate :4000 (LAN)"]
-    DAPI["dashboard-api — prévu\nPython · FastAPI"]
+    DPROTO["dashboard-proto :8092\n(nginx — maquette + proxy météo)"]
+    DAPI["dashboard-api — tranche météo\nPython · FastAPI"]
     DWEB["dashboard-web — prévu\nnginx + Vue 3"]
   end
 
@@ -41,7 +42,9 @@ flowchart TB
   TUNNEL -->|"docbulle.malnoy.com\n(+ Cloudflare Access)"| DOCKNX
   TUNNEL -->|vehiculebulle.malnoy.com| TESLAKEY
   TUNNEL -->|visubulle.malnoy.com| TUNET
-  TUNNEL -.->|"dashboardbulle.malnoy.com\n(à confirmer)"| DWEB
+  TUNNEL -->|dashboardbulle.malnoy.com| DPROTO
+  DPROTO -->|proxy /api/, interne| DAPI
+  DAPI -.->|remplacera DPROTO| DWEB
 
   HA -->|"/api/prometheus"| PROM
   PROM -->|remote_write| VM
@@ -55,11 +58,11 @@ flowchart TB
 
   GLASS -->|jeton longue durée| HA
 
-  DAPI <-->|WebSocket, jeton longue durée| HA
-  DWEB <--> DAPI
+  DAPI -.->|WebSocket, jeton longue durée — prévu| HA
+  DWEB -.-> DAPI
 ```
 
-Ce diagramme couvre l'intégralité de la stack Docker actuelle sur le Mac mini, plus la couche `dashboard-api`/`dashboard-web` **prévue** (pas encore construite — voir `dashboard/CAHIER_DES_CHARGES.md` §4, projet suivi séparément) qui viendra se brancher sur Home Assistant exactement comme GlassHome le fait déjà aujourd'hui, avec son propre sous-domaine Cloudflare à confirmer.
+Ce diagramme couvre l'intégralité de la stack Docker actuelle sur le Mac mini. `dashboard-proto` est la maquette de la nouvelle page d'accueil (jalon 5, `dashboard/CAHIER_DES_CHARGES.md`) : un simple nginx servant du HTML statique, en production sur `dashboardbulle.malnoy.com` depuis le 08.09.2026 pour un suivi au jour le jour, distinct de `visubulle.malnoy.com` (Tunet, dashboard existant, laissé inchangé). Depuis le 09.09.2026, la météo n'y est plus mock : `dashboard-proto` proxifie `/api/` en interne vers `dashboard-api`, première tranche réelle de la couche applicative définitive (pour l'instant limitée au domaine météo — voir §4 du cahier des charges), reste du contenu (calendrier, autres écrans) toujours mock. `dashboard-api`/`dashboard-web` remplaceront entièrement `dashboard-proto` une fois construits (`dashboard-web`, en Vue 3, pas encore commencé ; connexion WebSocket de `dashboard-api` à Home Assistant pas encore construite non plus, la météo n'en avait pas besoin).
 
 - **Home Assistant** (`homeassistant`) : cœur domotique (bus KNX filaire, Z-Wave via un Raspberry Pi dédié, solaire, intégration Tesla Fleet, futurs capteurs). Exposé sur `domotiquebulle.malnoy.com`.
 - **GlassHome** (`glasshome`) : un des trois essais de dashboard comparés au jalon 5 (avec Tunet et les cartes natives HA), connecté à HA par jeton longue durée. LAN uniquement pour l'instant, pas exposé via le tunnel.
@@ -69,9 +72,10 @@ Ce diagramme couvre l'intégralité de la stack Docker actuelle sur le Mac mini,
 - **doc-knx** (`doc-knx`) : nginx servant la documentation technique du projet (rapport KNX interactif, régénéré par script, jamais édité à la main). Exposé sur `docbulle.malnoy.com`, protégé par une politique Cloudflare Access (email + code à usage unique) car il contient la structure du bus KNX.
 - **tesla-key** (`tesla-key`) : nginx hébergeant la clé publique Tesla requise par l'enregistrement de l'app développeur Tesla. Exposé sans authentification (Tesla doit pouvoir la lire) sur `vehiculebulle.malnoy.com`.
 - **TeslaMate** (`teslamate` + `teslamate-db` Postgres + `teslamate-mosquitto` MQTT interne) : historique/analytique du véhicule (trajets, charges, efficacité) via la Fleet API Tesla, dashboards importés dans le Grafana existant plutôt que dans un Grafana dédié. Interface web LAN uniquement (port `4000`), pas exposée via le tunnel.
-- **Tunet** (`Tunet`) : dashboard existant, sur un réseau Docker séparé — joint via `host.docker.internal` (nécessite un `extra_hosts` explicite côté `cloudflared`, voir historique du 30.08.2026). Exposé sur `visubulle.malnoy.com`.
+- **Tunet** (`Tunet`) : dashboard existant, sur un réseau Docker séparé — joint via `host.docker.internal` (nécessite un `extra_hosts` explicite côté `cloudflared`, voir historique du 30.08.2026). Exposé sur `visubulle.malnoy.com`, volontairement laissé inchangé (voir `dashboard-proto` ci-dessous).
+- **dashboard-proto** (`dashboard-proto`) : nginx servant la maquette HTML statique (données mock) de la nouvelle page d'accueil sur-mesure — jalon 5, voir `dashboard/CAHIER_DES_CHARGES.md`. Exposé sur `dashboardbulle.malnoy.com` (sous-domaine dédié choisi le 08.09.2026 plutôt que de réutiliser `visubulle.malnoy.com`, pour ne pas couper l'accès quotidien à Tunet). Fichier `dashboard_web_nginx/index.html` remplacé manuellement à chaque nouvelle itération de la maquette ; sera remplacé par `dashboard-web` (ci-dessous) une fois l'architecture définitive construite.
 - **cloudflared** (`cloudflared`) : tunnel sortant vers Cloudflare, expose les services publics sur Internet sans ouvrir aucun port sur la box/le routeur et sans app cliente à installer/maintenir à jour sur chaque appareil (contrairement à Tailscale, gardé en usage secondaire).
-- **dashboard-api / dashboard-web** (prévu, pas encore construit) : nouvelle couche applicative pour le dashboard sur-mesure de l'écran mural — voir `dashboard/CAHIER_DES_CHARGES.md` pour le détail complet de cette architecture (elle n'est pas dupliquée ici). Se connectera à Home Assistant en WebSocket, comme GlassHome aujourd'hui, et suivra la même procédure de sous-domaine Cloudflare à un seul niveau que les autres services.
+- **dashboard-api** (`dashboard-api`, ajouté le 09.09.2026) : nouvelle couche applicative définitive pour le dashboard sur-mesure de l'écran mural — pour l'instant réduite à un seul endpoint météo (`GET /api/weather`, proxy Open-Meteo), voir `dashboard/CAHIER_DES_CHARGES.md` §4 et `dashboard/api/README.md`. Pas de port publié (accès interne uniquement, via `dashboard-proto`) ; pas encore de connexion WebSocket à Home Assistant. **dashboard-web** (Vue 3) n'existe pas encore — `dashboard-proto` en tient lieu temporairement (proxy `/api/` ajouté à son nginx). À terme, `dashboard-web` remplacera `dashboard-proto` et reprendra le même sous-domaine `dashboardbulle.malnoy.com`.
 
 ## 2. Structure des dossiers
 
@@ -222,6 +226,43 @@ l'enregistrement de l'app quel que soit le véhicule. Détails complets : §6.
    - Service : `HTTP` → `tesla-key:80`
 4. Accès public sans Cloudflare Access (contrairement à `docbulle.malnoy.com`) : ce fichier
    doit être accessible sans authentification pour que Tesla puisse le lire.
+
+### 4.5 Maquette de la nouvelle page d'accueil — `dashboardbulle.malnoy.com` (ajouté au jalon 5, 08.09.2026)
+
+Sert le prototype HTML statique de la nouvelle page d'accueil sur-mesure
+(dashboard/CAHIER_DES_CHARGES.md) via un conteneur `dashboard-proto` (nginx) dédié, même
+modèle que `doc-knx`/`tesla-key`. Sous-domaine **dédié** volontairement choisi plutôt que de
+réutiliser `visubulle.malnoy.com` : cette adresse pointe déjà vers Tunet, le dashboard utilisé
+au quotidien, et la basculer aurait coupé cet accès pendant toute la phase de prototypage.
+Depuis le 09.09.2026, `dashboard-proto` proxifie `/api/` en interne vers `dashboard-api`
+(§4 du cahier des charges) pour la météo — reste du contenu toujours mock.
+
+1. Démarrer les conteneurs (`--build` nécessaire au premier lancement de `dashboard-api`, qui
+   n'a pas d'image toute faite — puis à chaque modification de `dashboard/api/`) :
+   ```bash
+   docker compose up -d --build dashboard-api dashboard-proto
+   ```
+2. Vérifier en local que le prototype est bien servi : `http://<IP du Mac mini>:8092`, et que
+   la météo réelle répond : `curl http://<IP du Mac mini>:8092/api/weather` (doit renvoyer du
+   JSON avec un tableau `days` ; sinon vérifier les logs avec
+   `docker compose logs dashboard-api`).
+3. Dashboard Cloudflare → **Zero Trust** → **Networks** → **Tunnels** → `domotique-bulle` →
+   **Public Hostnames** → **Add a public hostname** :
+   - Subdomain : `dashboardbulle`
+   - Domain : `malnoy.com`
+   - Service : `HTTP` → `dashboard-proto:80`
+4. Accès public sans Cloudflare Access (contrairement à `docbulle.malnoy.com`) : pas de
+   données sensibles (météo publique ; reste du contenu — calendrier, autres écrans —
+   toujours mock), pensé pour un suivi facile au jour le jour depuis n'importe quel appareil.
+5. Le fichier servi (`dashboard_web_nginx/index.html`) est remplacé manuellement à chaque
+   nouvelle itération de la maquette (pas de pipeline de build) — un simple
+   `docker compose restart dashboard-proto` n'est même pas nécessaire, nginx sert le fichier
+   à jour dès qu'il est remplacé sur disque.
+6. Ce conteneur et ce sous-domaine sont temporaires : `dashboard-proto` sera entièrement
+   remplacé par `dashboard-web` (Vue 3, pas encore commencé — voir §4 du cahier des charges)
+   une fois les écrans validés, en réutilisant le même sous-domaine `dashboardbulle.malnoy.com`.
+   `dashboard-api`, lui, existe déjà partiellement (tranche météo, ajoutée le 09.09.2026) et
+   n'a pas vocation à être remplacé — `dashboard-web` s'y branchera directement.
 
 ## 5. KNX et réseau Docker — point de vigilance
 

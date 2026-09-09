@@ -1,0 +1,27 @@
+# Configuration de la source de données météo — écran Météo dédié (§3.10, M1-M6) et bloc météo
+# de l'accueil (§3.2, A2) du cahier des charges (dashboard/CAHIER_DES_CHARGES.md).
+#
+# Source : Open-Meteo (choisie le 07.09.2026 après comparatif avec OpenWeatherMap, Pirate Weather
+# et MeteoSwiss non-officiel — voir custom_dashboard.md). Gratuit, sans clé API, jusqu'à 16 jours
+# de prévision. Appelée directement en REST par dashboard-api (dashboard/api/), jamais via
+# l'entité `weather.forecast_maison` de Home Assistant (limitée à 6 jours, provider met.no).
+
+provider: open-meteo
+
+# Coordonnées de la zone "Maison" telle que définie dans Home Assistant (zone.home).
+latitude: 46.6324666
+longitude: 7.0574387
+
+# Fuseau horaire utilisé par Open-Meteo pour aligner les journées de prévision sur le calendrier
+# local plutôt que sur UTC (sans ça, "aujourd'hui" pourrait déborder sur le jour suivant/précédent
+# selon l'heure de la requête).
+timezone: Europe/Zurich
+
+# Nombre de jours affichés sur chaque écran (voir A2 et M2 du cahier des charges). dashboard-api
+# interroge Open-Meteo une seule fois pour max(days_home, days_detail) jours et sert les deux
+# écrans à partir du même résultat, pour ne jamais avoir deux séries météo incohérentes entre
+# elles à l'écran en même temps (même principe que le générateur mock FORECAST qu'il remplace).
+days_home: 5
+days_detail: 15
+
+units: metric

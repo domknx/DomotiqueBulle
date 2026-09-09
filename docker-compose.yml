@@ -195,6 +195,49 @@ services:
     # volontairement omis : dashboards importés dans le Grafana existant (datasource
     # "TeslaMate" provisionnée automatiquement, voir grafana/provisioning/).
 
+  dashboard-api:
+    container_name: dashboard-api
+    build: ./dashboard/api
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    expose:
+      - "8000"  # jamais publié sur l'hôte : joignable uniquement depuis dashboard-proto (proxy /api/), sur domotique_net
+    volumes:
+      - ./dashboard/config:/config:ro
+    # Première tranche réelle de la couche dashboard-api prévue au §4 du cahier des charges
+    # (dashboard/CAHIER_DES_CHARGES.md) — pour l'instant un seul endpoint (/api/weather, proxy
+    # Open-Meteo, config dans dashboard/config/weather.yaml), voir dashboard/api/README.md.
+    # Pas encore de connexion à Home Assistant : la météo n'en a pas besoin. Ajouté le
+    # 09.09.2026, en remplacement progressif du générateur de données mock (FORECAST) du
+    # prototype dashboard-proto ci-dessous.
+
+  dashboard-proto:
+    container_name: dashboard-proto
+    image: nginx:alpine
+    restart: unless-stopped
+    networks:
+      - domotique_net
+    ports:
+      - "8092:80"  # accès LAN direct ; exposé publiquement sur dashboardbulle.malnoy.com via le tunnel Cloudflare
+    volumes:
+      - ./dashboard_web_nginx:/usr/share/nginx/html:ro
+      - ./docs_site_nginx/charset.conf:/etc/nginx/conf.d/charset.conf:ro
+      - ./dashboard_web_nginx_conf/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - dashboard-api
+    # Prototype de la nouvelle page d'accueil (dashboard/CAHIER_DES_CHARGES.md, §3.1 Accueil et
+    # §3.10 Météo) : HTML statique, suit le pattern déjà rodé pour doc-knx / tesla-key plutôt
+    # que la future architecture dashboard-api/dashboard-web (§4), qui aura son propre nom de
+    # service une fois construite — volontairement PAS appelé "dashboard-web" ici pour éviter
+    # toute collision de nom avec ce service futur. Fichier remplacé à chaque nouvelle itération
+    # de la maquette (build manuel côté Claude, pas de pipeline de build ici). Sous-domaine
+    # dédié choisi le 08.09.2026 pour ne pas perturber visubulle.malnoy.com, qui reste pointé
+    # sur Tunet (voir README.md).
+    # Depuis le 09.09.2026 : la météo (T9, A2, écran Météo) n'est plus mock — proxy vers
+    # dashboard-api ci-dessus via default.conf (dashboard_web_nginx_conf/). Reste du contenu
+    # (calendrier, fête du jour, autres écrans) toujours en données mock.
+
   cloudflared:
     container_name: cloudflared
     image: cloudflare/cloudflared:latest
@@ -217,3 +260,4 @@ services:
       - grafana
       - doc-knx
       - tesla-key
+      - dashboard-proto
