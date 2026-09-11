@@ -168,77 +168,22 @@ a.doc-card:hover{ transform:translateY(-3px); border-color:var(--accent); }
 .rm-item h4{ margin:0 0 3px; font-size:14.5px; font-weight:600; }
 .rm-item p{ margin:0; font-size:13px; color:var(--ink-dim); }
 
-/* ---------- Architecture : vue macro + détail par zone ---------- */
-.arch-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
-.arch-tile{
+/* ---------- Architecture : schéma unique (infographie statique) ---------- */
+.arch-overview-frame{
   background:var(--surface); border:1px solid var(--border); border-radius:16px;
-  padding:20px 20px 18px; box-shadow:var(--shadow); cursor:pointer;
-  border-top:3px solid var(--accent); transition:transform .18s ease, border-color .18s ease;
+  padding:20px; overflow-x:auto; box-shadow:var(--shadow); margin:20px 0;
 }
-.arch-tile:hover, .arch-tile:focus-visible{ transform:translateY(-3px); border-color:var(--accent); outline:none; }
-.arch-tile-count{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint); margin-bottom:10px; }
-.arch-tile h3{ font-family:var(--font-display); font-size:18px; font-weight:600; margin:0 0 8px; color:var(--accent); }
-.arch-tile p{ margin:0 0 16px; font-size:13.5px; color:var(--ink-dim); }
-.arch-tile-arrow{ font-family:var(--font-mono); font-size:12.5px; color:var(--accent); }
-
-.arch-detail{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px 26px 30px; box-shadow:var(--shadow); }
-.arch-back{
-  font-family:var(--font-mono); font-size:12.5px; color:var(--ink-dim); background:none;
-  border:1px solid var(--border); border-radius:100px; padding:6px 14px; cursor:pointer; margin-bottom:22px;
-}
-.arch-back:hover{ border-color:var(--ink-faint); color:var(--ink); }
-.arch-detail-head{ margin-bottom:22px; border-left:3px solid var(--accent); padding-left:14px; }
-.arch-detail-head h3{ font-family:var(--font-display); font-size:22px; font-weight:600; margin:0 0 4px; }
-.arch-detail-head p{ margin:0; color:var(--ink-dim); font-size:13.5px; }
-.arch-detail-diagram{ overflow-x:auto; }
-.arch-detail-diagram svg{ display:block; margin:0 auto; min-width:560px; }
-
-.d-node{ cursor:pointer; }
-.d-node rect{ transition:filter .15s ease; }
-.d-node:hover rect, .d-node:focus-visible rect{ filter:brightness(1.1); }
-.d-node:focus-visible{ outline:2px solid var(--ink-faint); outline-offset:2px; border-radius:10px; }
-.d-ghost-clickable{ cursor:pointer; }
-.d-ghost-clickable:hover rect, .d-ghost-clickable:focus-visible rect{ stroke:var(--ink-dim); }
-.d-ghost-clickable:focus-visible{ outline:2px solid var(--ink-faint); outline-offset:2px; border-radius:20px; }
-
-/* ---------- Architecture : popup dépendances ---------- */
-.arch-modal-backdrop{
-  position:fixed; inset:0; background:rgba(6,9,14,0.55); backdrop-filter:blur(2px);
-  display:flex; align-items:center; justify-content:center; padding:20px; z-index:30;
-}
-.arch-modal{
-  background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow);
-  max-width:480px; width:100%; max-height:82vh; overflow-y:auto; padding:26px 26px 22px; position:relative;
-}
-.arch-modal-close{
-  position:absolute; top:14px; right:14px; width:30px; height:30px; border-radius:50%;
-  border:1px solid var(--border); background:var(--surface); color:var(--ink-dim);
-  font-size:18px; line-height:1; cursor:pointer;
-}
-.arch-modal-close:hover{ color:var(--ink); border-color:var(--ink-faint); }
-.arch-modal-body h3{ font-family:var(--font-display); font-size:20px; font-weight:600; margin:0 0 4px; padding-right:30px; }
-.arch-planned-tag{
-  font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:0.05em;
-  color:var(--ambre); border:1px solid var(--ambre); border-radius:100px; padding:2px 8px;
-  margin-left:6px; vertical-align:middle;
-}
-.arch-modal-sub{ font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); margin:0 0 14px; }
-.arch-modal-desc{ font-size:14px; color:var(--ink-dim); margin:0 0 20px; }
-.arch-dep-group{ margin-bottom:16px; }
-.arch-dep-group:last-child{ margin-bottom:0; }
-.arch-dep-group h4{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint); margin:0 0 8px; }
-.arch-dep-group ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px; }
-.arch-dep-item{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; padding:8px 10px; border-radius:8px; font-size:13px; }
-.arch-dep-item.clickable{ cursor:pointer; }
-.arch-dep-item.clickable:hover{ background:var(--surface-2); }
-.arch-dep-item .arch-dep-name{ color:var(--ink); font-weight:500; }
-.arch-dep-item .arch-dep-edge{ font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); white-space:nowrap; }
-.arch-dep-item.planned .arch-dep-name{ color:var(--ink-dim); }
-.arch-dep-item.planned .arch-dep-edge::after{ content:" · prévu"; color:var(--ambre); }
-
-/* ---------- Architecture : embed résumé dans la vue README ---------- */
-.arch-embed-hint{ margin:0 0 16px; font-size:13.5px; color:var(--ink-dim); }
-.arch-embed-hint a{ color:var(--glacier); }
+.arch-overview-frame svg{ display:block; margin:0 auto; min-width:900px; max-width:100%; height:auto; }
+.ov-frame-title{ font-family:var(--font-mono); font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; }
+.ov-frame-sub{ font-family:var(--font-body); font-size:10.5px; fill:var(--ink-faint); }
+.ov-mac-label{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.06em; text-transform:uppercase; fill:var(--ink-faint); }
+.ov-title{ font-family:var(--font-body); font-size:14px; font-weight:600; fill:var(--ink); }
+.ov-sub{ font-family:var(--font-mono); font-size:10.5px; fill:var(--ink-dim); }
+.ov-edge{ font-family:var(--font-mono); font-size:10.5px; fill:var(--ink-dim); }
+.ov-ext-title{ font-family:var(--font-body); font-size:13px; font-weight:600; fill:var(--ink-dim); }
+.ov-ext-sub{ font-family:var(--font-mono); font-size:10px; fill:var(--ink-faint); }
+.ov-knx-stats{ font-family:var(--font-mono); font-size:10.5px; fill:var(--ink-dim); }
+.ov-knx-note{ font-family:var(--font-mono); font-size:9.5px; fill:var(--ink-faint); text-transform:uppercase; letter-spacing:0.05em; }
 
 /* ---------- README rendered content ---------- */
 .readme-body{ max-width:760px; margin:0 auto; }
@@ -251,8 +196,6 @@ a.doc-card:hover{ transform:translateY(-3px); border-color:var(--accent); }
 .readme-body pre{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; overflow-x:auto; }
 .readme-body pre code{ background:none; padding:0; }
 .readme-body a{ color:var(--glacier); }
-.readme-body .diagram-embed{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px; overflow-x:auto; margin:20px 0; }
-.readme-body .diagram-embed svg{ max-width:100%; height:auto; }
 .readme-body table{ border-collapse:collapse; width:100%; font-size:13.5px; }
 .readme-body th, .readme-body td{ border:1px solid var(--border); padding:6px 10px; text-align:left; }
 .readme-body ul, .readme-body ol{ padding-left:22px; }
@@ -390,7 +333,95 @@ footer.site-footer code{ font-family:var(--font-mono); }
 <h1 id="domotique-villa-bulle-architecture-docker">Domotique Villa Bulle — Architecture Docker</h1>
 <p>Stack domotique pour la villa (habitation principale + studio annexe), entièrement en Docker sur le Mac mini M1. Voir <code>CLAUDE.md</code> pour le contexte complet du projet.</p>
 <h2 id="1-vue-densemble">1. Vue d'ensemble</h2>
-<div class="diagram-embed"><p class="arch-embed-hint">Vue macro interactive — cliquez une zone pour explorer ses services et leurs dépendances (détail complet dans <a href="#architecture" onclick="showView('architecture');return false;">Architecture logicielle</a>).</p><div class="arch-grid"><div class="arch-tile" style="--accent:var(--ambre)" tabindex="0" role="button" aria-label="Zone Domotique — cœur — Bus KNX filaire, Z-Wave, solaire, intégration Tesla Fleet." onclick="goArch('domotique')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('domotique')}"><div class="arch-tile-count">2 services</div><h3>Domotique — cœur</h3><p>Bus KNX filaire, Z-Wave, solaire, intégration Tesla Fleet.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--glacier)" tabindex="0" role="button" aria-label="Zone Monitoring — Collecte, stockage long terme et visualisation des métriques domotique." onclick="goArch('monitoring')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('monitoring')}"><div class="arch-tile-count">3 services</div><h3>Monitoring</h3><p>Collecte, stockage long terme et visualisation des métriques domotique.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--cuivre)" tabindex="0" role="button" aria-label="Zone Documentation — Cette documentation elle-même, régénérée depuis les sources du projet." onclick="goArch('documentation')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('documentation')}"><div class="arch-tile-count">1 service</div><h3>Documentation</h3><p>Cette documentation elle-même, régénérée depuis les sources du projet.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--cuivre)" tabindex="0" role="button" aria-label="Zone Véhicule — Tesla — Clé publique développeur et historique trajets/charges." onclick="goArch('vehicule')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('vehicule')}"><div class="arch-tile-count">4 services</div><h3>Véhicule — Tesla</h3><p>Clé publique développeur et historique trajets/charges.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--mousse)" tabindex="0" role="button" aria-label="Zone Dashboard sur-mesure — Écran mural : maquette actuelle, puis couche applicative définitive." onclick="goArch('dashboard')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('dashboard')}"><div class="arch-tile-count">3 services</div><h3>Dashboard sur-mesure</h3><p>Écran mural : maquette actuelle, puis couche applicative définitive.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--ambre)" tabindex="0" role="button" aria-label="Zone Accès distant — Tunnel Cloudflare — distribue six sous-domaines *.malnoy.com." onclick="goArch('acces')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('acces')}"><div class="arch-tile-count">1 service</div><h3>Accès distant</h3><p>Tunnel Cloudflare — distribue six sous-domaines *.malnoy.com.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--mousse)" tabindex="0" role="button" aria-label="Zone Réseau externe — Dashboard existant, sur un réseau Docker séparé du reste de la stack." onclick="goArch('externe')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('externe')}"><div class="arch-tile-count">1 service</div><h3>Réseau externe</h3><p>Dashboard existant, sur un réseau Docker séparé du reste de la stack.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div></div></div>
+<div class="arch-overview-frame"><svg viewBox="0 0 1840 1300" role="img" aria-label="Schéma de l'architecture Villa Bulle : domaines fonctionnels (domotique, monitoring, documentation, véhicule, dashboard, accès distant) hébergés sur le Mac mini, bus KNX filaire physique, et dépendances externes Tesla / Open-Meteo."><defs>
+<marker id="ov-arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
+<marker id="ov-arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
+<marker id="ov-arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
+<marker id="ov-arr-cuivre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--cuivre)"/></marker>
+<marker id="ov-arr-ink-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-faint)"/></marker>
+</defs>
+<rect x="340" y="270" width="1280" height="970" rx="22" fill="none" stroke="var(--ink-faint)" stroke-width="1.4" stroke-dasharray="2 6"/><text x="980.0" y="256" text-anchor="middle" class="ov-mac-label">Mac mini — hôte Docker (domotique_net)</text>
+<rect x="20" y="120" width="1600" height="120" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--ambre)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="36" y="144" class="ov-frame-title" fill="var(--ambre)">Accès distant — malnoy.com</text>
+<rect x="380" y="310" width="280" height="120" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--ambre)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="396" y="334" class="ov-frame-title" fill="var(--ambre)">Domotique — cœur</text>
+<rect x="700" y="310" width="260" height="120" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--cuivre)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="716" y="334" class="ov-frame-title" fill="var(--cuivre)">Documentation</text>
+<rect x="380" y="460" width="1220" height="150" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--glacier)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="396" y="484" class="ov-frame-title" fill="var(--glacier)">Monitoring — data</text>
+<rect x="380" y="650" width="380" height="520" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--mousse)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="396" y="674" class="ov-frame-title" fill="var(--mousse)">Dashboard — solutions</text>
+<rect x="800" y="650" width="800" height="270" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--cuivre)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="816" y="674" class="ov-frame-title" fill="var(--cuivre)">Véhicule — Tesla</text>
+<rect x="400" y="780" width="340" height="96" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--mousse)" stroke-width="1.3" stroke-opacity="0.55" stroke-dasharray="6 5"/>
+<text x="416" y="804" class="ov-frame-title" fill="var(--mousse)">autre réseau Docker</text>
+<path d="M160.0,88.0 L810.0,155.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M810.0,215.0 L810.0,293.0 L520.0,293.0 L520.0,350.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M810.0,215.0 L810.0,293.0 L830.0,293.0 L830.0,350.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M810.0,215.0 L810.0,293.0 L1480.0,293.0 L1480.0,510.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M810.0,215.0 L1705.0,225.0 L1705.0,636.0 L920.0,636.0 L920.0,690.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M700.0,185.0 L360.0,185.0 L360.0,828.0 L420.0,828.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M700.0,185.0 L372.0,185.0 L372.0,938.0 L400.0,938.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M320.0,280.0 L360.0,280.0 L520.0,280.0 L520.0,350.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M520.0,414.0 L500.0,510.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M600.0,542.0 L620.0,542.0" fill="none" stroke="var(--glacier)" stroke-width="1.6" marker-end="url(#ov-arr-glacier)"/>
+<path d="M820.0,542.0 L1000.0,542.0 L1000.0,542.0 L1380.0,542.0" fill="none" stroke="var(--glacier)" stroke-width="1.6" marker-end="url(#ov-arr-glacier)"/>
+<path d="M1020.0,722.0 L1250.0,722.0 L1250.0,722.0 L1360.0,722.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<path d="M1460.0,754.0 L1470.0,790.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<path d="M1460.0,754.0 L1240.0,754.0 L1240.0,790.0 L1240.0,790.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<path d="M1140.0,822.0 L1100.0,822.0 L1100.0,574.0 L1480.0,574.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<path d="M570.0,750.0 L570.0,800.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#ov-arr-mousse)"/>
+<path d="M570.0,856.0 L570.0,910.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#ov-arr-mousse)"/>
+<path d="M570.0,966.0 L570.0,990.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#ov-arr-mousse)"/>
+<path d="M570.0,1046.0 L570.0,1070.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ov-arr-ink-faint)"/>
+<path d="M570.0,1046.0 L570.0,1210.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#ov-arr-mousse)"/>
+<path d="M570.0,690.0 L348.0,690.0 L348.0,414.0 L520.0,414.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M740.0,1018.0 L1630.0,1018.0 L1630.0,452.0 L520.0,452.0 L520.0,414.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ov-arr-ink-faint)"/>
+<path d="M610.0,414.0 L610.0,434.0 L1655.0,434.0 L1655.0,88.0 L1550.0,88.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M1560.0,722.0 L1680.0,722.0 L1680.0,88.0 L1610.0,88.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<g role="img" aria-label="Bus KNX filaire — Configuration ETS — 975 adresses · 59 fonctions · 19 pièces"><rect x="20" y="250" width="300" height="110" rx="12" fill="var(--surface)" stroke="var(--ambre)" stroke-width="1.6" stroke-dasharray="3 3"/><text x="38" y="276" class="ov-title" text-anchor="start">Bus KNX filaire</text><text x="38" y="294" class="ov-sub" text-anchor="start">Configuration ETS</text><text x="38" y="312" class="ov-knx-stats" text-anchor="start">975 adresses · 59 fonctions · 19 pièces</text><text x="38" y="340" class="ov-knx-note" text-anchor="start">Physique — hors Docker</text></g>
+<g><rect x="40" y="30" width="240" height="58" rx="29.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="160.0" y="57.0" text-anchor="middle" class="ov-ext-title">Utilisateurs</text><text x="160.0" y="72.0" text-anchor="middle" class="ov-ext-sub">Mac · iPad · iPhone · écran mural</text></g>
+<g><rect x="1460" y="30" width="240" height="58" rx="29.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="1580.0" y="57.0" text-anchor="middle" class="ov-ext-title">Tesla Fleet API</text><text x="1580.0" y="72.0" text-anchor="middle" class="ov-ext-sub">cloud Tesla</text></g>
+<g><rect x="440" y="1210" width="260" height="56" rx="28.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="570.0" y="1236.0" text-anchor="middle" class="ov-ext-title">Open-Meteo API</text><text x="570.0" y="1251.0" text-anchor="middle" class="ov-ext-sub">externe</text></g>
+<g role="img" aria-label="cloudflared — tunnel sortant"><rect x="700" y="155" width="220" height="60" rx="10" fill="var(--surface)" stroke="var(--ambre)" stroke-width="1.8"/><text x="810.0" y="183.0" text-anchor="middle" class="ov-title">cloudflared</text><text x="810.0" y="200.0" text-anchor="middle" class="ov-sub">tunnel sortant</text></g>
+<g role="img" aria-label="Home Assistant — :8123"><rect x="400" y="350" width="240" height="64" rx="10" fill="var(--surface)" stroke="var(--ambre)" stroke-width="1.8"/><text x="520.0" y="380.0" text-anchor="middle" class="ov-title">Home Assistant</text><text x="520.0" y="397.0" text-anchor="middle" class="ov-sub">:8123</text></g>
+<g role="img" aria-label="doc-knx — :8090 · nginx"><rect x="720" y="350" width="220" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="830.0" y="380.0" text-anchor="middle" class="ov-title">doc-knx</text><text x="830.0" y="397.0" text-anchor="middle" class="ov-sub">:8090 · nginx</text></g>
+<g role="img" aria-label="Prometheus — :9090 · LAN"><rect x="400" y="510" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--glacier)" stroke-width="1.8"/><text x="500.0" y="540.0" text-anchor="middle" class="ov-title">Prometheus</text><text x="500.0" y="557.0" text-anchor="middle" class="ov-sub">:9090 · LAN</text></g>
+<g role="img" aria-label="VictoriaMetrics — :8428 · LAN"><rect x="620" y="510" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--glacier)" stroke-width="1.8"/><text x="720.0" y="540.0" text-anchor="middle" class="ov-title">VictoriaMetrics</text><text x="720.0" y="557.0" text-anchor="middle" class="ov-sub">:8428 · LAN</text></g>
+<g role="img" aria-label="Grafana — :3000"><rect x="1380" y="510" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--glacier)" stroke-width="1.8"/><text x="1480.0" y="540.0" text-anchor="middle" class="ov-title">Grafana</text><text x="1480.0" y="557.0" text-anchor="middle" class="ov-sub">:3000</text></g>
+<g role="img" aria-label="GlassHome — :3123 · LAN"><rect x="400" y="690" width="340" height="60" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="570.0" y="718.0" text-anchor="middle" class="ov-title">GlassHome</text><text x="570.0" y="735.0" text-anchor="middle" class="ov-sub">:3123 · LAN</text></g>
+<g role="img" aria-label="Tunet — :3002 · autre réseau Docker"><rect x="420" y="800" width="300" height="56" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="570.0" y="826.0" text-anchor="middle" class="ov-title">Tunet</text><text x="570.0" y="843.0" text-anchor="middle" class="ov-sub">:3002 · autre réseau Docker</text></g>
+<g role="img" aria-label="dashboard-proto — :8092 · nginx"><rect x="400" y="910" width="340" height="56" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="570.0" y="936.0" text-anchor="middle" class="ov-title">dashboard-proto</text><text x="570.0" y="953.0" text-anchor="middle" class="ov-sub">:8092 · nginx</text></g>
+<g role="img" aria-label="dashboard-api — interne · FastAPI"><rect x="400" y="990" width="340" height="56" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="570.0" y="1016.0" text-anchor="middle" class="ov-title">dashboard-api</text><text x="570.0" y="1033.0" text-anchor="middle" class="ov-sub">interne · FastAPI</text></g>
+<g role="img" aria-label="dashboard-web — prévu — prévu · Vue 3"><rect x="400" y="1070" width="340" height="56" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8" stroke-dasharray="4 4"/><text x="570.0" y="1096.0" text-anchor="middle" class="ov-title">dashboard-web</text><text x="570.0" y="1113.0" text-anchor="middle" class="ov-sub">prévu · Vue 3</text></g>
+<g role="img" aria-label="tesla-key — :8091 · nginx"><rect x="820" y="690" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="920.0" y="720.0" text-anchor="middle" class="ov-title">tesla-key</text><text x="920.0" y="737.0" text-anchor="middle" class="ov-sub">:8091 · nginx</text></g>
+<g role="img" aria-label="TeslaMate — :4000 · LAN"><rect x="1360" y="690" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="1460.0" y="720.0" text-anchor="middle" class="ov-title">TeslaMate</text><text x="1460.0" y="737.0" text-anchor="middle" class="ov-sub">:4000 · LAN</text></g>
+<g role="img" aria-label="teslamate-db — Postgres"><rect x="1140" y="790" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="1240.0" y="820.0" text-anchor="middle" class="ov-title">teslamate-db</text><text x="1240.0" y="837.0" text-anchor="middle" class="ov-sub">Postgres</text></g>
+<g role="img" aria-label="teslamate-mosquitto — MQTT interne"><rect x="1360" y="790" width="220" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="1470.0" y="820.0" text-anchor="middle" class="ov-title">teslamate-mosquitto</text><text x="1470.0" y="837.0" text-anchor="middle" class="ov-sub">MQTT interne</text></g>
+<rect x="465.8" y="112.5" width="38.5" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="485.0" y="124.5" text-anchor="middle" class="ov-edge">HTTPS</text>
+<rect x="620.1" y="284.0" width="89.8" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="665.0" y="296.0" text-anchor="middle" class="ov-edge">domotiquebulle</text>
+<rect x="786.5" y="284.0" width="67.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="820.0" y="296.0" text-anchor="middle" class="ov-edge">docbulle 🔒</text>
+<rect x="1105.8" y="284.0" width="78.4" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1145.0" y="296.0" text-anchor="middle" class="ov-edge">grafanabulle</text>
+<rect x="1663.0" y="340.9" width="84.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1705.0" y="352.9" text-anchor="middle" class="ov-edge">vehiculebulle</text>
+<rect x="329.4" y="754.7" width="61.3" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="360.0" y="766.7" text-anchor="middle" class="ov-edge">visubulle</text>
+<rect x="327.1" y="853.7" width="89.8" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="372.0" y="865.7" text-anchor="middle" class="ov-edge">dashboardbulle</text>
+<rect x="392.2" y="271.0" width="95.5" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="440.0" y="283.0" text-anchor="middle" class="ov-edge">bus KNX filaire</text>
+<rect x="462.2" y="453.0" width="95.5" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="510.0" y="465.0" text-anchor="middle" class="ov-edge">/api/prometheus</text>
+<rect x="570.8" y="533.0" width="78.4" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="610.0" y="545.0" text-anchor="middle" class="ov-edge">remote_write</text>
+<rect x="920.9" y="533.0" width="158.2" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1000.0" y="545.0" text-anchor="middle" class="ov-edge">datasource VictoriaMetrics</text>
+
+
+
+<rect x="1038.0" y="689.0" width="124.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1100.0" y="701.0" text-anchor="middle" class="ov-edge">datasource TeslaMate</text>
+
+
+<rect x="508.0" y="969.0" width="124.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="570.0" y="981.0" text-anchor="middle" class="ov-edge">proxy /api/, interne</text>
+<rect x="490.9" y="1049.0" width="158.2" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="570.0" y="1061.0" text-anchor="middle" class="ov-edge">remplacera dashboard-proto</text>
+<rect x="533.6" y="1119.0" width="72.7" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="570.0" y="1131.0" text-anchor="middle" class="ov-edge">proxy météo</text>
+<rect x="291.7" y="543.0" width="112.6" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="348.0" y="555.0" text-anchor="middle" class="ov-edge">jeton longue durée</text>
+<rect x="1519.5" y="736.8" width="220.9" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1630.0" y="748.8" text-anchor="middle" class="ov-edge">WebSocket, jeton longue durée (prévu)</text>
+<rect x="1062.0" y="425.0" width="141.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1132.5" y="437.0" text-anchor="middle" class="ov-edge">intégration Tesla Fleet</text>
+<rect x="1649.3" y="541.2" width="61.3" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1680.0" y="553.2" text-anchor="middle" class="ov-edge">Fleet API</text></svg></div>
 <p>Ce diagramme couvre l'intégralité de la stack Docker actuelle sur le Mac mini. <code>dashboard-proto</code> est la maquette de la nouvelle page d'accueil (jalon 5, <code>dashboard/CAHIER_DES_CHARGES.md</code>) : un simple nginx servant du HTML statique, en production sur <code>dashboardbulle.malnoy.com</code> depuis le 08.09.2026 pour un suivi au jour le jour, distinct de <code>visubulle.malnoy.com</code> (Tunet, dashboard existant, laissé inchangé). Depuis le 09.09.2026, la météo n'y est plus mock : <code>dashboard-proto</code> proxifie <code>/api/</code> en interne vers <code>dashboard-api</code>, première tranche réelle de la couche applicative définitive (pour l'instant limitée au domaine météo — voir §4 du cahier des charges), reste du contenu (calendrier, autres écrans) toujours mock. <code>dashboard-api</code>/<code>dashboard-web</code> remplaceront entièrement <code>dashboard-proto</code> une fois construits (<code>dashboard-web</code>, en Vue 3, pas encore commencé ; connexion WebSocket de <code>dashboard-api</code> à Home Assistant pas encore construite non plus, la météo n'en avait pas besoin).</p>
 <ul>
 <li><strong>Home Assistant</strong> (<code>homeassistant</code>) : cœur domotique (bus KNX filaire, Z-Wave via un Raspberry Pi dédié, solaire, intégration Tesla Fleet, futurs capteurs). Exposé sur <code>domotiquebulle.malnoy.com</code>.</li>
@@ -768,165 +799,99 @@ comparaison) — à nettoyer une fois la décision prise.</p>
   <div class="page view">
     <div class="section-head">
       <h2>Architecture logicielle</h2>
-      <p>Sept zones fonctionnelles sur le réseau Docker <code>domotique_net</code>, plus Tunet sur un réseau séparé. Cliquez une zone pour voir ses services, puis un service pour voir ses dépendances directes.</p>
+      <p>Schéma complet regroupé par domaine fonctionnel — services hébergés sur le Mac mini (réseau Docker <code>domotique_net</code>, plus Tunet sur un réseau séparé), bus KNX filaire physique, et dépendances externes (Tesla, Open-Meteo).</p>
     </div>
-    <div id="arch-macro">
-<div class="arch-grid"><div class="arch-tile" style="--accent:var(--ambre)" tabindex="0" role="button" aria-label="Zone Domotique — cœur — Bus KNX filaire, Z-Wave, solaire, intégration Tesla Fleet." onclick="goArch('domotique')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('domotique')}"><div class="arch-tile-count">2 services</div><h3>Domotique — cœur</h3><p>Bus KNX filaire, Z-Wave, solaire, intégration Tesla Fleet.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--glacier)" tabindex="0" role="button" aria-label="Zone Monitoring — Collecte, stockage long terme et visualisation des métriques domotique." onclick="goArch('monitoring')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('monitoring')}"><div class="arch-tile-count">3 services</div><h3>Monitoring</h3><p>Collecte, stockage long terme et visualisation des métriques domotique.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--cuivre)" tabindex="0" role="button" aria-label="Zone Documentation — Cette documentation elle-même, régénérée depuis les sources du projet." onclick="goArch('documentation')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('documentation')}"><div class="arch-tile-count">1 service</div><h3>Documentation</h3><p>Cette documentation elle-même, régénérée depuis les sources du projet.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--cuivre)" tabindex="0" role="button" aria-label="Zone Véhicule — Tesla — Clé publique développeur et historique trajets/charges." onclick="goArch('vehicule')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('vehicule')}"><div class="arch-tile-count">4 services</div><h3>Véhicule — Tesla</h3><p>Clé publique développeur et historique trajets/charges.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--mousse)" tabindex="0" role="button" aria-label="Zone Dashboard sur-mesure — Écran mural : maquette actuelle, puis couche applicative définitive." onclick="goArch('dashboard')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('dashboard')}"><div class="arch-tile-count">3 services</div><h3>Dashboard sur-mesure</h3><p>Écran mural : maquette actuelle, puis couche applicative définitive.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--ambre)" tabindex="0" role="button" aria-label="Zone Accès distant — Tunnel Cloudflare — distribue six sous-domaines *.malnoy.com." onclick="goArch('acces')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('acces')}"><div class="arch-tile-count">1 service</div><h3>Accès distant</h3><p>Tunnel Cloudflare — distribue six sous-domaines *.malnoy.com.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div><div class="arch-tile" style="--accent:var(--mousse)" tabindex="0" role="button" aria-label="Zone Réseau externe — Dashboard existant, sur un réseau Docker séparé du reste de la stack." onclick="goArch('externe')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('externe')}"><div class="arch-tile-count">1 service</div><h3>Réseau externe</h3><p>Dashboard existant, sur un réseau Docker séparé du reste de la stack.</p><span class="arch-tile-arrow">Explorer &rarr;</span></div></div>
-    </div>
-    <div id="arch-details">
-<div class="arch-detail" id="arch-detail-domotique" hidden><button class="arch-back" onclick="showArchMacro()">&larr; Toutes les zones</button><div class="arch-detail-head" style="--accent:var(--ambre)"><h3>Domotique — cœur</h3><p>Bus KNX filaire, Z-Wave, solaire, intégration Tesla Fleet.</p></div><div class="arch-detail-diagram"><svg viewBox="0 0 760 352" role="img" aria-label="Détail de la zone Domotique — cœur : ses services et leurs dépendances directes avec le reste de la stack."><defs>
-<marker id="arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
-<marker id="arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
-<marker id="arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
-<marker id="arr-cuivre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--cuivre)"/></marker>
-<marker id="arr-ink-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-faint)"/></marker>
+    <div class="arch-overview-frame">
+<svg viewBox="0 0 1840 1300" role="img" aria-label="Schéma de l'architecture Villa Bulle : domaines fonctionnels (domotique, monitoring, documentation, véhicule, dashboard, accès distant) hébergés sur le Mac mini, bus KNX filaire physique, et dépendances externes Tesla / Open-Meteo."><defs>
+<marker id="ov-arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
+<marker id="ov-arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
+<marker id="ov-arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
+<marker id="ov-arr-cuivre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--cuivre)"/></marker>
+<marker id="ov-arr-ink-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-faint)"/></marker>
 </defs>
-<path d="M360.0,168.0 L360.0,218.0 L400.0,218.0 L400.0,168.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#arr-ambre)"/>
-<path d="M270.0,76.0 L270.0,106.0 L460.0,106.0 L460.0,136.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#arr-ambre)"/>
-<path d="M490.0,76.0 L490.0,106.0 L510.0,106.0 L510.0,136.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr-ink-faint)"/>
-<path d="M460.0,200.0 L460.0,233.0 L270.0,233.0 L270.0,266.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#arr-ambre)"/>
-<path d="M510.0,200.0 L510.0,233.0 L490.0,233.0 L490.0,266.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" marker-end="url(#arr-ink-faint)"/>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Accès distant" onclick="goArch('acces')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('acces')}"><rect x="175.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="270.0" y="62.0" text-anchor="middle" class="d-ghost-label">cloudflared</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Dashboard sur-mesure" onclick="goArch('dashboard')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('dashboard')}"><rect x="395.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="490.0" y="62.0" text-anchor="middle" class="d-ghost-label">dashboard-api</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Monitoring" onclick="goArch('monitoring')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('monitoring')}"><rect x="175.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="270.0" y="288.0" text-anchor="middle" class="d-ghost-label">Prometheus</text></g>
-<g class="d-ghost"><rect x="395.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 4"/><text x="490.0" y="288.0" text-anchor="middle" class="d-ghost-label">Tesla Fleet API (cloud Tesla)</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="GlassHome — voir les dépendances" onclick="openServiceModal('glasshome')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('glasshome')}"><rect x="190.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--ambre)" stroke-width="1.8"/><text x="275.0" y="162" text-anchor="middle" class="d-title">GlassHome</text><text x="275.0" y="179" text-anchor="middle" class="d-sub">:3123 · LAN</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Home Assistant — voir les dépendances" onclick="openServiceModal('homeassistant')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('homeassistant')}"><rect x="400.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--ambre)" stroke-width="1.8"/><text x="485.0" y="162" text-anchor="middle" class="d-title">Home Assistant</text><text x="485.0" y="179" text-anchor="middle" class="d-sub">:8123</text></g>
-<rect x="321.9" y="209.0" width="116.2" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="380.0" y="221.0" text-anchor="middle" class="d-edge">jeton longue durée</text>
-<rect x="265.5" y="97.0" width="92.6" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="311.8" y="109.0" text-anchor="middle" class="d-edge">domotiquebulle</text>
-<rect x="403.8" y="97.0" width="181.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="494.4" y="109.0" text-anchor="middle" class="d-edge">WebSocket, jeton longue durée</text>
-<rect x="262.5" y="224.0" width="98.5" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="311.8" y="236.0" text-anchor="middle" class="d-edge">/api/prometheus</text>
-<rect x="421.5" y="224.0" width="145.7" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="494.4" y="236.0" text-anchor="middle" class="d-edge">intégration Tesla Fleet</text></svg></div></div>
-<div class="arch-detail" id="arch-detail-monitoring" hidden><button class="arch-back" onclick="showArchMacro()">&larr; Toutes les zones</button><div class="arch-detail-head" style="--accent:var(--glacier)"><h3>Monitoring</h3><p>Collecte, stockage long terme et visualisation des métriques domotique.</p></div><div class="arch-detail-diagram"><svg viewBox="0 0 760 352" role="img" aria-label="Détail de la zone Monitoring : ses services et leurs dépendances directes avec le reste de la stack."><defs>
-<marker id="arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
-<marker id="arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
-<marker id="arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
-<marker id="arr-cuivre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--cuivre)"/></marker>
-<marker id="arr-ink-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-faint)"/></marker>
-</defs>
-<path d="M255.0,168.0 L255.0,218.0 L295.0,218.0 L295.0,168.0" fill="none" stroke="var(--glacier)" stroke-width="1.6" marker-end="url(#arr-glacier)"/>
-<path d="M465.0,168.0 L465.0,218.0 L505.0,218.0 L505.0,168.0" fill="none" stroke="var(--glacier)" stroke-width="1.6" marker-end="url(#arr-glacier)"/>
-<path d="M160.0,76.0 L160.0,106.0 L170.0,106.0 L170.0,136.0" fill="none" stroke="var(--glacier)" stroke-width="1.6" marker-end="url(#arr-glacier)"/>
-<path d="M380.0,76.0 L380.0,106.0 L565.0,106.0 L565.0,136.0" fill="none" stroke="var(--glacier)" stroke-width="1.6" marker-end="url(#arr-glacier)"/>
-<path d="M600.0,76.0 L600.0,106.0 L615.0,106.0 L615.0,136.0" fill="none" stroke="var(--glacier)" stroke-width="1.6" marker-end="url(#arr-glacier)"/>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Domotique — cœur" onclick="goArch('domotique')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('domotique')}"><rect x="65.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="160.0" y="62.0" text-anchor="middle" class="d-ghost-label">Home Assistant</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Accès distant" onclick="goArch('acces')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('acces')}"><rect x="285.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="380.0" y="62.0" text-anchor="middle" class="d-ghost-label">cloudflared</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Véhicule — Tesla" onclick="goArch('vehicule')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('vehicule')}"><rect x="505.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="600.0" y="62.0" text-anchor="middle" class="d-ghost-label">teslamate-db</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Prometheus — voir les dépendances" onclick="openServiceModal('prometheus')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('prometheus')}"><rect x="85.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--glacier)" stroke-width="1.8"/><text x="170.0" y="162" text-anchor="middle" class="d-title">Prometheus</text><text x="170.0" y="179" text-anchor="middle" class="d-sub">:9090 · LAN</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="VictoriaMetrics — voir les dépendances" onclick="openServiceModal('victoriametrics')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('victoriametrics')}"><rect x="295.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--glacier)" stroke-width="1.8"/><text x="380.0" y="162" text-anchor="middle" class="d-title">VictoriaMetrics</text><text x="380.0" y="179" text-anchor="middle" class="d-sub">:8428 · LAN</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Grafana — voir les dépendances" onclick="openServiceModal('grafana')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('grafana')}"><rect x="505.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--glacier)" stroke-width="1.8"/><text x="590.0" y="162" text-anchor="middle" class="d-title">Grafana</text><text x="590.0" y="179" text-anchor="middle" class="d-sub">:3000</text></g>
-<rect x="234.6" y="209.0" width="80.8" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="275.0" y="221.0" text-anchor="middle" class="d-edge">remote_write</text>
-<rect x="403.3" y="209.0" width="163.4" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="485.0" y="221.0" text-anchor="middle" class="d-edge">datasource VictoriaMetrics</text>
-<rect x="112.9" y="97.0" width="98.5" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="162.2" y="109.0" text-anchor="middle" class="d-edge">/api/prometheus</text>
-<rect x="380.3" y="97.0" width="80.8" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="420.7" y="109.0" text-anchor="middle" class="d-edge">grafanabulle</text>
-<rect x="539.3" y="97.0" width="128.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="603.3" y="109.0" text-anchor="middle" class="d-edge">datasource TeslaMate</text></svg></div></div>
-<div class="arch-detail" id="arch-detail-documentation" hidden><button class="arch-back" onclick="showArchMacro()">&larr; Toutes les zones</button><div class="arch-detail-head" style="--accent:var(--cuivre)"><h3>Documentation</h3><p>Cette documentation elle-même, régénérée depuis les sources du projet.</p></div><div class="arch-detail-diagram"><svg viewBox="0 0 760 352" role="img" aria-label="Détail de la zone Documentation : ses services et leurs dépendances directes avec le reste de la stack."><defs>
-<marker id="arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
-<marker id="arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
-<marker id="arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
-<marker id="arr-cuivre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--cuivre)"/></marker>
-<marker id="arr-ink-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-faint)"/></marker>
-</defs>
-<path d="M380.0,76.0 L380.0,106.0 L380.0,106.0 L380.0,136.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#arr-cuivre)"/>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Accès distant" onclick="goArch('acces')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('acces')}"><rect x="285.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="380.0" y="62.0" text-anchor="middle" class="d-ghost-label">cloudflared</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="doc-knx — voir les dépendances" onclick="openServiceModal('doc-knx')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('doc-knx')}"><rect x="295.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="380.0" y="162" text-anchor="middle" class="d-title">doc-knx</text><text x="380.0" y="179" text-anchor="middle" class="d-sub">:8090 · nginx</text></g>
-<rect x="345.5" y="97.0" width="69.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="380.0" y="109.0" text-anchor="middle" class="d-edge">docbulle 🔒</text></svg></div></div>
-<div class="arch-detail" id="arch-detail-vehicule" hidden><button class="arch-back" onclick="showArchMacro()">&larr; Toutes les zones</button><div class="arch-detail-head" style="--accent:var(--cuivre)"><h3>Véhicule — Tesla</h3><p>Clé publique développeur et historique trajets/charges.</p></div><div class="arch-detail-diagram"><svg viewBox="0 0 760 472" role="img" aria-label="Détail de la zone Véhicule — Tesla : ses services et leurs dépendances directes avec le reste de la stack."><defs>
-<marker id="arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
-<marker id="arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
-<marker id="arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
-<marker id="arr-cuivre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--cuivre)"/></marker>
-<marker id="arr-ink-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-faint)"/></marker>
-</defs>
-<path d="M485.0,200.0 L485.0,228.0 L275.0,228.0 L275.0,256.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#arr-cuivre)"/>
-<path d="M485.0,200.0 L485.0,228.0 L485.0,228.0 L485.0,256.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#arr-cuivre)"/>
-<path d="M380.0,76.0 L380.0,106.0 L275.0,106.0 L275.0,136.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#arr-cuivre)"/>
-<path d="M570.0,168.0 L596.0,168.0 L596.0,386.0 L270.0,386.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" marker-end="url(#arr-ink-faint)"/>
-<path d="M275.0,320.0 L275.0,353.0 L490.0,353.0 L490.0,386.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#arr-cuivre)"/>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Accès distant" onclick="goArch('acces')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('acces')}"><rect x="285.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="380.0" y="62.0" text-anchor="middle" class="d-ghost-label">cloudflared</text></g>
-<g class="d-ghost"><rect x="175.0" y="386" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 4"/><text x="270.0" y="408.0" text-anchor="middle" class="d-ghost-label">Tesla Fleet API (cloud Tesla)</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Monitoring" onclick="goArch('monitoring')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('monitoring')}"><rect x="395.0" y="386" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="490.0" y="408.0" text-anchor="middle" class="d-ghost-label">Grafana</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="tesla-key — voir les dépendances" onclick="openServiceModal('tesla-key')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('tesla-key')}"><rect x="190.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="275.0" y="162" text-anchor="middle" class="d-title">tesla-key</text><text x="275.0" y="179" text-anchor="middle" class="d-sub">:8091 · nginx</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="TeslaMate — voir les dépendances" onclick="openServiceModal('teslamate')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('teslamate')}"><rect x="400.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="485.0" y="162" text-anchor="middle" class="d-title">TeslaMate</text><text x="485.0" y="179" text-anchor="middle" class="d-sub">:4000 · LAN</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="teslamate-db — voir les dépendances" onclick="openServiceModal('teslamate-db')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('teslamate-db')}"><rect x="190.0" y="256" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="275.0" y="282" text-anchor="middle" class="d-title">teslamate-db</text><text x="275.0" y="299" text-anchor="middle" class="d-sub">Postgres</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="teslamate-mosquitto — voir les dépendances" onclick="openServiceModal('teslamate-mosquitto')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('teslamate-mosquitto')}"><rect x="400.0" y="256" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="485.0" y="282" text-anchor="middle" class="d-title">teslamate-mosquitto</text><text x="485.0" y="299" text-anchor="middle" class="d-sub">MQTT interne</text></g>
+<rect x="340" y="270" width="1280" height="970" rx="22" fill="none" stroke="var(--ink-faint)" stroke-width="1.4" stroke-dasharray="2 6"/><text x="980.0" y="256" text-anchor="middle" class="ov-mac-label">Mac mini — hôte Docker (domotique_net)</text>
+<rect x="20" y="120" width="1600" height="120" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--ambre)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="36" y="144" class="ov-frame-title" fill="var(--ambre)">Accès distant — malnoy.com</text>
+<rect x="380" y="310" width="280" height="120" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--ambre)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="396" y="334" class="ov-frame-title" fill="var(--ambre)">Domotique — cœur</text>
+<rect x="700" y="310" width="260" height="120" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--cuivre)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="716" y="334" class="ov-frame-title" fill="var(--cuivre)">Documentation</text>
+<rect x="380" y="460" width="1220" height="150" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--glacier)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="396" y="484" class="ov-frame-title" fill="var(--glacier)">Monitoring — data</text>
+<rect x="380" y="650" width="380" height="520" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--mousse)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="396" y="674" class="ov-frame-title" fill="var(--mousse)">Dashboard — solutions</text>
+<rect x="800" y="650" width="800" height="270" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--cuivre)" stroke-width="1.3" stroke-opacity="0.55"/>
+<text x="816" y="674" class="ov-frame-title" fill="var(--cuivre)">Véhicule — Tesla</text>
+<rect x="400" y="780" width="340" height="96" rx="16" fill="var(--surface-2)" fill-opacity="0.5" stroke="var(--mousse)" stroke-width="1.3" stroke-opacity="0.55" stroke-dasharray="6 5"/>
+<text x="416" y="804" class="ov-frame-title" fill="var(--mousse)">autre réseau Docker</text>
+<path d="M160.0,88.0 L810.0,155.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M810.0,215.0 L810.0,293.0 L520.0,293.0 L520.0,350.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M810.0,215.0 L810.0,293.0 L830.0,293.0 L830.0,350.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M810.0,215.0 L810.0,293.0 L1480.0,293.0 L1480.0,510.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M810.0,215.0 L1705.0,225.0 L1705.0,636.0 L920.0,636.0 L920.0,690.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M700.0,185.0 L360.0,185.0 L360.0,828.0 L420.0,828.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M700.0,185.0 L372.0,185.0 L372.0,938.0 L400.0,938.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M320.0,280.0 L360.0,280.0 L520.0,280.0 L520.0,350.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M520.0,414.0 L500.0,510.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M600.0,542.0 L620.0,542.0" fill="none" stroke="var(--glacier)" stroke-width="1.6" marker-end="url(#ov-arr-glacier)"/>
+<path d="M820.0,542.0 L1000.0,542.0 L1000.0,542.0 L1380.0,542.0" fill="none" stroke="var(--glacier)" stroke-width="1.6" marker-end="url(#ov-arr-glacier)"/>
+<path d="M1020.0,722.0 L1250.0,722.0 L1250.0,722.0 L1360.0,722.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<path d="M1460.0,754.0 L1470.0,790.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<path d="M1460.0,754.0 L1240.0,754.0 L1240.0,790.0 L1240.0,790.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<path d="M1140.0,822.0 L1100.0,822.0 L1100.0,574.0 L1480.0,574.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<path d="M570.0,750.0 L570.0,800.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#ov-arr-mousse)"/>
+<path d="M570.0,856.0 L570.0,910.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#ov-arr-mousse)"/>
+<path d="M570.0,966.0 L570.0,990.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#ov-arr-mousse)"/>
+<path d="M570.0,1046.0 L570.0,1070.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ov-arr-ink-faint)"/>
+<path d="M570.0,1046.0 L570.0,1210.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#ov-arr-mousse)"/>
+<path d="M570.0,690.0 L348.0,690.0 L348.0,414.0 L520.0,414.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M740.0,1018.0 L1630.0,1018.0 L1630.0,452.0 L520.0,452.0 L520.0,414.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ov-arr-ink-faint)"/>
+<path d="M610.0,414.0 L610.0,434.0 L1655.0,434.0 L1655.0,88.0 L1550.0,88.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#ov-arr-ambre)"/>
+<path d="M1560.0,722.0 L1680.0,722.0 L1680.0,88.0 L1610.0,88.0" fill="none" stroke="var(--cuivre)" stroke-width="1.6" marker-end="url(#ov-arr-cuivre)"/>
+<g role="img" aria-label="Bus KNX filaire — Configuration ETS — 975 adresses · 59 fonctions · 19 pièces"><rect x="20" y="250" width="300" height="110" rx="12" fill="var(--surface)" stroke="var(--ambre)" stroke-width="1.6" stroke-dasharray="3 3"/><text x="38" y="276" class="ov-title" text-anchor="start">Bus KNX filaire</text><text x="38" y="294" class="ov-sub" text-anchor="start">Configuration ETS</text><text x="38" y="312" class="ov-knx-stats" text-anchor="start">975 adresses · 59 fonctions · 19 pièces</text><text x="38" y="340" class="ov-knx-note" text-anchor="start">Physique — hors Docker</text></g>
+<g><rect x="40" y="30" width="240" height="58" rx="29.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="160.0" y="57.0" text-anchor="middle" class="ov-ext-title">Utilisateurs</text><text x="160.0" y="72.0" text-anchor="middle" class="ov-ext-sub">Mac · iPad · iPhone · écran mural</text></g>
+<g><rect x="1460" y="30" width="240" height="58" rx="29.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="1580.0" y="57.0" text-anchor="middle" class="ov-ext-title">Tesla Fleet API</text><text x="1580.0" y="72.0" text-anchor="middle" class="ov-ext-sub">cloud Tesla</text></g>
+<g><rect x="440" y="1210" width="260" height="56" rx="28.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="570.0" y="1236.0" text-anchor="middle" class="ov-ext-title">Open-Meteo API</text><text x="570.0" y="1251.0" text-anchor="middle" class="ov-ext-sub">externe</text></g>
+<g role="img" aria-label="cloudflared — tunnel sortant"><rect x="700" y="155" width="220" height="60" rx="10" fill="var(--surface)" stroke="var(--ambre)" stroke-width="1.8"/><text x="810.0" y="183.0" text-anchor="middle" class="ov-title">cloudflared</text><text x="810.0" y="200.0" text-anchor="middle" class="ov-sub">tunnel sortant</text></g>
+<g role="img" aria-label="Home Assistant — :8123"><rect x="400" y="350" width="240" height="64" rx="10" fill="var(--surface)" stroke="var(--ambre)" stroke-width="1.8"/><text x="520.0" y="380.0" text-anchor="middle" class="ov-title">Home Assistant</text><text x="520.0" y="397.0" text-anchor="middle" class="ov-sub">:8123</text></g>
+<g role="img" aria-label="doc-knx — :8090 · nginx"><rect x="720" y="350" width="220" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="830.0" y="380.0" text-anchor="middle" class="ov-title">doc-knx</text><text x="830.0" y="397.0" text-anchor="middle" class="ov-sub">:8090 · nginx</text></g>
+<g role="img" aria-label="Prometheus — :9090 · LAN"><rect x="400" y="510" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--glacier)" stroke-width="1.8"/><text x="500.0" y="540.0" text-anchor="middle" class="ov-title">Prometheus</text><text x="500.0" y="557.0" text-anchor="middle" class="ov-sub">:9090 · LAN</text></g>
+<g role="img" aria-label="VictoriaMetrics — :8428 · LAN"><rect x="620" y="510" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--glacier)" stroke-width="1.8"/><text x="720.0" y="540.0" text-anchor="middle" class="ov-title">VictoriaMetrics</text><text x="720.0" y="557.0" text-anchor="middle" class="ov-sub">:8428 · LAN</text></g>
+<g role="img" aria-label="Grafana — :3000"><rect x="1380" y="510" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--glacier)" stroke-width="1.8"/><text x="1480.0" y="540.0" text-anchor="middle" class="ov-title">Grafana</text><text x="1480.0" y="557.0" text-anchor="middle" class="ov-sub">:3000</text></g>
+<g role="img" aria-label="GlassHome — :3123 · LAN"><rect x="400" y="690" width="340" height="60" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="570.0" y="718.0" text-anchor="middle" class="ov-title">GlassHome</text><text x="570.0" y="735.0" text-anchor="middle" class="ov-sub">:3123 · LAN</text></g>
+<g role="img" aria-label="Tunet — :3002 · autre réseau Docker"><rect x="420" y="800" width="300" height="56" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="570.0" y="826.0" text-anchor="middle" class="ov-title">Tunet</text><text x="570.0" y="843.0" text-anchor="middle" class="ov-sub">:3002 · autre réseau Docker</text></g>
+<g role="img" aria-label="dashboard-proto — :8092 · nginx"><rect x="400" y="910" width="340" height="56" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="570.0" y="936.0" text-anchor="middle" class="ov-title">dashboard-proto</text><text x="570.0" y="953.0" text-anchor="middle" class="ov-sub">:8092 · nginx</text></g>
+<g role="img" aria-label="dashboard-api — interne · FastAPI"><rect x="400" y="990" width="340" height="56" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="570.0" y="1016.0" text-anchor="middle" class="ov-title">dashboard-api</text><text x="570.0" y="1033.0" text-anchor="middle" class="ov-sub">interne · FastAPI</text></g>
+<g role="img" aria-label="dashboard-web — prévu — prévu · Vue 3"><rect x="400" y="1070" width="340" height="56" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8" stroke-dasharray="4 4"/><text x="570.0" y="1096.0" text-anchor="middle" class="ov-title">dashboard-web</text><text x="570.0" y="1113.0" text-anchor="middle" class="ov-sub">prévu · Vue 3</text></g>
+<g role="img" aria-label="tesla-key — :8091 · nginx"><rect x="820" y="690" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="920.0" y="720.0" text-anchor="middle" class="ov-title">tesla-key</text><text x="920.0" y="737.0" text-anchor="middle" class="ov-sub">:8091 · nginx</text></g>
+<g role="img" aria-label="TeslaMate — :4000 · LAN"><rect x="1360" y="690" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="1460.0" y="720.0" text-anchor="middle" class="ov-title">TeslaMate</text><text x="1460.0" y="737.0" text-anchor="middle" class="ov-sub">:4000 · LAN</text></g>
+<g role="img" aria-label="teslamate-db — Postgres"><rect x="1140" y="790" width="200" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="1240.0" y="820.0" text-anchor="middle" class="ov-title">teslamate-db</text><text x="1240.0" y="837.0" text-anchor="middle" class="ov-sub">Postgres</text></g>
+<g role="img" aria-label="teslamate-mosquitto — MQTT interne"><rect x="1360" y="790" width="220" height="64" rx="10" fill="var(--surface)" stroke="var(--cuivre)" stroke-width="1.8"/><text x="1470.0" y="820.0" text-anchor="middle" class="ov-title">teslamate-mosquitto</text><text x="1470.0" y="837.0" text-anchor="middle" class="ov-sub">MQTT interne</text></g>
+<rect x="465.8" y="112.5" width="38.5" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="485.0" y="124.5" text-anchor="middle" class="ov-edge">HTTPS</text>
+<rect x="620.1" y="284.0" width="89.8" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="665.0" y="296.0" text-anchor="middle" class="ov-edge">domotiquebulle</text>
+<rect x="786.5" y="284.0" width="67.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="820.0" y="296.0" text-anchor="middle" class="ov-edge">docbulle 🔒</text>
+<rect x="1105.8" y="284.0" width="78.4" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1145.0" y="296.0" text-anchor="middle" class="ov-edge">grafanabulle</text>
+<rect x="1663.0" y="340.9" width="84.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1705.0" y="352.9" text-anchor="middle" class="ov-edge">vehiculebulle</text>
+<rect x="329.4" y="754.7" width="61.3" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="360.0" y="766.7" text-anchor="middle" class="ov-edge">visubulle</text>
+<rect x="327.1" y="853.7" width="89.8" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="372.0" y="865.7" text-anchor="middle" class="ov-edge">dashboardbulle</text>
+<rect x="392.2" y="271.0" width="95.5" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="440.0" y="283.0" text-anchor="middle" class="ov-edge">bus KNX filaire</text>
+<rect x="462.2" y="453.0" width="95.5" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="510.0" y="465.0" text-anchor="middle" class="ov-edge">/api/prometheus</text>
+<rect x="570.8" y="533.0" width="78.4" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="610.0" y="545.0" text-anchor="middle" class="ov-edge">remote_write</text>
+<rect x="920.9" y="533.0" width="158.2" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1000.0" y="545.0" text-anchor="middle" class="ov-edge">datasource VictoriaMetrics</text>
 
 
-<rect x="313.5" y="97.0" width="86.7" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="356.9" y="109.0" text-anchor="middle" class="d-edge">vehiculebulle</text>
-<rect x="564.5" y="159.0" width="63.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="596.0" y="171.0" text-anchor="middle" class="d-edge">Fleet API</text>
-<rect x="378.7" y="344.0" width="128.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="442.7" y="356.0" text-anchor="middle" class="d-edge">datasource TeslaMate</text></svg></div></div>
-<div class="arch-detail" id="arch-detail-dashboard" hidden><button class="arch-back" onclick="showArchMacro()">&larr; Toutes les zones</button><div class="arch-detail-head" style="--accent:var(--mousse)"><h3>Dashboard sur-mesure</h3><p>Écran mural : maquette actuelle, puis couche applicative définitive.</p></div><div class="arch-detail-diagram"><svg viewBox="0 0 760 352" role="img" aria-label="Détail de la zone Dashboard sur-mesure : ses services et leurs dépendances directes avec le reste de la stack."><defs>
-<marker id="arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
-<marker id="arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
-<marker id="arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
-<marker id="arr-cuivre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--cuivre)"/></marker>
-<marker id="arr-ink-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-faint)"/></marker>
-</defs>
-<path d="M255.0,168.0 L255.0,218.0 L295.0,218.0 L295.0,168.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#arr-mousse)"/>
-<path d="M465.0,168.0 L465.0,218.0 L505.0,218.0 L505.0,168.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr-mousse)"/>
-<path d="M380.0,76.0 L380.0,106.0 L170.0,106.0 L170.0,136.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#arr-mousse)"/>
-<path d="M355.0,200.0 L355.0,233.0 L270.0,233.0 L270.0,266.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr-ink-faint)"/>
-<path d="M405.0,200.0 L405.0,233.0 L490.0,233.0 L490.0,266.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" marker-end="url(#arr-ink-faint)"/>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Accès distant" onclick="goArch('acces')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('acces')}"><rect x="285.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="380.0" y="62.0" text-anchor="middle" class="d-ghost-label">cloudflared</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Domotique — cœur" onclick="goArch('domotique')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('domotique')}"><rect x="175.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="270.0" y="288.0" text-anchor="middle" class="d-ghost-label">Home Assistant</text></g>
-<g class="d-ghost"><rect x="395.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 4"/><text x="490.0" y="288.0" text-anchor="middle" class="d-ghost-label">Open-Meteo API (externe)</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="dashboard-proto — voir les dépendances" onclick="openServiceModal('dashboard-proto')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('dashboard-proto')}"><rect x="85.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="170.0" y="162" text-anchor="middle" class="d-title">dashboard-proto</text><text x="170.0" y="179" text-anchor="middle" class="d-sub">:8092 · nginx</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="dashboard-api — voir les dépendances" onclick="openServiceModal('dashboard-api')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('dashboard-api')}"><rect x="295.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="380.0" y="162" text-anchor="middle" class="d-title">dashboard-api</text><text x="380.0" y="179" text-anchor="middle" class="d-sub">interne · FastAPI</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="dashboard-web — prévu — voir les dépendances" onclick="openServiceModal('dashboard-web')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('dashboard-web')}"><rect x="505.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8" stroke-dasharray="4 4"/><text x="590.0" y="162" text-anchor="middle" class="d-title">dashboard-web</text><text x="590.0" y="179" text-anchor="middle" class="d-sub">prévu · Vue 3</text></g>
-<rect x="211.0" y="209.0" width="128.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="275.0" y="221.0" text-anchor="middle" class="d-edge">proxy /api/, interne</text>
-<rect x="403.3" y="209.0" width="163.4" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="485.0" y="221.0" text-anchor="middle" class="d-edge">remplacera dashboard-proto</text>
-<rect x="287.5" y="97.0" width="92.6" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="333.8" y="109.0" text-anchor="middle" class="d-edge">dashboardbulle</text>
-<rect x="198.1" y="224.0" width="181.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="288.7" y="236.0" text-anchor="middle" class="d-edge">WebSocket, jeton longue durée</text>
-<rect x="433.9" y="224.0" width="74.9" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="471.3" y="236.0" text-anchor="middle" class="d-edge">proxy météo</text></svg></div></div>
-<div class="arch-detail" id="arch-detail-acces" hidden><button class="arch-back" onclick="showArchMacro()">&larr; Toutes les zones</button><div class="arch-detail-head" style="--accent:var(--ambre)"><h3>Accès distant</h3><p>Tunnel Cloudflare — distribue six sous-domaines *.malnoy.com.</p></div><div class="arch-detail-diagram"><svg viewBox="0 0 1410 352" role="img" aria-label="Détail de la zone Accès distant : ses services et leurs dépendances directes avec le reste de la stack."><defs>
-<marker id="arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
-<marker id="arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
-<marker id="arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
-<marker id="arr-cuivre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--cuivre)"/></marker>
-<marker id="arr-ink-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-faint)"/></marker>
-</defs>
-<path d="M705.0,76.0 L705.0,106.0 L705.0,106.0 L705.0,136.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.6" marker-end="url(#arr-ink-faint)"/>
-<path d="M640.0,200.0 L640.0,233.0 L155.0,233.0 L155.0,266.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#arr-ambre)"/>
-<path d="M666.0,200.0 L666.0,233.0 L375.0,233.0 L375.0,266.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#arr-ambre)"/>
-<path d="M692.0,200.0 L692.0,233.0 L595.0,233.0 L595.0,266.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#arr-ambre)"/>
-<path d="M718.0,200.0 L718.0,233.0 L815.0,233.0 L815.0,266.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#arr-ambre)"/>
-<path d="M744.0,200.0 L744.0,233.0 L1035.0,233.0 L1035.0,266.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#arr-ambre)"/>
-<path d="M770.0,200.0 L770.0,233.0 L1255.0,233.0 L1255.0,266.0" fill="none" stroke="var(--ambre)" stroke-width="1.6" marker-end="url(#arr-ambre)"/>
-<g class="d-ghost"><rect x="610.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 4"/><text x="705.0" y="62.0" text-anchor="middle" class="d-ghost-label">Utilisateurs (Mac · iPad · iPhone · écran mural)</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Domotique — cœur" onclick="goArch('domotique')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('domotique')}"><rect x="60.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="155.0" y="288.0" text-anchor="middle" class="d-ghost-label">Home Assistant</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Monitoring" onclick="goArch('monitoring')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('monitoring')}"><rect x="280.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="375.0" y="288.0" text-anchor="middle" class="d-ghost-label">Grafana</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Documentation" onclick="goArch('documentation')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('documentation')}"><rect x="500.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="595.0" y="288.0" text-anchor="middle" class="d-ghost-label">doc-knx</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Véhicule — Tesla" onclick="goArch('vehicule')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('vehicule')}"><rect x="720.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="815.0" y="288.0" text-anchor="middle" class="d-ghost-label">tesla-key</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Réseau externe" onclick="goArch('externe')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('externe')}"><rect x="940.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="1035.0" y="288.0" text-anchor="middle" class="d-ghost-label">Tunet</text></g>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Dashboard sur-mesure" onclick="goArch('dashboard')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('dashboard')}"><rect x="1160.0" y="266" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="1255.0" y="288.0" text-anchor="middle" class="d-ghost-label">dashboard-proto</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="cloudflared — voir les dépendances" onclick="openServiceModal('cloudflared')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('cloudflared')}"><rect x="620.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--ambre)" stroke-width="1.8"/><text x="705.0" y="162" text-anchor="middle" class="d-title">cloudflared</text><text x="705.0" y="179" text-anchor="middle" class="d-sub">tunnel sortant</text></g>
-<rect x="685.2" y="97.0" width="39.5" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="705.0" y="109.0" text-anchor="middle" class="d-edge">HTTPS</text>
-<rect x="215.4" y="224.0" width="92.6" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="261.7" y="236.0" text-anchor="middle" class="d-edge">domotiquebulle</text>
-<rect x="398.6" y="224.0" width="80.8" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="439.0" y="236.0" text-anchor="middle" class="d-edge">grafanabulle</text>
-<rect x="581.8" y="224.0" width="69.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="616.3" y="236.0" text-anchor="middle" class="d-edge">docbulle 🔒</text>
-<rect x="750.3" y="224.0" width="86.7" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="793.7" y="236.0" text-anchor="middle" class="d-edge">vehiculebulle</text>
-<rect x="939.4" y="224.0" width="63.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="971.0" y="236.0" text-anchor="middle" class="d-edge">visubulle</text>
-<rect x="1102.0" y="224.0" width="92.6" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1148.3" y="236.0" text-anchor="middle" class="d-edge">dashboardbulle</text></svg></div></div>
-<div class="arch-detail" id="arch-detail-externe" hidden><button class="arch-back" onclick="showArchMacro()">&larr; Toutes les zones</button><div class="arch-detail-head" style="--accent:var(--mousse)"><h3>Réseau externe</h3><p>Dashboard existant, sur un réseau Docker séparé du reste de la stack.</p></div><div class="arch-detail-diagram"><svg viewBox="0 0 760 352" role="img" aria-label="Détail de la zone Réseau externe : ses services et leurs dépendances directes avec le reste de la stack."><defs>
-<marker id="arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
-<marker id="arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
-<marker id="arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
-<marker id="arr-cuivre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--cuivre)"/></marker>
-<marker id="arr-ink-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-faint)"/></marker>
-</defs>
-<path d="M380.0,76.0 L380.0,106.0 L380.0,106.0 L380.0,136.0" fill="none" stroke="var(--mousse)" stroke-width="1.6" marker-end="url(#arr-mousse)"/>
-<g class="d-ghost d-ghost-clickable" tabindex="0" role="button" aria-label="Voir la zone Accès distant" onclick="goArch('acces')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goArch('acces')}"><rect x="285.0" y="40" width="190" height="36" rx="18.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="380.0" y="62.0" text-anchor="middle" class="d-ghost-label">cloudflared</text></g>
-<g class="d-node" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Tunet — voir les dépendances" onclick="openServiceModal('tunet')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openServiceModal('tunet')}"><rect x="295.0" y="136" width="170" height="64" rx="10" fill="var(--surface)" stroke="var(--mousse)" stroke-width="1.8"/><text x="380.0" y="162" text-anchor="middle" class="d-title">Tunet</text><text x="380.0" y="179" text-anchor="middle" class="d-sub">:3002</text></g>
-<rect x="348.4" y="97.0" width="63.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="380.0" y="109.0" text-anchor="middle" class="d-edge">visubulle</text></svg></div></div>
-    </div>
-  </div>
-</div>
 
-<!-- ============ ARCHITECTURE : popup dépendances ============ -->
-<div id="arch-modal-backdrop" class="arch-modal-backdrop" hidden onclick="if(event.target===this)closeServiceModal()">
-  <div class="arch-modal" role="dialog" aria-modal="true" aria-labelledby="arch-modal-title">
-    <button class="arch-modal-close" onclick="closeServiceModal()" aria-label="Fermer">&times;</button>
-    <div id="arch-modal-body" class="arch-modal-body"></div>
+<rect x="1038.0" y="689.0" width="124.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1100.0" y="701.0" text-anchor="middle" class="ov-edge">datasource TeslaMate</text>
+
+
+<rect x="508.0" y="969.0" width="124.0" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="570.0" y="981.0" text-anchor="middle" class="ov-edge">proxy /api/, interne</text>
+<rect x="490.9" y="1049.0" width="158.2" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="570.0" y="1061.0" text-anchor="middle" class="ov-edge">remplacera dashboard-proto</text>
+<rect x="533.6" y="1119.0" width="72.7" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="570.0" y="1131.0" text-anchor="middle" class="ov-edge">proxy météo</text>
+<rect x="291.7" y="543.0" width="112.6" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="348.0" y="555.0" text-anchor="middle" class="ov-edge">jeton longue durée</text>
+<rect x="1519.5" y="736.8" width="220.9" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1630.0" y="748.8" text-anchor="middle" class="ov-edge">WebSocket, jeton longue durée (prévu)</text>
+<rect x="1062.0" y="425.0" width="141.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1132.5" y="437.0" text-anchor="middle" class="ov-edge">intégration Tesla Fleet</text>
+<rect x="1649.3" y="541.2" width="61.3" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1680.0" y="553.2" text-anchor="middle" class="ov-edge">Fleet API</text></svg>
+    </div>
   </div>
 </div>
 
@@ -944,14 +909,10 @@ comparaison) — à nettoyer une fois la décision prise.</p>
 </div>
 
 <script>
-var ARCH_DATA = {"services": {"homeassistant": {"title": "Home Assistant", "sub": ":8123", "category": "domotique", "desc": "Cœur domotique : bus KNX filaire, Z-Wave (Raspberry Pi dédié), solaire, intégration Tesla Fleet. Exposé sur domotiquebulle.malnoy.com.", "planned": false, "incoming": [{"id": "cloudflared", "name": "cloudflared", "edge": "domotiquebulle", "planned": false, "cat": "acces"}, {"id": "glasshome", "name": "GlassHome", "edge": "jeton longue durée", "planned": false, "cat": "domotique"}, {"id": "dashboard-api", "name": "dashboard-api", "edge": "WebSocket, jeton longue durée", "planned": true, "cat": "dashboard"}], "outgoing": [{"id": "prometheus", "name": "Prometheus", "edge": "/api/prometheus", "planned": false, "cat": "monitoring"}, {"id": "TESLACLOUD", "name": "Tesla Fleet API (cloud Tesla)", "edge": "intégration Tesla Fleet", "planned": false, "cat": null}]}, "glasshome": {"title": "GlassHome", "sub": ":3123 · LAN", "category": "domotique", "desc": "Un des trois essais de dashboard comparés au jalon 5, connecté à Home Assistant par jeton longue durée. LAN uniquement.", "planned": false, "incoming": [], "outgoing": [{"id": "homeassistant", "name": "Home Assistant", "edge": "jeton longue durée", "planned": false, "cat": "domotique"}]}, "prometheus": {"title": "Prometheus", "sub": ":9090 · LAN", "category": "monitoring", "desc": "Scrape /api/prometheus de Home Assistant, relais remote_write vers VictoriaMetrics. Ne garde localement que 2 jours (buffer).", "planned": false, "incoming": [{"id": "homeassistant", "name": "Home Assistant", "edge": "/api/prometheus", "planned": false, "cat": "domotique"}], "outgoing": [{"id": "victoriametrics", "name": "VictoriaMetrics", "edge": "remote_write", "planned": false, "cat": "monitoring"}]}, "victoriametrics": {"title": "VictoriaMetrics", "sub": ":8428 · LAN", "category": "monitoring", "desc": "Base de séries temporelles, stockage long terme (5 ans configurés) — source de vérité pour l'historique domotique.", "planned": false, "incoming": [{"id": "prometheus", "name": "Prometheus", "edge": "remote_write", "planned": false, "cat": "monitoring"}], "outgoing": [{"id": "grafana", "name": "Grafana", "edge": "datasource VictoriaMetrics", "planned": false, "cat": "monitoring"}]}, "grafana": {"title": "Grafana", "sub": ":3000", "category": "monitoring", "desc": "Visualisation — deux sources provisionnées automatiquement : VictoriaMetrics (domotique) et TeslaMate (véhicule). Exposé sur grafanabulle.malnoy.com.", "planned": false, "incoming": [{"id": "cloudflared", "name": "cloudflared", "edge": "grafanabulle", "planned": false, "cat": "acces"}, {"id": "victoriametrics", "name": "VictoriaMetrics", "edge": "datasource VictoriaMetrics", "planned": false, "cat": "monitoring"}, {"id": "teslamate-db", "name": "teslamate-db", "edge": "datasource TeslaMate", "planned": false, "cat": "vehicule"}], "outgoing": []}, "doc-knx": {"title": "doc-knx", "sub": ":8090 · nginx", "category": "documentation", "desc": "Cette documentation elle-même — contenu régénéré par script, jamais édité à la main. Exposé sur docbulle.malnoy.com, protégé par Cloudflare Access.", "planned": false, "incoming": [{"id": "cloudflared", "name": "cloudflared", "edge": "docbulle 🔒", "planned": false, "cat": "acces"}], "outgoing": []}, "tesla-key": {"title": "tesla-key", "sub": ":8091 · nginx", "category": "vehicule", "desc": "Héberge la clé publique exigée par l'app développeur Tesla. Volontairement sans authentification. Exposé sur vehiculebulle.malnoy.com.", "planned": false, "incoming": [{"id": "cloudflared", "name": "cloudflared", "edge": "vehiculebulle", "planned": false, "cat": "acces"}], "outgoing": []}, "teslamate": {"title": "TeslaMate", "sub": ":4000 · LAN", "category": "vehicule", "desc": "Historique/analytique véhicule (trajets, charges, efficacité) via la Fleet API — dashboards importés dans le Grafana existant.", "planned": false, "incoming": [], "outgoing": [{"id": "teslamate-db", "name": "teslamate-db", "edge": "—", "planned": false, "cat": "vehicule"}, {"id": "teslamate-mosquitto", "name": "teslamate-mosquitto", "edge": "—", "planned": false, "cat": "vehicule"}, {"id": "TESLACLOUD", "name": "Tesla Fleet API (cloud Tesla)", "edge": "Fleet API", "planned": false, "cat": null}]}, "teslamate-db": {"title": "teslamate-db", "sub": "Postgres", "category": "vehicule", "desc": "Base de données de TeslaMate.", "planned": false, "incoming": [{"id": "teslamate", "name": "TeslaMate", "edge": "—", "planned": false, "cat": "vehicule"}], "outgoing": [{"id": "grafana", "name": "Grafana", "edge": "datasource TeslaMate", "planned": false, "cat": "monitoring"}]}, "teslamate-mosquitto": {"title": "teslamate-mosquitto", "sub": "MQTT interne", "category": "vehicule", "desc": "Broker MQTT interne à TeslaMate — pas lié à la Fleet Telemetry Tesla (non supportée sur Model S pré-2021).", "planned": false, "incoming": [{"id": "teslamate", "name": "TeslaMate", "edge": "—", "planned": false, "cat": "vehicule"}], "outgoing": []}, "dashboard-proto": {"title": "dashboard-proto", "sub": ":8092 · nginx", "category": "dashboard", "desc": "Maquette statique de la nouvelle page d'accueil (jalon 5). Proxifie /api/ vers dashboard-api pour la météo réelle. Exposé sur dashboardbulle.malnoy.com.", "planned": false, "incoming": [{"id": "cloudflared", "name": "cloudflared", "edge": "dashboardbulle", "planned": false, "cat": "acces"}], "outgoing": [{"id": "dashboard-api", "name": "dashboard-api", "edge": "proxy /api/, interne", "planned": false, "cat": "dashboard"}]}, "dashboard-api": {"title": "dashboard-api", "sub": "interne · FastAPI", "category": "dashboard", "desc": "Couche applicative définitive du dashboard sur-mesure — pour l'instant limitée à un endpoint météo (proxy Open-Meteo).", "planned": false, "incoming": [{"id": "dashboard-proto", "name": "dashboard-proto", "edge": "proxy /api/, interne", "planned": false, "cat": "dashboard"}], "outgoing": [{"id": "dashboard-web", "name": "dashboard-web", "edge": "remplacera dashboard-proto", "planned": true, "cat": "dashboard"}, {"id": "homeassistant", "name": "Home Assistant", "edge": "WebSocket, jeton longue durée", "planned": true, "cat": "domotique"}, {"id": "OPENMETEO", "name": "Open-Meteo API (externe)", "edge": "proxy météo", "planned": false, "cat": null}]}, "dashboard-web": {"title": "dashboard-web", "sub": "prévu · Vue 3", "category": "dashboard", "desc": "Remplacera dashboard-proto une fois construit. Pas encore commencé.", "planned": true, "incoming": [{"id": "dashboard-api", "name": "dashboard-api", "edge": "remplacera dashboard-proto", "planned": true, "cat": "dashboard"}], "outgoing": []}, "cloudflared": {"title": "cloudflared", "sub": "tunnel sortant", "category": "acces", "desc": "Tunnel Cloudflare — expose les services publics sur Internet sans port ouvert sur le routeur ni client à installer.", "planned": false, "incoming": [{"id": "USER", "name": "Utilisateurs (Mac · iPad · iPhone · écran mural)", "edge": "HTTPS", "planned": false, "cat": null}], "outgoing": [{"id": "homeassistant", "name": "Home Assistant", "edge": "domotiquebulle", "planned": false, "cat": "domotique"}, {"id": "grafana", "name": "Grafana", "edge": "grafanabulle", "planned": false, "cat": "monitoring"}, {"id": "doc-knx", "name": "doc-knx", "edge": "docbulle 🔒", "planned": false, "cat": "documentation"}, {"id": "tesla-key", "name": "tesla-key", "edge": "vehiculebulle", "planned": false, "cat": "vehicule"}, {"id": "tunet", "name": "Tunet", "edge": "visubulle", "planned": false, "cat": "externe"}, {"id": "dashboard-proto", "name": "dashboard-proto", "edge": "dashboardbulle", "planned": false, "cat": "dashboard"}]}, "tunet": {"title": "Tunet", "sub": ":3002", "category": "externe", "desc": "Dashboard mural actif au quotidien, sur un réseau Docker séparé, joint via host.docker.internal. Exposé sur visubulle.malnoy.com.", "planned": false, "incoming": [{"id": "cloudflared", "name": "cloudflared", "edge": "visubulle", "planned": false, "cat": "acces"}], "outgoing": []}}, "categories": {"domotique": {"title": "Domotique — cœur", "color": "ambre"}, "monitoring": {"title": "Monitoring", "color": "glacier"}, "documentation": {"title": "Documentation", "color": "cuivre"}, "vehicule": {"title": "Véhicule — Tesla", "color": "cuivre"}, "dashboard": {"title": "Dashboard sur-mesure", "color": "mousse"}, "acces": {"title": "Accès distant", "color": "ambre"}, "externe": {"title": "Réseau externe", "color": "mousse"}}};
-
 function showView(name){
   document.querySelectorAll('.view-panel').forEach(function(el){ el.hidden = true; });
   document.getElementById('view-' + name).hidden = false;
   document.getElementById('backBtn').hidden = (name === 'home');
-  if(name === 'architecture') showArchMacro();
-  closeServiceModal();
   window.scrollTo(0,0);
 }
 function routeFromHash(){
@@ -960,58 +921,6 @@ function routeFromHash(){
   showView(h);
 }
 window.addEventListener('hashchange', routeFromHash);
-
-function showArchMacro(){
-  document.getElementById('arch-macro').hidden = false;
-  document.querySelectorAll('.arch-detail').forEach(function(el){ el.hidden = true; });
-}
-function goArch(catId){
-  showView('architecture');
-  document.getElementById('arch-macro').hidden = true;
-  document.querySelectorAll('.arch-detail').forEach(function(el){
-    el.hidden = (el.id !== 'arch-detail-' + catId);
-  });
-  window.scrollTo(0,0);
-}
-function archEsc(s){
-  var d = document.createElement('div');
-  d.textContent = String(s == null ? '' : s);
-  return d.innerHTML;
-}
-function renderDepGroup(title, deps){
-  if(!deps || !deps.length) return '';
-  var items = deps.map(function(d){
-    var cls = 'arch-dep-item' + (d.planned ? ' planned' : '') + (d.cat ? ' clickable' : '');
-    var onclick = d.cat ? (' onclick="jumpToService(\'' + d.id + '\')" tabindex="0" role="button"') : '';
-    return '<li class="' + cls + '"' + onclick + '>' +
-      '<span class="arch-dep-name">' + archEsc(d.name) + '</span>' +
-      '<span class="arch-dep-edge">' + archEsc(d.edge) + '</span></li>';
-  }).join('');
-  return '<div class="arch-dep-group"><h4>' + archEsc(title) + '</h4><ul>' + items + '</ul></div>';
-}
-function openServiceModal(sid){
-  var s = ARCH_DATA.services[sid];
-  if(!s) return;
-  var body = '<h3 id="arch-modal-title">' + archEsc(s.title) +
-    (s.planned ? ' <span class="arch-planned-tag">prévu</span>' : '') + '</h3>';
-  body += '<p class="arch-modal-sub">' + archEsc(s.sub) + '</p>';
-  body += '<p class="arch-modal-desc">' + archEsc(s.desc) + '</p>';
-  body += renderDepGroup('Dépend de', s.incoming);
-  body += renderDepGroup('Utilisé par', s.outgoing);
-  document.getElementById('arch-modal-body').innerHTML = body;
-  document.getElementById('arch-modal-backdrop').hidden = false;
-}
-function closeServiceModal(){
-  document.getElementById('arch-modal-backdrop').hidden = true;
-}
-function jumpToService(sid){
-  var s = ARCH_DATA.services[sid];
-  closeServiceModal();
-  if(s && s.category) goArch(s.category);
-}
-document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape') closeServiceModal();
-});
 
 routeFromHash();
 </script>

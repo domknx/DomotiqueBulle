@@ -1,31 +1,33 @@
 # -*- coding: utf-8 -*-
-"""Données de l'architecture Docker — source de vérité pour le diagramme interactif
-(vue macro + détail par catégorie + popup de dépendances). À mettre à jour à la main
-si les services ou leurs relations changent (README.md §1 / docker-compose.yml),
-même logique que content.py."""
+"""Données de l'architecture — source de vérité pour le schéma graphique unique
+du site (vue d'ensemble en haut du README + vue Architecture logicielle). À
+mettre à jour à la main si les services ou leurs relations changent
+(README.md §1 / docker-compose.yml), même logique que content.py.
+
+Regroupement par domaine fonctionnel (pas par réseau Docker) : Home Assistant
+seul au centre du domaine « Domotique », les solutions dashboard (GlassHome,
+Tunet, dashboard-*) réunies dans un domaine dédié, etc. — voir
+architecture_overview.py pour le rendu et le placement des domaines sur le
+schéma (cadre « Mac mini », domaine KNX hors Docker)."""
 
 CATEGORIES = [
     dict(id='domotique', title='Domotique — cœur', color='ambre',
-         blurb="Bus KNX filaire, Z-Wave, solaire, intégration Tesla Fleet."),
-    dict(id='monitoring', title='Monitoring', color='glacier',
+         blurb="Home Assistant, seul : bus KNX filaire, Z-Wave, solaire, intégration Tesla Fleet."),
+    dict(id='monitoring', title='Monitoring — data', color='glacier',
          blurb="Collecte, stockage long terme et visualisation des métriques domotique."),
     dict(id='documentation', title='Documentation', color='cuivre',
          blurb="Cette documentation elle-même, régénérée depuis les sources du projet."),
     dict(id='vehicule', title='Véhicule — Tesla', color='cuivre',
          blurb="Clé publique développeur et historique trajets/charges."),
-    dict(id='dashboard', title='Dashboard sur-mesure', color='mousse',
-         blurb="Écran mural : maquette actuelle, puis couche applicative définitive."),
-    dict(id='acces', title='Accès distant', color='ambre',
-         blurb="Tunnel Cloudflare — distribue six sous-domaines *.malnoy.com."),
-    dict(id='externe', title='Réseau externe', color='mousse',
-         blurb="Dashboard existant, sur un réseau Docker séparé du reste de la stack."),
+    dict(id='dashboard', title='Dashboard — solutions', color='mousse',
+         blurb="Les trois écrans muraux comparés : GlassHome, Tunet, et le projet sur-mesure."),
+    dict(id='acces', title='Accès distant — malnoy.com', color='ambre',
+         blurb="Tunnel Cloudflare — distribue six sous-domaines, Cloudflare Access en garde l'accès."),
 ]
 
 SERVICES = {
     'homeassistant': dict(title='Home Assistant', sub=':8123', category='domotique',
         desc="Cœur domotique : bus KNX filaire, Z-Wave (Raspberry Pi dédié), solaire, intégration Tesla Fleet. Exposé sur domotiquebulle.malnoy.com."),
-    'glasshome': dict(title='GlassHome', sub=':3123 · LAN', category='domotique',
-        desc="Un des trois essais de dashboard comparés au jalon 5, connecté à Home Assistant par jeton longue durée. LAN uniquement."),
     'prometheus': dict(title='Prometheus', sub=':9090 · LAN', category='monitoring',
         desc="Scrape /api/prometheus de Home Assistant, relais remote_write vers VictoriaMetrics. Ne garde localement que 2 jours (buffer)."),
     'victoriametrics': dict(title='VictoriaMetrics', sub=':8428 · LAN', category='monitoring',
@@ -42,6 +44,10 @@ SERVICES = {
         desc="Base de données de TeslaMate."),
     'teslamate-mosquitto': dict(title='teslamate-mosquitto', sub='MQTT interne', category='vehicule',
         desc="Broker MQTT interne à TeslaMate — pas lié à la Fleet Telemetry Tesla (non supportée sur Model S pré-2021)."),
+    'glasshome': dict(title='GlassHome', sub=':3123 · LAN', category='dashboard',
+        desc="Un des trois essais de dashboard comparés au jalon 5, connecté à Home Assistant par jeton longue durée. LAN uniquement."),
+    'tunet': dict(title='Tunet', sub=':3002 · autre réseau Docker', category='dashboard',
+        desc="Dashboard mural actif au quotidien, sur un réseau Docker séparé (même Mac mini), joint via host.docker.internal. Exposé sur visubulle.malnoy.com."),
     'dashboard-proto': dict(title='dashboard-proto', sub=':8092 · nginx', category='dashboard',
         desc="Maquette statique de la nouvelle page d'accueil (jalon 5). Proxifie /api/ vers dashboard-api pour la météo réelle. Exposé sur dashboardbulle.malnoy.com."),
     'dashboard-api': dict(title='dashboard-api', sub='interne · FastAPI', category='dashboard',
@@ -50,9 +56,16 @@ SERVICES = {
         desc="Remplacera dashboard-proto une fois construit. Pas encore commencé."),
     'cloudflared': dict(title='cloudflared', sub='tunnel sortant', category='acces',
         desc="Tunnel Cloudflare — expose les services publics sur Internet sans port ouvert sur le routeur ni client à installer."),
-    'tunet': dict(title='Tunet', sub=':3002', category='externe',
-        desc="Dashboard mural actif au quotidien, sur un réseau Docker séparé, joint via host.docker.internal. Exposé sur visubulle.malnoy.com."),
 }
+
+# Domaine physique, hors Docker : bus KNX filaire + configuration ETS. Pas un
+# service de architecture_overview.SERVICES (rendu à part, en dehors du cadre
+# « Mac mini » sur le schéma) — chiffres repris de la doc KNX (/knx/).
+KNX = dict(
+    title='Bus KNX filaire', sub='Configuration ETS',
+    stats='975 adresses · 59 fonctions · 19 pièces',
+    desc="Installation physique — câblage KNX filaire + Raspberry Pi Z-Wave dédié, configurés dans ETS (logiciel du fabricant, hors Docker). Home Assistant s'y connecte en tant que passerelle.",
+)
 
 EXTERNALS = {
     'USER': 'Utilisateurs (Mac · iPad · iPhone · écran mural)',

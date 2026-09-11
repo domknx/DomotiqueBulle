@@ -2,8 +2,8 @@
 """Feuille de route affichée dans la vue Roadmap — recopiée à la main depuis
 dashboard/CAHIER_DES_CHARGES.md §12 et le suivi de l'intégration KNX.
 La liste des services Docker et de leurs dépendances (ex-ARCH_SERVICES) vit
-maintenant dans architecture_data.py, source du diagramme d'architecture
-interactif — voir architecture_view.py."""
+maintenant dans architecture_data.py, source du schéma d'architecture
+unique — voir architecture_overview.py."""
 
 ROADMAP = [
     {

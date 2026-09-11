@@ -10,33 +10,34 @@ Sources utilisées :
   bloc ```mermaid``` de la §1 est extrait mais plus utilisé pour le rendu (voir
   Architecture ci-dessous) : il documente la même topologie en texte, à titre
   de sauvegarde/lecture rapide.
-- `scripts/architecture_data.py` — services Docker, catégories fonctionnelles
-  et dépendances entre services. Source de vérité du diagramme d'architecture
-  interactif ; à mettre à jour à la main depuis `README.md` §1 /
-  `docker-compose.yml` si les services ou leurs relations changent.
+- `scripts/architecture_data.py` — services Docker, domaines fonctionnels
+  et dépendances entre services. Source de vérité du schéma d'architecture ;
+  à mettre à jour à la main depuis `README.md` §1 / `docker-compose.yml` si
+  les services ou leurs relations changent.
 - `dashboard/CAHIER_DES_CHARGES.md` §12 et le suivi de l'intégration KNX —
   repris à la main dans `scripts/content.py` (feuille de route). À mettre à
   jour manuellement si ces sources changent.
 - Photo de bannière : recadrage de `maison-facade-jardin-2.jpg`, servie en
   asset statique à `docs_site/assets/villa-bulle-banner.jpg`.
 
-## Architecture : diagramme interactif
+## Architecture : schéma unique
 
 Le diagramme d'architecture n'est plus une image mermaid statique — c'est du
-SVG généré en pur Python (`scripts/architecture_view.py`), thémé avec les
+SVG généré en pur Python (`scripts/architecture_overview.py`), thémé avec les
 mêmes variables CSS que le reste du site (donc lisible en clair comme en
-sombre), et navigable à trois niveaux :
+sombre). C'est une infographie statique unique, pas un diagramme navigable :
+tout est visible d'un coup, regroupé par **domaine fonctionnel** (pas par
+réseau Docker) — Domotique (Home Assistant seul), Monitoring, Documentation,
+Dashboard, Véhicule, Accès distant — à l'intérieur d'un grand cadre « Mac
+mini » représentant la solution matérielle, avec le bus KNX filaire (physique,
+hors Docker) en dehors de ce cadre et les dépendances externes (Tesla Fleet
+API, Open-Meteo) en marge. Le même SVG (`render_overview_svg()`) est réutilisé
+tel quel en haut de la vue README et dans la vue Architecture logicielle.
 
-1. **Vue macro** — 7 zones fonctionnelles cliquables (`render_macro_grid`),
-   aussi intégrée en résumé dans la vue README.
-2. **Détail par zone** — un mini-diagramme par zone (`render_category_panels`),
-   avec ses dépendances vers les autres zones affichées comme des bulles
-   cliquables (qui font sauter vers la zone correspondante).
-3. **Popup de dépendances** — cliquer un service ouvre ses dépendances
-   directes (« Dépend de » / « Utilisé par »), construites en JS depuis
-   `window.ARCH_DATA` (`build_arch_data_json`).
-
-Aucune dépendance Node/Chromium n'est nécessaire pour ce rendu.
+Les coordonnées des cadres/nœuds sont calées à la main sur une grille
+(`architecture_overview.py`), avec les connecteurs routés par couloirs
+verticaux/horizontaux vérifiés libres de tout cadre plutôt que par un routeur
+automatique. Aucune dépendance Node/Chromium n'est nécessaire pour ce rendu.
 
 ## Pipeline (3 étapes)
 
@@ -48,7 +49,7 @@ l'exécuter soi-même.
 ```
 scripts/extract_readme.py        # README.md -> README_no_mermaid.md
 scripts/render_readme.py         # README_no_mermaid.md -> readme_body.html
-                                  # (intègre la vue macro de l'architecture)
+                                  # (intègre le schéma d'architecture unique)
 scripts/build_index.py           # injecte tout dans scripts/template.html -> scripts/index.html
 ```
 

@@ -5,16 +5,15 @@ Pipeline complet (à exécuter dans cet ordre, depuis docs_site_src/scripts/) :
   1. extract_readme.py   -> extrait le bloc mermaid (non utilisé) de README.md
                              (produit README_no_mermaid.md)
   2. render_readme.py    -> convertit README_no_mermaid.md en readme_body.html,
-                             en y intégrant la vue macro interactive de
-                             l'architecture (architecture_view.render_macro_grid)
+                             en y intégrant le schéma d'architecture
+                             (architecture_overview.render_overview_svg)
   3. build_index.py (ce script) -> injecte tout dans template.html -> docs_site/index.html
 
 Le diagramme d'architecture est du SVG généré en pur Python depuis
-architecture_data.py (données) + architecture_view.py (rendu) — pas de
-mermaid-cli/Node/Chromium requis. Il se déploie en trois niveaux : une grille
-macro (7 zones), un détail cliquable par zone (architecture_view.render_category_panels),
-et un popup de dépendances par service en JS (window.ARCH_DATA, construit par
-architecture_view.build_arch_data_json).
+architecture_data.py (données) + architecture_overview.py (rendu) — pas de
+mermaid-cli/Node/Chromium requis. Schéma unique, statique, regroupé par domaine
+fonctionnel (pas par réseau Docker) : réutilisé tel quel en haut du README et
+dans la vue Architecture logicielle.
 
 content.py contient les données éditoriales (feuille de route) recopiées à la
 main depuis dashboard/CAHIER_DES_CHARGES.md et le suivi de l'intégration KNX —
@@ -28,7 +27,7 @@ docs_site/index.html : voir docs_site_src/README.md.
 import html
 import os
 from content import ROADMAP
-from architecture_view import render_macro_grid, render_category_panels, build_arch_data_json
+from architecture_overview import render_overview_svg
 
 # ---------------------------------------------------------------- house SVG
 HOUSE_SVG = '''<svg viewBox="0 0 340 350" role="img" aria-label="Coupe de la maison sur trois niveaux reliée au bus KNX filaire, avec les appareils qu'il commande : volets, prises électriques et véhicule">
@@ -160,9 +159,7 @@ def main():
         '__ICON_ROADMAP__': ICON_ROADMAP,
         '__HOUSE_SVG__': HOUSE_SVG,
         '__README_BODY__': readme_body,
-        '__ARCH_MACRO__': render_macro_grid(),
-        '__ARCH_DETAILS__': render_category_panels(),
-        '__ARCH_DATA_JSON__': build_arch_data_json(),
+        '__ARCH_OVERVIEW__': render_overview_svg(),
         '__ROADMAP__': build_roadmap(),
     }
     for key, val in replacements.items():

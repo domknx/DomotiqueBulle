@@ -1,5 +1,5 @@
 import markdown
-from architecture_view import render_macro_grid
+from architecture_overview import render_overview_svg
 
 src = open('README_no_mermaid.md', encoding='utf-8').read()
 
@@ -9,18 +9,10 @@ html = markdown.markdown(
     extension_configs={'toc': {'permalink': False}}
 )
 
-# Le diagramme mermaid statique du README est remplacé par la même vue macro
-# interactive que la page Architecture — cliquer une zone y bascule direct
-# (goArch), pas besoin de la régénérer séparément.
-arch_embed = (
-    '<div class="diagram-embed">'
-    '<p class="arch-embed-hint">Vue macro interactive — cliquez une zone pour '
-    'explorer ses services et leurs dépendances (détail complet dans '
-    '<a href="#architecture" onclick="showView(\'architecture\');return false;">'
-    'Architecture logicielle</a>).</p>'
-    + render_macro_grid() +
-    '</div>'
-)
+# Le diagramme mermaid statique du README est remplacé par le même schéma
+# unique (SVG statique, regroupé par domaine) que la vue Architecture
+# logicielle — pas besoin de le régénérer séparément.
+arch_embed = '<div class="arch-overview-frame">' + render_overview_svg() + '</div>'
 html = html.replace('<p>{{MERMAID_DIAGRAM}}</p>', arch_embed)
 
 open('readme_body.html', 'w', encoding='utf-8').write(html)
