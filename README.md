@@ -87,6 +87,12 @@ Domotique_Claude_Docker/
 ├── .gitignore
 ├── CLAUDE.md
 ├── README.md
+├── docs_site/                # servi par doc-knx (nginx) sur docbulle.malnoy.com
+│   ├── index.html            # page d'accueil — régénérée, jamais éditée à la main
+│   ├── assets/                # photo de bannière, etc.
+│   └── knx/                  # inventaire KNX, régénéré par knx/scripts/build_html_report.py
+├── docs_site_src/             # sources + pipeline de génération de docs_site/index.html
+│   └── scripts/               # voir docs_site_src/README.md
 ├── prometheus/
 │   ├── prometheus.yml
 │   └── ha_bearer_token       # à créer manuellement, non versionné
@@ -189,6 +195,14 @@ Sert le contenu de `docs_site/` (page d'accueil + inventaire KNX interactif rég
 dossier `docs/` utilisé pour les GitHub Pages publiques — cette documentation contient la
 structure du bus KNX (pièces, adresses de groupe) et n'est donc pas destinée à être publique.
 
+Depuis le 11.09.2026, la page d'accueil (`docs_site/index.html`) suit la même règle que
+l'inventaire KNX : contenu régénéré depuis `README.md` / `docker-compose.yml` /
+`dashboard/CAHIER_DES_CHARGES.md` via le pipeline `docs_site_src/scripts/` (voir
+`docs_site_src/README.md`), jamais édité à la main. Identité visuelle "Villa Bulle"
+(palette Nuit/Ambre/Glacier/Mousse/Cuivre, Fraunces/Inter/IBM Plex Mono), cohérente avec le
+dashboard sur-mesure. La photo de bannière est servie en asset statique
+(`docs_site/assets/villa-bulle-banner.jpg`).
+
 1. Démarrer le conteneur (inclus dans la stack, rien de spécifique à faire au-delà du
    déploiement habituel) :
    ```bash
@@ -263,6 +277,40 @@ Depuis le 09.09.2026, `dashboard-proto` proxifie `/api/` en interne vers `dashbo
    une fois les écrans validés, en réutilisant le même sous-domaine `dashboardbulle.malnoy.com`.
    `dashboard-api`, lui, existe déjà partiellement (tranche météo, ajoutée le 09.09.2026) et
    n'a pas vocation à être remplacé — `dashboard-web` s'y branchera directement.
+
+### 4.6 Généralisation de Cloudflare Access (10.09.2026)
+
+Après avoir remarqué que `dashboardbulle.malnoy.com` était accessible sans aucune
+authentification (voir §4.5 — délibéré à l'époque, contenu alors limité à de la météo
+publique et des données mock), décision prise d'ajouter une protection **Cloudflare Access**
+sur tous les sous-domaines publics qui peuvent en recevoir une : `domotiquebulle.malnoy.com`,
+`grafanabulle.malnoy.com`, `visubulle.malnoy.com` et `dashboardbulle.malnoy.com` — en couche
+supplémentaire, avant même d'atteindre l'écran de connexion applicatif existant le cas échéant
+(HA, Grafana, Tunet). `docbulle.malnoy.com` en dispose déjà (§4.3).
+
+**`vehiculebulle.malnoy.com` reste volontairement exclu** : Tesla doit pouvoir lire la clé
+publique qui y est hébergée sans authentification humaine (§4.4) — y ajouter Cloudflare Access
+casserait l'enregistrement de l'app développeur Tesla.
+
+Politique retenue, identique pour les 4 domaines (même mécanisme que `docbulle.malnoy.com`,
+§4.3) :
+- Email autorisé : `fabrice@malnoy.com` (seul utilisateur pour l'instant)
+- Durée de session : 24h (nouveau code à chaque connexion quotidienne)
+
+**Étapes manuelles côté utilisateur** (réglage de sécurité du compte Cloudflare — Claude ne
+peut pas l'effectuer à la place de l'utilisateur), à répéter pour chacun des 4 domaines :
+1. Dashboard Cloudflare → **Zero Trust** → **Access** → **Applications** → **Add an
+   application** → **Self-hosted**.
+2. Domain : le sous-domaine concerné (`domotiquebulle.malnoy.com`, `grafanabulle.malnoy.com`,
+   `visubulle.malnoy.com` ou `dashboardbulle.malnoy.com`).
+3. Policy **Allow** → Include → **Emails** → `fabrice@malnoy.com`.
+4. Session duration : 24h.
+5. Sauvegarder. À la première visite depuis un appareil/navigateur, un code à 6 chiffres est
+   envoyé par email (valable 15 minutes), avant même d'atteindre l'écran de connexion
+   HA/Grafana/Tunet/dashboard.
+
+**État (10.09.2026)** : décision prise, pas encore appliqué côté Cloudflare — à faire par
+l'utilisateur. Résout le point ouvert §12.4 de `dashboard/CAHIER_DES_CHARGES.md`.
 
 ## 5. KNX et réseau Docker — point de vigilance
 
