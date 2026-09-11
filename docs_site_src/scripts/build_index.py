@@ -2,25 +2,33 @@
 """Régénère docs_site/index.html à partir des sources du projet.
 
 Pipeline complet (à exécuter dans cet ordre, depuis docs_site_src/scripts/) :
-  1. extract_readme.py   -> extrait le diagramme mermaid de README.md
-                             (produit diagram.mmd + README_no_mermaid.md)
-  2. mmdc (mermaid-cli)  -> rend diagram.mmd en diagram.svg, thème Villa Bulle
-                             mmdc -i diagram.mmd -o diagram.svg -b transparent \
-                                  -c mermaid-theme.json -p puppeteer-config.json --width 1400
-  3. render_readme.py    -> convertit README_no_mermaid.md + diagram.svg en readme_body.html
-  4. build_index.py (ce script) -> injecte tout dans template.html -> docs_site/index.html
+  1. extract_readme.py   -> extrait le bloc mermaid (non utilisé) de README.md
+                             (produit README_no_mermaid.md)
+  2. render_readme.py    -> convertit README_no_mermaid.md en readme_body.html,
+                             en y intégrant la vue macro interactive de
+                             l'architecture (architecture_view.render_macro_grid)
+  3. build_index.py (ce script) -> injecte tout dans template.html -> docs_site/index.html
 
-content.py contient les données éditoriales (liste des services, jalons, points
-ouverts) recopiées à la main depuis README.md / docker-compose.yml /
-dashboard/CAHIER_DES_CHARGES.md — à mettre à jour manuellement si ces sources
-changent, exactement comme on met à jour un README.
+Le diagramme d'architecture est du SVG généré en pur Python depuis
+architecture_data.py (données) + architecture_view.py (rendu) — pas de
+mermaid-cli/Node/Chromium requis. Il se déploie en trois niveaux : une grille
+macro (7 zones), un détail cliquable par zone (architecture_view.render_category_panels),
+et un popup de dépendances par service en JS (window.ARCH_DATA, construit par
+architecture_view.build_arch_data_json).
+
+content.py contient les données éditoriales (feuille de route) recopiées à la
+main depuis dashboard/CAHIER_DES_CHARGES.md et le suivi de l'intégration KNX —
+à mettre à jour manuellement si ces sources changent, exactement comme on met
+à jour un README. La liste des services/dépendances Docker vit dans
+architecture_data.py, à mettre à jour depuis README.md §1 / docker-compose.yml.
 
 Ce script ne doit jamais être court-circuité par une édition manuelle de
 docs_site/index.html : voir docs_site_src/README.md.
 """
 import html
 import os
-from content import ARCH_SERVICES, ROADMAP
+from content import ROADMAP
+from architecture_view import render_macro_grid, render_category_panels, build_arch_data_json
 
 # ---------------------------------------------------------------- house SVG
 HOUSE_SVG = '''<svg viewBox="0 0 340 350" role="img" aria-label="Coupe de la maison sur trois niveaux reliée au bus KNX filaire, avec les appareils qu'il commande : volets, prises électriques et véhicule">
@@ -96,12 +104,8 @@ ICON_KNX = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 
 ICON_ROADMAP = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6 6-2z"/></svg>'''
 
-# ---------------------------------------------------------------- token -> css var
+# ---------------------------------------------------------------- token -> css var (feuille de route)
 TOKEN_CSS = {
-    "c-ha": "var(--ambre)",
-    "c-prom": "var(--glacier)",
-    "c-vm": "var(--glacier)",
-    "c-grafana": "var(--glacier)",
     "c-cuivre": "var(--cuivre)",
     "c-mousse": "var(--mousse)",
     "c-glacier": "var(--glacier)",
@@ -113,23 +117,6 @@ STATUS_LABEL = {"done": "Fait", "wip": "En cours", "todo": "À faire"}
 
 def esc(s):
     return html.escape(s, quote=False)
-
-
-def build_arch_services():
-    out = []
-    for name, container, host, token, desc in ARCH_SERVICES:
-        css = TOKEN_CSS.get(token, "var(--ink-faint)")
-        out.append(
-            '<div class="svc-card" style="--sc:{css}">'
-            '<h4><span class="dot"></span>{name}</h4>'
-            '<div class="host">{container} &middot; {host}</div>'
-            '<p>{desc}</p>'
-            '</div>'.format(
-                css=css, name=esc(name), container=esc(container),
-                host=esc(host), desc=esc(desc),
-            )
-        )
-    return "\n".join(out)
 
 
 def build_roadmap():
@@ -160,7 +147,6 @@ def main():
     here = os.path.dirname(os.path.abspath(__file__))
     template = open(os.path.join(here, 'template.html'), encoding='utf-8').read()
     readme_body = open(os.path.join(here, 'readme_body.html'), encoding='utf-8').read()
-    diagram_svg = open(os.path.join(here, 'diagram.svg'), encoding='utf-8').read()
 
     out = template
     # Photo bannière : asset statique servi par nginx (docs_site/assets/), pas de base64.
@@ -174,8 +160,9 @@ def main():
         '__ICON_ROADMAP__': ICON_ROADMAP,
         '__HOUSE_SVG__': HOUSE_SVG,
         '__README_BODY__': readme_body,
-        '__DIAGRAM_SVG__': diagram_svg,
-        '__ARCH_SERVICES__': build_arch_services(),
+        '__ARCH_MACRO__': render_macro_grid(),
+        '__ARCH_DETAILS__': render_category_panels(),
+        '__ARCH_DATA_JSON__': build_arch_data_json(),
         '__ROADMAP__': build_roadmap(),
     }
     for key, val in replacements.items():

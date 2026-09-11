@@ -168,15 +168,77 @@ a.doc-card:hover{ transform:translateY(-3px); border-color:var(--accent); }
 .rm-item h4{ margin:0 0 3px; font-size:14.5px; font-weight:600; }
 .rm-item p{ margin:0; font-size:13px; color:var(--ink-dim); }
 
-/* ---------- Architecture ---------- */
-.svc-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:36px; }
-.svc-card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px; box-shadow:var(--shadow); }
-.svc-card .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:8px; background:var(--sc); }
-.svc-card h4{ display:flex; align-items:center; margin:0 0 4px; font-family:var(--font-display); font-size:16px; font-weight:600; }
-.svc-card .host{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); margin:0 0 8px; }
-.svc-card p{ margin:0; font-size:13px; color:var(--ink-dim); }
-.diagram-frame{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px; box-shadow:var(--shadow); overflow-x:auto; }
-.diagram-frame svg{ max-width:100%; height:auto; display:block; margin:0 auto; }
+/* ---------- Architecture : vue macro + détail par zone ---------- */
+.arch-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+.arch-tile{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  padding:20px 20px 18px; box-shadow:var(--shadow); cursor:pointer;
+  border-top:3px solid var(--accent); transition:transform .18s ease, border-color .18s ease;
+}
+.arch-tile:hover, .arch-tile:focus-visible{ transform:translateY(-3px); border-color:var(--accent); outline:none; }
+.arch-tile-count{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint); margin-bottom:10px; }
+.arch-tile h3{ font-family:var(--font-display); font-size:18px; font-weight:600; margin:0 0 8px; color:var(--accent); }
+.arch-tile p{ margin:0 0 16px; font-size:13.5px; color:var(--ink-dim); }
+.arch-tile-arrow{ font-family:var(--font-mono); font-size:12.5px; color:var(--accent); }
+
+.arch-detail{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px 26px 30px; box-shadow:var(--shadow); }
+.arch-back{
+  font-family:var(--font-mono); font-size:12.5px; color:var(--ink-dim); background:none;
+  border:1px solid var(--border); border-radius:100px; padding:6px 14px; cursor:pointer; margin-bottom:22px;
+}
+.arch-back:hover{ border-color:var(--ink-faint); color:var(--ink); }
+.arch-detail-head{ margin-bottom:22px; border-left:3px solid var(--accent); padding-left:14px; }
+.arch-detail-head h3{ font-family:var(--font-display); font-size:22px; font-weight:600; margin:0 0 4px; }
+.arch-detail-head p{ margin:0; color:var(--ink-dim); font-size:13.5px; }
+.arch-detail-diagram{ overflow-x:auto; }
+.arch-detail-diagram svg{ display:block; margin:0 auto; min-width:560px; }
+
+.d-node{ cursor:pointer; }
+.d-node rect{ transition:filter .15s ease; }
+.d-node:hover rect, .d-node:focus-visible rect{ filter:brightness(1.1); }
+.d-node:focus-visible{ outline:2px solid var(--ink-faint); outline-offset:2px; border-radius:10px; }
+.d-ghost-clickable{ cursor:pointer; }
+.d-ghost-clickable:hover rect, .d-ghost-clickable:focus-visible rect{ stroke:var(--ink-dim); }
+.d-ghost-clickable:focus-visible{ outline:2px solid var(--ink-faint); outline-offset:2px; border-radius:20px; }
+
+/* ---------- Architecture : popup dépendances ---------- */
+.arch-modal-backdrop{
+  position:fixed; inset:0; background:rgba(6,9,14,0.55); backdrop-filter:blur(2px);
+  display:flex; align-items:center; justify-content:center; padding:20px; z-index:30;
+}
+.arch-modal{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow);
+  max-width:480px; width:100%; max-height:82vh; overflow-y:auto; padding:26px 26px 22px; position:relative;
+}
+.arch-modal-close{
+  position:absolute; top:14px; right:14px; width:30px; height:30px; border-radius:50%;
+  border:1px solid var(--border); background:var(--surface); color:var(--ink-dim);
+  font-size:18px; line-height:1; cursor:pointer;
+}
+.arch-modal-close:hover{ color:var(--ink); border-color:var(--ink-faint); }
+.arch-modal-body h3{ font-family:var(--font-display); font-size:20px; font-weight:600; margin:0 0 4px; padding-right:30px; }
+.arch-planned-tag{
+  font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:0.05em;
+  color:var(--ambre); border:1px solid var(--ambre); border-radius:100px; padding:2px 8px;
+  margin-left:6px; vertical-align:middle;
+}
+.arch-modal-sub{ font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); margin:0 0 14px; }
+.arch-modal-desc{ font-size:14px; color:var(--ink-dim); margin:0 0 20px; }
+.arch-dep-group{ margin-bottom:16px; }
+.arch-dep-group:last-child{ margin-bottom:0; }
+.arch-dep-group h4{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint); margin:0 0 8px; }
+.arch-dep-group ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px; }
+.arch-dep-item{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; padding:8px 10px; border-radius:8px; font-size:13px; }
+.arch-dep-item.clickable{ cursor:pointer; }
+.arch-dep-item.clickable:hover{ background:var(--surface-2); }
+.arch-dep-item .arch-dep-name{ color:var(--ink); font-weight:500; }
+.arch-dep-item .arch-dep-edge{ font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); white-space:nowrap; }
+.arch-dep-item.planned .arch-dep-name{ color:var(--ink-dim); }
+.arch-dep-item.planned .arch-dep-edge::after{ content:" · prévu"; color:var(--ambre); }
+
+/* ---------- Architecture : embed résumé dans la vue README ---------- */
+.arch-embed-hint{ margin:0 0 16px; font-size:13.5px; color:var(--ink-dim); }
+.arch-embed-hint a{ color:var(--glacier); }
 
 /* ---------- README rendered content ---------- */
 .readme-body{ max-width:760px; margin:0 auto; }
@@ -273,14 +335,22 @@ __README_BODY__
   <div class="page view">
     <div class="section-head">
       <h2>Architecture logicielle</h2>
-      <p>Diagramme régénéré depuis <code>README.md</code> §1 (mermaid-cli). Douze services sur le réseau Docker <code>domotique_net</code>, plus Tunet sur un réseau séparé.</p>
+      <p>Sept zones fonctionnelles sur le réseau Docker <code>domotique_net</code>, plus Tunet sur un réseau séparé. Cliquez une zone pour voir ses services, puis un service pour voir ses dépendances directes.</p>
     </div>
-    <div class="diagram-frame">
-__DIAGRAM_SVG__
+    <div id="arch-macro">
+__ARCH_MACRO__
     </div>
-    <div class="svc-grid">
-__ARCH_SERVICES__
+    <div id="arch-details">
+__ARCH_DETAILS__
     </div>
+  </div>
+</div>
+
+<!-- ============ ARCHITECTURE : popup dépendances ============ -->
+<div id="arch-modal-backdrop" class="arch-modal-backdrop" hidden onclick="if(event.target===this)closeServiceModal()">
+  <div class="arch-modal" role="dialog" aria-modal="true" aria-labelledby="arch-modal-title">
+    <button class="arch-modal-close" onclick="closeServiceModal()" aria-label="Fermer">&times;</button>
+    <div id="arch-modal-body" class="arch-modal-body"></div>
   </div>
 </div>
 
@@ -296,10 +366,14 @@ __ROADMAP__
 </div>
 
 <script>
+var ARCH_DATA = __ARCH_DATA_JSON__;
+
 function showView(name){
   document.querySelectorAll('.view-panel').forEach(function(el){ el.hidden = true; });
   document.getElementById('view-' + name).hidden = false;
   document.getElementById('backBtn').hidden = (name === 'home');
+  if(name === 'architecture') showArchMacro();
+  closeServiceModal();
   window.scrollTo(0,0);
 }
 function routeFromHash(){
@@ -308,6 +382,59 @@ function routeFromHash(){
   showView(h);
 }
 window.addEventListener('hashchange', routeFromHash);
+
+function showArchMacro(){
+  document.getElementById('arch-macro').hidden = false;
+  document.querySelectorAll('.arch-detail').forEach(function(el){ el.hidden = true; });
+}
+function goArch(catId){
+  showView('architecture');
+  document.getElementById('arch-macro').hidden = true;
+  document.querySelectorAll('.arch-detail').forEach(function(el){
+    el.hidden = (el.id !== 'arch-detail-' + catId);
+  });
+  window.scrollTo(0,0);
+}
+function archEsc(s){
+  var d = document.createElement('div');
+  d.textContent = String(s == null ? '' : s);
+  return d.innerHTML;
+}
+function renderDepGroup(title, deps){
+  if(!deps || !deps.length) return '';
+  var items = deps.map(function(d){
+    var cls = 'arch-dep-item' + (d.planned ? ' planned' : '') + (d.cat ? ' clickable' : '');
+    var onclick = d.cat ? (' onclick="jumpToService(\'' + d.id + '\')" tabindex="0" role="button"') : '';
+    return '<li class="' + cls + '"' + onclick + '>' +
+      '<span class="arch-dep-name">' + archEsc(d.name) + '</span>' +
+      '<span class="arch-dep-edge">' + archEsc(d.edge) + '</span></li>';
+  }).join('');
+  return '<div class="arch-dep-group"><h4>' + archEsc(title) + '</h4><ul>' + items + '</ul></div>';
+}
+function openServiceModal(sid){
+  var s = ARCH_DATA.services[sid];
+  if(!s) return;
+  var body = '<h3 id="arch-modal-title">' + archEsc(s.title) +
+    (s.planned ? ' <span class="arch-planned-tag">prévu</span>' : '') + '</h3>';
+  body += '<p class="arch-modal-sub">' + archEsc(s.sub) + '</p>';
+  body += '<p class="arch-modal-desc">' + archEsc(s.desc) + '</p>';
+  body += renderDepGroup('Dépend de', s.incoming);
+  body += renderDepGroup('Utilisé par', s.outgoing);
+  document.getElementById('arch-modal-body').innerHTML = body;
+  document.getElementById('arch-modal-backdrop').hidden = false;
+}
+function closeServiceModal(){
+  document.getElementById('arch-modal-backdrop').hidden = true;
+}
+function jumpToService(sid){
+  var s = ARCH_DATA.services[sid];
+  closeServiceModal();
+  if(s && s.category) goArch(s.category);
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeServiceModal();
+});
+
 routeFromHash();
 </script>
 

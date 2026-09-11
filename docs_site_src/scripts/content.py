@@ -1,31 +1,9 @@
 # -*- coding: utf-8 -*-
-
-ARCH_SERVICES = [
-    ("Home Assistant", "homeassistant", "domotiquebulle.malnoy.com", "c-ha",
-     "Cœur domotique : bus KNX filaire, Z-Wave (Raspberry Pi dédié), solaire, intégration Tesla Fleet."),
-    ("Prometheus", "prometheus", "LAN uniquement (9090)", "c-prom",
-     "Scrape /api/prometheus de Home Assistant, relais remote_write vers VictoriaMetrics. Buffer 2 jours seulement."),
-    ("VictoriaMetrics", "victoriametrics", "LAN uniquement (8428)", "c-vm",
-     "Base de séries temporelles, stockage long terme (5 ans) — source de vérité pour l'historique domotique."),
-    ("Grafana", "grafana", "grafanabulle.malnoy.com", "c-grafana",
-     "Visualisation — deux sources provisionnées automatiquement : VictoriaMetrics (domotique) et TeslaMate (véhicule)."),
-    ("doc-knx", "doc-knx", "docbulle.malnoy.com · Cloudflare Access", "c-cuivre",
-     "Cette documentation elle-même — nginx, contenu régénéré par script, jamais édité à la main."),
-    ("tesla-key", "tesla-key", "vehiculebulle.malnoy.com · public", "c-cuivre",
-     "Héberge la clé publique exigée par Tesla pour l'app développeur. Volontairement sans authentification."),
-    ("TeslaMate", "teslamate + db + mosquitto", "LAN uniquement (4000)", "c-cuivre",
-     "Historique/analytique véhicule (trajets, charges, efficacité) via la Fleet API — dashboards dans le Grafana existant."),
-    ("Tunet", "Tunet (réseau Docker séparé)", "visubulle.malnoy.com", "c-mousse",
-     "Dashboard mural actif au quotidien, joint via host.docker.internal — laissé inchangé pendant le chantier dashboard sur-mesure."),
-    ("dashboard-proto", "dashboard-proto", "dashboardbulle.malnoy.com", "c-mousse",
-     "Maquette statique de la nouvelle page d'accueil (jalon 5). Proxifie /api/ vers dashboard-api pour la météo réelle."),
-    ("dashboard-api", "dashboard-api", "interne uniquement", "c-mousse",
-     "Couche applicative définitive du dashboard sur-mesure — pour l'instant limitée à un endpoint météo (proxy Open-Meteo)."),
-    ("GlassHome", "glasshome", "LAN uniquement (3123)", "c-glacier",
-     "Un des trois essais de dashboard comparés au jalon 5, connecté à HA par jeton longue durée."),
-    ("cloudflared", "cloudflared", "tunnel sortant", "c-glacier",
-     "Tunnel Cloudflare — expose les services publics sans port ouvert sur le routeur ni client à installer."),
-]
+"""Feuille de route affichée dans la vue Roadmap — recopiée à la main depuis
+dashboard/CAHIER_DES_CHARGES.md §12 et le suivi de l'intégration KNX.
+La liste des services Docker et de leurs dépendances (ex-ARCH_SERVICES) vit
+maintenant dans architecture_data.py, source du diagramme d'architecture
+interactif — voir architecture_view.py."""
 
 ROADMAP = [
     {
