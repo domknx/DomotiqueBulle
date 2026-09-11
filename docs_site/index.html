@@ -143,6 +143,15 @@ a.doc-card:hover{ transform:translateY(-3px); border-color:var(--accent); }
 .h-tree{ fill:var(--mousse); opacity:0.55; }
 @media (prefers-reduced-motion: reduce){ .h-bus, .h-node-pulse{ animation:none; } }
 
+/* ---------- House illustration : bulles d'appareils connectées ---------- */
+.h-bubble{ fill:var(--surface); stroke:currentColor; stroke-width:1.8; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.18)); }
+.h-bubble-store{ color:var(--cuivre); }
+.h-bubble-prise{ color:var(--ambre); }
+.h-bubble-car{ color:var(--glacier); }
+.h-conn{ fill:none; stroke:currentColor; stroke-width:1.6; }
+.h-icon{ stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.h-icon-fill{ fill:currentColor; stroke:none; }
+
 /* ---------- Roadmap ---------- */
 .rm-group{ margin-bottom:38px; }
 .rm-group h3{
@@ -219,37 +228,68 @@ footer.site-footer code{ font-family:var(--font-mono); }
           <div class="meta">Racine du dépôt</div>
         </a>
 
-        <div class="house-wrap"><svg viewBox="0 0 260 300" role="img" aria-label="Coupe de la maison sur trois niveaux (sous-sol, rez-de-chaussée, étage) reliés par le bus KNX qui dessert un point de chaque niveau">
-  <polygon class="h-outline" points="50,72 130,22 210,72" />
-  <rect class="h-outline" x="60" y="72" width="140" height="188" />
-  <line class="h-floorline" x1="60" y1="134" x2="200" y2="134" />
-  <line class="h-floorline" x1="60" y1="197" x2="200" y2="197" />
+        <div class="house-wrap"><svg viewBox="0 0 340 350" role="img" aria-label="Coupe de la maison sur trois niveaux reliée au bus KNX filaire, avec les appareils qu'il commande : volets, prises électriques et véhicule">
+  <polygon class="h-outline" points="95,72 170,20 245,72" />
+  <rect class="h-outline" x="110" y="72" width="120" height="188" />
+  <line class="h-floorline" x1="110" y1="134" x2="230" y2="134" />
+  <line class="h-floorline" x1="110" y1="197" x2="230" y2="197" />
 
-  <rect class="h-window" x="75" y="88" width="20" height="26" />
-  <rect class="h-window" x="165" y="88" width="20" height="26" />
+  <rect class="h-window" x="128" y="88" width="20" height="26" />
+  <rect class="h-window" x="192" y="88" width="20" height="26" />
 
-  <rect class="h-window" x="75" y="150" width="20" height="26" />
-  <rect class="h-window" x="115" y="163" width="30" height="34" />
+  <rect class="h-window" x="128" y="150" width="20" height="26" />
+  <rect class="h-window" x="157" y="163" width="26" height="34" />
 
-  <rect class="h-window" x="75" y="208" width="20" height="18" />
-  <rect class="h-window" x="165" y="208" width="20" height="18" />
+  <rect class="h-window" x="128" y="208" width="20" height="18" />
+  <rect class="h-window" x="192" y="208" width="20" height="18" />
 
-  <line class="h-ground" x1="14" y1="262" x2="246" y2="262" />
-  <circle class="h-tree" cx="228" cy="233" r="17" />
-  <rect class="h-tree" x="225" y="248" width="6" height="14" opacity="0.8" />
+  <line class="h-ground" x1="20" y1="262" x2="320" y2="262" />
+  <circle class="h-tree" cx="300" cy="233" r="17" />
+  <rect class="h-tree" x="297" y="248" width="6" height="14" opacity="0.8" />
 
-  <path class="h-bus" d="M92,255 L92,220 L150,220 L150,165 L112,165 L112,95 L112,58" />
-  <circle class="h-node" cx="92" cy="220" r="3.6" />
-  <circle class="h-node-pulse" cx="92" cy="220" r="3.6" />
-  <circle class="h-node" cx="150" cy="165" r="3.6" />
-  <circle class="h-node-pulse" cx="150" cy="165" r="3.6" />
-  <circle class="h-node" cx="112" cy="95" r="3.6" />
-  <circle class="h-node-pulse" cx="112" cy="95" r="3.6" />
+  <path class="h-bus" d="M138,255 L138,220 L200,220 L200,165 L162,165 L162,95 L162,58" />
+  <circle class="h-node" cx="138" cy="220" r="3.6" />
+  <circle class="h-node-pulse" cx="138" cy="220" r="3.6" />
+  <circle class="h-node" cx="200" cy="165" r="3.6" />
+  <circle class="h-node-pulse" cx="200" cy="165" r="3.6" />
+  <circle class="h-node" cx="162" cy="95" r="3.6" />
+  <circle class="h-node-pulse" cx="162" cy="95" r="3.6" />
 
-  <text class="h-label" x="206" y="107">Étage</text>
-  <text class="h-label" x="206" y="169">Rez</text>
-  <text class="h-label" x="206" y="231">Sous-sol</text>
-  <text class="h-label" x="130" y="280" text-anchor="middle">Bus KNX filaire</text>
+  <text class="h-label" x="236" y="107">Étage</text>
+  <text class="h-label" x="236" y="169">Rez</text>
+  <text class="h-label" x="236" y="231">Sous-sol</text>
+
+  <!-- Store (volet roulant) -->
+  <g class="h-bubble-store">
+    <path class="h-conn" d="M80,95 L95,95 L95,72" />
+    <circle class="h-bubble" cx="55" cy="95" r="25" />
+    <rect class="h-icon" x="44" y="84" width="22" height="5" rx="1.5" />
+    <line class="h-icon" x1="44" y1="93" x2="66" y2="93" />
+    <line class="h-icon" x1="44" y1="99" x2="66" y2="99" />
+    <line class="h-icon" x1="44" y1="105" x2="66" y2="105" />
+    <text class="h-label" x="55" y="136" text-anchor="middle">Stores</text>
+  </g>
+
+  <!-- Prise électrique (norme suisse, 3 broches) -->
+  <g class="h-bubble-prise">
+    <path class="h-conn" d="M260,95 L245,95 L245,72" />
+    <circle class="h-bubble" cx="285" cy="95" r="25" />
+    <rect class="h-icon" x="275" y="85" width="20" height="20" rx="4" />
+    <circle class="h-icon-fill" cx="281" cy="93" r="1.8" />
+    <circle class="h-icon-fill" cx="289" cy="93" r="1.8" />
+    <circle class="h-icon-fill" cx="285" cy="100" r="1.8" />
+    <text class="h-label" x="285" y="136" text-anchor="middle">Prises</text>
+  </g>
+
+  <!-- Véhicule (Tesla / portail) -->
+  <g class="h-bubble-car">
+    <path class="h-conn" d="M170,277 L170,262" />
+    <circle class="h-bubble" cx="170" cy="309" r="28" />
+    <path class="h-icon" d="M152,313 L152,309 L157,309 L161,302 L179,302 L184,309 L188,309 L188,313 Z" />
+    <circle class="h-icon-fill" cx="160" cy="314" r="3.2" />
+    <circle class="h-icon-fill" cx="180" cy="314" r="3.2" />
+    <text class="h-label" x="170" y="346" text-anchor="middle">Véhicule</text>
+  </g>
 </svg></div>
 
         <a class="doc-card card2" onclick="showView('architecture');return false;" href="#architecture">
