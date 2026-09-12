@@ -9,6 +9,7 @@ datasources:
     secureJsonData:
       password: '$TESLAMATE_DB_PASSWORD'
     jsonData:
+      database: teslamate
       sslmode: 'disable'
       maxOpenConns: 100
       maxIdleConns: 100
