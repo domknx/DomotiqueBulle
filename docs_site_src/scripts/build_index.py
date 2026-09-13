@@ -26,8 +26,8 @@ docs_site/index.html : voir docs_site_src/README.md.
 """
 import html
 import os
-from content import ROADMAP
-from architecture_overview import render_overview_svg
+from content import ROADMAP, ENERGIE_SECTIONS, ENERGIE_GALLERY_INTRO, ENERGIE_GALLERY, ENERGIE_TODO, INSPI_INTRO, INSPI_GROUPS
+from architecture_overview import render_overview_frame
 
 # ---------------------------------------------------------------- house SVG
 HOUSE_SVG = '''<svg viewBox="0 0 340 350" role="img" aria-label="Coupe de la maison sur trois niveaux reliée au bus KNX filaire, avec les appareils qu'il commande : volets, prises électriques et véhicule">
@@ -103,6 +103,10 @@ ICON_KNX = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 
 ICON_ROADMAP = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6 6-2z"/></svg>'''
 
+ICON_ENERGIE = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>'''
+
+ICON_INSPI = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="m21 15-5-5L5 21"/></svg>'''
+
 # ---------------------------------------------------------------- token -> css var (feuille de route)
 TOKEN_CSS = {
     "c-cuivre": "var(--cuivre)",
@@ -142,6 +146,82 @@ def build_roadmap():
     return "\n".join(out)
 
 
+def build_energie():
+    """Vue Énergie — recopiée depuis content.py (lui-même recopié à la main
+    depuis la mémoire projet custom_dashboard_energie_screen.md, exactement
+    comme ROADMAP est recopié depuis le cahier des charges)."""
+    out = []
+
+    for section in ENERGIE_SECTIONS:
+        paras = "".join('<p>{}</p>'.format(p) for p in section["paragraphs"])
+        out.append(
+            '<div class="en-section"><h3>{heading}</h3>{paras}</div>'.format(
+                heading=esc(section["heading"]), paras=paras
+            )
+        )
+
+    gallery_items = []
+    for filename, title, caption in ENERGIE_GALLERY:
+        gallery_items.append(
+            '<figure class="en-gallery-item">'
+            '<img src="/assets/{filename}" alt="{title}" loading="lazy" />'
+            '<figcaption><strong>{title}</strong>{caption}</figcaption>'
+            '</figure>'.format(filename=esc(filename), title=esc(title), caption=esc(caption))
+        )
+    out.append(
+        '<div class="en-section"><h3>Recherche comparative — cinq dashboards de référence</h3>'
+        '<p>{intro}</p>'
+        '<div class="en-gallery">{items}</div>'
+        '</div>'.format(intro=ENERGIE_GALLERY_INTRO, items="".join(gallery_items))
+    )
+
+    todo_items = []
+    for status, title, desc in ENERGIE_TODO:
+        todo_items.append(
+            '<div class="rm-item">'
+            '<span class="rm-status {status}">{label}</span>'
+            '<div><h4>{title}</h4><p>{desc}</p></div>'
+            '</div>'.format(status=status, label=STATUS_LABEL[status], title=esc(title), desc=esc(desc))
+        )
+    out.append(
+        '<div class="rm-group" style="--gcolor:var(--teal)">'
+        '<h3>Reste à faire</h3>'
+        '<div class="rm-list">{items}</div>'
+        '</div>'.format(items="".join(todo_items))
+    )
+
+    return "\n".join(out)
+
+
+def build_inspirations():
+    """Vue Inspirations — trace des images envoyées en exemple (style, dashboard,
+    photos...) au fil des discussions du projet dashboard sur mesure, avec le
+    commentaire fait au moment où chaque image a été montrée. Recopié à la main
+    depuis content.py, sur le même principe que build_energie()."""
+    out = ['<div class="en-section"><p>{intro}</p></div>'.format(intro=INSPI_INTRO)]
+
+    for group in INSPI_GROUPS:
+        paras = "".join('<p>{}</p>'.format(p) for p in group["paragraphs"])
+        gallery_html = ""
+        if group["gallery"]:
+            gallery_items = []
+            for filename, title, caption in group["gallery"]:
+                gallery_items.append(
+                    '<figure class="en-gallery-item">'
+                    '<img src="/assets/{filename}" alt="{title}" loading="lazy" />'
+                    '<figcaption><strong>{title}</strong>{caption}</figcaption>'
+                    '</figure>'.format(filename=esc(filename), title=esc(title), caption=esc(caption))
+                )
+            gallery_html = '<div class="en-gallery">{items}</div>'.format(items="".join(gallery_items))
+        out.append(
+            '<div class="en-section"><h3>{date} — {heading}</h3>{paras}{gallery}</div>'.format(
+                date=esc(group["date"]), heading=esc(group["heading"]), paras=paras, gallery=gallery_html
+            )
+        )
+
+    return "\n".join(out)
+
+
 def main():
     here = os.path.dirname(os.path.abspath(__file__))
     template = open(os.path.join(here, 'template.html'), encoding='utf-8').read()
@@ -157,10 +237,14 @@ def main():
         '__ICON_ARCH__': ICON_ARCH,
         '__ICON_KNX__': ICON_KNX,
         '__ICON_ROADMAP__': ICON_ROADMAP,
+        '__ICON_ENERGIE__': ICON_ENERGIE,
+        '__ICON_INSPI__': ICON_INSPI,
         '__HOUSE_SVG__': HOUSE_SVG,
         '__README_BODY__': readme_body,
-        '__ARCH_OVERVIEW__': render_overview_svg(),
+        '__ARCH_OVERVIEW__': render_overview_frame('arch'),
         '__ROADMAP__': build_roadmap(),
+        '__ENERGIE__': build_energie(),
+        '__INSPIRATIONS__': build_inspirations(),
     }
     for key, val in replacements.items():
         count = out.count(key)

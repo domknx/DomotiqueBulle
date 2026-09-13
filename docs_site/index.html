@@ -11,14 +11,18 @@
 :root{
   --nuit:#0b0e16; --nuit-2:#11151f; --panel:#151b26; --panel-2:#1a2130;
   --border:#2a3242; --brume:#eef1f6; --brume-dim:#aab2c2; --brume-faint:#6b7387;
-  --ambre:#ff9c54; --glacier:#5ac8fa; --mousse:#6fcf97; --cuivre:#caa06b;
-  --c-readme: var(--cuivre); --c-arch: var(--glacier); --c-knx: var(--ambre); --c-roadmap: var(--mousse);
+  --ambre:#ff9c54; --glacier:#5ac8fa; --mousse:#6fcf97; --cuivre:#caa06b; --teal:#5fd6c4; --violet:#8b8fd6;
+  --c-readme: var(--cuivre); --c-arch: var(--glacier); --c-knx: var(--ambre); --c-roadmap: var(--mousse); --c-energie: var(--teal); --c-inspi: var(--violet);
   --font-display:"Fraunces",Georgia,serif;
   --font-body:"Inter",-apple-system,"Segoe UI",sans-serif;
   --font-mono:"IBM Plex Mono","SF Mono",Consolas,monospace;
   --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 14px 34px -14px rgba(0,0,0,0.55);
   --bg: var(--nuit); --ink: var(--brume); --ink-dim: var(--brume-dim); --ink-faint: var(--brume-faint);
   --surface: var(--panel); --surface-2: var(--panel-2);
+  /* 12.09.2026 (retour utilisateur) : la page laissait beaucoup de largeur
+     inutilisée sur grand écran, ce qui donnait une impression de texte trop
+     petit — un seul réglage central plutôt que 1180px répété à chaque endroit. */
+  --page-w: 1600px;
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
@@ -55,7 +59,7 @@ a{ color:inherit; }
   content:""; position:absolute; inset:0;
   background:linear-gradient(180deg, rgba(9,12,17,0.18) 0%, rgba(9,12,17,0.55) 55%, rgba(9,12,17,0.94) 100%);
 }
-.hero-inner{ position:relative; z-index:1; width:100%; max-width:1180px; margin:0 auto; padding:48px 28px 40px; }
+.hero-inner{ position:relative; z-index:1; width:100%; max-width:var(--page-w); margin:0 auto; padding:48px 28px 40px; }
 .hero-eyebrow{
   font-family:var(--font-mono); font-size:12px; letter-spacing:0.16em; text-transform:uppercase;
   color:var(--ambre); margin:0 0 10px;
@@ -81,12 +85,12 @@ a{ color:inherit; }
 .back-link:hover{ border-color:var(--ink-faint); }
 
 /* ---------- Main sections ---------- */
-.page{ max-width:1180px; margin:0 auto; padding:0 28px 90px; }
+.page{ max-width:var(--page-w); margin:0 auto; padding:0 28px 90px; }
 .view{ padding-top:56px; }
 
-.section-head{ max-width:640px; margin:0 auto 44px; text-align:center; }
+.section-head{ max-width:820px; margin:0 auto 44px; text-align:center; }
 .section-head h2{ font-family:var(--font-display); font-weight:600; font-size:clamp(26px,4vw,36px); margin:0 0 10px; text-wrap:balance; }
-.section-head p{ color:var(--ink-dim); margin:0; font-size:15px; }
+.section-head p{ color:var(--ink-dim); margin:0; font-size:16.5px; }
 
 /* ---------- House + cards layout ---------- */
 .orbit{
@@ -94,15 +98,17 @@ a{ color:inherit; }
   grid-template-columns: minmax(240px,1fr) minmax(280px,360px) minmax(240px,1fr);
   grid-template-areas:
     "c1 house c2"
-    "c3 house c4";
+    "c3 house c4"
+    "c5 c5 c5"
+    "c6 c6 c6";
 }
 @media (max-width: 880px){
-  .orbit{ grid-template-columns:1fr; grid-template-areas: "house" "c1" "c2" "c3" "c4"; }
+  .orbit{ grid-template-columns:1fr; grid-template-areas: "house" "c1" "c2" "c3" "c4" "c5" "c6"; }
 }
 .house-wrap{ grid-area:house; display:flex; justify-content:center; align-items:center; padding:20px 0; }
 .house-wrap svg{ width:100%; max-width:340px; height:auto; }
 
-.card1{ grid-area:c1; } .card2{ grid-area:c2; } .card3{ grid-area:c3; } .card4{ grid-area:c4; }
+.card1{ grid-area:c1; } .card2{ grid-area:c2; } .card3{ grid-area:c3; } .card4{ grid-area:c4; } .card5{ grid-area:c5; } .card6{ grid-area:c6; }
 
 a.doc-card{
   display:block; background:var(--surface); border:1px solid var(--border); border-radius:16px;
@@ -114,18 +120,36 @@ a.doc-card:hover{ transform:translateY(-3px); border-color:var(--accent); }
 .doc-card .icon-chip{
   width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center;
   background:color-mix(in srgb, var(--accent) 16%, var(--surface)); color:var(--accent); margin-bottom:14px;
+  flex:none;
 }
 .doc-card .icon-chip svg{ width:22px; height:22px; }
-.doc-card h3{ font-family:var(--font-display); font-weight:600; font-size:19px; margin:0 0 6px; }
-.doc-card p{ margin:0 0 12px; color:var(--ink-dim); font-size:13.5px; }
+.doc-card h3{ font-family:var(--font-display); font-weight:600; font-size:20px; margin:0 0 6px; }
+.doc-card p{ margin:0 0 12px; color:var(--ink-dim); font-size:14.5px; }
 .doc-card .meta{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.06em; }
 .doc-card .arrow{ float:right; font-family:var(--font-mono); color:var(--accent); }
 
-.card1, .card2, .card3, .card4{ --accent: var(--c-readme); }
+.card1, .card2, .card3, .card4, .card5, .card6{ --accent: var(--c-readme); }
 .card1{ --accent: var(--c-readme); }
 .card2{ --accent: var(--c-arch); }
 .card3{ --accent: var(--c-knx); }
 .card4{ --accent: var(--c-roadmap); }
+.card5{ --accent: var(--c-energie); }
+.card6{ --accent: var(--c-inspi); }
+
+/* Cartes n°5 (Énergie) et n°6 (Inspirations) : seules sur leur ligne pleine
+   largeur, présentées en ligne (icône + texte + flèche) plutôt qu'empilées
+   comme les 4 cartes verticales — sinon tout ce blanc supplémentaire aurait
+   l'air d'un bug. */
+.doc-card.card5, .doc-card.card6{ display:flex; align-items:center; gap:20px; padding:20px 26px; }
+.doc-card.card5 .icon-chip, .doc-card.card6 .icon-chip{ margin-bottom:0; }
+.doc-card.card5 .card5-body, .doc-card.card6 .card5-body{ flex:1; min-width:0; }
+.doc-card.card5 .card5-body h3, .doc-card.card6 .card5-body h3{ margin:0 0 4px; }
+.doc-card.card5 .card5-body p, .doc-card.card6 .card5-body p{ margin:0 0 6px; }
+.doc-card.card5 .arrow, .doc-card.card6 .arrow{ float:none; flex:none; }
+@media (max-width: 560px){
+  .doc-card.card5, .doc-card.card6{ flex-direction:column; align-items:flex-start; }
+  .doc-card.card5 .arrow, .doc-card.card6 .arrow{ margin-top:4px; }
+}
 
 /* ---------- House illustration ---------- */
 .h-outline{ fill:none; stroke:var(--ink-faint); stroke-width:2; }
@@ -165,15 +189,34 @@ a.doc-card:hover{ transform:translateY(-3px); border-color:var(--accent); }
 .rm-status.done{ background:color-mix(in srgb, var(--mousse) 22%, transparent); color:var(--mousse); }
 .rm-status.wip{ background:color-mix(in srgb, var(--ambre) 22%, transparent); color:var(--ambre); }
 .rm-status.todo{ background:color-mix(in srgb, var(--ink-faint) 22%, transparent); color:var(--ink-dim); }
-.rm-item h4{ margin:0 0 3px; font-size:14.5px; font-weight:600; }
-.rm-item p{ margin:0; font-size:13px; color:var(--ink-dim); }
+.rm-item h4{ margin:0 0 3px; font-size:15.5px; font-weight:600; }
+.rm-item p{ margin:0; font-size:14px; color:var(--ink-dim); }
 
 /* ---------- Architecture : schéma unique (infographie statique) ---------- */
 .arch-overview-frame{
   background:var(--surface); border:1px solid var(--border); border-radius:16px;
-  padding:20px; overflow-x:auto; box-shadow:var(--shadow); margin:20px 0;
+  padding:16px; box-shadow:var(--shadow); margin:20px 0;
 }
-.arch-overview-frame svg{ display:block; margin:0 auto; min-width:900px; max-width:100%; height:auto; }
+/* 12.09.2026 (retour utilisateur : le schéma était trop dense pour rester
+   lisible sans zoom) — molette pour zoomer, glisser pour déplacer, pincement
+   à deux doigts sur tactile ; boutons +/-/reset en toolbar. Voir
+   render_overview_frame() (architecture_overview.py) pour le markup et
+   initArchZoomInstances() plus bas pour le comportement. Pas de librairie
+   externe : transform CSS + quelques écouteurs vanilla JS. */
+.arch-zoom-controls{ display:flex; gap:8px; justify-content:flex-end; margin-bottom:10px; }
+.arch-zoom-btn{
+  font-family:var(--font-mono); font-size:15px; line-height:1; padding:7px 14px; min-width:38px;
+  border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink);
+  cursor:pointer;
+}
+.arch-zoom-btn.arch-zoom-reset{ font-size:11px; text-transform:uppercase; letter-spacing:0.04em; }
+.arch-zoom-btn:hover{ border-color:var(--ink-faint); }
+.arch-zoom-viewport{
+  overflow:hidden; border-radius:10px; background:var(--surface-2); cursor:grab; touch-action:none;
+}
+.arch-zoom-viewport.dragging{ cursor:grabbing; }
+.arch-zoom-inner{ transform-origin:0 0; will-change:transform; }
+.arch-zoom-inner svg{ display:block; width:100%; height:auto; }
 .ov-frame-title{ font-family:var(--font-mono); font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; }
 .ov-frame-sub{ font-family:var(--font-body); font-size:10.5px; fill:var(--ink-faint); }
 .ov-mac-label{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.06em; text-transform:uppercase; fill:var(--ink-faint); }
@@ -186,19 +229,42 @@ a.doc-card:hover{ transform:translateY(-3px); border-color:var(--accent); }
 .ov-knx-note{ font-family:var(--font-mono); font-size:9.5px; fill:var(--ink-faint); text-transform:uppercase; letter-spacing:0.05em; }
 
 /* ---------- README rendered content ---------- */
-.readme-body{ max-width:760px; margin:0 auto; }
-.readme-body h1{ font-family:var(--font-display); font-size:32px; font-weight:600; }
-.readme-body h2{ font-family:var(--font-display); font-size:24px; font-weight:600; margin-top:46px; padding-top:16px; border-top:1px solid var(--border); }
-.readme-body h3{ font-family:var(--font-display); font-size:19px; font-weight:600; margin-top:28px; }
-.readme-body p, .readme-body li{ font-size:15px; color:var(--ink-dim); }
+/* 12.09.2026 (retour utilisateur) : colonne élargie (760 -> 980px) et
+   polices légèrement agrandies — la page utilisait mal la largeur
+   disponible sur grand écran, ce qui donnait une impression de texte
+   trop petit. */
+.readme-body{ max-width:980px; margin:0 auto; }
+.readme-body h1{ font-family:var(--font-display); font-size:36px; font-weight:600; }
+.readme-body h2{ font-family:var(--font-display); font-size:27px; font-weight:600; margin-top:46px; padding-top:16px; border-top:1px solid var(--border); }
+.readme-body h3{ font-family:var(--font-display); font-size:20.5px; font-weight:600; margin-top:28px; }
+.readme-body p, .readme-body li{ font-size:16.5px; color:var(--ink-dim); }
 .readme-body strong{ color:var(--ink); }
-.readme-body code{ font-family:var(--font-mono); font-size:0.88em; background:var(--surface-2); padding:1px 5px; border-radius:4px; color:var(--ink); }
+.readme-body code{ font-family:var(--font-mono); font-size:0.86em; background:var(--surface-2); padding:1px 5px; border-radius:4px; color:var(--ink); }
 .readme-body pre{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; overflow-x:auto; }
 .readme-body pre code{ background:none; padding:0; }
 .readme-body a{ color:var(--glacier); }
-.readme-body table{ border-collapse:collapse; width:100%; font-size:13.5px; }
+.readme-body table{ border-collapse:collapse; width:100%; font-size:14.5px; }
 .readme-body th, .readme-body td{ border:1px solid var(--border); padding:6px 10px; text-align:left; }
 .readme-body ul, .readme-body ol{ padding-left:22px; }
+
+/* ---------- Vue Énergie ---------- */
+.en-section{ max-width:980px; margin:0 auto 34px; }
+.en-section h3{ font-family:var(--font-display); font-weight:600; font-size:21px; margin:0 0 10px; }
+.en-section p{ font-size:16.5px; color:var(--ink-dim); margin:0 0 12px; }
+.en-section strong{ color:var(--ink); }
+.en-section code{ font-family:var(--font-mono); font-size:0.86em; background:var(--surface-2); padding:1px 5px; border-radius:4px; color:var(--ink); }
+.en-gallery{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:18px; margin-top:18px;
+}
+.en-gallery-item{
+  margin:0; background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  overflow:hidden; box-shadow:var(--shadow);
+}
+.en-gallery-item img{ width:100%; height:170px; object-fit:cover; display:block; background:var(--surface-2); }
+.en-gallery-item figcaption{ padding:12px 14px 15px; font-size:12.5px; color:var(--ink-dim); }
+.en-gallery-item figcaption strong{ display:block; color:var(--ink); font-size:13.5px; margin-bottom:4px; font-family:var(--font-body); }
+.en-content{ max-width:980px; margin:0 auto; }
+.en-content .rm-group{ max-width:none; }
 
 footer.site-footer{ text-align:center; padding:40px 20px 60px; font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); }
 footer.site-footer code{ font-family:var(--font-mono); }
@@ -320,6 +386,26 @@ footer.site-footer code{ font-family:var(--font-mono); }
           <p>Jalons en cours, points ouverts du dashboard et du bus KNX.</p>
           <div class="meta">6 jalons &middot; 11 points ouverts</div>
         </a>
+
+        <a class="doc-card card5" onclick="showView('energie');return false;" href="#energie">
+          <span class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg></span>
+          <span class="card5-body">
+            <h3>Écran Énergie</h3>
+            <p>Flux solaire / réseau / batterie / véhicule en direct sur le dashboard mural, données réelles myenergi + Tesla, recherche comparative et suite prévue.</p>
+            <div class="meta">myenergi + Tesla Fleet &middot; Huawei à reconnecter</div>
+          </span>
+          <span class="arrow">&rarr;</span>
+        </a>
+
+        <a class="doc-card card6" onclick="showView('inspirations');return false;" href="#inspirations">
+          <span class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="m21 15-5-5L5 21"/></svg></span>
+          <span class="card5-body">
+            <h3>Inspirations</h3>
+            <p>Images envoyées en exemple (style, dashboard, photos...) au fil des discussions, avec le commentaire fait au moment de chaque envoi.</p>
+            <div class="meta">Depuis fin août 2026</div>
+          </span>
+          <span class="arrow">&rarr;</span>
+        </a>
       </div>
     </div>
   </div>
@@ -333,7 +419,7 @@ footer.site-footer code{ font-family:var(--font-mono); }
 <h1 id="domotique-villa-bulle-architecture-docker">Domotique Villa Bulle — Architecture Docker</h1>
 <p>Stack domotique pour la villa (habitation principale + studio annexe), entièrement en Docker sur le Mac mini M1. Voir <code>CLAUDE.md</code> pour le contexte complet du projet.</p>
 <h2 id="1-vue-densemble">1. Vue d'ensemble</h2>
-<div class="arch-overview-frame"><svg viewBox="0 0 1840 1300" role="img" aria-label="Schéma de l'architecture Villa Bulle : domaines fonctionnels (domotique, monitoring, documentation, véhicule, dashboard, accès distant) hébergés sur le Mac mini, bus KNX filaire physique, et dépendances externes Tesla / Open-Meteo."><defs>
+<div class="arch-overview-frame"><div class="arch-zoom-controls"><button type="button" class="arch-zoom-btn" data-zoom-in="readme" aria-label="Zoomer">+</button><button type="button" class="arch-zoom-btn" data-zoom-out="readme" aria-label="Dézoomer">&minus;</button><button type="button" class="arch-zoom-btn arch-zoom-reset" data-zoom-reset="readme">Réinitialiser</button></div><div class="arch-zoom-viewport" id="archZoomViewport-readme"><div class="arch-zoom-inner" id="archZoomInner-readme"><svg viewBox="0 0 1840 1300" role="img" aria-label="Schéma de l'architecture Villa Bulle : domaines fonctionnels (domotique, monitoring, documentation, véhicule, dashboard, accès distant) hébergés sur le Mac mini, bus KNX filaire physique, et dépendances externes Tesla / Open-Meteo."><defs>
 <marker id="ov-arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
 <marker id="ov-arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
 <marker id="ov-arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
@@ -421,7 +507,7 @@ footer.site-footer code{ font-family:var(--font-mono); }
 <rect x="291.7" y="543.0" width="112.6" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="348.0" y="555.0" text-anchor="middle" class="ov-edge">jeton longue durée</text>
 <rect x="1519.5" y="736.8" width="220.9" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1630.0" y="748.8" text-anchor="middle" class="ov-edge">WebSocket, jeton longue durée (prévu)</text>
 <rect x="1062.0" y="425.0" width="141.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1132.5" y="437.0" text-anchor="middle" class="ov-edge">intégration Tesla Fleet</text>
-<rect x="1649.3" y="541.2" width="61.3" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1680.0" y="553.2" text-anchor="middle" class="ov-edge">Fleet API</text></svg></div>
+<rect x="1649.3" y="541.2" width="61.3" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1680.0" y="553.2" text-anchor="middle" class="ov-edge">Fleet API</text></svg></div></div></div>
 <p>Ce diagramme couvre l'intégralité de la stack Docker actuelle sur le Mac mini. <code>dashboard-proto</code> est la maquette de la nouvelle page d'accueil (jalon 5, <code>dashboard/CAHIER_DES_CHARGES.md</code>) : un simple nginx servant du HTML statique, en production sur <code>dashboardbulle.malnoy.com</code> depuis le 08.09.2026 pour un suivi au jour le jour, distinct de <code>visubulle.malnoy.com</code> (Tunet, dashboard existant, laissé inchangé). Depuis le 09.09.2026, la météo n'y est plus mock : <code>dashboard-proto</code> proxifie <code>/api/</code> en interne vers <code>dashboard-api</code>, première tranche réelle de la couche applicative définitive (pour l'instant limitée au domaine météo — voir §4 du cahier des charges), reste du contenu (calendrier, autres écrans) toujours mock. <code>dashboard-api</code>/<code>dashboard-web</code> remplaceront entièrement <code>dashboard-proto</code> une fois construits (<code>dashboard-web</code>, en Vue 3, pas encore commencé ; connexion WebSocket de <code>dashboard-api</code> à Home Assistant pas encore construite non plus, la météo n'en avait pas besoin).</p>
 <ul>
 <li><strong>Home Assistant</strong> (<code>homeassistant</code>) : cœur domotique (bus KNX filaire, Z-Wave via un Raspberry Pi dédié, solaire, intégration Tesla Fleet, futurs capteurs). Exposé sur <code>domotiquebulle.malnoy.com</code>.</li>
@@ -445,6 +531,12 @@ footer.site-footer code{ font-family:var(--font-mono); }
 ├── .gitignore
 ├── CLAUDE.md
 ├── README.md
+├── docs_site/                # servi par doc-knx (nginx) sur docbulle.malnoy.com
+│   ├── index.html            # page d'accueil — régénérée, jamais éditée à la main
+│   ├── assets/                # photo de bannière, etc.
+│   └── knx/                  # inventaire KNX, régénéré par knx/scripts/build_html_report.py
+├── docs_site_src/             # sources + pipeline de génération de docs_site/index.html
+│   └── scripts/               # voir docs_site_src/README.md
 ├── prometheus/
 │   ├── prometheus.yml
 │   └── ha_bearer_token       # à créer manuellement, non versionné
@@ -538,6 +630,13 @@ footer.site-footer code{ font-family:var(--font-mono); }
 <code>knx/scripts/build_html_report.py</code>) via un conteneur <code>doc-knx</code> (nginx) dédié, séparé du
 dossier <code>docs/</code> utilisé pour les GitHub Pages publiques — cette documentation contient la
 structure du bus KNX (pièces, adresses de groupe) et n'est donc pas destinée à être publique.</p>
+<p>Depuis le 11.09.2026, la page d'accueil (<code>docs_site/index.html</code>) suit la même règle que
+l'inventaire KNX : contenu régénéré depuis <code>README.md</code> / <code>docker-compose.yml</code> /
+<code>dashboard/CAHIER_DES_CHARGES.md</code> via le pipeline <code>docs_site_src/scripts/</code> (voir
+<code>docs_site_src/README.md</code>), jamais édité à la main. Identité visuelle "Villa Bulle"
+(palette Nuit/Ambre/Glacier/Mousse/Cuivre, Fraunces/Inter/IBM Plex Mono), cohérente avec le
+dashboard sur-mesure. La photo de bannière est servie en asset statique
+(<code>docs_site/assets/villa-bulle-banner.jpg</code>).</p>
 <ol>
 <li>Démarrer le conteneur (inclus dans la stack, rien de spécifique à faire au-delà du
    déploiement habituel) :
@@ -802,7 +901,7 @@ comparaison) — à nettoyer une fois la décision prise.</p>
       <p>Schéma complet regroupé par domaine fonctionnel — services hébergés sur le Mac mini (réseau Docker <code>domotique_net</code>, plus Tunet sur un réseau séparé), bus KNX filaire physique, et dépendances externes (Tesla, Open-Meteo).</p>
     </div>
     <div class="arch-overview-frame">
-<svg viewBox="0 0 1840 1300" role="img" aria-label="Schéma de l'architecture Villa Bulle : domaines fonctionnels (domotique, monitoring, documentation, véhicule, dashboard, accès distant) hébergés sur le Mac mini, bus KNX filaire physique, et dépendances externes Tesla / Open-Meteo."><defs>
+<div class="arch-overview-frame"><div class="arch-zoom-controls"><button type="button" class="arch-zoom-btn" data-zoom-in="arch" aria-label="Zoomer">+</button><button type="button" class="arch-zoom-btn" data-zoom-out="arch" aria-label="Dézoomer">&minus;</button><button type="button" class="arch-zoom-btn arch-zoom-reset" data-zoom-reset="arch">Réinitialiser</button></div><div class="arch-zoom-viewport" id="archZoomViewport-arch"><div class="arch-zoom-inner" id="archZoomInner-arch"><svg viewBox="0 0 1840 1300" role="img" aria-label="Schéma de l'architecture Villa Bulle : domaines fonctionnels (domotique, monitoring, documentation, véhicule, dashboard, accès distant) hébergés sur le Mac mini, bus KNX filaire physique, et dépendances externes Tesla / Open-Meteo."><defs>
 <marker id="ov-arr-ambre" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ambre)"/></marker>
 <marker id="ov-arr-glacier" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--glacier)"/></marker>
 <marker id="ov-arr-mousse" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--mousse)"/></marker>
@@ -890,7 +989,7 @@ comparaison) — à nettoyer une fois la décision prise.</p>
 <rect x="291.7" y="543.0" width="112.6" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="348.0" y="555.0" text-anchor="middle" class="ov-edge">jeton longue durée</text>
 <rect x="1519.5" y="736.8" width="220.9" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1630.0" y="748.8" text-anchor="middle" class="ov-edge">WebSocket, jeton longue durée (prévu)</text>
 <rect x="1062.0" y="425.0" width="141.1" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1132.5" y="437.0" text-anchor="middle" class="ov-edge">intégration Tesla Fleet</text>
-<rect x="1649.3" y="541.2" width="61.3" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1680.0" y="553.2" text-anchor="middle" class="ov-edge">Fleet API</text></svg>
+<rect x="1649.3" y="541.2" width="61.3" height="15" rx="3" fill="var(--bg)" stroke="var(--border)" stroke-width="0.6"/><text x="1680.0" y="553.2" text-anchor="middle" class="ov-edge">Fleet API</text></svg></div></div></div>
     </div>
   </div>
 </div>
@@ -902,9 +1001,48 @@ comparaison) — à nettoyer une fois la décision prise.</p>
       <h2>Améliorations à venir</h2>
       <p>Synthèse des jalons en cours et des points ouverts — depuis le cahier des charges du dashboard et le suivi de l'intégration KNX.</p>
     </div>
-<div class="rm-group" style="--gcolor:var(--mousse)"><h3>Jalons du projet</h3><div class="rm-list"><div class="rm-item"><span class="rm-status done">Fait</span><div><h4>Jalon 1 — Infrastructure Docker de base</h4><p>Clos le 26.08.2026 — 5 services validés en externe.</p></div></div><div class="rm-item"><span class="rm-status done">Fait</span><div><h4>Jalon 2 — Intégration KNX</h4><p>Clos le 28.08.2026 — 63 entités + 3 groupes, dashboard « Villa Bulle ». Corrections ETS restantes volontairement reportées, à la main de l'utilisateur.</p></div></div><div class="rm-item"><span class="rm-status wip">En cours</span><div><h4>Jalon 3 — Accès distant sécurisé en production</h4><p>Clôture visée vers le 11.09.2026. Cloudflare Access généralisée à domotiquebulle / grafanabulle / visubulle / dashboardbulle le 10.09.2026 — mise en œuvre côté Cloudflare en cours.</p></div></div><div class="rm-item"><span class="rm-status wip">En cours</span><div><h4>Jalon 4 — Intégrations complémentaires</h4><p>Tesla fait (29.08.2026). Solaire en pause (reprise plus tard). Sécurité/caméras : matériel pas encore choisi.</p></div></div><div class="rm-item"><span class="rm-status wip">En cours</span><div><h4>Jalon 5 — Dashboards complets</h4><p>Priorité actuelle. Écrans Accueil et Météo avancés (dashboard-api, tranche météo livrée le 09.09.2026) ; Pièces/Lumière/Température/Energie/Configuration restent à construire.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Jalon 6 — Journal / changelog publié en continu</h4><p>Pas commencé, au-delà de la page GitHub Pages des intégrations recommandées.</p></div></div></div></div>
-<div class="rm-group" style="--gcolor:var(--glacier)"><h3>Dashboard sur mesure — points ouverts</h3><div class="rm-list"><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Contenu de l'écran Extérieur</h4><p>Pas encore spécifié.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Contenu de l'écran Fonctions</h4><p>Scènes/actions prioritaires à définir.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Suggestions contextuelles + mode veille ambiant</h4><p>Souhaités tels quels ? À confirmer.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Effets Concept A/B dans le gabarit Boussole</h4><p>Parallax, respiration, panneau coulissant — intégration précise à trancher.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Devenir des anciennes catégories de nav</h4><p>Extérieur / Énergie / Tesla / Sécurité / Fonctions — fondues, gardées à part, ou autre ?</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Gestion fine des étages</h4><p>Sélecteur désormais intégré à l'écran Pièces — pas urgent.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Resynchronisation de Boussole</h4><p>Avec le gabarit T9/T10 révisé et la photo hero, une fois les points ci-dessus clarifiés.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Icônes de navigation et d'état</h4><p>Méthode Lucide déjà validée pour les pièces — à répéter pour nav/lampe/chauffage/volet.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Contenu réel de chaque écran</h4><p>Pièces, Lumière, Température, Energie, Configuration, Accueil — à spécifier et implémenter au fil de l'eau.</p></div></div></div></div>
-<div class="rm-group" style="--gcolor:var(--ambre)"><h3>Bus KNX — points ouverts</h3><div class="rm-list"><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Corrections côté ETS</h4><p>GA 1/0/61 dupliquée, Functions chauffage mal typées/incomplètes, DPT 5/5/13, 122 suggestions haute confiance, Studio non formalisé, volets Chambre Léane Est/Sud inversés. Décision de l'utilisateur : il fait évoluer ETS séparément, à son rythme.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Automatisations et scènes</h4><p>Ex. « tout éteindre », scènes jour/nuit — étape naturelle suivante côté Home Assistant, données déjà disponibles.</p></div></div></div></div>
+<div class="rm-group" style="--gcolor:var(--mousse)"><h3>Jalons du projet</h3><div class="rm-list"><div class="rm-item"><span class="rm-status done">Fait</span><div><h4>Jalon 1 — Infrastructure Docker de base</h4><p>Clos le 26.08.2026 — 5 services validés en externe.</p></div></div><div class="rm-item"><span class="rm-status done">Fait</span><div><h4>Jalon 2 — Intégration KNX</h4><p>Clos le 28.08.2026 — 63 entités + 3 groupes, dashboard « Villa Bulle ». Corrections ETS restantes volontairement reportées, à la main de l'utilisateur.</p></div></div><div class="rm-item"><span class="rm-status wip">En cours</span><div><h4>Jalon 3 — Accès distant sécurisé en production</h4><p>Clôture visée vers le 11.09.2026. Cloudflare Access généralisée à domotiquebulle / grafanabulle / visubulle / dashboardbulle le 10.09.2026 — mise en œuvre côté Cloudflare en cours.</p></div></div><div class="rm-item"><span class="rm-status wip">En cours</span><div><h4>Jalon 4 — Intégrations complémentaires</h4><p>Tesla fait (29.08.2026). Solaire : intégration myenergi installée comme contournement temporaire (12.09.2026, voir écran Énergie) ; onduleur Huawei (SUN2000 + batterie LUNA2000) hors ligne, à reconnecter pour les données réelles. Sécurité/caméras : comparatif Reolink/UniFi Protect/Tapo fait, matériel pas encore choisi.</p></div></div><div class="rm-item"><span class="rm-status wip">En cours</span><div><h4>Jalon 5 — Dashboards complets</h4><p>Priorité actuelle. Écrans Accueil et Météo avancés (dashboard-api, tranche météo livrée le 09.09.2026) ; écran Énergie livré le 12.09.2026 (conso/réseau/véhicule réels, solaire approximé, batterie et historiques encore simulés — voir tuile Énergie). Pièces/Lumière/Température/Configuration restent à construire.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Jalon 6 — Journal / changelog publié en continu</h4><p>Pas commencé, au-delà de la page GitHub Pages des intégrations recommandées.</p></div></div></div></div>
+<div class="rm-group" style="--gcolor:var(--glacier)"><h3>Dashboard sur mesure — points ouverts</h3><div class="rm-list"><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Contenu de l'écran Extérieur</h4><p>Pas encore spécifié.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Contenu de l'écran Fonctions</h4><p>Scènes/actions prioritaires à définir.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Suggestions contextuelles + mode veille ambiant</h4><p>Souhaités tels quels ? À confirmer.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Effets Concept A/B dans le gabarit Boussole</h4><p>Parallax, respiration, panneau coulissant — intégration précise à trancher.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Devenir des anciennes catégories de nav</h4><p>Extérieur / Énergie / Tesla / Sécurité / Fonctions — fondues, gardées à part, ou autre ?</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Gestion fine des étages</h4><p>Sélecteur désormais intégré à l'écran Pièces — pas urgent.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Resynchronisation de Boussole</h4><p>Avec le gabarit T9/T10 révisé et la photo hero, une fois les points ci-dessus clarifiés.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Icônes de navigation et d'état</h4><p>Méthode Lucide déjà validée pour les pièces — à répéter pour nav/lampe/chauffage/volet.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Contenu réel de chaque écran</h4><p>Pièces, Lumière, Température, Configuration — à spécifier et implémenter au fil de l'eau (Accueil et Énergie déjà livrés).</p></div></div></div></div>
+<div class="rm-group" style="--gcolor:var(--ambre)"><h3>Bus KNX — points ouverts</h3><div class="rm-list"><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Corrections côté ETS</h4><p>GA 1/0/61 dupliquée, Functions chauffage mal typées/incomplètes, DPT 5/5/13, 122 suggestions haute confiance, Studio non formalisé, volets Chambre Léane Est/Sud inversés. Décision de l'utilisateur : il fait évoluer ETS séparément, à son rythme.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Automatisations et scènes</h4><p>Ex. « tout éteindre », scènes jour/nuit — étape naturelle suivante côté Home Assistant, données déjà disponibles.</p></div></div></div></div>
+  </div>
+</div>
+
+<!-- ============ ÉNERGIE VIEW ============ -->
+<div id="view-energie" class="view-panel" hidden>
+  <div class="page view">
+    <div class="section-head">
+      <h2>Écran Énergie</h2>
+      <p>Flux solaire / réseau / batterie / véhicule sur le dashboard mural — ce qui est mesuré en direct, ce qui reste estimé, et les pistes explorées pour la suite.</p>
+    </div>
+    <div class="en-content">
+<div class="en-section"><h3>Une intégration temporaire, en attendant l'installation réelle</h3><p>L'installation solaire de la villa (onduleur Huawei SUN2000 et batterie LUNA2000, supervisés via FusionSolar) est actuellement hors ligne : le boîtier de communication qui la relie au réseau est déconnecté. En attendant sa reconnexion, l'écran Énergie s'appuie sur l'intégration <strong>myenergi</strong> (hub domestique et borne de recharge Zappi), qui donne un accès indirect à la consommation du foyer et aux échanges avec le réseau, complétée par l'intégration <strong>Tesla Fleet</strong> pour le véhicule.</p></div>
+<div class="en-section"><h3>Diagramme de flux — pulsation fluide</h3><p>Trois styles d'animation ont été comparés côte à côte (traits pointillés animés, particules en chapelet, pulsation fluide) sur trois scénarios réalistes — jour, soir, nuit — avant de retenir la <strong>pulsation fluide</strong> : un halo lumineux à traîne dégressive qui glisse le long de chaque flux, d'autant plus rapide que la puissance échangée est élevée, et dont le sens s'inverse selon que la maison importe ou exporte de l'électricité.</p><p>Côté implémentation : une seule boucle d'animation (<code>requestAnimationFrame</code>), positionnement le long de la courbe via <code>path.getPointAtLength()</code> — volontairement sans SMIL ni <code>offset-path</code>, pour rester fidèle à la convention du dashboard (aucune librairie graphique externe, tout en SVG/JS natif).</p></div>
+<div class="en-section"><h3>Ce qui est réel, ce qui reste estimé</h3><p>Trois des quatre flux affichés s'appuient sur des relevés réels : la consommation du foyer et les échanges avec le réseau viennent de myenergi, le véhicule de Tesla Fleet et du statut de la borne Zappi. La production solaire, elle, est <strong>approximée</strong> depuis le 12.09.2026 : en l'absence du capteur de génération dédié (resté bloqué à 0&nbsp;W, probablement une pince ampèremétrique mal assignée côté myenergi), toute puissance repartie vers le réseau est considérée comme de la production solaire — l'export cumulé du jour vient compléter cette estimation instantanée. Cette approximation ignore l'autoconsommation directe (produite et consommée sur place, invisible côté compteur réseau) : la valeur peut donc apparaître nulle en pleine production si tout est autoconsommé sur le moment.</p><p>Seule la batterie domestique reste entièrement simulée : aucun capteur, réel ou approché, n'existe pour elle avant la reconnexion de la batterie Huawei LUNA2000. Les deux graphiques complémentaires — historique de consommation par période et répartition de la consommation par source — restent également des données simulées, faute d'un historique réel suffisant pour l'instant.</p></div>
+<div class="en-section"><h3>Recherche comparative — cinq dashboards de référence</h3><p>Cinq dashboards énergie grand public ont été passés en revue pour identifier d'autres idées à reprendre, au-delà du diagramme de flux déjà tranché ci-dessus.</p><div class="en-gallery"><figure class="en-gallery-item"><img src="/assets/energie-inspi-mobile-overview.jpg" alt="Appli mobile de supervision solaire" loading="lazy" /><figcaption><strong>Appli mobile de supervision solaire</strong>Diagramme isométrique solaire / batterie / réseau / maison, avec les kW inscrits directement sur les lignes de flux plutôt que seulement dans les pastilles — lisible d'un coup d'œil, y compris à distance sur un écran mural.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/energie-inspi-solarpulse.jpg" alt="SolarPulse" loading="lazy" /><figcaption><strong>SolarPulse</strong>Graphe de production avec une annotation de pic toujours visible (pas seulement au survol), et un cluster de jauges de santé — disponibilité système, rendement onduleur, santé batterie.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/energie-inspi-solanist.jpg" alt="Solanist" loading="lazy" /><figcaption><strong>Solanist</strong>Trio de KPI « Yield / Exported / Selfuse » et barre de répartition horizontale segmentée — transposable presque tel quel avec les données myenergi déjà disponibles (consommation, export du jour, autoconsommation approchée).</figcaption></figure><figure class="en-gallery-item"><img src="/assets/energie-inspi-unit-monitoring.jpg" alt="Unit Monitoring (supervision de flotte)" loading="lazy" /><figcaption><strong>Unit Monitoring (supervision de flotte)</strong>Pensé pour plusieurs maisons, donc peu transposable tel quel, mais son fil d'activité et d'alertes (pic de production, batterie pleine, rendement sous les attentes) est une bonne piste pour signaler automatiquement l'anomalie myenergi plutôt que de la garder seulement en note.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/energie-inspi-origin.jpg" alt="Origin" loading="lazy" /><figcaption><strong>Origin</strong>Le plus proche structurellement du diagramme déjà construit (4 tuiles autour d'un hub central). À en retenir surtout : une tooltip multi-séries enrichie sur le graphe de puissance — date, heure, plusieurs séries et métriques dérivées dans une seule bulle.</figcaption></figure></div></div>
+<div class="rm-group" style="--gcolor:var(--teal)"><h3>Reste à faire</h3><div class="rm-list"><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Reconnecter l'onduleur Huawei</h4><p>Boîtier de communication actuellement hors ligne — une fois rebranché, installer l'intégration locale huawei_solar (Modbus) pour remplacer l'approximation myenergi par une vraie mesure de production et brancher la batterie LUNA2000.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Passer du relevé figé au flux live</h4><p>Les valeurs réelles affichées sont pour l'instant un instantané pris en lisant directement la base recorder de Home Assistant — à brancher sur un vrai flux (API ou websocket) une fois le connecteur MCP Home Assistant dédié de nouveau disponible.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Remplacer les graphiques simulés par de vrais historiques</h4><p>Consommation par période et répartition par source, une fois assez de profondeur d'historique disponible côté recorder Home Assistant ou côté Huawei.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Corriger l'anomalie de pince ampèremétrique myenergi</h4><p>Génération solaire mesurée à 0 W malgré un export réseau significatif — probable pince mal assignée, à vérifier côté câblage ou application myenergi.</p></div></div><div class="rm-item"><span class="rm-status todo">À faire</span><div><h4>Explorer les pistes de la recherche comparative</h4><p>Trio de KPI production / export / autoconsommation, tooltip multi-séries enrichie, valeurs affichées sur les lignes de flux, barre de répartition segmentée — voir la recherche comparative ci-dessus.</p></div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ INSPIRATIONS VIEW ============ -->
+<div id="view-inspirations" class="view-panel" hidden>
+  <div class="page view">
+    <div class="section-head">
+      <h2>Inspirations</h2>
+      <p>Images envoyées en exemple au fil des discussions du dashboard sur mesure — style, dashboard, photos — avec le commentaire fait au moment de chaque envoi.</p>
+    </div>
+    <div class="en-content">
+<div class="en-section"><p>Depuis fin août 2026, plusieurs discussions sur le dashboard mural sur mesure ont démarré par des images envoyées en exemple — une esthétique à suivre, un détail à reprendre, une mauvaise idée à corriger. Cette page en garde la trace, avec le commentaire fait au moment où chaque image a été montrée, sur le même principe que la recherche comparative de la <a href="#energie" onclick="showView('energie');return false;">vue Énergie</a>.</p></div>
+<div class="en-section"><h3>31.08.2026 — Premiers repères de style, avant la moindre ligne de code</h3><p>Dix images ont servi de planche d'inspiration pour lancer le projet : styles de dashboard à retenir ou à écarter, et surtout le <strong>format physique</strong> de l'écran — un panneau tactile mural fixe, en paysage, et non un mock de téléphone comme un premier réflexe l'avait suggéré (correction explicite de l'utilisateur).</p><p>"Sellution" (photo réelle + verre dépoli) a été désignée <strong>préférée</strong> d'emblée ("j'aime beaucoup") et reste la référence la plus citée depuis. Les deux cartes météo animées du même lot ont été mises de côté ce jour-là pour resservir plus tard, lors de la construction de l'écran Météo (voir plus bas).</p><div class="en-gallery"><figure class="en-gallery-item"><img src="/assets/inspi-dash-sellution.jpg" alt="« Sellution » — préférée" loading="lazy" /><figcaption><strong>« Sellution » — préférée</strong>"J'aime beaucoup" : photo réelle du salon en fond, panneaux en verre dépoli par-dessus. Référence la plus citée du projet, reprise pour le fond photo + cartes translucides de l'écran d'accueil.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-dash-multicolonne.jpg" alt="Dashboard desktop multi-colonnes" loading="lazy" /><figcaption><strong>Dashboard desktop multi-colonnes</strong>Trois colonnes — calendrier/Spotify/alarme, pièces, climat — retenue comme exemple de dashboard "desktop multi-colonnes".</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-dash-grec.jpg" alt="Dashboard HA (grec)" loading="lazy" /><figcaption><strong>Dashboard HA (grec)</strong>Grille de tuiles par pièce en grec (Καθιστικό, Κουζίνα, Κρεβατοκάμαρα...), dégradé propre par pièce et dock de scènes flottant en bas d'écran.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-dash-fonction.jpg" alt="Panneau tactile mural, groupé par fonction" loading="lazy" /><figcaption><strong>Panneau tactile mural, groupé par fonction</strong>Un des deux "bons référents" pour la forme physique de l'écran (panneau fixe sur pied, pas un téléphone) : tuiles sobres groupées par fonction, icône colorée seulement quand elle est active.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-dash-ambiance.jpg" alt="Ambiance sombre, glow orbital" loading="lazy" /><figcaption><strong>Ambiance sombre, glow orbital</strong>Dashboard sombre avec halo lumineux diffus en arrière-plan — exemple retenu pour l'ambiance générale plutôt que pour un composant précis.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-thermostat-cadran.jpg" alt="Thermostat circulaire à dégradé" loading="lazy" /><figcaption><strong>Thermostat circulaire à dégradé</strong>Cadran circulaire dont le dégradé de couleur suit la température réglée — exemple du style de thermostat à viser, repris depuis dans plusieurs prototypes (Boussole, Bulle Console).</figcaption></figure></div></div>
+<div class="en-section"><h3>01.09.2026 — Chauffage au sol : la piste de la braise</h3><p>L'effet de chauffage au sol de Chambre Léane a connu trois itérations avant de se stabiliser : un serpentin SVG techniquement propre mais rejeté ("ça ne va pas"), puis des flaques de chaleur multiples inspirées d'un rendu 3D envoyé par l'utilisateur (une pièce vide montrant des bandes de chaleur orange vif sur le parquet) — jugées finalement moins bonnes que la répartition d'origine ("la répartition de la chaleur dans le sol était mieux").</p><p>La version retenue revient à un glow unique et large, mais <strong>animé en continu</strong> pour donner l'impression d'une braise qui s'intensifie puis s'éteint. Les deux captures ci-dessous — une carte de thermostat qui s'embrase en ambre quand le chauffage est actif, et s'éteint complètement sinon — sont la référence directe de cette animation (<code>@keyframes heat-ember</code>).</p><div class="en-gallery"><figure class="en-gallery-item"><img src="/assets/inspi-chauffage-braise-on.jpg" alt="Chauffage actif" loading="lazy" /><figcaption><strong>Chauffage actif</strong>La carte s'embrase d'un dégradé ambre/rouge façon braise — base de l'animation heat-ember retenue pour le glow au sol.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-chauffage-braise-off.jpg" alt="Chauffage coupé" loading="lazy" /><figcaption><strong>Chauffage coupé</strong>Même carte entièrement sombre à l'arrêt — sert de référence pour l'état "éteint" de l'effet.</figcaption></figure></div></div>
+<div class="en-section"><h3>06.09.2026 — Style « Liquid Glass » pour les sketches du cahier des charges</h3><p>Pour présenter les sketches de structure (accueil, pièce...), demande explicite de reprendre ce kit d'interface « Liquid Glass » — panneaux et pastilles translucides à reflet, sur un fond dégradé gris — avec une convention de lecture précise : un élément affichant du texte ou du contenu réel est une exigence <strong>déjà décidée</strong> ; un emplacement en verre vide à bordure pointillée est un espace réservé <strong>pas encore décidé</strong>.</p><p><code>gen_diagrams.py</code> a été réécrit en conséquence, avec un helper <code>SVG.glass()</code> reproduisant ce dégradé blanc translucide, le reflet du haut et l'ombre portée, bordure pleine ou pointillée selon l'état de décision.</p><div class="en-gallery"><figure class="en-gallery-item"><img src="/assets/inspi-liquidglass-clair.jpg" alt="Liquid Glass Interface — clair" loading="lazy" /><figcaption><strong>Liquid Glass Interface — clair</strong>Panneaux, pastilles, curseurs et barre de recherche en verre translucide sur fond dégradé gris clair — kit de référence envoyé tel quel.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-liquidglass-sombre.jpg" alt="Liquid Glass Interface — sombre" loading="lazy" /><figcaption><strong>Liquid Glass Interface — sombre</strong>Même kit sur fond sombre : a confirmé que l'effet devait fonctionner dans les deux thèmes avant d'écrire le helper CSS/SVG.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-liquidglass-fond.jpg" alt="Fond dégradé gris" loading="lazy" /><figcaption><strong>Fond dégradé gris</strong>Le dégradé bleu-gris utilisé comme arrière-plan des sketches "Liquid Glass", repris directement du fond du kit de référence.</figcaption></figure></div></div>
+<div class="en-section"><h3>06.09.2026 — Quatre photos façade/jardin, et le choix de la photo hero</h3><p>Quatre photos réelles de l'extérieur de la villa ont été envoyées le même jour : façade côté jardin sous deux angles, jardin/pergola, façade entrée/garage — rangées dans la nouvelle bibliothèque de médias du projet.</p><p>Question posée en retour (deux volets) : laquelle utiliser comme photo principale de l'écran d'accueil, et ces quatre photos remplacent-elles l'ancienne photo unique "Maison" du 31.08&nbsp;? Réponse : <strong>la façade jardin, angle rapproché</strong> (ci-dessous, encadrée), et oui — elle fait référence pour l'accueil depuis.</p><div class="en-gallery"><figure class="en-gallery-item"><img src="/assets/inspi-facade-jardin-1.jpg" alt="Façade jardin — angle 1" loading="lazy" /><figcaption><strong>Façade jardin — angle 1</strong>Une des deux prises côté jardin.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-facade-jardin-2.jpg" alt="Façade jardin — angle 2 (retenue)" loading="lazy" /><figcaption><strong>Façade jardin — angle 2 (retenue)</strong>Choisie comme photo hero de l'écran d'accueil — angle rapproché, réponse à la question posée le jour même.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-facade-pergola.jpg" alt="Jardin &amp; pergola" loading="lazy" /><figcaption><strong>Jardin &amp; pergola</strong>Vue du jardin côté pergola.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-facade-entree.jpg" alt="Façade entrée / garage" loading="lazy" /><figcaption><strong>Façade entrée / garage</strong>Vue de la façade côté entrée et garage.</figcaption></figure></div></div>
+<div class="en-section"><h3>06.09.2026 — Un malentendu bienvenu : les widgets météo allemands</h3><p>Un fichier <code>set icones maison 1.jpg</code>, déposé le même jour dans <code>assets/icons/</code>, s'est révélé à l'ouverture être des maquettes de widgets météo <strong>en allemand</strong> (ciel nocturne, lune, pluie, neige) — et non des icônes de pièces comme son nom le laissait penser. Gardé de côté comme piste pour l'écran Météo plutôt qu'écarté, à clarifier avec l'utilisateur.</p><div class="en-gallery"><figure class="en-gallery-item"><img src="/assets/inspi-meteo-widgets-allemand.jpg" alt="Widgets météo (découverte, pas des icônes)" loading="lazy" /><figcaption><strong>Widgets météo (découverte, pas des icônes)</strong>"Wolkig" (nuageux), "Schnee" (neige), "Regen" (pluie), "Klar" (clair) — maquettes de cartes météo nocturnes, pas le jeu d'icônes de pièces attendu.</figcaption></figure></div></div>
+<div class="en-section"><h3>07.09.2026 — Écran Météo : les deux images qui ont tout lancé</h3><p>Détaillé directement à partir de ces deux images, citées telles quelles dans le cahier des charges (§A2) : fond de carte animé selon la condition du moment (dégradé ciel/nuit/pluie/neige/orage), température du jour en gros caractères, bloc secondaire min/max/humidité/vent, et rangée des prochains jours en dessous — repris presque à l'identique dans l'écran Météo dédié comme dans le bloc météo de l'accueil.</p><div class="en-gallery"><figure class="en-gallery-item"><img src="/assets/inspi-meteo-1.jpg" alt="Référence météo 1" loading="lazy" /><figcaption><strong>Référence météo 1</strong>Carte météo animée, condition + prévision multi-jours.</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-meteo-2.jpg" alt="Référence météo 2" loading="lazy" /><figcaption><strong>Référence météo 2</strong>Deuxième variante du même principe de carte.</figcaption></figure></div></div>
+<div class="en-section"><h3>09.09.2026 — Page Accueil : « proche du style GlassHome »</h3><p>Pour le bloc météo du jour et, à côté, le bloc de consommation d'énergie de l'écran d'accueil, la demande était explicitement de rester <strong>"proche du style GlassHome"</strong> — illustrée par deux images : des panneaux de verre dépoli posés sur une vraie photo de pièce floutée, et un dashboard aux cartes de verre colorées organisé par onglets de pièce.</p><div class="en-gallery"><figure class="en-gallery-item"><img src="/assets/inspi-accueil-glasshome-1.jpg" alt="GlassHome — verre sur photo réelle" loading="lazy" /><figcaption><strong>GlassHome — verre sur photo réelle</strong>Cartes translucides (météo, température, éclairage) posées sur une photo de salon floutée — même famille visuelle que "Sellution".</figcaption></figure><figure class="en-gallery-item"><img src="/assets/inspi-accueil-glasshome-2.jpg" alt="GlassHome — cartes colorées par onglet" loading="lazy" /><figcaption><strong>GlassHome — cartes colorées par onglet</strong>Onglets de pièce en bas d'écran, cartes en verre coloré (humidité, consommation, éclairage, thermostat) — direction "GlassHome" pour les blocs météo et énergie de l'accueil.</figcaption></figure></div></div>
+<div class="en-section"><h3>11.09.2026 — Deux références citées en conversation, sans image conservée</h3><p>Deux décisions du même jour se sont appuyées sur des images envoyées directement dans la discussion, jamais enregistrées dans la bibliothèque du projet — donc sans capture à montrer ici, seulement leur trace :</p><p>— Une <strong>infographie de référence</strong> organisée en "swimlanes" par domaine a motivé l'abandon du schéma d'architecture à trois niveaux navigables au profit de l'infographie statique actuelle, regroupée par domaine fonctionnel (Domotique, Monitoring, Documentation, Dashboard, Véhicule, Accès distant) à l'intérieur d'un grand cadre "Mac mini", le bus KNX filaire restant hors de ce cadre (installation physique, pas un service Docker).</p><p>— Une image de référence montrant une <strong>maison entourée d'icônes reliées par des traits</strong> a inspiré le remplacement des trois nœuds génériques du bus KNX, sur l'illustration de la page d'accueil de ce site, par des bulles d'icônes connectées (stores, prises électriques, véhicule) — redessinées en SVG vectoriel dans le style déjà en place, faute d'outil de génération d'image disponible dans cette session.</p></div>
+<div class="en-section"><h3>10.09.2026 — Mini-graphes de température : quatre styles comparés (note perdue)</h3><p>Une comparaison à quatre styles de mini-graphes de température a bien eu lieu ce jour-là, tranchée en faveur d'un réglage "GlassHome / Liquid Glass" (Liquid Glass par défaut) appliqué à toutes les cartes de l'accueil — mais le détail des quatre styles comparés et le commentaire fait à l'époque ont été perdus avant de pouvoir être recopiés ici. Section gardée pour mémoire plutôt que supprimée.</p></div>
+    </div>
   </div>
 </div>
 
@@ -917,12 +1055,93 @@ function showView(name){
 }
 function routeFromHash(){
   var h = (location.hash || '#home').slice(1);
-  if(['home','readme','architecture','roadmap'].indexOf(h) === -1) h = 'home';
+  if(['home','readme','architecture','roadmap','energie','inspirations'].indexOf(h) === -1) h = 'home';
   showView(h);
 }
 window.addEventListener('hashchange', routeFromHash);
 
 routeFromHash();
+
+/* ---------- Zoom/pan du schéma d'architecture (12.09.2026) ----------
+   Générique : câble chaque .arch-zoom-viewport trouvé sur la page (il y en a
+   deux — vue README et vue Architecture, voir render_overview_frame() côté
+   Python) plutôt que de supposer une instance unique. Molette = zoom centré
+   sur le curseur, glisser = déplacer, pincement à deux doigts = zoom
+   tactile ; boutons +/-/reset en secours. Pas de librairie externe. */
+function initArchZoomInstances(){
+  document.querySelectorAll('.arch-zoom-viewport').forEach(function(vp){
+    var uid = vp.id.replace('archZoomViewport-', '');
+    var inner = document.getElementById('archZoomInner-' + uid);
+    if(!inner) return;
+
+    var scale = 1, tx = 0, ty = 0, dragging = false, lastX = 0, lastY = 0, touch = null;
+    var MIN_SCALE = 0.5, MAX_SCALE = 5;
+
+    function apply(){ inner.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')'; }
+    function zoomAt(px, py, factor){
+      var ns = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale * factor));
+      if(ns === scale) return;
+      tx = px - (px - tx) * (ns / scale);
+      ty = py - (py - ty) * (ns / scale);
+      scale = ns;
+      apply();
+    }
+    function reset(){ scale = 1; tx = 0; ty = 0; apply(); }
+    function touchDist(t){ var dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY; return Math.sqrt(dx*dx + dy*dy); }
+
+    vp.addEventListener('wheel', function(e){
+      e.preventDefault();
+      var r = vp.getBoundingClientRect();
+      zoomAt(e.clientX - r.left, e.clientY - r.top, e.deltaY < 0 ? 1.15 : 0.87);
+    }, { passive:false });
+
+    vp.addEventListener('mousedown', function(e){
+      dragging = true; lastX = e.clientX; lastY = e.clientY; vp.classList.add('dragging');
+    });
+    window.addEventListener('mousemove', function(e){
+      if(!dragging) return;
+      tx += e.clientX - lastX; ty += e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+      apply();
+    });
+    window.addEventListener('mouseup', function(){ dragging = false; vp.classList.remove('dragging'); });
+
+    vp.addEventListener('touchstart', function(e){
+      if(e.touches.length === 2){
+        var r = vp.getBoundingClientRect();
+        touch = {
+          mode:'pinch', dist: touchDist(e.touches), scale0: scale, tx0: tx, ty0: ty,
+          mx: (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left,
+          my: (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top,
+        };
+      } else if(e.touches.length === 1){
+        touch = { mode:'pan', x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    }, { passive:true });
+    vp.addEventListener('touchmove', function(e){
+      if(!touch) return;
+      if(touch.mode === 'pan' && e.touches.length === 1){
+        tx += e.touches[0].clientX - touch.x; ty += e.touches[0].clientY - touch.y;
+        touch.x = e.touches[0].clientX; touch.y = e.touches[0].clientY;
+        apply(); e.preventDefault();
+      } else if(touch.mode === 'pinch' && e.touches.length === 2){
+        var ns = Math.min(MAX_SCALE, Math.max(MIN_SCALE, touch.scale0 * (touchDist(e.touches) / touch.dist)));
+        tx = touch.mx - (touch.mx - touch.tx0) * (ns / touch.scale0);
+        ty = touch.my - (touch.my - touch.ty0) * (ns / touch.scale0);
+        scale = ns; apply(); e.preventDefault();
+      }
+    }, { passive:false });
+    vp.addEventListener('touchend', function(){ touch = null; });
+
+    var btnIn = document.querySelector('[data-zoom-in="' + uid + '"]');
+    var btnOut = document.querySelector('[data-zoom-out="' + uid + '"]');
+    var btnReset = document.querySelector('[data-zoom-reset="' + uid + '"]');
+    if(btnIn) btnIn.addEventListener('click', function(){ var r = vp.getBoundingClientRect(); zoomAt(r.width/2, r.height/2, 1.3); });
+    if(btnOut) btnOut.addEventListener('click', function(){ var r = vp.getBoundingClientRect(); zoomAt(r.width/2, r.height/2, 0.77); });
+    if(btnReset) btnReset.addEventListener('click', reset);
+  });
+}
+initArchZoomInstances();
 </script>
 
 </body>
