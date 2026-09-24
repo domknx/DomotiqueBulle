@@ -26,7 +26,8 @@ docs_site/index.html : voir docs_site_src/README.md.
 """
 import html
 import os
-from content import ROADMAP, ENERGIE_SECTIONS, ENERGIE_GALLERY_INTRO, ENERGIE_GALLERY, ENERGIE_TODO, INSPI_INTRO, INSPI_GROUPS
+from content import (ROADMAP, ENERGIE_SECTIONS, ENERGIE_GALLERY_INTRO, ENERGIE_GALLERY, ENERGIE_TODO, INSPI_INTRO, INSPI_GROUPS,
+                     TEMP_SECTIONS, TEMP_GALLERY_INTRO, TEMP_GALLERY, TEMP_INSPI_INTRO, TEMP_TODO)
 from architecture_overview import render_overview_frame
 
 # ---------------------------------------------------------------- house SVG
@@ -106,6 +107,8 @@ ICON_ROADMAP = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 ICON_ENERGIE = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>'''
 
 ICON_INSPI = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="m21 15-5-5L5 21"/></svg>'''
+
+ICON_TEMP = '''<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 0 0-2 2v9.1a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2Z"/><path d="M12 10v7"/></svg>'''
 
 # ---------------------------------------------------------------- token -> css var (feuille de route)
 TOKEN_CSS = {
@@ -193,6 +196,53 @@ def build_energie():
     return "\n".join(out)
 
 
+def build_temperature():
+    """Vue Température (24.09.2026) — recopiée depuis content.py (lui-même
+    recopié à la main depuis la mémoire projet custom_dashboard_temperature_screen.md),
+    même structure que build_energie() : sections de texte, galerie de captures,
+    renvoi vers les inspirations, puis « Reste à faire »."""
+    out = []
+    for section in TEMP_SECTIONS:
+        paras = "".join('<p>{}</p>'.format(p) for p in section["paragraphs"])
+        out.append(
+            '<div class="en-section"><h3>{heading}</h3>{paras}</div>'.format(
+                heading=esc(section["heading"]), paras=paras
+            )
+        )
+
+    gallery_items = []
+    for filename, title, caption in TEMP_GALLERY:
+        gallery_items.append(
+            '<figure class="en-gallery-item">'
+            '<img src="/assets/{filename}" alt="{title}" loading="lazy" />'
+            '<figcaption><strong>{title}</strong>{caption}</figcaption>'
+            '</figure>'.format(filename=esc(filename), title=esc(title), caption=esc(caption))
+        )
+    out.append(
+        '<div class="en-section"><h3>L\'écran en images</h3>'
+        '<p>{intro}</p>'
+        '<div class="en-gallery">{items}</div>'
+        '<p style="margin-top:18px">{inspi}</p>'
+        '</div>'.format(intro=TEMP_GALLERY_INTRO, items="".join(gallery_items), inspi=TEMP_INSPI_INTRO)
+    )
+
+    todo_items = []
+    for status, title, desc in TEMP_TODO:
+        todo_items.append(
+            '<div class="rm-item">'
+            '<span class="rm-status {status}">{label}</span>'
+            '<div><h4>{title}</h4><p>{desc}</p></div>'
+            '</div>'.format(status=status, label=STATUS_LABEL[status], title=esc(title), desc=esc(desc))
+        )
+    out.append(
+        '<div class="rm-group" style="--gcolor:var(--braise)">'
+        '<h3>Reste à faire</h3>'
+        '<div class="rm-list">{items}</div>'
+        '</div>'.format(items="".join(todo_items))
+    )
+    return "\n".join(out)
+
+
 def build_inspirations():
     """Vue Inspirations — trace des images envoyées en exemple (style, dashboard,
     photos...) au fil des discussions du projet dashboard sur mesure, avec le
@@ -239,12 +289,14 @@ def main():
         '__ICON_ROADMAP__': ICON_ROADMAP,
         '__ICON_ENERGIE__': ICON_ENERGIE,
         '__ICON_INSPI__': ICON_INSPI,
+        '__ICON_TEMP__': ICON_TEMP,
         '__HOUSE_SVG__': HOUSE_SVG,
         '__README_BODY__': readme_body,
         '__ARCH_OVERVIEW__': render_overview_frame('arch'),
         '__ROADMAP__': build_roadmap(),
         '__ENERGIE__': build_energie(),
         '__INSPIRATIONS__': build_inspirations(),
+        '__TEMPERATURE__': build_temperature(),
     }
     for key, val in replacements.items():
         count = out.count(key)

@@ -382,3 +382,25 @@ def render_overview_svg():
         f'documentation, véhicule, dashboard, accès distant) hébergés sur le Mac mini, bus KNX filaire physique, '
         f'et dépendances externes Tesla / Open-Meteo.">{body}</svg>'
     )
+
+
+def render_overview_frame(uid):
+    """Enveloppe render_overview_svg() dans le petit widget de zoom/pan
+    (12.09.2026, retour utilisateur : le schéma était trop dense pour rester
+    lisible sans pouvoir s'en approcher) : molette pour zoomer, glisser pour
+    déplacer, pincement à deux doigts sur tactile, plus 3 boutons +/-/reset.
+    `uid` distingue les deux instances de la page (vue README, vue
+    Architecture) — voir initArchZoomInstances() dans template.html."""
+    svg = render_overview_svg()
+    return (
+        '<div class="arch-overview-frame">'
+        '<div class="arch-zoom-controls">'
+        f'<button type="button" class="arch-zoom-btn" data-zoom-in="{uid}" aria-label="Zoomer">+</button>'
+        f'<button type="button" class="arch-zoom-btn" data-zoom-out="{uid}" aria-label="Dézoomer">&minus;</button>'
+        f'<button type="button" class="arch-zoom-btn arch-zoom-reset" data-zoom-reset="{uid}">Réinitialiser</button>'
+        '</div>'
+        f'<div class="arch-zoom-viewport" id="archZoomViewport-{uid}">'
+        f'<div class="arch-zoom-inner" id="archZoomInner-{uid}">{svg}</div>'
+        '</div>'
+        '</div>'
+    )

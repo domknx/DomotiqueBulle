@@ -37,6 +37,12 @@ Sources utilisées :
   comparaison du 10.09.2026 sont documentées en texte seul (pas d'image
   fiable conservée, ou note perdue — voir la vue elle-même).
 
+- Mémoire projet `custom_dashboard_temperature_screen.md` — reprise à la main
+  dans `scripts/content.py` (`TEMP_SECTIONS` / `TEMP_GALLERY` / `TEMP_TODO`,
+  vue Température, ajoutée le 24.09.2026, 7ᵉ tuile, accent `--braise`). Même
+  principe que la vue Énergie. Captures de la v55 du dashboard sous
+  `docs_site/assets/temp-*.jpg` (Playwright, 2560×1440, recadrées par carte).
+
 ## Architecture : schéma unique
 
 Le diagramme d'architecture n'est plus une image mermaid statique — c'est du

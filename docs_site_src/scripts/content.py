@@ -20,7 +20,7 @@ ROADMAP = [
             ("done", "Jalon 2 — Intégration KNX", "Clos le 28.08.2026 — 63 entités + 3 groupes, dashboard « Villa Bulle ». Corrections ETS restantes volontairement reportées, à la main de l'utilisateur."),
             ("wip", "Jalon 3 — Accès distant sécurisé en production", "Clôture visée vers le 11.09.2026. Cloudflare Access généralisée à domotiquebulle / grafanabulle / visubulle / dashboardbulle le 10.09.2026 — mise en œuvre côté Cloudflare en cours."),
             ("wip", "Jalon 4 — Intégrations complémentaires", "Tesla fait (29.08.2026). Solaire : intégration myenergi installée comme contournement temporaire (12.09.2026, voir écran Énergie) ; onduleur Huawei (SUN2000 + batterie LUNA2000) hors ligne, à reconnecter pour les données réelles. Sécurité/caméras : comparatif Reolink/UniFi Protect/Tapo fait, matériel pas encore choisi."),
-            ("wip", "Jalon 5 — Dashboards complets", "Priorité actuelle. Écrans Accueil et Météo avancés (dashboard-api, tranche météo livrée le 09.09.2026) ; écran Énergie livré le 12.09.2026 (conso/réseau/véhicule réels, solaire approximé, batterie et historiques encore simulés — voir tuile Énergie). Pièces/Lumière/Température/Configuration restent à construire."),
+            ("wip", "Jalon 5 — Dashboards complets", "Priorité actuelle. Écrans Accueil et Météo avancés (dashboard-api, tranche météo livrée le 09.09.2026) ; écran Énergie livré le 12.09.2026 et enrichi le 13.09.2026 (bilan réseau réel, valeurs sur les lignes de flux, tooltip multi-séries — voir tuile Énergie) ; écran Température livré le 22.09.2026 (7 thermostats KNX, cadran « Embrasement », encore en lecture seule — voir tuile Température). Pièces/Lumière/Configuration restent à construire."),
             ("todo", "Jalon 6 — Journal / changelog publié en continu", "Pas commencé, au-delà de la page GitHub Pages des intégrations recommandées."),
         ],
     },
@@ -36,7 +36,7 @@ ROADMAP = [
             ("todo", "Gestion fine des étages", "Sélecteur désormais intégré à l'écran Pièces — pas urgent."),
             ("todo", "Resynchronisation de Boussole", "Avec le gabarit T9/T10 révisé et la photo hero, une fois les points ci-dessus clarifiés."),
             ("todo", "Icônes de navigation et d'état", "Méthode Lucide déjà validée pour les pièces — à répéter pour nav/lampe/chauffage/volet."),
-            ("todo", "Contenu réel de chaque écran", "Pièces, Lumière, Température, Configuration — à spécifier et implémenter au fil de l'eau (Accueil et Énergie déjà livrés)."),
+            ("todo", "Contenu réel de chaque écran", "Pièces, Lumière, Configuration — à spécifier et implémenter au fil de l'eau (Accueil, Énergie et Température déjà livrés)."),
         ],
     },
     {
@@ -72,6 +72,13 @@ ENERGIE_SECTIONS = [
         "paragraphs": [
             "Trois des quatre flux affichés s'appuient sur des relevés réels : la consommation du foyer et les échanges avec le réseau viennent de myenergi, le véhicule de Tesla Fleet et du statut de la borne Zappi. La production solaire, elle, est <strong>approximée</strong> depuis le 12.09.2026 : en l'absence du capteur de génération dédié (resté bloqué à 0&nbsp;W, probablement une pince ampèremétrique mal assignée côté myenergi), toute puissance repartie vers le réseau est considérée comme de la production solaire — l'export cumulé du jour vient compléter cette estimation instantanée. Cette approximation ignore l'autoconsommation directe (produite et consommée sur place, invisible côté compteur réseau) : la valeur peut donc apparaître nulle en pleine production si tout est autoconsommé sur le moment.",
             "Seule la batterie domestique reste entièrement simulée : aucun capteur, réel ou approché, n'existe pour elle avant la reconnexion de la batterie Huawei LUNA2000. Les deux graphiques complémentaires — historique de consommation par période et répartition de la consommation par source — restent également des données simulées, faute d'un historique réel suffisant pour l'instant.",
+        ],
+    },
+    {
+        "heading": "Quatre premières pistes déjà mises en œuvre (13.09.2026)",
+        "paragraphs": [
+            "Quatre des pistes retenues plus bas ont été implémentées le lendemain de cette recherche comparative, directement avec les données myenergi déjà disponibles. La carte « Répartition de la consommation » (100&nbsp;% simulée jusque-là) devient un <strong>bilan réseau du jour</strong>&nbsp;: une barre segmentée export/import et trois totaux réels — exportée, importée, et autoconsommée pour la recharge du véhicule ou le chauffage. Ce dernier chiffre mérite une précision&nbsp;: le capteur myenergi correspondant (<code>green_energy_today</code>) ne mesure <strong>que</strong> l'énergie verte utilisée pour la recharge VE et le chauffage, pas l'autoconsommation solaire de toute la maison — faute d'un capteur de génération fiable, cette dernière reste impossible à calculer pour l'instant.",
+            "Le diagramme de flux affiche désormais la puissance directement <strong>sur chaque ligne</strong>, pas seulement à ses extrémités — plus lisible à distance sur l'écran mural. Le graphique de consommation trace en plus une seconde courbe (production solaire, toujours simulée) et sa bulle de survol détaille désormais plusieurs séries et une part solaire dérivée, sur le modèle du dashboard « Origin » cité ci-dessous.",
         ],
     },
 ]
@@ -121,10 +128,13 @@ ENERGIE_TODO = [
     ("todo", "Corriger l'anomalie de pince ampèremétrique myenergi",
      "Génération solaire mesurée à 0 W malgré un export réseau significatif — probable pince "
      "mal assignée, à vérifier côté câblage ou application myenergi."),
-    ("todo", "Explorer les pistes de la recherche comparative",
-     "Trio de KPI production / export / autoconsommation, tooltip multi-séries enrichie, "
-     "valeurs affichées sur les lignes de flux, barre de répartition segmentée — voir la "
-     "recherche comparative ci-dessus."),
+    ("done", "Bilan réseau du jour, valeurs sur les lignes, tooltip multi-séries",
+     "Quatre pistes de la recherche comparative implémentées le 13.09.2026 — voir le "
+     "paragraphe dédié plus haut."),
+    ("todo", "Pistes restantes de la recherche comparative",
+     "Cluster de jauges de santé (disponibilité système, rendement, batterie), fil "
+     "d'alertes/anomalies automatique, annotation de pic toujours visible — dépendent de "
+     "diagnostics pas encore disponibles (Huawei) ou d'une vraie logique de détection."),
 ]
 
 # ---------------------------------------------------------------------------
@@ -349,4 +359,133 @@ INSPI_GROUPS = [
         ],
         "gallery": [],
     },
+]
+
+# ---------------------------------------------------------------------------
+# Vue Température (ajoutée le 24.09.2026) — recopiée à la main depuis la
+# mémoire projet custom_dashboard_temperature_screen.md et le cahier des
+# charges (§8/§9), même principe que la vue Énergie. Captures prises le
+# 24.09.2026 sur la v55 du dashboard (Playwright, 2560×1440), servies en
+# assets statiques docs_site/assets/temp-*.jpg.
+# ---------------------------------------------------------------------------
+
+TEMP_SECTIONS = [
+    {
+        "heading": "Une rangée par étage, un cadran par pièce",
+        "paragraphs": [
+            "L'écran Température du dashboard mural présente toute la maison sur une grille de "
+            "<strong>trois rangées de cinq cadrans</strong> — une rangée par étage : Sous-sol / "
+            "Studio, Rez-de-chaussée, Étage. Sept emplacements correspondent à un vrai thermostat "
+            "KNX&nbsp;: la Cuisine et la Salle à manger au rez-de-chaussée, le Bureau, les chambres "
+            "de Léane, des parents et de Lily et la Salle de bain à l'étage.",
+            "Les huit autres (Entrée, Local technique, Salon, Espace central, WC-douche et les trois "
+            "pièces du studio) affichent un cadran en pointillés « non raccordé » plutôt que des "
+            "valeurs inventées — soit parce qu'aucun thermostat KNX n'y existe, soit parce que "
+            "l'emplacement n'est pas encore attribué côté ETS. La grille garde ainsi la même "
+            "géographie que la maison, prête à se remplir au fil des raccordements.",
+        ],
+    },
+    {
+        "heading": "Le cadran « Embrasement »",
+        "paragraphs": [
+            "Chaque thermostat est habillé d'un cadran circulaire au relief doux (neumorphisme), "
+            "conçu à part sur un canevas de design dédié puis porté tel quel dans le dashboard — "
+            "le canevas reste la référence&nbsp;: toute évolution visuelle repart de lui, jamais "
+            "l'inverse. L'intensité de chauffe se lit sur <strong>quatre paliers plus l'arrêt</strong>&nbsp;: "
+            "un halo de braise animé, un liseré lumineux, la teinte du disque et un anneau de "
+            "« flamme » s'intensifient ensemble avec le palier, du gris froid à l'orange vif.",
+            "Au centre&nbsp;: le mode, la consigne en grand et la température mesurée en dessous. "
+            "Sous le cadran, les quatre modes KNX (Hors-gel, Nuit, Éco, Confort), le mode actif "
+            "surligné. Un petit bouton ouvre l'historique de la pièce sur 24&nbsp;heures (consigne, "
+            "température mesurée, ouverture de la vanne)&nbsp;; en cas de défaut du thermostat, il "
+            "est remplacé par un bouton d'alerte rouge pulsant — c'est le cas aujourd'hui de la "
+            "chambre de Léane, seule pièce qui remonte un capteur d'erreur de chauffage côté KNX.",
+        ],
+    },
+    {
+        "heading": "Des graduations qui s'allument jusqu'à la consigne",
+        "paragraphs": [
+            "La consigne était d'abord indiquée par un anneau sombre posé sur le cadran, jugé "
+            "« trop grossier ». Plusieurs pistes ont été comparées (arc fin avec point lumineux, "
+            "repère sur graduation, anneau piste + progression, puis trois couleurs d'anneau — "
+            "bleu glacial, émeraude, améthyste) avant de retenir une solution <strong>sans anneau "
+            "du tout</strong>&nbsp;: les 40 graduations déjà présentes autour du cadran s'illuminent "
+            "(cuivre vers or, avec un halo) depuis le début de l'échelle jusqu'à la position de la "
+            "consigne, sur une échelle fixe de 15 à 25&nbsp;°C.",
+            "Un défaut de fond a été corrigé au passage&nbsp;: le balayage suivait au départ "
+            "l'ouverture de la vanne, si bien qu'une pièce à l'arrêt (vanne fermée) semblait ne "
+            "plus avoir de consigne du tout. Il suit désormais la <strong>consigne</strong>, "
+            "indépendamment de la chauffe réelle — une salle de bain en hors-gel à 19&nbsp;° "
+            "allume ses 16 graduations comme une autre pièce réglée à 19&nbsp;°. Les graduations "
+            "allumées ont enfin été élargies de moitié et leur halo renforcé, pour rester lisibles "
+            "à distance sur l'écran mural. Des boutons −/+ ont été ajoutés dans le cadran pour "
+            "ajuster la consigne.",
+        ],
+    },
+    {
+        "heading": "Ce qui est réel, ce qui ne l'est pas encore",
+        "paragraphs": [
+            "Les consignes, températures mesurées, modes et le défaut de la chambre de Léane "
+            "viennent de relevés réels des sept thermostats KNX, mais figés au moment de la "
+            "construction de l'écran (22.09.2026)&nbsp;: aucun rafraîchissement en direct pour "
+            "l'instant. Les courbes de l'historique sont un <strong>exemple</strong> (signalé "
+            "comme tel dans la fenêtre).",
+            "Surtout, l'écran est encore <strong>en lecture seule</strong>&nbsp;: les boutons −/+ "
+            "et les boutons de mode ont leur rendu final mais n'envoient encore aucune commande "
+            "au bus KNX. Les brancher sur les entités <code>climate</code> correspondantes de Home "
+            "Assistant est la prochaine étape.",
+        ],
+    },
+]
+
+TEMP_GALLERY_INTRO = (
+    "Captures de l'écran tel qu'il tourne aujourd'hui sur le dashboard mural (version du "
+    "22.09.2026), prises le 24.09.2026."
+)
+
+TEMP_GALLERY = [
+    ("temp-ecran-complet.jpg", "L'écran complet",
+     "Grille 3×5 par étage entre les deux barres latérales : 7 cadrans raccordés, 8 emplacements "
+     "« non raccordé » en pointillés."),
+    ("temp-cadran-arret.jpg", "Arrêt — Salle de bain",
+     "Hors-gel, consigne 19 ° : disque gris froid, aucune braise, mais les graduations restent "
+     "allumées jusqu'à la consigne."),
+    ("temp-cadran-chauffe.jpg", "Chauffe moyenne — Cuisine",
+     "Consigne 20 °, mode Confort : disque ambré, halo de braise et anneau de flamme modérés."),
+    ("temp-cadran-fort.jpg", "Chauffe forte — Chambre des parents",
+     "Consigne 22 °, 28 graduations allumées : palier maximal, disque orange vif et halo intense."),
+    ("temp-cadran-erreur.jpg", "Défaut — Chambre de Léane",
+     "Thermostat en erreur : température mesurée « Indisponible » et bouton d'alerte rouge "
+     "pulsant à la place du bouton d'historique."),
+    ("temp-historique-popup.jpg", "Historique 24 h",
+     "Consigne (pointillés), température mesurée (ambre) et ouverture de vanne (bleu) — courbes "
+     "d'exemple, en attendant le branchement sur l'historique réel."),
+]
+
+TEMP_INSPI_INTRO = (
+    "Le cadran reprend deux références déjà gardées dans la "
+    "<a href=\"#inspirations\" onclick=\"showView('inspirations');return false;\">vue "
+    "Inspirations</a> : le thermostat circulaire à dégradé du 31.08.2026 et l'effet « braise » "
+    "du chauffage au sol du 01.09.2026."
+)
+
+TEMP_TODO = [
+    ("done", "Porter le cadran « Embrasement » dans le dashboard",
+     "Grille 3×5 construite et cadran v32 (graduations illuminées, boutons −/+) porté le "
+     "22.09.2026 ; rendu vérifié à l'écran le 24.09.2026."),
+    ("todo", "Rendre les commandes actives",
+     "Relier les boutons −/+ et les boutons de mode aux entités climate KNX de Home Assistant, "
+     "pour régler la consigne directement depuis l'écran mural."),
+    ("todo", "Passer du relevé figé au flux live",
+     "Rafraîchir consignes, températures et défauts en direct plutôt qu'un instantané — même "
+     "chantier que pour l'écran Énergie."),
+    ("todo", "Brancher l'historique réel",
+     "Remplacer les courbes d'exemple de la fenêtre d'historique par les vraies séries "
+     "(consigne, mesure, vanne) du recorder Home Assistant ou de VictoriaMetrics."),
+    ("todo", "Raccorder les emplacements restants",
+     "Attribuer côté ETS les pièces encore « non attribuées » (studio, espace central, "
+     "WC-douche) ; leurs cadrans s'activeront sans changer la mise en page."),
+    ("todo", "Trancher le thème clair / sombre du cadran",
+     "Le cadran est pensé sur fond clair (neumorphisme) alors que le reste du dashboard assume "
+     "un thème sombre — point laissé ouvert au cahier des charges."),
 ]

@@ -11,8 +11,8 @@
 :root{
   --nuit:#0b0e16; --nuit-2:#11151f; --panel:#151b26; --panel-2:#1a2130;
   --border:#2a3242; --brume:#eef1f6; --brume-dim:#aab2c2; --brume-faint:#6b7387;
-  --ambre:#ff9c54; --glacier:#5ac8fa; --mousse:#6fcf97; --cuivre:#caa06b; --teal:#5fd6c4; --violet:#8b8fd6;
-  --c-readme: var(--cuivre); --c-arch: var(--glacier); --c-knx: var(--ambre); --c-roadmap: var(--mousse); --c-energie: var(--teal); --c-inspi: var(--violet);
+  --ambre:#ff9c54; --glacier:#5ac8fa; --mousse:#6fcf97; --cuivre:#caa06b; --teal:#5fd6c4; --violet:#8b8fd6; --braise:#ff7a3d;
+  --c-readme: var(--cuivre); --c-arch: var(--glacier); --c-knx: var(--ambre); --c-roadmap: var(--mousse); --c-energie: var(--teal); --c-inspi: var(--violet); --c-temp: var(--braise);
   --font-display:"Fraunces",Georgia,serif;
   --font-body:"Inter",-apple-system,"Segoe UI",sans-serif;
   --font-mono:"IBM Plex Mono","SF Mono",Consolas,monospace;
@@ -100,15 +100,16 @@ a{ color:inherit; }
     "c1 house c2"
     "c3 house c4"
     "c5 c5 c5"
+    "c7 c7 c7"
     "c6 c6 c6";
 }
 @media (max-width: 880px){
-  .orbit{ grid-template-columns:1fr; grid-template-areas: "house" "c1" "c2" "c3" "c4" "c5" "c6"; }
+  .orbit{ grid-template-columns:1fr; grid-template-areas: "house" "c1" "c2" "c3" "c4" "c5" "c7" "c6"; }
 }
 .house-wrap{ grid-area:house; display:flex; justify-content:center; align-items:center; padding:20px 0; }
 .house-wrap svg{ width:100%; max-width:340px; height:auto; }
 
-.card1{ grid-area:c1; } .card2{ grid-area:c2; } .card3{ grid-area:c3; } .card4{ grid-area:c4; } .card5{ grid-area:c5; } .card6{ grid-area:c6; }
+.card1{ grid-area:c1; } .card2{ grid-area:c2; } .card3{ grid-area:c3; } .card4{ grid-area:c4; } .card5{ grid-area:c5; } .card6{ grid-area:c6; } .card7{ grid-area:c7; }
 
 a.doc-card{
   display:block; background:var(--surface); border:1px solid var(--border); border-radius:16px;
@@ -128,27 +129,28 @@ a.doc-card:hover{ transform:translateY(-3px); border-color:var(--accent); }
 .doc-card .meta{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.06em; }
 .doc-card .arrow{ float:right; font-family:var(--font-mono); color:var(--accent); }
 
-.card1, .card2, .card3, .card4, .card5, .card6{ --accent: var(--c-readme); }
+.card1, .card2, .card3, .card4, .card5, .card6, .card7{ --accent: var(--c-readme); }
 .card1{ --accent: var(--c-readme); }
 .card2{ --accent: var(--c-arch); }
 .card3{ --accent: var(--c-knx); }
 .card4{ --accent: var(--c-roadmap); }
 .card5{ --accent: var(--c-energie); }
 .card6{ --accent: var(--c-inspi); }
+.card7{ --accent: var(--c-temp); }
 
-/* Cartes n°5 (Énergie) et n°6 (Inspirations) : seules sur leur ligne pleine
+/* Cartes n°5 (Énergie), n°7 (Température, 24.09.2026) et n°6 (Inspirations) : seules sur leur ligne pleine
    largeur, présentées en ligne (icône + texte + flèche) plutôt qu'empilées
    comme les 4 cartes verticales — sinon tout ce blanc supplémentaire aurait
    l'air d'un bug. */
-.doc-card.card5, .doc-card.card6{ display:flex; align-items:center; gap:20px; padding:20px 26px; }
-.doc-card.card5 .icon-chip, .doc-card.card6 .icon-chip{ margin-bottom:0; }
-.doc-card.card5 .card5-body, .doc-card.card6 .card5-body{ flex:1; min-width:0; }
-.doc-card.card5 .card5-body h3, .doc-card.card6 .card5-body h3{ margin:0 0 4px; }
-.doc-card.card5 .card5-body p, .doc-card.card6 .card5-body p{ margin:0 0 6px; }
-.doc-card.card5 .arrow, .doc-card.card6 .arrow{ float:none; flex:none; }
+.doc-card.card5, .doc-card.card6, .doc-card.card7{ display:flex; align-items:center; gap:20px; padding:20px 26px; }
+.doc-card.card5 .icon-chip, .doc-card.card6 .icon-chip, .doc-card.card7 .icon-chip{ margin-bottom:0; }
+.doc-card.card5 .card5-body, .doc-card.card6 .card5-body, .doc-card.card7 .card5-body{ flex:1; min-width:0; }
+.doc-card.card5 .card5-body h3, .doc-card.card6 .card5-body h3, .doc-card.card7 .card5-body h3{ margin:0 0 4px; }
+.doc-card.card5 .card5-body p, .doc-card.card6 .card5-body p, .doc-card.card7 .card5-body p{ margin:0 0 6px; }
+.doc-card.card5 .arrow, .doc-card.card6 .arrow, .doc-card.card7 .arrow{ float:none; flex:none; }
 @media (max-width: 560px){
-  .doc-card.card5, .doc-card.card6{ flex-direction:column; align-items:flex-start; }
-  .doc-card.card5 .arrow, .doc-card.card6 .arrow{ margin-top:4px; }
+  .doc-card.card5, .doc-card.card6, .doc-card.card7{ flex-direction:column; align-items:flex-start; }
+  .doc-card.card5 .arrow, .doc-card.card6 .arrow, .doc-card.card7 .arrow{ margin-top:4px; }
 }
 
 /* ---------- House illustration ---------- */
@@ -335,6 +337,16 @@ footer.site-footer code{ font-family:var(--font-mono); }
           <span class="arrow">&rarr;</span>
         </a>
 
+        <a class="doc-card card7" onclick="showView('temperature');return false;" href="#temperature">
+          <span class="icon-chip">__ICON_TEMP__</span>
+          <span class="card5-body">
+            <h3>Écran Température</h3>
+            <p>Grille des thermostats par étage sur le dashboard mural, cadran « Embrasement » à graduations illuminées, ce qui est réel et ce qui reste à brancher.</p>
+            <div class="meta">7 thermostats KNX &middot; 15 emplacements &middot; lecture seule pour l'instant</div>
+          </span>
+          <span class="arrow">&rarr;</span>
+        </a>
+
         <a class="doc-card card6" onclick="showView('inspirations');return false;" href="#inspirations">
           <span class="icon-chip">__ICON_INSPI__</span>
           <span class="card5-body">
@@ -396,6 +408,19 @@ __ENERGIE__
   </div>
 </div>
 
+<!-- ============ TEMPÉRATURE VIEW (24.09.2026) ============ -->
+<div id="view-temperature" class="view-panel" hidden>
+  <div class="page view">
+    <div class="section-head">
+      <h2>Écran Température</h2>
+      <p>Les thermostats KNX de la maison sur le dashboard mural — organisation par étage, design du cadran, ce qui est mesuré et ce qui reste à brancher.</p>
+    </div>
+    <div class="en-content">
+__TEMPERATURE__
+    </div>
+  </div>
+</div>
+
 <!-- ============ INSPIRATIONS VIEW ============ -->
 <div id="view-inspirations" class="view-panel" hidden>
   <div class="page view">
@@ -418,7 +443,7 @@ function showView(name){
 }
 function routeFromHash(){
   var h = (location.hash || '#home').slice(1);
-  if(['home','readme','architecture','roadmap','energie','inspirations'].indexOf(h) === -1) h = 'home';
+  if(['home','readme','architecture','roadmap','energie','temperature','inspirations'].indexOf(h) === -1) h = 'home';
   showView(h);
 }
 window.addEventListener('hashchange', routeFromHash);
