@@ -485,7 +485,50 @@ TEMP_TODO = [
     ("todo", "Raccorder les emplacements restants",
      "Attribuer côté ETS les pièces encore « non attribuées » (studio, espace central, "
      "WC-douche) ; leurs cadrans s'activeront sans changer la mise en page."),
-    ("todo", "Trancher le thème clair / sombre du cadran",
-     "Le cadran est pensé sur fond clair (neumorphisme) alors que le reste du dashboard assume "
-     "un thème sombre — point laissé ouvert au cahier des charges."),
+    ("wip", "Trancher le thème clair / sombre du cadran",
+     "Trois variantes sombres (Obsidienne, Verre fumé, Plaque incandescente) et un essai de "
+     "graduations bleu → rouge proposés le 24.09.2026 — voir « Pistes pour un cadran sombre » "
+     "plus haut. Décision de l'utilisateur attendue, puis report sur le canvas avant la production."),
 ]
+
+# 24.09.2026 — pistes pour un cadran sombre (décision en attente). Page d'essai
+# interactive servie telle quelle sous docs_site/maquettes/cadrans-sombres.html
+# (copie de l'artifact « Cadrans sombres »), captures sous docs_site/assets/
+# temp-sombre-*.jpg et temp-graduations-spectre-*.jpg.
+TEMP_DARK = {
+    "heading": "Pistes pour un cadran sombre (24.09.2026, décision en attente)",
+    "paragraphs": [
+        "Le disque clair du cadran détonne dans un dashboard au thème sombre. Trois variantes "
+        "ont été proposées pour en sortir, en gardant tout ce qui fait le cadran « Embrasement » : "
+        "braise animée, quatre paliers de chauffe, graduations allumées jusqu'à la consigne, "
+        "boutons −/+ et modes KNX.",
+        "<strong>A · Obsidienne</strong> reprend le même relief doux en graphite mat ; le disque "
+        "se réchauffe vers le brun cuivré puis l'ambre foncé. C'est la transposition la plus "
+        "directe du cadran actuel. <strong>B · Verre fumé</strong> rend le disque translucide et "
+        "flouté, dans la famille des cartes Liquid Glass : la braise se voit à travers le verre, "
+        "une lueur monte du bas du disque avec le palier. <strong>C · Plaque incandescente</strong> "
+        "donne une lunette en fonte noire cerclée de cuivre, et le centre du disque rougit comme "
+        "une plaque de cuisson — noir à l'arrêt, orange vif au palier fort — sans couronne de flamme.",
+        "En parallèle, un essai de <strong>graduations bleu → rouge</strong> : chaque graduation "
+        "prend la couleur de sa position sur l'échelle de 15 à 25&nbsp;°C (bleu, cyan, vert, jaune, "
+        "orange, rouge, en dégradé continu). Plus la consigne est haute, plus l'arc allumé "
+        "s'étend vers les couleurs chaudes ; au-delà de la consigne, les graduations restent "
+        "éteintes. L'essai se combine avec n'importe laquelle des variantes.",
+        "La <a href=\"/maquettes/cadrans-sombres.html\">page d'essai interactive</a> montre les "
+        "cinq mêmes pièces dans chaque variante, au format réel de l'écran mural, avec un "
+        "sélecteur de cadran et un curseur de consigne pour l'essai de graduations. Rien n'est "
+        "encore porté sur le canvas de référence ni sur le dashboard.",
+    ],
+    "gallery": [
+        ("temp-sombre-obsidienne.jpg", "A · Obsidienne",
+         "Chauffe forte (Chambre des parents, 22 °) : graphite mat, disque réchauffé vers l'ambre foncé."),
+        ("temp-sombre-verre-fume.jpg", "B · Verre fumé",
+         "Chauffe forte : disque translucide, braise visible à travers, lueur montant du bas."),
+        ("temp-sombre-plaque.jpg", "C · Plaque incandescente",
+         "Chauffe forte : fonte noire cerclée de cuivre, centre du disque orange vif."),
+        ("temp-graduations-spectre-20.jpg", "Graduations bleu → rouge, consigne 20 °",
+         "Sur la variante Obsidienne : l'arc allumé va du bleu au vert-jaune."),
+        ("temp-graduations-spectre-25.jpg", "Graduations bleu → rouge, consigne 25 °",
+         "Consigne au maximum de l'échelle : l'arc complet, jusqu'au rouge."),
+    ],
+}

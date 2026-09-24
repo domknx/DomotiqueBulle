@@ -27,7 +27,7 @@ docs_site/index.html : voir docs_site_src/README.md.
 import html
 import os
 from content import (ROADMAP, ENERGIE_SECTIONS, ENERGIE_GALLERY_INTRO, ENERGIE_GALLERY, ENERGIE_TODO, INSPI_INTRO, INSPI_GROUPS,
-                     TEMP_SECTIONS, TEMP_GALLERY_INTRO, TEMP_GALLERY, TEMP_INSPI_INTRO, TEMP_TODO)
+                     TEMP_SECTIONS, TEMP_GALLERY_INTRO, TEMP_GALLERY, TEMP_INSPI_INTRO, TEMP_TODO, TEMP_DARK)
 from architecture_overview import render_overview_frame
 
 # ---------------------------------------------------------------- house SVG
@@ -224,6 +224,21 @@ def build_temperature():
         '<div class="en-gallery">{items}</div>'
         '<p style="margin-top:18px">{inspi}</p>'
         '</div>'.format(intro=TEMP_GALLERY_INTRO, items="".join(gallery_items), inspi=TEMP_INSPI_INTRO)
+    )
+
+    dark_items = "".join(
+        '<figure class="en-gallery-item">'
+        '<img src="/assets/{f}" alt="{t}" loading="lazy" />'
+        '<figcaption><strong>{t}</strong>{c}</figcaption>'
+        '</figure>'.format(f=esc(f), t=esc(t), c=esc(c))
+        for f, t, c in TEMP_DARK["gallery"]
+    )
+    out.append(
+        '<div class="en-section"><h3>{h}</h3>{paras}<div class="en-gallery">{items}</div></div>'.format(
+            h=esc(TEMP_DARK["heading"]),
+            paras="".join('<p>{}</p>'.format(p) for p in TEMP_DARK["paragraphs"]),
+            items=dark_items,
+        )
     )
 
     todo_items = []

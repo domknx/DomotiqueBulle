@@ -155,6 +155,8 @@ Incident résolu le 23–24.08.2026 : après ajout du bloc `http:`/`trusted_prox
 
 - 2026-09-24 — Page « Écran Température » ajoutée à docbulle.malnoy.com (7ᵉ tuile de l'accueil, placée entre Énergie et Inspirations, nouvel accent `--braise` #ff7a3d) : même principe que la vue Énergie — contenu recopié à la main depuis la mémoire projet `custom_dashboard_temperature_screen.md` dans `docs_site_src/scripts/content.py` (`TEMP_SECTIONS`/`TEMP_GALLERY`/`TEMP_TODO`), rendu par `build_temperature()` (`build_index.py`), vue `#temperature` (`template.html`). 6 captures de la v55 (écran complet, 4 états du cadran, fenêtre d'historique) servies en assets `docs_site/assets/temp-*.jpg`. Feuille de route mise à jour (Température livré, reste en lecture seule). Sauvegarde des sources avant modification (`Backups/docs_site_src_*_before_temp_view/`, conforme §6) ; vérifié responsive (390px) et thèmes clair/sombre avant commit.
 
+- 2026-09-24 — Pistes pour un cadran de thermostat sombre documentées (décision de l'utilisateur attendue) : 3 variantes du cadran « Embrasement » (A Obsidienne, B Verre fumé, C Plaque incandescente) + essai de graduations bleu → rouge selon la position sur l'échelle 15–25 °C. Page d'essai interactive (artifact « Cadrans sombres », copie `docs_site/maquettes/cadrans-sombres.html`), section dédiée et 5 captures (`docs_site/assets/temp-sombre-*.jpg`, `temp-graduations-spectre-*.jpg`) dans la vue Température de docbulle, point ouvert mis à jour dans `dashboard/CAHIER_DES_CHARGES.md` §9. Rien de porté sur le canvas ni en production.
+
 ## 10. Jalons du projet et sauvegardes
 
 ### 10.1 Jalons principaux
