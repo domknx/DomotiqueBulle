@@ -2013,6 +2013,54 @@
      voir rtTicksHtml). Polices : consigne, température mesurée et % de vanne suivent le jeton
      --ff-value, nom de pièce --ff-title (règle typographique du CAHIER_DES_CHARGES §8). */
   .svg-ff-value{ font-family:var(--ff-value); }
+
+  /* ---------- 25.09.2026 (demande utilisateur) : écran Température réorganisé par niveau ----------
+     Un seul niveau affiché à la fois (Étage par défaut), dans une carte de 2 thermostats de large x 3
+     de haut (grille 2x3, 5 pièces par niveau) ; le reste de la largeur est un espace réservé pour les
+     autres informations à venir sur cet écran (même convention "verre à bordure pointillée" que les
+     écrans pas encore construits). Sélection du niveau par 3 boutons dans le bandeau (Sous-sol / RDC /
+     Étage) : icône de vanne + nombre de vannes ouvertes (> 0 %) du niveau ; l'icône « rougeoie »
+     (braise animée + lueur) d'autant plus fort et vite que l'ouverture moyenne des vannes du niveau
+     est élevée (--heat = moyenne / 100, 0 = icône grise, aucune braise). Tout est recalculé à chaque
+     action de la simulation. */
+  .temp-floors{ flex-direction:row; align-items:stretch; gap:24px; }
+  .temp-floor-card.temp-floor-single{ flex:0 0 auto; }
+  .temp-grid{ display:grid; grid-template-columns:repeat(2, 330px); gap:16px; position:relative; z-index:2; }
+  .temp-side{ flex:1; align-self:stretch; min-width:0; }
+  .temp-floorbtns{ display:flex; gap:12px; }
+  .tfb{ display:flex; align-items:center; gap:14px; padding:10px 18px 10px 20px; border-radius:16px; cursor:pointer;
+    border:1px solid var(--glass-brd); background:rgba(238,241,246,.05); color:var(--brume-dim);
+    font-family:var(--ff-body); font-size:14px; font-weight:500; transition:background .18s ease, border-color .18s ease, color .18s ease; }
+  .tfb:hover{ background:var(--glass); color:var(--brume); }
+  .tfb.on{ background:color-mix(in srgb, var(--ambre) 16%, transparent); border-color:color-mix(in srgb, var(--ambre) 45%, transparent); color:var(--brume); }
+  .tfb:focus-visible{ outline:2px solid var(--ambre); outline-offset:2px; }
+  .tfb-meta{ display:flex; align-items:center; gap:6px; }
+  .tfb-valve{ position:relative; width:28px; height:28px; display:grid; place-items:center;
+    color:color-mix(in srgb, #ffb27a var(--mix, 0%), var(--brume-dim)); }
+  .tfb-valve svg{ width:22px; height:22px; stroke:currentColor; position:relative; z-index:1;
+    filter:drop-shadow(0 0 calc(7px * var(--heat, 0)) rgba(255,120,30, calc(.95 * var(--heat, 0)))); }
+  .tfb-ember, .tfb-ember::after{ position:absolute; border-radius:50%; pointer-events:none; }
+  .tfb-ember{ inset:-12px; filter:blur(3px);
+    background:radial-gradient(circle, rgba(255,176,70,.95) 0%, rgba(234,88,12,.6) 38%, rgba(234,88,12,0) 70%);
+    opacity:calc(.9 * var(--heat, 0)); animation:tfbEmber var(--ember-dur, 3s) ease-in-out infinite; }
+  .tfb-ember::after{ content:''; inset:6px 2px 0 8px;
+    background:radial-gradient(circle, rgba(255,214,150,.9) 0%, rgba(255,130,0,.45) 45%, rgba(255,130,0,0) 72%);
+    animation:tfbEmber2 calc(var(--ember-dur, 3s) * .7) ease-in-out infinite; }
+  @keyframes tfbEmber{ 0%,100%{ transform:scale(.82); opacity:calc(.55 * var(--heat, 0)); } 50%{ transform:scale(1.12); opacity:calc(1 * var(--heat, 0)); } }
+  @keyframes tfbEmber2{ 0%,100%{ transform:translate(0,0) scale(.9); opacity:.5; } 40%{ transform:translate(-2px,-2px) scale(1.15); opacity:1; } 70%{ transform:translate(2px,1px) scale(.95); opacity:.7; } }
+  .tfb-count{ font-family:var(--ff-value); font-size:calc(19px * var(--fs-value-scale)); font-weight:600; font-variant-numeric:tabular-nums; color:var(--brume); min-width:1ch; }
+  .tfb.cold .tfb-count{ color:var(--brume-dim); }
+  /* Changement de niveau (25.09.2026, demande utilisateur) : chaque thermostat du niveau affiché fait
+     une volte-face de 180° (rotation sur l'axe vertical) et révèle au dos le thermostat du même
+     emplacement du niveau choisi, en cascade (décalage de 70 ms par tuile). Désactivé si l'utilisateur
+     a demandé à réduire les animations (changement immédiat). */
+  .temp-grid{ perspective:1600px; }
+  .tflip{ position:relative; }
+  .tflip-inner{ position:relative; transform-style:preserve-3d; transition:transform .8s cubic-bezier(.45,.05,.25,1); }
+  .tflip.go .tflip-inner{ transform:rotateY(180deg); }
+  .tflip-face{ backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+  .tflip-face.back{ position:absolute; inset:0; transform:rotateY(180deg); }
+  .tflip-face.back > .rt-tile{ height:100%; }
   .rt-valve{ position:absolute; top:14px; right:14px; z-index:3; display:flex; align-items:center; gap:5px;
     padding:3px 9px 3px 6px; border-radius:999px; border:1px solid var(--glass-brd); background:rgba(238,241,246,.05);
     font-family:var(--ff-value); font-size:calc(10.5px * var(--fs-value-scale)); font-weight:600; color:var(--brume-dim); font-variant-numeric:tabular-nums; line-height:1; }
@@ -2556,6 +2604,7 @@
             <div class="ph-title">Température</div>
             <div class="ph-sub" style="margin-top:6px;" id="tempSub">7 thermostats KNX confirmés · 8 emplacements en attente de raccordement · commandes en simulation, aucun envoi KNX</div>
           </div>
+          <div class="temp-floorbtns" id="tempFloorBtns" role="group" aria-label="Niveau affiché"></div>
         </div>
         <div class="temp-floors" id="tempFloors"></div>
       </section>
@@ -4559,34 +4608,89 @@
     if(el) el.outerHTML = tempTileHtml(r);
   }
 
-  function tempFloorCard(name, sub, rowCls, tilesHtml){
-    return `
-      <div class="enr-card temp-floor-card">
-        <div class="card-sheen"></div>
-        <div>
-          <div class="temp-floor-title">${name}</div>
-          <div class="temp-floor-sub">${sub}</div>
-        </div>
-        <div class="temp-row ${rowCls}">${tilesHtml}</div>
-      </div>`;
+  // Niveau affiché (25.09.2026) : Étage par défaut ; libellé court des boutons du bandeau.
+  let tempFloorSel = 'Étage';
+  const TEMP_FLOOR_SHORT = { 'Sous-sol':'Sous-sol', 'Rez-de-chaussée':'RDC', 'Étage':'Étage' };
+  const RT_VALVE_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v6l9-3-9-3Z"/><path d="M21 11v6l-9-3 9-3Z"/><path d="M12 14V8"/><path d="M8.5 6h7"/></svg>`;
+  function tempFloorStats(f){
+    const vs = f.rooms.filter(r => r.climate).map(rtValveOf);
+    const open = vs.filter(v => v > 0).length;
+    const avg = vs.length ? vs.reduce((a, b) => a + b, 0) / vs.length : 0;
+    return { n: vs.length, open, avg };
   }
+  function renderTempFloorBtns(){
+    const box = document.getElementById('tempFloorBtns'); if(!box) return;
+    box.innerHTML = TEMP_FLOORS.map(f => {
+      // intensité visuelle : 0 si aucune vanne ouverte, sinon 0.4 -> 1 selon l'ouverture moyenne (0 -> 100 %),
+      // pour que même une faible ouverture reste perceptible ; rythme de la braise plus rapide quand ça chauffe fort.
+      const st = tempFloorStats(f), a = st.avg / 100, heat = st.avg > 0 ? +(0.4 + 0.6 * a).toFixed(3) : 0;
+      const mix = st.avg > 0 ? Math.round(55 + 45 * a) : 0;
+      const dur = (3.4 - 2 * a).toFixed(2);
+      const on = f.name === tempFloorSel;
+      const tip = `${f.name} : ${st.open} vanne${st.open > 1 ? 's' : ''} ouverte${st.open > 1 ? 's' : ''} sur ${st.n} · ouverture moyenne ${Math.round(st.avg)} %`;
+      return `<button type="button" class="tfb ${on ? 'on' : ''} ${st.open ? '' : 'cold'}" data-floor="${f.name}" aria-pressed="${on}" title="${tip}"
+        style="--heat:${heat}; --mix:${mix}%; --ember-dur:${dur}s;">
+        <span class="tfb-lbl">${TEMP_FLOOR_SHORT[f.name] || f.name}</span>
+        <span class="tfb-meta"><span class="tfb-valve"><span class="tfb-ember"></span>${RT_VALVE_SVG}</span><span class="tfb-count">${st.open}</span></span>
+      </button>`;
+    }).join('');
+  }
+  // Volte-face des thermostats au changement de niveau : l'ancienne tuile devient la face avant d'une
+  // carte à deux faces, la tuile du niveau choisi (même emplacement de la grille 2×3) la face arrière ;
+  // une fois toutes les rotations terminées, l'écran est reconstruit proprement (renderTempLayout).
+  let tempFlipping = false;
+  function tempFloorFlip(target){
+    const grid = document.querySelector('#tempFloors .temp-grid');
+    const f = TEMP_FLOORS.find(x => x.name === target);
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    tempFloorSel = target;
+    if(!grid || !f || reduce){ renderTempLayout(); return; }
+    tempFlipping = true;
+    renderTempFloorBtns();
+    const st = tempFloorStats(f);
+    const title = document.querySelector('#tempFloors .temp-floor-title'), sub = document.getElementById('tempFloorSub');
+    if(title) title.textContent = f.name;
+    if(sub) sub.textContent = `${st.n} thermostat${st.n>1?'s':''} raccordé${st.n>1?'s':''} sur ${f.rooms.length} · ${st.open} vanne${st.open>1?'s':''} ouverte${st.open>1?'s':''}`;
+    const olds = [...grid.children];
+    const count = Math.max(olds.length, f.rooms.length);
+    const flips = [];
+    for(let i = 0; i < count; i++){
+      const wrapEl = document.createElement('div');
+      wrapEl.className = 'tflip';
+      const inner = document.createElement('div'); inner.className = 'tflip-inner';
+      const front = document.createElement('div'); front.className = 'tflip-face front';
+      const back = document.createElement('div'); back.className = 'tflip-face back';
+      if(olds[i]){ grid.replaceChild(wrapEl, olds[i]); front.appendChild(olds[i]); }
+      else { grid.appendChild(wrapEl); front.style.visibility = 'hidden'; front.innerHTML = f.rooms[i] ? tempTileHtml(f.rooms[i]) : ''; }
+      back.innerHTML = f.rooms[i] ? tempTileHtml(f.rooms[i]) : '';
+      inner.append(front, back); wrapEl.appendChild(inner);
+      flips.push(wrapEl);
+    }
+    void grid.offsetHeight;
+    flips.forEach((el, i) => setTimeout(() => el.classList.add('go'), i * 70));
+    setTimeout(() => { tempFlipping = false; renderTempLayout(); }, (flips.length - 1) * 70 + 850);
+  }
+
   function renderTempLayout(){
     const wrap = document.getElementById('tempFloors');
     Object.keys(RT_ROOMS).forEach(k => delete RT_ROOMS[k]);
     TEMP_FLOORS.forEach(f => f.rooms.forEach(r => { if(r.climate) RT_ROOMS[r.room] = r; }));
-    document.getElementById('tempSub').textContent = '7 thermostats KNX confirmés · 8 emplacements en attente de raccordement · commandes en simulation, aucun envoi KNX';
-    wrap.innerHTML = TEMP_FLOORS.map(f => {
-      const active = f.rooms.filter(r => r.climate).length;
-      return `
-      <div class="enr-card temp-floor-card">
+    const f = TEMP_FLOORS.find(x => x.name === tempFloorSel) || TEMP_FLOORS[TEMP_FLOORS.length - 1];
+    const st = tempFloorStats(f);
+    wrap.innerHTML = `
+      <div class="enr-card temp-floor-card temp-floor-single">
         <div class="card-sheen"></div>
         <div>
           <div class="temp-floor-title">${f.name}</div>
-          <div class="temp-floor-sub">${active} thermostat${active>1?'s':''} raccordé${active>1?'s':''} sur ${f.rooms.length}</div>
+          <div class="temp-floor-sub" id="tempFloorSub">${st.n} thermostat${st.n>1?'s':''} raccordé${st.n>1?'s':''} sur ${f.rooms.length} · ${st.open} vanne${st.open>1?'s':''} ouverte${st.open>1?'s':''}</div>
         </div>
-        <div class="temp-row">${f.rooms.map(tempTileHtml).join('')}</div>
+        <div class="temp-grid">${f.rooms.map(tempTileHtml).join('')}</div>
+      </div>
+      <div class="reserved-space temp-side">
+        <div class="ph-sub">Espace réservé</div>
+        <div class="temp-floor-sub">Autres informations de l'écran Température — à définir</div>
       </div>`;
-    }).join('');
+    renderTempFloorBtns();
   }
 
   let tempScreenBuilt = false;
@@ -4595,6 +4699,11 @@
     tempScreenBuilt = true;
     const wrap = document.getElementById('tempFloors');
     renderTempLayout();
+
+    document.getElementById('tempFloorBtns').addEventListener('click', (e) => {
+      const b = e.target.closest('.tfb'); if(!b || b.dataset.floor === tempFloorSel || tempFlipping) return;
+      tempFloorFlip(b.dataset.floor);
+    });
 
     wrap.addEventListener('click', (e) => {
       const st = e.target.closest('.rt-stepper[data-key]');
@@ -4610,6 +4719,9 @@
         }
         rtSimRecompute(r);
         rtRedrawTile((st || mb).dataset.key);
+        renderTempFloorBtns();
+        const f = TEMP_FLOORS.find(x => x.name === tempFloorSel), sub = document.getElementById('tempFloorSub');
+        if(f && sub){ const s2 = tempFloorStats(f); sub.textContent = `${s2.n} thermostat${s2.n>1?'s':''} raccordé${s2.n>1?'s':''} sur ${f.rooms.length} · ${s2.open} vanne${s2.open>1?'s':''} ouverte${s2.open>1?'s':''}`; }
         return;
       }
       const gb = e.target.closest('.rt-graphbtn');
