@@ -335,9 +335,13 @@
      24.09.2026 (voir CAHIER_DES_CHARGES.md). Largeur calculée pour combler exactement le reste
      de .acc-row1 (mesurée ≈1782px : 33% Météo + 820px Énergie + 2×24px de gap = 1456px,
      326px restants). Badge feuille + titre en haut, jauge verticale au centre (piste + remplissage
-     dont la hauteur ET la couleur reflètent le % d'énergie "verte" — solaire+batterie — vs réseau,
-     dégradé continu rouge→ambre→vert calculé en JS par pfcEcoColor()), pourcentage + légende du
-     mix en bas. Données : pfcGreenPercent()/applyAccEco() plus bas, appelées depuis
+     toujours pleine, coloree du bas vers le haut en vert sur le % d'énergie "verte" (solaire +
+     batterie) puis en rouge sur le reste (réseau), avec un dégradé progressif à la jonction plutot
+     qu'une coupure nette -- 25.09.2026, révision demandée par l'utilisateur : "la jauge doit
+     toujours être pleine, le ratio de vert et rouge dépend du pourcentage" (remplace la 1ère
+     version du jour, où la hauteur du remplissage suivait le %). Gradient CSS calculé en JS par
+     pfcEcoGradient(), 100% vert si tout solaire/batterie, 100% rouge si tout réseau. Pourcentage +
+     légende du mix en bas. Données : pfcGreenPercent()/applyAccEco() plus bas, appelées depuis
      applyAccEnergy() avec ENERGY_MOCK (même source mock que le reste du widget Énergie). */
   .acc-eco{
     flex:0 0 326px; padding:26px 22px 24px; display:flex; flex-direction:column; align-items:center;
@@ -358,8 +362,8 @@
     background:rgba(238,241,246,.08); box-shadow:inset 0 2px 8px rgba(0,0,0,.35);
   }
   .acc-eco-gauge-fill{
-    position:absolute; left:0; right:0; bottom:0; width:100%; height:0%; border-radius:999px;
-    background:var(--mousse); transition:height .6s ease, background .6s ease;
+    position:absolute; left:0; right:0; bottom:0; width:100%; height:100%; border-radius:999px;
+    background:var(--mousse); opacity:0; transition:background .6s ease, opacity .6s ease;
     box-shadow:inset 0 10px 16px rgba(255,255,255,.18), inset 0 -8px 14px rgba(0,0,0,.16);
   }
   .acc-eco-pct{
@@ -3484,6 +3488,22 @@
     return 'rgb(' + c.join(',') + ')';
   }
 
+  // 25.09.2026 (révision demandée par l'utilisateur, "la jauge doit toujours être pleine — le
+  // ratio de vert et rouge dépend du pourcentage") : construit le dégradé CSS 2 tons de la jauge
+  // "Énergie verte", toujours pleine (100% de hauteur), verte depuis le bas sur `pct`% puis rouge
+  // au-dessus, avec une zone de transition douce à la jonction plutôt qu'une coupure nette. Le
+  // demi-largeur de la zone de transition (halfBlend) est réduite (clampée) pour ne jamais déborder
+  // 0% ou 100% -- garantit un rendu 100% vert (pas de liseré rouge) à pct=100 et 100% rouge à
+  // pct=0, conformément à la demande ("full solaire = vert" / "complètement rouge si vient que du
+  // réseau").
+  function pfcEcoGradient(pct){
+    const green = '#6fcf97', red = '#ff5a5a'; // --mousse, --rouge
+    const halfBlend = Math.min(6, pct, 100 - pct);
+    const greenEnd = pct - halfBlend;   // haut de la zone pleinement verte, depuis le bas (0%)
+    const redStart = pct + halfBlend;   // bas de la zone pleinement rouge, jusqu'en haut (100%)
+    return 'linear-gradient(to top, ' + green + ' 0%, ' + green + ' ' + greenEnd + '%, ' + red + ' ' + redStart + '%, ' + red + ' 100%)';
+  }
+
   // Dérive les 7 flux nommés de la topologie à partir des données Énergie (ENR_REAL/ENR_MOCK).
   // Faute de capteurs séparés pour les 4 liaisons directes (Solaire→Réseau/Batterie,
   // Réseau/Batterie→Voiture), ces valeurs sont des APPROXIMATIONS documentées (décision
@@ -5127,10 +5147,12 @@ function renderEnergyScreen(){
     }
     applyAccEco(ENERGY_MOCK);
   }
-  // Carte "Énergie verte" (25.09.2026, demande utilisateur) : jauge verticale dont la hauteur ET
-  // la couleur (pfcEcoColor(), dégradé rouge->ambre->vert) reflètent le % de la consommation
-  // couvert par du solaire/batterie plutôt que par le réseau (pfcGreenPercent()). Appelée depuis
-  // applyAccEnergy() ci-dessus, avec la même source ENERGY_MOCK que le reste du widget Énergie.
+  // Carte "Énergie verte" (25.09.2026, demande utilisateur ; révisée le même jour -- "la jauge
+  // doit toujours être pleine, le ratio de vert et rouge dépend du pourcentage") : jauge verticale
+  // TOUJOURS pleine, colorée du bas vers le haut en vert sur `pct`% (solaire+batterie) puis en
+  // rouge sur le reste (réseau), dégradé 2 tons calculé par pfcEcoGradient(). Le % de consommation
+  // "verte" vient de pfcGreenPercent(). Appelée depuis applyAccEnergy() ci-dessus, avec la même
+  // source ENERGY_MOCK que le reste du widget Énergie.
   function applyAccEco(F){
     const pct = pfcGreenPercent(F);
     const fill = document.getElementById('accEcoGaugeFill');
@@ -5138,15 +5160,15 @@ function renderEnergyScreen(){
     const subEl = document.getElementById('accEcoSub');
     if (!fill || !pctEl || !subEl) return;
     if (pct === null) {
-      fill.style.height = '0%';
+      fill.style.opacity = '0';
       pctEl.textContent = '—%';
       pctEl.style.color = '';
       subEl.textContent = 'Aucune consommation';
       return;
     }
     const color = pfcEcoColor(pct);
-    fill.style.height = pct + '%';
-    fill.style.background = color;
+    fill.style.opacity = '1';
+    fill.style.background = pfcEcoGradient(pct);
     pctEl.textContent = pct + '%';
     pctEl.style.color = color;
     subEl.textContent = pct >= 90 ? 'Solaire + batterie'
