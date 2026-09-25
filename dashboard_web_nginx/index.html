@@ -2051,15 +2051,17 @@
   .tfb-count{ font-family:var(--ff-value); font-size:calc(19px * var(--fs-value-scale)); font-weight:600; font-variant-numeric:tabular-nums; color:var(--brume); min-width:1ch; }
   .tfb.cold .tfb-count{ color:var(--brume-dim); }
   /* Changement de niveau (25.09.2026, demande utilisateur) : chaque thermostat du niveau affiché fait
-     une volte-face de 180° (rotation sur l'axe vertical) et révèle au dos le thermostat du même
-     emplacement du niveau choisi, en cascade (décalage de 70 ms par tuile). Désactivé si l'utilisateur
-     a demandé à réduire les animations (changement immédiat). */
+     une volte-face de 180° (rotation sur l'axe vertical) en cascade (décalage de 70 ms par tuile).
+     Révision du même jour (retour utilisateur : « on voit la carte à l'envers ») : la bascule entre les
+     deux faces ne repose plus sur backface-visibility (non respecté par les couches internes du cadran :
+     filtres, flous, transformations des graduations) mais sur un fondu piloté par l'angle, en JS
+     (tempFloorFlip) : jusqu'à 80° seul l'ancien thermostat est visible, de 80° à 120° fondu enchaîné vers
+     le nouveau, au-delà seul le nouveau thermostat (déjà pré-tourné de 180°, donc à l'endroit) finit
+     de tourner. Désactivé si l'utilisateur a demandé à réduire les animations (changement immédiat). */
   .temp-grid{ perspective:1600px; }
   .tflip{ position:relative; }
-  .tflip-inner{ position:relative; transform-style:preserve-3d; transition:transform .8s cubic-bezier(.45,.05,.25,1); }
-  .tflip.go .tflip-inner{ transform:rotateY(180deg); }
-  .tflip-face{ backface-visibility:hidden; -webkit-backface-visibility:hidden; }
-  .tflip-face.back{ position:absolute; inset:0; transform:rotateY(180deg); }
+  .tflip-inner{ position:relative; transform-style:preserve-3d; will-change:transform; }
+  .tflip-face.back{ position:absolute; inset:0; transform:rotateY(180deg); opacity:0; }
   .tflip-face.back > .rt-tile{ height:100%; }
   .rt-valve{ position:absolute; top:14px; right:14px; z-index:3; display:flex; align-items:center; gap:5px;
     padding:3px 9px 3px 6px; border-radius:999px; border:1px solid var(--glass-brd); background:rgba(238,241,246,.05);
@@ -4666,9 +4668,26 @@
       inner.append(front, back); wrapEl.appendChild(inner);
       flips.push(wrapEl);
     }
-    void grid.offsetHeight;
-    flips.forEach((el, i) => setTimeout(() => el.classList.add('go'), i * 70));
-    setTimeout(() => { tempFlipping = false; renderTempLayout(); }, (flips.length - 1) * 70 + 850);
+    // Animation pilotée par l'angle : rotation 0 -> 180° (ease-in-out), fondu front -> back entre 80° et 120°.
+    const DUR = 800, STAGGER = 70, FADE_FROM = 80, FADE_TO = 120;
+    const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const parts = flips.map(el => ({ inner: el.querySelector('.tflip-inner'), front: el.querySelector('.tflip-face.front'), back: el.querySelector('.tflip-face.back') }));
+    const t0 = performance.now();
+    function step(now){
+      let done = true;
+      parts.forEach((pt, i) => {
+        const t = Math.max(0, Math.min(1, (now - t0 - i * STAGGER) / DUR));
+        if(t < 1) done = false;
+        const a = 180 * ease(t);
+        const k = Math.max(0, Math.min(1, (a - FADE_FROM) / (FADE_TO - FADE_FROM)));
+        pt.inner.style.transform = `rotateY(${a.toFixed(2)}deg)`;
+        if(pt.front.style.visibility !== 'hidden') pt.front.style.opacity = (1 - k).toFixed(3);
+        pt.back.style.opacity = k.toFixed(3);
+      });
+      if(done){ tempFlipping = false; renderTempLayout(); }
+      else requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
 
   function renderTempLayout(){
