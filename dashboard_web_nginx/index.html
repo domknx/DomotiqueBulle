@@ -2000,6 +2000,107 @@
     padding:4px 10px; border-radius:999px; border:1px solid var(--glass-brd); background:rgba(238,241,246,.06); }
   .rt-mode-na{ opacity:.7; }
 
+  /* ---------- 25.09.2026 (décision utilisateur) : cadran du thermostat selon le style de carte ----------
+     Suite aux pistes du 24.09.2026 (artifact « Cadrans sombres », docbulle /maquettes/cadrans-sombres.html) :
+     style GlassHome -> variante B « Verre fumé » ; style Liquid Glass -> variante C « Plaque
+     incandescente » ; style Neumorphism -> cadran clair d'origine inchangé (cohérent avec ses cartes
+     claires). Surcharges uniquement : le cadran de base (règles .rt-* ci-dessus, canvas v32) reste la
+     référence en Neumorphism. Graduations : cuivre -> or inchangées (l'essai bleu -> rouge n'est pas
+     retenu à ce stade). Préfixe [data-card-style] + .rt-thermo pour passer devant les règles .tier-N. */
+  /* -- commun aux 2 cadrans sombres (GlassHome + Liquid Glass) : textes, graduations éteintes et boutons clairs -- */
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-tick:not(.lit){ background:#4e5563; }
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-modeword{ color:rgba(238,241,246,.5); }
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-temp{ color:#f3f4f7; }
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-temp.tier-0{ color:rgba(238,241,246,.62); }
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-temp.tier-2{ color:#ffe2bf; text-shadow:0 0 14px rgba(255,140,40,.5); }
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-temp.tier-3{ color:#fff0dc; text-shadow:0 0 18px rgba(255,120,20,.75); }
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-current{ color:rgba(238,241,246,.5); }
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-stepper,
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-graphbtn{
+  background:linear-gradient(150deg,#2c3039 0%,#1f222a 100%); color:rgba(238,241,246,.75);
+  box-shadow:3px 3px 6px rgba(0,0,0,.55), -2px -2px 5px rgba(255,255,255,.05), inset 0 1px 1px rgba(255,255,255,.08);
+}
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-stepper:active{ box-shadow:inset 2px 2px 4px rgba(0,0,0,.6), inset -1px -1px 3px rgba(255,255,255,.05); }
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-errorbtn{
+  background:linear-gradient(150deg,#4b1d1d,#2c1111); color:#fca5a5;
+  animation:rt-dk-errpulse 1.8s ease-in-out infinite;
+}
+@keyframes rt-dk-errpulse{
+  0%,100%{ box-shadow:3px 3px 6px rgba(0,0,0,.55), 0 0 0 0 rgba(248,113,113,.45); }
+  50%{ box-shadow:3px 3px 6px rgba(0,0,0,.55), 0 0 0 6px rgba(248,113,113,0); }
+}
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-modebtn{
+  color:rgba(238,241,246,.5); background:#1a1d24;
+  box-shadow:3px 3px 6px rgba(0,0,0,.55), -2px -2px 5px rgba(255,255,255,.04), inset 0 0 0 1px rgba(255,255,255,.04);
+}
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-modebtn.active{
+  color:#ffb27a; background:#1a1d24;
+  box-shadow:inset 2px 2px 5px rgba(0,0,0,.6), inset -1px -1px 3px rgba(255,255,255,.05), 0 0 0 1px rgba(255,156,84,.35), 0 0 10px rgba(255,120,30,.3);
+}
+/* la couronne de flamme d'origine contient des zones quasi blanches (neutres en multiply sur
+   disque clair) : sur fond sombre on la remplace par une version sans blanc, en screen */
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-flamering{
+  mix-blend-mode:screen;
+  background:conic-gradient(from 0deg,
+    rgba(255,161,0,0) 0%, rgba(255,161,0,.55) 13%, rgba(199,80,4,.5) 26%, rgba(255,161,0,0) 36%,
+    rgba(255,161,0,0) 50%, rgba(199,80,4,.45) 64%, rgba(255,161,0,.5) 77%, rgba(255,161,0,0) 88%);
+}
+:is([data-card-style="glasshome"],[data-card-style="liquid"]) .rt-thermo .rt-dialflicker{ mix-blend-mode:screen; }
+
+/* -- style GlassHome -> cadran « Verre fumé » : disque translucide, la braise se voit à travers -- */
+[data-card-style="glasshome"] .rt-thermo .rt-bezel{
+  background:rgba(238,241,246,.045);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22), inset 0 0 0 1px rgba(255,255,255,.12), 0 10px 30px rgba(0,0,0,.45);
+}
+[data-card-style="glasshome"] .rt-thermo .rt-groove{ box-shadow:inset 0 0 0 1px rgba(255,255,255,.07); }
+[data-card-style="glasshome"] .rt-thermo .rt-dial{
+  background:
+    radial-gradient(circle at 35% 22%, rgba(255,255,255,.16), rgba(255,255,255,.03) 58%),
+    rgba(16,18,26,.55);
+  backdrop-filter:blur(12px) saturate(150%); -webkit-backdrop-filter:blur(12px) saturate(150%);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.4), inset 0 -10px 18px rgba(0,0,0,.35), 0 14px 30px rgba(0,0,0,.5);
+}
+[data-card-style="glasshome"] .rt-thermo.tier-1 .rt-dial{ background:radial-gradient(circle at 35% 22%, rgba(255,255,255,.15), rgba(255,255,255,.03) 58%), radial-gradient(circle at 50% 110%, rgba(255,140,40,.18), transparent 65%), rgba(16,18,26,.52); }
+[data-card-style="glasshome"] .rt-thermo.tier-2 .rt-dial{ background:radial-gradient(circle at 35% 22%, rgba(255,255,255,.15), rgba(255,255,255,.03) 58%), radial-gradient(circle at 50% 110%, rgba(255,140,40,.32), transparent 70%), rgba(24,16,12,.48); }
+[data-card-style="glasshome"] .rt-thermo.tier-3 .rt-dial{ background:radial-gradient(circle at 35% 22%, rgba(255,255,255,.15), rgba(255,255,255,.03) 58%), radial-gradient(circle at 50% 105%, rgba(255,120,20,.5), transparent 75%), rgba(30,14,8,.45); }
+[data-card-style="glasshome"] .rt-thermo .rt-dialrim{ box-shadow:inset 0 0 0 1px rgba(255,255,255,.14), inset 0 2px 3px rgba(255,255,255,.12); }
+[data-card-style="glasshome"] .rt-thermo .rt-dialglare{ left:12%; top:6%; width:60%; height:28%; background:radial-gradient(ellipse at 40% 30%, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 70%); }
+[data-card-style="glasshome"] .rt-thermo .rt-flamering{ opacity:.35; }
+[data-card-style="glasshome"] .rt-thermo .rt-stepper, [data-card-style="glasshome"] .rt-thermo .rt-graphbtn{
+  background:rgba(255,255,255,.08); backdrop-filter:blur(6px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2), inset 0 0 0 1px rgba(255,255,255,.12);
+}
+[data-card-style="glasshome"] .rt-modebtn{ background:rgba(255,255,255,.05); box-shadow:inset 0 0 0 1px rgba(255,255,255,.1); }
+[data-card-style="glasshome"] .rt-modebtn.active{ background:rgba(255,156,84,.14); box-shadow:inset 0 0 0 1px rgba(255,156,84,.45), 0 0 10px rgba(255,120,30,.25); }
+
+/* -- style Liquid Glass -> cadran « Plaque incandescente » : fonte noire, le centre du disque rougit -- */
+[data-card-style="liquid"] .rt-thermo .rt-bezel{
+  background:repeating-radial-gradient(circle at 50% 50%, #15171b 0 2px, #121418 2px 4px);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.05), inset 0 6px 14px rgba(0,0,0,.8), 0 1px 0 rgba(255,255,255,.04);
+}
+[data-card-style="liquid"] .rt-thermo .rt-groove{ box-shadow:inset 0 0 0 1px rgba(202,160,107,.18), inset 0 2px 5px rgba(0,0,0,.7); }
+[data-card-style="liquid"] .rt-thermo .rt-dial{
+  background:radial-gradient(circle at 50% 50%, #262930 0%, #1a1c21 60%, #121317 100%);
+  box-shadow:0 10px 22px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,.04);
+}
+[data-card-style="liquid"] .rt-thermo.tier-1 .rt-dial{ background:radial-gradient(circle at 50% 55%, #6a2a0c 0%, #34170a 42%, #1a1310 72%, #121317 100%); }
+[data-card-style="liquid"] .rt-thermo.tier-2 .rt-dial{ background:radial-gradient(circle at 50% 55%, #c2410c 0%, #7a2708 34%, #34150a 64%, #141215 100%); }
+[data-card-style="liquid"] .rt-thermo.tier-3 .rt-dial{ background:radial-gradient(circle at 50% 55%, #ff8a2a 0%, #e0550e 26%, #8f2a07 52%, #3a1508 76%, #16100e 100%);
+  box-shadow:0 10px 22px rgba(0,0,0,.7), 0 0 26px rgba(255,100,20,.35), inset 0 0 0 1px rgba(255,160,80,.2); }
+[data-card-style="liquid"] .rt-thermo .rt-flamering{ opacity:0; }
+[data-card-style="liquid"] .rt-thermo .rt-dialrim{ box-shadow:inset 0 0 0 1px rgba(255,255,255,.05), inset 0 2px 4px rgba(0,0,0,.55); }
+[data-card-style="liquid"] .rt-thermo .rt-dialglare{ opacity:.25; }
+[data-card-style="liquid"] .rt-thermo .rt-temp{ text-shadow:0 1px 8px rgba(0,0,0,.6); }
+[data-card-style="liquid"] .rt-thermo .rt-stepper, [data-card-style="liquid"] .rt-thermo .rt-graphbtn{
+  background:#17191e; color:rgba(238,241,246,.8);
+  box-shadow:inset 0 0 0 1px rgba(202,160,107,.35), 0 3px 6px rgba(0,0,0,.6);
+}
+[data-card-style="liquid"] .rt-modebtn{ background:#15171b; box-shadow:inset 0 0 0 1px rgba(202,160,107,.18); }
+[data-card-style="liquid"] .rt-modebtn.active{ color:#ffb27a; background:#1c1612; box-shadow:inset 0 0 0 1px rgba(255,140,60,.55), 0 0 10px rgba(255,110,30,.3); }
+
+
+
   /* -- popup graphe/erreur au clic (même mécanique fixed/opacity que .enr-zoom-overlay) -- */
   .temp-popup-overlay{
     position:fixed; inset:0; z-index:500; display:flex; align-items:center; justify-content:center;
