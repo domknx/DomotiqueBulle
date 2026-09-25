@@ -1204,7 +1204,12 @@
   /* Premier réglage réel de cet écran : le style visuel appliqué aux cartes de l'Accueil
      (GlassHome / Liquid Glass, cf. graph_proposals.html). Même trame que .view-accueil
      (bandeau titre en haut, puis contenu) plutôt qu'un nouveau langage visuel. */
-  .view-config{ flex-direction:column; padding:32px 36px 8px; }
+  .view-config{ flex-direction:column; padding:0 36px 8px; }
+  /* 25.09.2026 : 2 colonnes de réglages (voir commentaire dans le HTML de #view-config). */
+  .cfg-cols{ display:flex; gap:24px; align-items:flex-start; min-height:0; }
+  .cfg-col{ flex:0 1 920px; min-width:0; display:flex; flex-direction:column; gap:20px; }
+  .cfg-col-side{ flex:1 1 0; }
+  .cfg-col-side .cfg-section{ max-width:none; }
   .cfg-section{
     flex:none; max-width:920px; border-radius:28px; border:1px solid var(--glass-brd);
     background:linear-gradient(180deg, rgba(9,11,17,.55), rgba(9,11,17,.64));
@@ -2637,11 +2642,13 @@
         <div class="acc-header">
           <div class="ph-title">Configuration</div>
         </div>
-        <!-- 20.09.2026 (demande utilisateur) : "Fond d'écran" déplacé ici, en haut à droite de
-             l'écran Configuration, à côté de "Style des cartes" (au lieu d'être la dernière
-             section, tout en bas) -- voir .cfg-row-top en CSS. -->
-        <div class="cfg-row-top">
-        <div class="cfg-section">
+        <!-- 25.09.2026 (demande utilisateur) : réglages répartis sur 2 colonnes — la dernière section
+             (Mode jour / nuit) dépassait en bas de l'écran (gabarit fixe 1440 px, sans défilement) et
+             n'était plus accessible. Colonne gauche : Style des cartes, Typographie, Graphes ;
+             colonne droite : Fond d'écran, Thermostats, Mode jour / nuit. -->
+        <div class="cfg-cols">
+          <div class="cfg-col">
+<div class="cfg-section">
           <div class="cfg-section-title">Style des cartes</div>
           <div class="cfg-section-sub">Apparence appliquée aux cartes de l'écran Accueil (météo du jour, énergie, températures des pièces). Style par défaut : Liquid Glass.</div>
           <div class="cfg-style-toggle" id="cfgStyleToggle">
@@ -2662,27 +2669,7 @@
             </button>
           </div>
         </div>
-        <div class="cfg-section cfg-section-side">
-          <div class="cfg-section-title">Fond d'écran</div>
-          <div class="cfg-section-sub">Photo affichée en fond sur tous les écrans, avec un voile qui s'assombrit en diagonale du coin haut-gauche vers le coin bas-droite.</div>
-          <div class="cfg-bg-row">
-            <div class="cfg-bg-preview"><img id="cfgBgPreview" src="" alt="Aperçu du fond"></div>
-            <div class="cfg-bg-actions">
-              <label class="cfg-btn" for="cfgBgFile">Changer l'image…</label>
-              <input type="file" id="cfgBgFile" accept="image/*" hidden>
-              <button type="button" class="cfg-btn cfg-btn-ghost" id="cfgBgReset">Réinitialiser la photo par défaut</button>
-            </div>
-          </div>
-          <div class="cfg-slider-row">
-            <div class="cfg-slider-head">
-              <span class="cfg-slider-label">Intensité du dégradé diagonal</span>
-              <span class="cfg-slider-val" id="cfgVeilVal">100%</span>
-            </div>
-            <input type="range" class="cfg-slider" id="cfgVeilSlider" min="0" max="150" step="5" value="100">
-          </div>
-        </div>
-        </div>
-        <div class="cfg-section" style="margin-top:20px;">
+<div class="cfg-section">
           <div class="cfg-section-title">Typographie</div>
           <div class="cfg-section-sub">Police et taille des titres (titre de page et titre de chaque carte, sur tous les écrans) et des valeurs (échelles de graphe et valeurs dynamiques affichées dans une carte). Par défaut : Fraunces pour les titres — même police que l'horloge — et Inter pour les valeurs — même police que les min/max de la météo 5 jours, taille 100% pour les deux.</div>
           <div class="cfg-daynight-pickers" id="cfgFontPickers">
@@ -2726,7 +2713,7 @@
             </div>
           </div>
         </div>
-        <div class="cfg-section" style="margin-top:20px;">
+<div class="cfg-section">
           <div class="cfg-section-title">Graphes</div>
           <div class="cfg-section-sub">Taille des valeurs et dates portées par les axes des graphes, et épaisseur de leurs courbes — appliquée à tous les graphes de tous les écrans (Consommation, Energy Usage, flux Sankey, grand graphe des températures et mini-graphes de température des pièces). Par défaut : 5px pour les valeurs/dates d'axe, 0,65 pour l'épaisseur des courbes. Ce réglage ajuste les deux tailles ensemble, à 75% ou 125% de leur valeur par défaut.</div>
           <div class="cfg-mini-toggle" data-graph-scale>
@@ -2735,7 +2722,28 @@
             <button type="button" data-scale="125">125%</button>
           </div>
         </div>
-        <div class="cfg-section" style="margin-top:20px;">
+          </div>
+          <div class="cfg-col cfg-col-side">
+<div class="cfg-section">
+          <div class="cfg-section-title">Fond d'écran</div>
+          <div class="cfg-section-sub">Photo affichée en fond sur tous les écrans, avec un voile qui s'assombrit en diagonale du coin haut-gauche vers le coin bas-droite.</div>
+          <div class="cfg-bg-row">
+            <div class="cfg-bg-preview"><img id="cfgBgPreview" src="" alt="Aperçu du fond"></div>
+            <div class="cfg-bg-actions">
+              <label class="cfg-btn" for="cfgBgFile">Changer l'image…</label>
+              <input type="file" id="cfgBgFile" accept="image/*" hidden>
+              <button type="button" class="cfg-btn cfg-btn-ghost" id="cfgBgReset">Réinitialiser la photo par défaut</button>
+            </div>
+          </div>
+          <div class="cfg-slider-row">
+            <div class="cfg-slider-head">
+              <span class="cfg-slider-label">Intensité du dégradé diagonal</span>
+              <span class="cfg-slider-val" id="cfgVeilVal">100%</span>
+            </div>
+            <input type="range" class="cfg-slider" id="cfgVeilSlider" min="0" max="150" step="5" value="100">
+          </div>
+        </div>
+<div class="cfg-section">
           <div class="cfg-section-title">Thermostats</div>
           <div class="cfg-section-sub">Rendu des graduations allumées autour du cadran (de la gauche de l'échelle jusqu'à la consigne), sur l'écran Température. Par défaut : en couleur, sans brillance.</div>
           <div class="cfg-mini-toggle" data-thermo-grad>
@@ -2744,7 +2752,7 @@
             <button type="button" data-grad="cuivre">Cuivre → or, avec halo</button>
           </div>
         </div>
-        <div class="cfg-section" style="margin-top:20px;">
+<div class="cfg-section">
           <div class="cfg-section-title">Mode jour / nuit automatique</div>
           <div class="cfg-section-sub">Bascule automatiquement entre deux styles de carte selon le lever et le coucher du soleil (calculé pour Bulle, FR · Suisse). Le style choisi ci-dessus reste utilisé tant que ce mode est désactivé.</div>
           <div class="cfg-daynight-row">
@@ -2773,6 +2781,9 @@
             </div>
           </div>
         </div>
+          </div>
+        </div>
+
       </section>
 
       <section class="view-block view-meteo" id="view-meteo">
