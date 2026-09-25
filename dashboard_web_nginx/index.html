@@ -330,6 +330,58 @@
   .acc-e-sub{ font-family:var(--ff-body); font-size:12px; color:var(--brume-dim); margin-top:2px; }
   .acc-e-flow{ position:relative; flex:1; min-height:0; margin-top:2px; }
 
+  /* -- Carte "Énergie verte" (widget Accueil), 25.09.2026 (demande utilisateur) : occupe
+     l'espace laissé vide à droite de la rangée Météo+Énergie depuis le redimensionnement du
+     24.09.2026 (voir CAHIER_DES_CHARGES.md). Largeur calculée pour combler exactement le reste
+     de .acc-row1 (mesurée ≈1782px : 33% Météo + 820px Énergie + 2×24px de gap = 1456px,
+     326px restants). Badge feuille + titre en haut, jauge verticale au centre (piste + remplissage
+     dont la hauteur ET la couleur reflètent le % d'énergie "verte" — solaire+batterie — vs réseau,
+     dégradé continu rouge→ambre→vert calculé en JS par pfcEcoColor()), pourcentage + légende du
+     mix en bas. Données : pfcGreenPercent()/applyAccEco() plus bas, appelées depuis
+     applyAccEnergy() avec ENERGY_MOCK (même source mock que le reste du widget Énergie). */
+  .acc-eco{
+    flex:0 0 326px; padding:26px 22px 24px; display:flex; flex-direction:column; align-items:center;
+    background:linear-gradient(165deg, rgba(18,46,30,.62), rgba(12,20,15,.68));
+  }
+  .acc-eco-badge{
+    width:44px; height:44px; border-radius:14px; flex:none; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg,#b7ecc9,#6fcf97 60%,#3fae70); box-shadow:0 0 24px rgba(111,207,151,.45);
+  }
+  .acc-eco-badge svg{ width:24px; height:24px; }
+  .acc-eco-title{
+    font-family:var(--ff-title); font-size:calc(15px * var(--fs-title-scale)); font-weight:460;
+    color:var(--brume); margin-top:12px; text-align:center;
+  }
+  .acc-eco-gauge-wrap{ flex:1; min-height:0; display:flex; align-items:flex-end; margin-top:18px; }
+  .acc-eco-gauge{
+    width:52px; height:100%; border-radius:999px; position:relative; overflow:hidden;
+    background:rgba(238,241,246,.08); box-shadow:inset 0 2px 8px rgba(0,0,0,.35);
+  }
+  .acc-eco-gauge-fill{
+    position:absolute; left:0; right:0; bottom:0; width:100%; height:0%; border-radius:999px;
+    background:var(--mousse); transition:height .6s ease, background .6s ease;
+    box-shadow:inset 0 10px 16px rgba(255,255,255,.18), inset 0 -8px 14px rgba(0,0,0,.16);
+  }
+  .acc-eco-pct{
+    font-family:var(--ff-value); font-weight:460; font-size:calc(34px * var(--fs-value-scale));
+    line-height:1; color:var(--mousse); margin-top:18px; transition:color .6s ease;
+  }
+  .acc-eco-sub{
+    font-family:var(--ff-mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--brume-dim); margin-top:6px; text-align:center;
+  }
+  [data-card-style="liquid"] .acc-eco{
+    border:1px solid rgba(255,255,255,.16);
+    background:
+      linear-gradient(160deg, rgba(255,255,255,.08), rgba(255,255,255,.02) 55%, rgba(255,255,255,.05)),
+      linear-gradient(180deg, rgba(9,11,17,.6), rgba(9,11,17,.7));
+    backdrop-filter:blur(32px) saturate(170%); -webkit-backdrop-filter:blur(32px) saturate(170%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.22), inset 0 0 40px rgba(255,255,255,.04), 0 20px 44px rgba(0,0,0,.42);
+  }
+  [data-card-style="liquid"] .acc-eco-badge, [data-card-style="liquid"] .acc-eco-title,
+  [data-card-style="liquid"] .acc-eco-gauge-wrap, [data-card-style="liquid"] .acc-eco-pct,
+  [data-card-style="liquid"] .acc-eco-sub{ position:relative; z-index:2; }
+
   /* ===================================================================================
      Power Flow Card — composant PARTAGÉ Accueil + Énergie (24.09.2026, décision utilisateur
      "on standardise et ne garde qu'une seule solution"). Remplace les 2 implémentations
@@ -611,13 +663,18 @@
      `[data-card-style="liquid"]` la relève à .9 plus haut. */
   [data-card-style="neumorph"] .acc-temp-card,
   [data-card-style="neumorph"] .acc-weather.meteo-block,
-  [data-card-style="neumorph"] .acc-energy{
+  [data-card-style="neumorph"] .acc-energy,
+  [data-card-style="neumorph"] .acc-eco{
     border:none;
     background:linear-gradient(155deg, #e9ecf1, #dfe3e9);
     backdrop-filter:none; -webkit-backdrop-filter:none;
     box-shadow:
       9px 9px 18px rgba(163,177,198,.55),
       -8px -8px 16px rgba(255,255,255,.9);
+  }
+  [data-card-style="neumorph"] .acc-eco-gauge{
+    background:linear-gradient(155deg, #dfe3e9, #e9ecf1);
+    box-shadow:inset 3px 3px 7px rgba(163,177,198,.5), inset -3px -3px 6px rgba(255,255,255,.85);
   }
   /* Puces/badges "en relief" (protubérance douce, comme les petits boutons Temp/Light/Internet
      de la référence) plutôt qu'"en creux" (le choix fait sur la version sombre du 11.09) : plus
@@ -651,6 +708,8 @@
   [data-card-style="neumorph"] .acc-w-badge svg circle{ fill:#55606f; }
   [data-card-style="neumorph"] .acc-e-title{ color:#333a47; }
   [data-card-style="neumorph"] .acc-e-sub{ color:#7b8494; }
+  [data-card-style="neumorph"] .acc-eco-title{ color:#333a47; }
+  [data-card-style="neumorph"] .acc-eco-sub{ color:#7b8494; }
   [data-card-style="neumorph"] .tc-card-label{ color:#333a47; }
   [data-card-style="neumorph"] .tc-card-src,
   [data-card-style="neumorph"] .tc-card-range{ color:#7b8494; }
@@ -2105,6 +2164,22 @@
             </div>
             <div class="acc-e-flow" id="accEFlowStage"></div>
           </div>
+
+          <div class="acc-card acc-eco" id="accEcoCard">
+            <div class="card-sheen"></div>
+            <div class="acc-eco-badge">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M19.5 4.2C10.8 4.7 5 10 5 17.3c0 .9.7 1.6 1.6 1.6C13.9 18.9 19.2 13.1 19.7 4.4a.3.3 0 0 0-.2-.2Z" fill="#123321"/>
+                <path d="M8 19c1.4-4.6 4-8.3 8.4-11.2" stroke="#b7ecc9" stroke-width="1.3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="acc-eco-title">Énergie verte</div>
+            <div class="acc-eco-gauge-wrap">
+              <div class="acc-eco-gauge" id="accEcoGauge"><div class="acc-eco-gauge-fill" id="accEcoGaugeFill"></div></div>
+            </div>
+            <div class="acc-eco-pct" id="accEcoPct">—%</div>
+            <div class="acc-eco-sub" id="accEcoSub">—</div>
+          </div>
         </div>
 
         <div class="acc-row2"><div class="acc-temp-grid" id="accRoomGrid"></div></div>
@@ -3381,6 +3456,32 @@
       pctSolaire: homeInflow > 0 ? Math.round(F.solaireMaison / homeInflow * 100) : 0,
       pctBatterie: homeInflow > 0 ? Math.round(F.batterieMaison / homeInflow * 100) : 0,
     };
+  }
+
+  // 25.09.2026 (demande utilisateur, carte "Énergie verte" de l'Accueil) : calcule le % de la
+  // consommation (maison + voiture, hors ce qui part vers la batterie/le réseau en export) couvert
+  // par du "vert" (solaire direct + décharge batterie) plutôt que par le réseau, à partir d'un
+  // objet de flux nommés au même format que ENERGY_MOCK/pfcDeriveFlows(). Retourne null s'il n'y a
+  // aucune consommation en cours (rien à colorer). Fonction partagée -- réutilisable pour une
+  // future carte équivalente côté Énergie, même si seule l'Accueil l'utilise pour l'instant.
+  function pfcGreenPercent(F){
+    const green = (F.solaireMaison||0) + (F.batterieMaison||0) + (F.batterieVoiture||0);
+    const grid  = (F.reseauMaison||0) + (F.reseauVoiture||0);
+    const total = green + grid;
+    if (total <= 0) return null;
+    return Math.round((green / total) * 100);
+  }
+
+  // Dégradé continu rouge (0%, tout réseau) -> ambre (50%) -> vert (100%, tout solaire/batterie),
+  // mêmes teintes que les jetons CSS --rouge/--ambre/--mousse, interpolées en RGB pour un rendu
+  // fluide à n'importe quel pourcentage (pas de paliers discrets, demande utilisateur "un dégradé").
+  function pfcEcoColor(pct){
+    const stops = [ [255,90,90], [255,156,84], [111,207,151] ]; // --rouge, --ambre, --mousse
+    const seg = pct >= 50 ? 1 : 0;
+    const t = pct >= 50 ? (pct - 50) / 50 : pct / 50;
+    const a = stops[seg], b = stops[seg + 1];
+    const c = a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    return 'rgb(' + c.join(',') + ')';
   }
 
   // Dérive les 7 flux nommés de la topologie à partir des données Énergie (ENR_REAL/ENR_MOCK).
@@ -5024,6 +5125,33 @@ function renderEnergyScreen(){
         : ENERGY_MOCK.solaireBatterie > 0 ? "Le solaire alimente la maison et charge la batterie"
         : 'Le solaire alimente la maison';
     }
+    applyAccEco(ENERGY_MOCK);
+  }
+  // Carte "Énergie verte" (25.09.2026, demande utilisateur) : jauge verticale dont la hauteur ET
+  // la couleur (pfcEcoColor(), dégradé rouge->ambre->vert) reflètent le % de la consommation
+  // couvert par du solaire/batterie plutôt que par le réseau (pfcGreenPercent()). Appelée depuis
+  // applyAccEnergy() ci-dessus, avec la même source ENERGY_MOCK que le reste du widget Énergie.
+  function applyAccEco(F){
+    const pct = pfcGreenPercent(F);
+    const fill = document.getElementById('accEcoGaugeFill');
+    const pctEl = document.getElementById('accEcoPct');
+    const subEl = document.getElementById('accEcoSub');
+    if (!fill || !pctEl || !subEl) return;
+    if (pct === null) {
+      fill.style.height = '0%';
+      pctEl.textContent = '—%';
+      pctEl.style.color = '';
+      subEl.textContent = 'Aucune consommation';
+      return;
+    }
+    const color = pfcEcoColor(pct);
+    fill.style.height = pct + '%';
+    fill.style.background = color;
+    pctEl.textContent = pct + '%';
+    pctEl.style.color = color;
+    subEl.textContent = pct >= 90 ? 'Solaire + batterie'
+      : pct <= 10 ? 'Réseau'
+      : 'Mix réseau / renouvelable';
   }
   PFC_HANDLE_ACC = pfcBuild(document.getElementById('accEFlowStage'), 'acc', PFC_TOPO_FULL);
   applyAccEnergy();
