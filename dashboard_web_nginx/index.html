@@ -313,7 +313,7 @@
   .acc-w-state{ display:flex; align-items:center; gap:14px; min-width:0; }
   .acc-w-badge{ width:68px; height:68px; border-radius:22px; background:rgba(255,255,255,.14); display:flex; align-items:center; justify-content:center; flex:none; }
   .acc-w-badge svg{ width:41px; height:41px; }
-  .acc-w-cond{ font-family:var(--ff-display); font-size:30px; font-weight:460; line-height:1.2; color:#fff; opacity:.97; min-width:0; }
+  .acc-w-cond{ font-family:var(--ff-title); font-size:calc(30px * var(--fs-title-scale)); font-weight:460; line-height:1.2; color:#fff; opacity:.97; min-width:0; }
   .acc-w-stats{ position:relative; z-index:2; display:flex; gap:10px 14px; margin-top:16px; flex-wrap:wrap; }
   .acc-w-chip{ display:flex; align-items:center; gap:12px; font-family:var(--ff-value); font-size:calc(20px * var(--fs-value-scale)); font-weight:500; color:#fff; background:rgba(255,255,255,.16); backdrop-filter:blur(6px); border-radius:18px; padding:14px 22px; }
   .acc-w-chip svg{ width:24px; height:24px; stroke:#fff; opacity:.85; flex:none; }
@@ -1108,7 +1108,7 @@
   .meteo-state{ display:flex; align-items:center; gap:14px; }
   .meteo-state-ic{ width:68px; height:68px; flex:none; }
   .meteo-state-ic svg{ width:100%; height:100%; }
-  .meteo-cond{ font-family:var(--ff-display); font-size:30px; font-weight:460; line-height:1.2; opacity:.97; }
+  .meteo-cond{ font-family:var(--ff-title); font-size:calc(30px * var(--fs-title-scale)); font-weight:460; line-height:1.2; opacity:.97; }
   /* Sous-blocs d'information du jour (max/min/humidite/vent/pression) -- agrandis (demande
      utilisateur du 08.09.2026 : "trop petit") pour rester lisibles a distance sur l'ecran mural. */
   .meteo-pills{ display:flex; gap:14px; margin-top:22px; flex-wrap:wrap; }
@@ -1193,7 +1193,7 @@
   }
   .chart-tip.visible{ opacity:1; transform:translate(-50%,-112%); }
   .chart-tip .tip-date{ font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:2px; }
-  .chart-tip .tip-val{ display:inline-block; font-size:13px; font-weight:600; animation:tipPop .22s ease; }
+  .chart-tip .tip-val{ display:inline-block; font-family:var(--ff-value); font-size:calc(13px * var(--fs-value-scale)); font-weight:600; animation:tipPop .22s ease; }
   @keyframes tipPop{ from{ opacity:0; transform:translateY(4px) scale(.9); } to{ opacity:1; transform:translateY(0) scale(1); } }
 
   .tc-label{ font-family:var(--ff-value); font-size:var(--gr-axis-size); fill:rgba(255,255,255,.55); }
@@ -1577,7 +1577,7 @@
     box-shadow:0 1px 3px rgba(20,20,20,.06), 0 10px 30px rgba(20,20,20,.05);
   }
   #view-energie .enr-dist-card .enr-card-title{
-    color:#14161a; font-weight:600; font-size:17px;
+    color:#14161a; font-weight:600; font-size:calc(17px * var(--fs-title-scale));
   }
   #view-energie .enr-dist-card .enr-card-sub{ color:#8a8f98; }
   #view-energie .enr-dist-card .enr-card-expand{
@@ -1676,7 +1676,7 @@
   .enr-card.enr-zoomed .enr-donut-legend{ gap:24px 48px; }
   .enr-card.enr-zoomed .enr-donut-item{ font-size:22px; gap:14px; }
   .enr-card.enr-zoomed .enr-donut-sw{ width:14px; height:14px; }
-  .enr-card.enr-zoomed .enr-donut-pct{ font-size:17px; }
+  .enr-card.enr-zoomed .enr-donut-pct{ font-size:calc(17px * var(--fs-value-scale)); }
 
 
   /* ---------- écran Température (22.09.2026, demande utilisateur) ----------
@@ -1704,7 +1704,7 @@
 
   .rt-tile{ width:330px; flex:none; border-radius:18px; border:1px solid var(--glass-brd);
     background:rgba(238,241,246,.04); padding:16px 14px 18px; display:flex; flex-direction:column; align-items:center; position:relative; overflow:hidden; }
-  .rt-room{ align-self:flex-start; font-family:var(--ff-title); font-size:15px; font-weight:460; color:var(--brume); line-height:1.2; }
+  .rt-room{ align-self:flex-start; font-family:var(--ff-title); font-size:calc(15px * var(--fs-title-scale)); font-weight:460; color:var(--brume); line-height:1.2; }
   .rt-flag{ align-self:flex-start; font-family:var(--ff-mono); font-size:8px; letter-spacing:.05em; text-transform:uppercase; color:#ffb454; margin-top:2px; }
 
   /* -- composant thermostat, repris à l'identique du canvas 21 (classes renommées en rt-*,
@@ -1960,11 +1960,11 @@
 
   .rt-center { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 1px; }
   .rt-modeword { font-size: 8px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(47,49,54,0.45); }
-  .rt-temp { font-size: 29px; font-weight: 700; color: #2f3136; letter-spacing: -0.02em; line-height: 1; }
+  .rt-temp { font-family: var(--ff-value); font-size: calc(29px * var(--fs-value-scale)); font-weight: 700; color: #2f3136; letter-spacing: -0.02em; line-height: 1; }
   .rt-temp.tier-0 { color: rgba(47,49,54,0.4); }
   .rt-temp.tier-2 { text-shadow: 0 0 13px rgba(234,88,12,0.34); }
   .rt-temp.tier-3 { text-shadow: 0 0 19px rgba(194,65,12,0.55); }
-  .rt-current { margin-top: 1px; font-size: 8px; font-weight: 600; color: rgba(47,49,54,0.4); letter-spacing: -0.01em; }
+  .rt-current { margin-top: 1px; font-family: var(--ff-value); font-size: calc(8px * var(--fs-value-scale)); font-weight: 600; color: rgba(47,49,54,0.4); letter-spacing: -0.01em; }
 
   /* ---- KNX HVAC mode row — neumorphic pill buttons below the knob ---- */
   .rt-moderow { position: relative; z-index: 5; display: flex; gap: 6px; margin-top: 14px; }
@@ -2000,32 +2000,31 @@
     padding:4px 10px; border-radius:999px; border:1px solid var(--glass-brd); background:rgba(238,241,246,.06); }
   .rt-mode-na{ opacity:.7; }
 
-  /* ---------- 25.09.2026 (demande utilisateur) : simulation locale + vanne + essai graduations ----------
+  /* ---------- 25.09.2026 (demande utilisateur) : simulation locale, vanne, graduations ----------
      (1) Les boutons −/+ et Hors-gel/Nuit/Éco/Confort sont utilisables en SIMULATION : ils changent la
      consigne et le mode affichés, recalculent le palier de chauffe et l'ouverture de vanne, sans rien
      envoyer à Home Assistant ni au bus KNX (état en mémoire, perdu au rechargement). (2) Pastille vanne
-     en haut à droite de chaque tuile : icône + % d'ouverture (simulé tant que la vraie position KNX
-     n'est pas branchée). (3) Essai graduations : bascule « Maison / Essai graduations » dans l'en-tête
-     de l'écran — 3 rangées de 3 cadrans : graduations actuelles, en couleur (bleu -> rouge selon la
-     position sur l'échelle 15-25 °C) avec halo, en couleur sans halo. Couleurs posées en JS
-     (--tc/--tg/--tcf, voir rtTicksHtml) et activées seulement par les classes .grad-spectre /
-     .grad-spectre-mat sur la rangée : l'écran Maison reste sur les graduations cuivre -> or. */
+     en haut à droite de chaque tuile : icône + % d'ouverture, grisée à 0 % (simulé tant que la vraie
+     position KNX n'est pas branchée). (3) Graduations allumées (finalisé le 25.09.2026, décision
+     utilisateur) : 3 rendus réglables dans Configuration -> Thermostats, attribut data-grad sur #screen
+     (voir setThermoGrad) — "mat" (défaut) = couleur bleu -> cyan -> vert -> jaune -> orange -> rouge
+     selon la position sur l'échelle 15-25 °C, sans halo ; "spectre" = même dégradé avec halo ;
+     "cuivre" = graduations cuivre -> or d'origine (canvas v32). Couleurs posées en JS (--tc/--tg/--tcf,
+     voir rtTicksHtml). Polices : consigne, température mesurée et % de vanne suivent le jeton
+     --ff-value, nom de pièce --ff-title (règle typographique du CAHIER_DES_CHARGES §8). */
+  .svg-ff-value{ font-family:var(--ff-value); }
   .rt-valve{ position:absolute; top:14px; right:14px; z-index:3; display:flex; align-items:center; gap:5px;
     padding:3px 9px 3px 6px; border-radius:999px; border:1px solid var(--glass-brd); background:rgba(238,241,246,.05);
-    font-family:var(--ff-mono); font-size:10.5px; color:var(--brume-dim); font-variant-numeric:tabular-nums; line-height:1; }
+    font-family:var(--ff-value); font-size:calc(10.5px * var(--fs-value-scale)); font-weight:600; color:var(--brume-dim); font-variant-numeric:tabular-nums; line-height:1; }
   .rt-valve svg{ width:15px; height:15px; stroke:currentColor; flex:none; }
   .rt-valve.open{ color:#ffb27a; border-color:rgba(255,156,84,.42); background:rgba(255,156,84,.08); }
   [data-card-style="neumorph"] .rt-valve.open{ color:#c2410c; border-color:rgba(194,65,12,.35); }
   .rt-room{ padding-right:74px; }
   .rt-stepper, .rt-modebtn{ cursor:pointer; }
   .rt-modebtn:active{ transform:translateY(.5px); }
-  .grad-spectre .rt-tick.lit{ background:var(--tc); box-shadow:0 0 6px 1.5px var(--tg), 0 0 1.8px rgba(255,255,255,.85); }
-  .grad-spectre .rt-tick.lit.major{ box-shadow:0 0 8.4px 2.1px var(--tg), 0 0 2.4px rgba(255,255,255,.95); }
-  .grad-spectre-mat .rt-tick.lit, .grad-spectre-mat .rt-tick.lit.major{ background:var(--tcf); box-shadow:none; }
-  .temp-viewseg{ display:inline-flex; padding:4px; border-radius:14px; border:1px solid var(--glass-brd); background:rgba(238,241,246,.04); }
-  .temp-viewseg button{ appearance:none; border:0; background:transparent; color:var(--brume-dim); font:500 13px var(--ff-body); padding:8px 16px; border-radius:10px; cursor:pointer; }
-  .temp-viewseg button.on{ background:color-mix(in srgb, var(--ambre) 16%, transparent); color:var(--brume); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--ambre) 40%, transparent); }
-  .temp-row.temp-row-test{ justify-content:flex-start; gap:28px; }
+  [data-grad="spectre"] .rt-tick.lit{ background:var(--tc); box-shadow:0 0 6px 1.5px var(--tg), 0 0 1.8px rgba(255,255,255,.85); }
+  [data-grad="spectre"] .rt-tick.lit.major{ box-shadow:0 0 8.4px 2.1px var(--tg), 0 0 2.4px rgba(255,255,255,.95); }
+  [data-grad="mat"] .rt-tick.lit, [data-grad="mat"] .rt-tick.lit.major{ background:var(--tcf); box-shadow:none; }
 
   /* ---------- 25.09.2026 (décision utilisateur) : cadran du thermostat selon le style de carte ----------
      Suite aux pistes du 24.09.2026 (artifact « Cadrans sombres », docbulle /maquettes/cadrans-sombres.html) :
@@ -2145,7 +2144,7 @@
   }
   .temp-popup.error{ width:480px; }
   .temp-popup-head{ display:flex; align-items:flex-start; justify-content:space-between; padding:24px 28px 16px; border-bottom:1px solid rgba(238,241,246,0.1); }
-  .temp-popup-title{ font-family:var(--ff-title); font-size:19px; font-weight:460; letter-spacing:-0.01em; }
+  .temp-popup-title{ font-family:var(--ff-title); font-size:calc(19px * var(--fs-title-scale)); font-weight:460; letter-spacing:-0.01em; }
   .temp-popup-sub{ font-size:12px; color:rgba(238,241,246,0.5); margin-top:4px; }
   .temp-popup-close{ width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;
     background:rgba(238,241,246,0.08); border:1px solid rgba(238,241,246,0.12); color:rgba(238,241,246,0.7); cursor:pointer; flex:none; }
@@ -2156,7 +2155,7 @@
   .tpl-sw{ width:14px; height:3px; border-radius:2px; display:inline-block; }
   .tpl-sw.dash{ background:repeating-linear-gradient(90deg, #aeb4c4 0 5px, transparent 5px 9px); }
   .temp-popup-chart{ width:100%; height:280px; display:block; }
-  .temp-popup-foot{ display:flex; justify-content:space-between; margin-top:8px; font-size:10px; color:rgba(238,241,246,0.4); font-family:var(--ff-mono); text-transform:uppercase; letter-spacing:.05em; }
+  .temp-popup-foot{ display:flex; justify-content:space-between; margin-top:8px; font-size:10px; color:rgba(238,241,246,0.4); font-family:var(--ff-value); text-transform:uppercase; letter-spacing:.05em; }
 
   .temp-popup-body.error-body{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; }
   .tp-err-badge{ width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center;
@@ -2557,10 +2556,6 @@
             <div class="ph-title">Température</div>
             <div class="ph-sub" style="margin-top:6px;" id="tempSub">7 thermostats KNX confirmés · 8 emplacements en attente de raccordement · commandes en simulation, aucun envoi KNX</div>
           </div>
-          <div class="temp-viewseg" id="tempViewSeg" role="group" aria-label="Affichage">
-            <button type="button" id="tempViewHome" data-v="home" class="on">Maison</button>
-            <button type="button" id="tempViewTest" data-v="test">Essai graduations</button>
-          </div>
         </div>
         <div class="temp-floors" id="tempFloors"></div>
       </section>
@@ -2687,6 +2682,15 @@
             <button type="button" data-scale="75">75%</button>
             <button type="button" data-scale="100" class="active">100% (par défaut)</button>
             <button type="button" data-scale="125">125%</button>
+          </div>
+        </div>
+        <div class="cfg-section" style="margin-top:20px;">
+          <div class="cfg-section-title">Thermostats</div>
+          <div class="cfg-section-sub">Rendu des graduations allumées autour du cadran (de la gauche de l'échelle jusqu'à la consigne), sur l'écran Température. Par défaut : en couleur, sans brillance.</div>
+          <div class="cfg-mini-toggle" data-thermo-grad>
+            <button type="button" data-grad="mat" class="active">Couleur, sans brillance (par défaut)</button>
+            <button type="button" data-grad="spectre">Couleur, avec halo</button>
+            <button type="button" data-grad="cuivre">Cuivre → or, avec halo</button>
           </div>
         </div>
         <div class="cfg-section" style="margin-top:20px;">
@@ -3076,6 +3080,26 @@
   })();
   document.querySelectorAll('.cfg-mini-toggle[data-graph-scale] button').forEach(btn=>{
     btn.addEventListener('click', ()=> setGraphScale(+btn.dataset.scale));
+  });
+
+  // 25.09.2026 (décision utilisateur) : rendu des graduations des thermostats, réglable parmi 3,
+  // défaut "mat" (couleur sans brillance). Pur CSS via data-grad sur #screen : aucun redessin requis.
+  const THERMO_GRAD_KEY = 'villaBulle.thermoGrad';
+  function setThermoGrad(v){
+    if(v !== 'mat' && v !== 'spectre' && v !== 'cuivre') v = 'mat';
+    screen.dataset.grad = v;
+    try{ localStorage.setItem(THERMO_GRAD_KEY, v); }catch(e){ /* stockage indisponible : le réglage reste actif pour la session en cours */ }
+    document.querySelectorAll('.cfg-mini-toggle[data-thermo-grad] button').forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.grad === v);
+    });
+  }
+  (function initThermoGrad(){
+    let v = 'mat';
+    try{ v = localStorage.getItem(THERMO_GRAD_KEY) || 'mat'; }catch(e){ /* mode privé / stockage bloqué : reste sur le défaut */ }
+    setThermoGrad(v);
+  })();
+  document.querySelectorAll('.cfg-mini-toggle[data-thermo-grad] button').forEach(btn=>{
+    btn.addEventListener('click', ()=> setThermoGrad(btn.dataset.grad));
   });
 
   /* =====================================================================
@@ -4426,7 +4450,7 @@
   }
   // 25.09.2026 : dégradé bleu -> cyan -> vert -> jaune -> orange -> rouge (essai graduations), couleur
   // fixée par la position de la graduation sur l'échelle, interpolée en continu. Posé en variables CSS
-  // sur chaque graduation ; sans effet tant que la rangée n'a pas .grad-spectre / .grad-spectre-mat.
+  // sur chaque graduation ; activées par data-grad="spectre" / "mat" sur #screen (voir setThermoGrad).
   const RT_SPECTRUM = ['#2563eb','#06b6d4','#22c55e','#facc15','#f97316','#ef4444'].map(h => [1,3,5].map(i => parseInt(h.slice(i,i+2),16)));
   function rtSpectrum(t){
     t = Math.max(0, Math.min(1, t));
@@ -4535,18 +4559,6 @@
     if(el) el.outerHTML = tempTileHtml(r);
   }
 
-  // ---- essai graduations (25.09.2026) : 3 rangées de 3 cadrans, simulation indépendante par rangée ----
-  const TEMP_TEST_ROWS = [
-    { cls:'',                   name:'Graduations actuelles',         sub:'Cuivre → or, avec halo — référence en production' },
-    { cls:'grad-spectre',       name:'Graduations en couleur',        sub:'Bleu → cyan → vert → jaune → orange → rouge selon la position sur 15–25 °C, avec halo' },
-    { cls:'grad-spectre-mat',   name:'En couleur, sans brillance',    sub:'Même dégradé, couleur mate sans halo lumineux' },
-  ];
-  const TEMP_TEST_ROOMS = [
-    { room:'Salle de Bain',   climate:true, tier:0, temp:'19°', current:'19.1°', mode:'Arrêt',     activeMode:'horsgel' },
-    { room:'Cuisine',         climate:true, tier:2, temp:'20°', current:'19.5°', mode:'Chauffage', activeMode:'confort' },
-    { room:'Chambre Parents', climate:true, tier:3, temp:'22°', current:'18.7°', mode:'Chauffage', activeMode:'confort' },
-  ];
-  let tempView = 'home';
   function tempFloorCard(name, sub, rowCls, tilesHtml){
     return `
       <div class="enr-card temp-floor-card">
@@ -4561,15 +4573,6 @@
   function renderTempLayout(){
     const wrap = document.getElementById('tempFloors');
     Object.keys(RT_ROOMS).forEach(k => delete RT_ROOMS[k]);
-    if(tempView === 'test'){
-      wrap.innerHTML = TEMP_TEST_ROWS.map((row, i) => {
-        const rooms = TEMP_TEST_ROOMS.map(r => Object.assign({}, r, { key: i + ':' + r.room }));
-        rooms.forEach(r => { RT_ROOMS[r.key] = r; });
-        return tempFloorCard(row.name, row.sub, 'temp-row-test ' + row.cls, rooms.map(tempTileHtml).join(''));
-      }).join('');
-      document.getElementById('tempSub').textContent = 'Essai graduations · 3 × 3 cadrans en simulation, aucun envoi KNX';
-      return;
-    }
     TEMP_FLOORS.forEach(f => f.rooms.forEach(r => { if(r.climate) RT_ROOMS[r.room] = r; }));
     document.getElementById('tempSub').textContent = '7 thermostats KNX confirmés · 8 emplacements en attente de raccordement · commandes en simulation, aucun envoi KNX';
     wrap.innerHTML = TEMP_FLOORS.map(f => {
@@ -4592,13 +4595,6 @@
     tempScreenBuilt = true;
     const wrap = document.getElementById('tempFloors');
     renderTempLayout();
-
-    document.getElementById('tempViewSeg').addEventListener('click', (e) => {
-      const b = e.target.closest('button'); if(!b || b.dataset.v === tempView) return;
-      tempView = b.dataset.v;
-      document.querySelectorAll('#tempViewSeg button').forEach(x => x.classList.toggle('on', x === b));
-      renderTempLayout();
-    });
 
     wrap.addEventListener('click', (e) => {
       const st = e.target.closest('.rt-stepper[data-key]');
@@ -4652,8 +4648,8 @@
     const actualPath = buildPath(S.actual, xw, y0, y1, tMin, tMax);
     const valvePath = buildPath(S.valve, xw, y0, y1, vMin, vMax);
     let grid=''; for(let i=0;i<=4;i++){ const y=y0+(i/4)*(y1-y0); grid += `<line x1="0" y1="${y}" x2="${xw}" y2="${y}" stroke="rgba(238,241,246,0.08)" stroke-width="1"/>`; }
-    let left=''; for(let i=0;i<=4;i++){ const val=tMax-(i/4)*(tMax-tMin); const y=y0+(i/4)*(y1-y0); left += `<text x="-8" y="${y+4}" text-anchor="end" font-size="10.5" fill="rgba(238,241,246,0.45)" font-family="IBM Plex Mono, monospace">${val.toFixed(0)}°</text>`; }
-    let right=''; for(let i=0;i<=4;i++){ const val=vMax-(i/4)*(vMax-vMin); const y=y0+(i/4)*(y1-y0); right += `<text x="${xw+10}" y="${y+4}" text-anchor="start" font-size="10.5" fill="rgba(90,200,250,0.65)" font-family="IBM Plex Mono, monospace">${val.toFixed(0)}%</text>`; }
+    let left=''; for(let i=0;i<=4;i++){ const val=tMax-(i/4)*(tMax-tMin); const y=y0+(i/4)*(y1-y0); left += `<text x="-8" y="${y+4}" text-anchor="end" font-size="10.5" fill="rgba(238,241,246,0.45)" class="svg-ff-value">${val.toFixed(0)}°</text>`; }
+    let right=''; for(let i=0;i<=4;i++){ const val=vMax-(i/4)*(vMax-vMin); const y=y0+(i/4)*(y1-y0); right += `<text x="${xw+10}" y="${y+4}" text-anchor="start" font-size="10.5" fill="rgba(90,200,250,0.65)" class="svg-ff-value">${val.toFixed(0)}%</text>`; }
     return `<svg class="temp-popup-chart" viewBox="0 0 ${W} ${H}">
       <defs><linearGradient id="tpActualFill" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#ff9c54" stop-opacity="0.32"/><stop offset="100%" stop-color="#ff9c54" stop-opacity="0"/>
@@ -5570,7 +5566,7 @@ function renderEnergyScreen(){
       const axisVals = [0,1,2,3].map(k => tMin + (tMax-tMin)*k/3);
       const axis = axisVals.map(v =>
           '<line x1="'+padXLeft.toFixed(1)+'" y1="'+yAt(v).toFixed(1)+'" x2="'+(padXLeft+1.5).toFixed(1)+'" y2="'+yAt(v).toFixed(1)+'" stroke="rgba(238,241,246,.26)" stroke-width=".4"/>'
-        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+grAxisSize().toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
+        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+grAxisSize().toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
         ).join('');
       svgEl.innerHTML =
         '<defs><filter id="'+fid+'" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1"/></filter></defs>'
@@ -5604,7 +5600,7 @@ function renderEnergyScreen(){
       const axisVals = [0,1,2,3].map(k => tMin + (tMax-tMin)*k/3);
       const axis = axisVals.map(v =>
           '<line x1="'+padXLeft.toFixed(1)+'" y1="'+yAt(v).toFixed(1)+'" x2="'+(padXLeft+1.5).toFixed(1)+'" y2="'+yAt(v).toFixed(1)+'" stroke="rgba(51,58,71,.28)" stroke-width=".4"/>'
-        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+grAxisSize().toFixed(2)+'" fill="rgba(51,58,71,.55)">'+v.toFixed(axisDecimals)+'°</text>'
+        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+grAxisSize().toFixed(2)+'" fill="rgba(51,58,71,.55)">'+v.toFixed(axisDecimals)+'°</text>'
         ).join('');
       svgEl.innerHTML =
         axis
@@ -5628,7 +5624,7 @@ function renderEnergyScreen(){
     const axisVals = [0,1,2,3].map(k => tMin + (tMax-tMin)*k/3);
     const axis = axisVals.map(v =>
         '<line x1="'+padXLeft.toFixed(1)+'" y1="'+yAt(v).toFixed(1)+'" x2="'+(padXLeft+1.5).toFixed(1)+'" y2="'+yAt(v).toFixed(1)+'" stroke="rgba(238,241,246,.26)" stroke-width=".4"/>'
-      + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+grAxisSize().toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
+      + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+grAxisSize().toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
       ).join('');
     svgEl.innerHTML =
       '<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1">'

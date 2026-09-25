@@ -157,6 +157,8 @@ Incident résolu le 23–24.08.2026 : après ajout du bloc `http:`/`trusted_prox
 
 - 2026-09-24 — Pistes pour un cadran de thermostat sombre documentées (décision de l'utilisateur attendue) : 3 variantes du cadran « Embrasement » (A Obsidienne, B Verre fumé, C Plaque incandescente) + essai de graduations bleu → rouge selon la position sur l'échelle 15–25 °C. Page d'essai interactive (artifact « Cadrans sombres », copie `docs_site/maquettes/cadrans-sombres.html`), section dédiée et 5 captures (`docs_site/assets/temp-sombre-*.jpg`, `temp-graduations-spectre-*.jpg`) dans la vue Température de docbulle, point ouvert mis à jour dans `dashboard/CAHIER_DES_CHARGES.md` §9. Rien de porté sur le canvas ni en production.
 
+- 2026-09-25 — Thermostats de l'écran Température finalisés (décisions utilisateur) : cadran Verre fumé (GlassHome) / Plaque incandescente (Liquid Glass) / clair (Neumorphism) ; graduations en couleur sans brillance par défaut, réglables parmi 3 dans Configuration → Thermostats ; pastille vanne (% d'ouverture, grisée à 0) ; boutons −/+ et modes utilisables en simulation, sans envoi HA/KNX. Audit des polices sur tous les écrans (règle Titres/Valeurs, CAHIER §8) : axes SVG de l'Accueil et de l'historique thermostat, condition météo, valeurs des thermostats et plusieurs tailles fixes remis en conformité. Détail dans `dashboard/CAHIER_DES_CHARGES.md` §8/§9. Sauvegarde avant modification dans `Backups/` (conforme §6).
+
 ## 10. Jalons du projet et sauvegardes
 
 ### 10.1 Jalons principaux
