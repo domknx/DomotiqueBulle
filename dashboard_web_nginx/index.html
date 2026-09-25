@@ -321,11 +321,11 @@
   .acc-w-chip.wc-min svg{ stroke:#5ac8fa; }
 
   /* -- Carte énergie (widget Accueil). -- */
-  .acc-energy{ flex:0 0 820px; padding:26px 28px 24px; background:linear-gradient(165deg, rgba(52,38,20,.62), rgba(20,16,12,.68)); }
+  .acc-energy{ flex:0 0 820px; padding:22px 28px 20px; background:linear-gradient(165deg, rgba(52,38,20,.62), rgba(20,16,12,.68)); }
   .acc-e-head{ display:flex; align-items:center; gap:16px; margin-bottom:4px; flex:none; }
-  .acc-e-badge{ width:54px; height:54px; border-radius:17px; flex:none; display:flex; align-items:center; justify-content:center;
+  .acc-e-badge{ width:40px; height:40px; border-radius:13px; flex:none; display:flex; align-items:center; justify-content:center;
     background:linear-gradient(160deg,#ffd39b,#ff9c54 60%,#e8823a); box-shadow:0 0 24px rgba(255,156,84,.45); }
-  .acc-e-badge svg{ width:28px; height:28px; }
+  .acc-e-badge svg{ width:22px; height:22px; }
   .acc-e-title{ font-family:var(--ff-title); font-size:calc(19px * var(--fs-title-scale)); font-weight:460; color:var(--brume); }
   .acc-e-sub{ font-family:var(--ff-body); font-size:12px; color:var(--brume-dim); margin-top:2px; }
   .acc-e-flow{ position:relative; flex:1; min-height:0; margin-top:2px; }
@@ -344,12 +344,19 @@
      1 / 1,5 / 3 / 6 px (décision finale de l'essai). Rendu par les fonctions JS pfcBuild()/
      pfcUpdate() (voir plus bas), appelées une fois pour chaque contexte avec une topologie et
      des données différentes — mais UN SEUL moteur CSS/JS pour les deux :
-       - #enrFlowStage (Énergie, "Flux en direct") : topologie complète en croix (Maison au
-         centre, Solaire en haut, Réseau à gauche, Batterie à droite, Voiture en dessous),
-         reprise à l'identique de pfc_trial.html — taille "pleine" ci-dessous.
-       - #accEFlowStage (Accueil, widget Énergie) : même moteur mais topologie en losange
-         (Solaire/Réseau/Batterie/Voiture aux 4 coins de la carte, large et basse) et anneaux
-         réduits — voir la classe .pfc-compact ci-dessous pour les tailles réduites.
+       - #enrFlowStage (Énergie, "Flux en direct") et #accEFlowStage (Accueil, widget Énergie)
+         partagent désormais EXACTEMENT la même topologie (PFC_TOPO_FULL, croix : Maison au
+         centre, Solaire en haut, Réseau à gauche, Batterie à droite, Voiture en dessous) et la
+         même taille d'anneaux/traits — 25.09.2026 (demande utilisateur, "le flux direct sur la
+         page d'accueil n'est pas identique à celui de la page énergie") : la carte Accueil avait
+         d'abord sa propre topologie en losange compacte (PFC_TOPO_COMPACT, anneaux réduits via
+         .pfc-compact, pensée pour l'ancien format de carte large et basse 1112×312px) — devenue
+         inutile une fois les 2 cartes ramenées à la même taille (24.09.2026, voir plus bas) ;
+         retirée au profit d'une vraie identité visuelle entre les 2 écrans. Le header de la carte
+         Accueil (icône + titre "Énergie") est resté plus compact que celui d'Énergie ("Flux en
+         direct" seul) pour libérer la même hauteur de zone de dessin (~448px) dans les 2 cas —
+         voir .acc-e-badge/.acc-energy plus bas. La classe .pfc-compact reste dans ce fichier
+         (inutilisée) au cas où une carte plus petite en aurait besoin plus tard.
      Dans les 2 topologies, 7 lignes (au lieu des 8 de l'essai) : Réseau/Solaire/Batterie→Maison
      (3 liaisons "hub"), Solaire→Réseau, Solaire→Batterie, Réseau→Voiture, Batterie→Voiture (4
      liaisons directes) — la liaison "Maison→Voiture" de l'essai (topologie illustrative) est
@@ -3152,8 +3159,8 @@
   // en data URI, retirées) par un moteur générique piloté par une "topologie" (nœuds + lignes,
   // coordonnées 0-100 communes aux positions CSS des nœuds ET au viewBox SVG — un simple étirement
   // non uniforme du viewBox, vector-effect="non-scaling-stroke" gardant les traits nets) : voir
-  // PFC_TOPO_FULL (Énergie, croix reprise à l'identique de pfc_trial.html) et PFC_TOPO_COMPACT
-  // (Accueil, losange adapté à une carte large et basse). Icônes SVG reprises à l'identique de
+  // PFC_TOPO_FULL (seule topologie -- Accueil et Énergie l'utilisent toutes les 2 à l'identique
+  // depuis le 25.09.2026, voir commentaire CSS plus haut). Icônes SVG reprises à l'identique de
   // pfc_trial.html (décision utilisateur du 24.09.2026 : SVG partout, pas de photos).
   const PFC_ICON = {
     home:     '<path d="M4 11.5 12 4l8 7.5M6 10v9h12v-9"/>',
@@ -3193,30 +3200,9 @@
     ],
   };
 
-  // Topologie compacte (Accueil, widget "Énergie") : même moteur, disposition en losange (4
-  // satellites aux coins, Maison au centre) adaptée à une carte large et basse (mesurée
-  // 1112×312px, contre 765×448px côté Énergie) -- voir .pfc-compact en CSS pour les tailles
-  // réduites. Mêmes 7 liaisons que la topologie complète, mêmes couleurs/icônes.
-  const PFC_TOPO_COMPACT = {
-    compact: true,
-    viewBox: '0 0 100 100',
-    nodes: [
-      { key:'home',     x:50, y:50 },
-      { key:'solaire',  x:12, y:15, labelAbove:true },
-      { key:'reseau',   x:88, y:15 },
-      { key:'batterie', x:12, y:85 },
-      { key:'voiture',  x:88, y:85 },
-    ],
-    lines: [
-      { key:'solaireMaison',   from:'solaire',  to:'home',     color:'solaire',  d:'M12,15 C12,32 26,40 40,44' },
-      { key:'reseauMaison',    from:'reseau',   to:'home',     color:'reseau',   d:'M88,15 C88,32 74,40 60,44' },
-      { key:'batterieMaison',  from:'batterie', to:'home',     color:'batterie', d:'M12,85 C12,68 26,60 40,56' },
-      { key:'solaireReseau',   from:'solaire',  to:'reseau',   color:'solaire',  d:'M12,15 C35,8 65,8 88,15' },
-      { key:'solaireBatterie', from:'solaire',  to:'batterie', color:'solaire',  d:'M12,15 C4,35 4,65 12,85' },
-      { key:'reseauVoiture',   from:'reseau',   to:'voiture',  color:'reseau',   d:'M88,15 C96,35 96,65 88,85' },
-      { key:'batterieVoiture', from:'batterie', to:'voiture',  color:'batterie', d:'M12,85 C35,92 65,92 88,85' },
-    ],
-  };
+  // 25.09.2026 (demande utilisateur, cartes non identiques) : PFC_TOPO_COMPACT (topologie en
+  // losange, propre à l'Accueil) est retirée -- les 2 cartes utilisent maintenant PFC_TOPO_FULL
+  // à l'identique (voir commentaire CSS "Power Flow Card" plus haut pour le détail).
 
   const PFC_TIER_LINE = ['t-off','t-low','t-med','t-high'];
   const PFC_TIER_RING = ['rt-off','rt-low','rt-med','rt-high'];
@@ -3232,8 +3218,10 @@
   }
 
   // Construit le DOM (lignes SVG + nœuds) d'une carte Power Flow Card dans stageEl, d'après une
-  // topologie (voir PFC_TOPO_FULL/PFC_TOPO_COMPACT). `prefix` préfixe tous les id générés
-  // ('enr'/'acc') pour que les 2 instances coexistent sans collision dans le même document.
+  // topologie (voir PFC_TOPO_FULL ; le flag topo.compact -- inutilisé depuis le retrait de
+  // PFC_TOPO_COMPACT, 25.09.2026 -- reste géré ici au cas où une topologie compacte réapparaîtrait).
+  // `prefix` préfixe tous les id générés ('enr'/'acc') pour que les 2 instances coexistent sans
+  // collision dans le même document.
   function pfcBuild(stageEl, prefix, topo){
     stageEl.classList.add('pfc-stage');
     if (topo.compact) stageEl.classList.add('pfc-compact');
@@ -5017,12 +5005,13 @@ function renderEnergyScreen(){
   }
   renderAccWeather();
 
-  // ---- Bloc énergie (composant partagé Power Flow Card, topologie compacte PFC_TOPO_COMPACT —
-  // voir le bloc CSS "Power Flow Card" et pfcBuild()/pfcUpdate() plus haut, 24.09.2026, décision
-  // utilisateur "on standardise et ne garde qu'une seule solution"). Données mock (solaire qui
-  // couvre la maison et charge la batterie, réseau/VE en veille -- solaireMaison+solaireBatterie
-  // = 1240 W, la même puissance solaire totale que l'ancien mock ENERGY_MOCK.solarW), cohérentes
-  // avec le pattern "mock jusqu'au branchement HA réel" déjà suivi dans ce fichier.
+  // ---- Bloc énergie (composant partagé Power Flow Card, topologie PFC_TOPO_FULL — identique à
+  // celle d'Énergie depuis le 25.09.2026, voir le bloc CSS "Power Flow Card" et
+  // pfcBuild()/pfcUpdate() plus haut ; 24.09.2026, décision utilisateur "on standardise et ne
+  // garde qu'une seule solution"). Données mock (solaire qui couvre la maison et charge la
+  // batterie, réseau/VE en veille -- solaireMaison+solaireBatterie = 1240 W, la même puissance
+  // solaire totale que l'ancien mock ENERGY_MOCK.solarW), cohérentes avec le pattern "mock jusqu'au
+  // branchement HA réel" déjà suivi dans ce fichier.
   const ENERGY_MOCK = {
     solaireMaison: 620, solaireBatterie: 620, solaireReseau: 0,
     reseauMaison: 0, batterieMaison: 0, reseauVoiture: 0, batterieVoiture: 0,
@@ -5036,7 +5025,7 @@ function renderEnergyScreen(){
         : 'Le solaire alimente la maison';
     }
   }
-  PFC_HANDLE_ACC = pfcBuild(document.getElementById('accEFlowStage'), 'acc', PFC_TOPO_COMPACT);
+  PFC_HANDLE_ACC = pfcBuild(document.getElementById('accEFlowStage'), 'acc', PFC_TOPO_FULL);
   applyAccEnergy();
 
   // ---- 6 graphes de température sur 5 jours. "Étage" est sourcé sur la sonde Chambre Lily
