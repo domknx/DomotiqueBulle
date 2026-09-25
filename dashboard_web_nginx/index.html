@@ -2000,6 +2000,33 @@
     padding:4px 10px; border-radius:999px; border:1px solid var(--glass-brd); background:rgba(238,241,246,.06); }
   .rt-mode-na{ opacity:.7; }
 
+  /* ---------- 25.09.2026 (demande utilisateur) : simulation locale + vanne + essai graduations ----------
+     (1) Les boutons −/+ et Hors-gel/Nuit/Éco/Confort sont utilisables en SIMULATION : ils changent la
+     consigne et le mode affichés, recalculent le palier de chauffe et l'ouverture de vanne, sans rien
+     envoyer à Home Assistant ni au bus KNX (état en mémoire, perdu au rechargement). (2) Pastille vanne
+     en haut à droite de chaque tuile : icône + % d'ouverture (simulé tant que la vraie position KNX
+     n'est pas branchée). (3) Essai graduations : bascule « Maison / Essai graduations » dans l'en-tête
+     de l'écran — 3 rangées de 3 cadrans : graduations actuelles, en couleur (bleu -> rouge selon la
+     position sur l'échelle 15-25 °C) avec halo, en couleur sans halo. Couleurs posées en JS
+     (--tc/--tg/--tcf, voir rtTicksHtml) et activées seulement par les classes .grad-spectre /
+     .grad-spectre-mat sur la rangée : l'écran Maison reste sur les graduations cuivre -> or. */
+  .rt-valve{ position:absolute; top:14px; right:14px; z-index:3; display:flex; align-items:center; gap:5px;
+    padding:3px 9px 3px 6px; border-radius:999px; border:1px solid var(--glass-brd); background:rgba(238,241,246,.05);
+    font-family:var(--ff-mono); font-size:10.5px; color:var(--brume-dim); font-variant-numeric:tabular-nums; line-height:1; }
+  .rt-valve svg{ width:15px; height:15px; stroke:currentColor; flex:none; }
+  .rt-valve.open{ color:#ffb27a; border-color:rgba(255,156,84,.42); background:rgba(255,156,84,.08); }
+  [data-card-style="neumorph"] .rt-valve.open{ color:#c2410c; border-color:rgba(194,65,12,.35); }
+  .rt-room{ padding-right:74px; }
+  .rt-stepper, .rt-modebtn{ cursor:pointer; }
+  .rt-modebtn:active{ transform:translateY(.5px); }
+  .grad-spectre .rt-tick.lit{ background:var(--tc); box-shadow:0 0 6px 1.5px var(--tg), 0 0 1.8px rgba(255,255,255,.85); }
+  .grad-spectre .rt-tick.lit.major{ box-shadow:0 0 8.4px 2.1px var(--tg), 0 0 2.4px rgba(255,255,255,.95); }
+  .grad-spectre-mat .rt-tick.lit, .grad-spectre-mat .rt-tick.lit.major{ background:var(--tcf); box-shadow:none; }
+  .temp-viewseg{ display:inline-flex; padding:4px; border-radius:14px; border:1px solid var(--glass-brd); background:rgba(238,241,246,.04); }
+  .temp-viewseg button{ appearance:none; border:0; background:transparent; color:var(--brume-dim); font:500 13px var(--ff-body); padding:8px 16px; border-radius:10px; cursor:pointer; }
+  .temp-viewseg button.on{ background:color-mix(in srgb, var(--ambre) 16%, transparent); color:var(--brume); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--ambre) 40%, transparent); }
+  .temp-row.temp-row-test{ justify-content:flex-start; gap:28px; }
+
   /* ---------- 25.09.2026 (décision utilisateur) : cadran du thermostat selon le style de carte ----------
      Suite aux pistes du 24.09.2026 (artifact « Cadrans sombres », docbulle /maquettes/cadrans-sombres.html) :
      style GlassHome -> variante B « Verre fumé » ; style Liquid Glass -> variante C « Plaque
@@ -2528,7 +2555,11 @@
         <div class="acc-header">
           <div>
             <div class="ph-title">Température</div>
-            <div class="ph-sub" style="margin-top:6px;">7 thermostats KNX confirmés · 8 emplacements en attente de raccordement</div>
+            <div class="ph-sub" style="margin-top:6px;" id="tempSub">7 thermostats KNX confirmés · 8 emplacements en attente de raccordement · commandes en simulation, aucun envoi KNX</div>
+          </div>
+          <div class="temp-viewseg" id="tempViewSeg" role="group" aria-label="Affichage">
+            <button type="button" id="tempViewHome" data-v="home" class="on">Maison</button>
+            <button type="button" id="tempViewTest" data-v="test">Essai graduations</button>
           </div>
         </div>
         <div class="temp-floors" id="tempFloors"></div>
@@ -4393,10 +4424,26 @@
     }
     return ticks;
   }
+  // 25.09.2026 : dégradé bleu -> cyan -> vert -> jaune -> orange -> rouge (essai graduations), couleur
+  // fixée par la position de la graduation sur l'échelle, interpolée en continu. Posé en variables CSS
+  // sur chaque graduation ; sans effet tant que la rangée n'a pas .grad-spectre / .grad-spectre-mat.
+  const RT_SPECTRUM = ['#2563eb','#06b6d4','#22c55e','#facc15','#f97316','#ef4444'].map(h => [1,3,5].map(i => parseInt(h.slice(i,i+2),16)));
+  function rtSpectrum(t){
+    t = Math.max(0, Math.min(1, t));
+    const x = t * (RT_SPECTRUM.length - 1), i = Math.min(RT_SPECTRUM.length - 2, Math.floor(x)), f = x - i;
+    return RT_SPECTRUM[i].map((c,k) => Math.round(c + (RT_SPECTRUM[i+1][k] - c) * f));
+  }
   function rtTicksHtml(consigneC){
-    return rtBuildTicks(consigneC).map(t =>
-      `<div class="rt-tickspoke" style="transform:rotate(${t.angle}deg);"><div class="${t.tickClass}" style="opacity:${t.opacity}; width:${t.w}px; height:${t.h}px;"></div></div>`
-    ).join('');
+    const ticks = rtBuildTicks(consigneC), n = ticks.length;
+    return ticks.map((t, i) => {
+      let vars = '';
+      if(t.tickClass.indexOf('lit') > -1){
+        const [r,g,b] = rtSpectrum(i / (n - 1));
+        const L = v => Math.min(255, v + 70);
+        vars = ` --tc:linear-gradient(180deg, rgb(${L(r)},${L(g)},${L(b)}) 0%, rgb(${r},${g},${b}) 60%); --tg:rgba(${r},${g},${b},.85); --tcf:rgb(${r},${g},${b});`;
+      }
+      return `<div class="rt-tickspoke" style="transform:rotate(${t.angle}deg);"><div class="${t.tickClass}" style="opacity:${t.opacity}; width:${t.w}px; height:${t.h}px;${vars}"></div></div>`;
+    }).join('');
   }
   const RT_EMBER_HTML = `<div class="rt-ember">
         <div class="rt-emberblob void"></div>
@@ -4429,9 +4476,12 @@
     const btn = r.error
       ? `<div class="rt-errorbtn is-shown" data-room="${r.room}" title="Voir le message d'erreur"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 2.6 20.2A1 1 0 0 0 3.5 21.6h17a1 1 0 0 0 .87-1.4L12 3.5Z"/><path d="M12 10v4.2"/><circle cx="12" cy="17.6" r="0.9" fill="currentColor" stroke="none"/></svg></div>`
       : `<div class="rt-graphbtn" data-room="${r.room}" title="Historique consigne / actuelle / vanne"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 3 5-7 4 4"/></svg></div>`;
-    const modes = RT_KNX_MODES.map(m => `<div class="rt-modebtn ${m.key===r.activeMode?'active':''}">${m.label}</div>`).join('');
+    const key = r.key || r.room;
+    const modes = RT_KNX_MODES.map(m => `<div class="rt-modebtn ${m.key===r.activeMode?'active':''}" data-key="${key}" data-mode="${m.key}" role="button" title="${m.label} (simulation)">${m.label}</div>`).join('');
+    const valve = rtValveOf(r);
     return `
-    <div class="rt-tile">
+    <div class="rt-tile" data-key="${key}">
+      <div class="rt-valve ${valve > 0 ? 'open' : ''}" title="Ouverture de la vanne (simulation)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v6l9-3-9-3Z"/><path d="M21 11v6l-9-3 9-3Z"/><path d="M12 14V8"/><path d="M8.5 6h7"/></svg><span>${valve}%</span></div>
       <div class="rt-room">${r.room}</div>
       <div class="rt-thermo tier-${r.tier}">
         ${RT_EMBER_HTML}
@@ -4449,9 +4499,9 @@
               <div class="rt-temp tier-${r.tier}">${r.temp}</div>
               <div class="rt-current">${r.error ? 'Indisponible' : r.current}</div>
               <div class="rt-ctrlrow">
-                <div class="rt-stepper minus" title="Diminuer la consigne">−</div>
+                <div class="rt-stepper minus" data-key="${key}" data-step="-0.5" role="button" title="Diminuer la consigne (simulation)">−</div>
                 ${btn}
-                <div class="rt-stepper plus" title="Augmenter la consigne">+</div>
+                <div class="rt-stepper plus" data-key="${key}" data-step="0.5" role="button" title="Augmenter la consigne (simulation)">+</div>
               </div>
             </div>
           </div>
@@ -4461,11 +4511,67 @@
     </div>`;
   }
 
-  let tempScreenBuilt = false;
-  function renderTemperatureScreen(){
-    if(tempScreenBuilt) return;
-    tempScreenBuilt = true;
+  // ---- simulation locale (25.09.2026) : rien n'est envoyé à Home Assistant ni au bus KNX ----
+  // Consignes de mode = valeurs d'exemple (les vraies consignes par mode sont dans les
+  // thermostats KNX et seront lues depuis HA au branchement).
+  const RT_MODE_SETPOINT = { horsgel:8, nuit:17, eco:19, confort:21 };
+  const RT_TIER_VALVE = [0, 25, 55, 90];
+  function rtValveOf(r){ return (r.valve != null) ? r.valve : (r.error ? 0 : RT_TIER_VALVE[r.tier] || 0); }
+  function rtFmtC(c){ const v = Math.round(c * 2) / 2; return (v % 1 ? v.toFixed(1) : String(v)) + '°'; }
+  function rtSimRecompute(r){
+    const c = parseFloat(r.temp), cur = parseFloat(r.current);
+    if(r.error || isNaN(cur)){ r.tier = 0; r.valve = 0; }
+    else {
+      const d = c - cur;
+      r.tier = d <= 0 ? 0 : d < 0.5 ? 1 : d < 1.5 ? 2 : 3;
+      r.valve = d <= 0 ? 0 : Math.min(100, Math.max(10, Math.round(d * 40 / 5) * 5));
+    }
+    r.mode = r.activeMode === 'horsgel' ? 'Arrêt' : (r.tier > 0 ? 'Chauffage' : 'Au repos');
+  }
+  const RT_ROOMS = {};
+  function rtRedrawTile(key){
+    const r = RT_ROOMS[key]; if(!r) return;
+    const el = document.querySelector(`#tempFloors .rt-tile[data-key="${CSS.escape(key)}"]`);
+    if(el) el.outerHTML = tempTileHtml(r);
+  }
+
+  // ---- essai graduations (25.09.2026) : 3 rangées de 3 cadrans, simulation indépendante par rangée ----
+  const TEMP_TEST_ROWS = [
+    { cls:'',                   name:'Graduations actuelles',         sub:'Cuivre → or, avec halo — référence en production' },
+    { cls:'grad-spectre',       name:'Graduations en couleur',        sub:'Bleu → cyan → vert → jaune → orange → rouge selon la position sur 15–25 °C, avec halo' },
+    { cls:'grad-spectre-mat',   name:'En couleur, sans brillance',    sub:'Même dégradé, couleur mate sans halo lumineux' },
+  ];
+  const TEMP_TEST_ROOMS = [
+    { room:'Salle de Bain',   climate:true, tier:0, temp:'19°', current:'19.1°', mode:'Arrêt',     activeMode:'horsgel' },
+    { room:'Cuisine',         climate:true, tier:2, temp:'20°', current:'19.5°', mode:'Chauffage', activeMode:'confort' },
+    { room:'Chambre Parents', climate:true, tier:3, temp:'22°', current:'18.7°', mode:'Chauffage', activeMode:'confort' },
+  ];
+  let tempView = 'home';
+  function tempFloorCard(name, sub, rowCls, tilesHtml){
+    return `
+      <div class="enr-card temp-floor-card">
+        <div class="card-sheen"></div>
+        <div>
+          <div class="temp-floor-title">${name}</div>
+          <div class="temp-floor-sub">${sub}</div>
+        </div>
+        <div class="temp-row ${rowCls}">${tilesHtml}</div>
+      </div>`;
+  }
+  function renderTempLayout(){
     const wrap = document.getElementById('tempFloors');
+    Object.keys(RT_ROOMS).forEach(k => delete RT_ROOMS[k]);
+    if(tempView === 'test'){
+      wrap.innerHTML = TEMP_TEST_ROWS.map((row, i) => {
+        const rooms = TEMP_TEST_ROOMS.map(r => Object.assign({}, r, { key: i + ':' + r.room }));
+        rooms.forEach(r => { RT_ROOMS[r.key] = r; });
+        return tempFloorCard(row.name, row.sub, 'temp-row-test ' + row.cls, rooms.map(tempTileHtml).join(''));
+      }).join('');
+      document.getElementById('tempSub').textContent = 'Essai graduations · 3 × 3 cadrans en simulation, aucun envoi KNX';
+      return;
+    }
+    TEMP_FLOORS.forEach(f => f.rooms.forEach(r => { if(r.climate) RT_ROOMS[r.room] = r; }));
+    document.getElementById('tempSub').textContent = '7 thermostats KNX confirmés · 8 emplacements en attente de raccordement · commandes en simulation, aucun envoi KNX';
     wrap.innerHTML = TEMP_FLOORS.map(f => {
       const active = f.rooms.filter(r => r.climate).length;
       return `
@@ -4478,8 +4584,38 @@
         <div class="temp-row">${f.rooms.map(tempTileHtml).join('')}</div>
       </div>`;
     }).join('');
+  }
+
+  let tempScreenBuilt = false;
+  function renderTemperatureScreen(){
+    if(tempScreenBuilt) return;
+    tempScreenBuilt = true;
+    const wrap = document.getElementById('tempFloors');
+    renderTempLayout();
+
+    document.getElementById('tempViewSeg').addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if(!b || b.dataset.v === tempView) return;
+      tempView = b.dataset.v;
+      document.querySelectorAll('#tempViewSeg button').forEach(x => x.classList.toggle('on', x === b));
+      renderTempLayout();
+    });
 
     wrap.addEventListener('click', (e) => {
+      const st = e.target.closest('.rt-stepper[data-key]');
+      const mb = e.target.closest('.rt-modebtn[data-key]');
+      if(st || mb){
+        const r = RT_ROOMS[(st || mb).dataset.key]; if(!r) return;
+        if(st){
+          const c = Math.max(5, Math.min(30, parseFloat(r.temp) + parseFloat(st.dataset.step)));
+          r.temp = rtFmtC(c);
+        } else {
+          r.activeMode = mb.dataset.mode;
+          r.temp = rtFmtC(RT_MODE_SETPOINT[r.activeMode]);
+        }
+        rtSimRecompute(r);
+        rtRedrawTile((st || mb).dataset.key);
+        return;
+      }
       const gb = e.target.closest('.rt-graphbtn');
       const eb = e.target.closest('.rt-errorbtn');
       if(gb) openTempGraphPopup(gb.dataset.room);
