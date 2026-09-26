@@ -2055,6 +2055,50 @@
   @keyframes tfbEmber2{ 0%,100%{ transform:translate(0,0) scale(.9); opacity:.5; } 40%{ transform:translate(-2px,-2px) scale(1.15); opacity:1; } 70%{ transform:translate(2px,1px) scale(.95); opacity:.7; } }
   .tfb-count{ font-family:var(--ff-value); font-size:calc(19px * var(--fs-value-scale)); font-weight:600; font-variant-numeric:tabular-nums; color:var(--brume); min-width:1ch; }
   .tfb.cold .tfb-count{ color:var(--brume-dim); }
+
+  /* ---------- 26.09.2026 (demande utilisateur) : 3 graphes à droite de l'écran Température ----------
+     Colonne droite (ex-espace réservé) : (1) températures mesurées des pièces du niveau affiché,
+     (2) extérieur — température moyenne + enveloppe min/max (échelle °C à gauche) et taux
+     d'ensoleillement (échelle % à droite, choix explicite de l'utilisateur d'une 2e échelle),
+     (3) ouverture des vannes du niveau. Une seule période (24 h / 1 semaine / 1 mois) choisie dans
+     la rangée au-dessus des 3 cartes et appliquée aux 3. Survol : réticule vertical synchronisé sur
+     les 3 graphes + bulle listant toutes les séries dans la carte survolée. Couleurs des pièces :
+     palette catégorielle validée (script du skill dataviz, fond sombre #171a22 : bande de luminance,
+     séparation daltonisme ΔE ≥ 8.4, contraste ≥ 3:1), dans un ordre fixe par pièce, identique
+     entre la carte Températures et la carte Vannes. Données SIMULÉES (historique réel à brancher :
+     recorder HA / VictoriaMetrics pour les pièces et vannes, Open-Meteo past_days pour l'extérieur). */
+  #screen{ --ser-1:#3987e5; --ser-2:#d95926; --ser-3:#199e70; --ser-4:#c98500; --ser-5:#d55181; --ser-sun:#c98500; }
+  .temp-side.tch-col{ display:flex; flex-direction:column; gap:14px; min-height:0; }
+  .tch-range{ display:flex; align-items:center; gap:14px; flex:none; position:relative; z-index:2; }
+  .tch-range-lbl{ font-family:var(--ff-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--brume-dim); }
+  .tch-card{ flex:1; min-height:0; display:flex; flex-direction:column; padding:16px 22px 14px; }
+  .tch-legend{ display:flex; flex-wrap:wrap; gap:6px 16px; flex:none; position:relative; z-index:2; margin:2px 0 6px; }
+  .tch-leg{ display:flex; align-items:center; gap:7px; font-family:var(--ff-body); font-size:11.5px; color:var(--brume-dim); }
+  .tch-leg i{ width:16px; height:2px; border-radius:2px; background:var(--c); flex:none; }
+  .tch-leg i.band{ height:9px; border-radius:3px; background:color-mix(in srgb, var(--c) 30%, transparent); border:1px solid color-mix(in srgb, var(--c) 55%, transparent); }
+  .tch-leg i.tbar{ width:9px; height:10px; border-radius:2px 2px 0 0; }
+  .tch-leg.off{ opacity:.55; }
+  .tch-plot{ position:relative; flex:1; min-height:0; z-index:2; touch-action:none; }
+  .tch-plot svg{ position:absolute; inset:0; width:100%; height:100%; display:block; overflow:visible; }
+  .tch-empty{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--ff-body); font-size:13px; color:var(--brume-dim); }
+  .tch-grid{ stroke:var(--glass-brd); stroke-width:1; }
+  .tch-base{ stroke:color-mix(in srgb, var(--brume-dim) 45%, transparent); stroke-width:1; }
+  .tch-ax{ fill:var(--brume-dim); font-family:var(--ff-value); font-size:calc(var(--gr-axis-size) * 2.2); font-variant-numeric:tabular-nums; }
+  .tch-ax-title{ fill:var(--brume-dim); font-family:var(--ff-mono); font-size:calc(var(--gr-axis-size) * 1.9); letter-spacing:.06em; text-transform:uppercase; }
+  .tch-line{ fill:none; stroke-width:calc(var(--gr-line-w) * 3.1); stroke-linejoin:round; stroke-linecap:round; }
+  .tch-band{ stroke:none; }
+  .tch-bar{ stroke:none; }
+  .tch-xh{ stroke:var(--brume); stroke-width:1; opacity:.5; }
+  .tch-dot{ stroke:var(--tch-surface, #171a22); stroke-width:2; }
+  [data-card-style="neumorph"]{ --tch-surface:#e4e7ec; }
+  .tch-tip{ position:absolute; z-index:6; pointer-events:none; top:0; left:0; min-width:150px;
+    background:rgba(14,16,24,.95); border:1px solid rgba(255,255,255,.14); border-radius:10px; padding:8px 10px;
+    box-shadow:0 8px 22px rgba(0,0,0,.45); opacity:0; transition:opacity .1s ease; }
+  .tch-tip.show{ opacity:1; }
+  .tch-tip-t{ font-family:var(--ff-mono); font-size:10px; letter-spacing:.04em; color:rgba(238,241,246,.6); margin-bottom:5px; text-transform:uppercase; }
+  .tch-tip-r{ display:flex; align-items:center; gap:8px; font-size:11.5px; color:rgba(238,241,246,.72); line-height:1.55; white-space:nowrap; }
+  .tch-tip-r i{ width:12px; height:2px; border-radius:2px; flex:none; }
+  .tch-tip-r b{ font-family:var(--ff-value); font-weight:600; color:#fff; min-width:44px; text-align:right; font-variant-numeric:tabular-nums; }
   /* Changement de niveau (25.09.2026, demande utilisateur) : chaque thermostat du niveau affiché fait
      une volte-face de 180° (rotation sur l'axe vertical) en cascade (décalage de 70 ms par tuile).
      Révision du même jour (retour utilisateur : « on voit la carte à l'envers ») : la bascule entre les
@@ -4648,6 +4692,244 @@
       </button>`;
     }).join('');
   }
+  // ======================================================================
+  // Graphes de l'écran Température (26.09.2026) — voir bandeau CSS « 3 graphes à droite ».
+  // ======================================================================
+  let tchRange = '24h';
+  const TCH_RANGES = {
+    '24h': { stepMin: 15,  n: 96,  extStepMin: 60,  label: '24 h' },
+    '7j':  { stepMin: 60,  n: 168, extStepMin: 180, label: '1 semaine' },
+    '30j': { stepMin: 180, n: 240, extStepMin: 1440, label: '1 mois', daily: 8 },   // 1 mois : moyennes journalières
+  };
+  const TCH_JOURS = ['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'];
+  function tchRng(seedStr){
+    let h = 2166136261; for(let i = 0; i < seedStr.length; i++){ h ^= seedStr.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  }
+  function tchTimes(stepMin, n){
+    const step = stepMin * 60000, end = Math.floor(Date.now() / step) * step;
+    return Array.from({ length: n }, (_, i) => end - (n - 1 - i) * step);
+  }
+  function tchSetpointAt(r, t){
+    // programme horaire d'exemple : consigne de la pièce le jour, -2 °C la nuit (22 h – 6 h)
+    const h = new Date(t).getHours(), c = parseFloat(r.temp) || 20;
+    return (h >= 22 || h < 6) ? c - 2 : c;
+  }
+  function tchRoomSeries(r, range){
+    // Modèle d'exemple : la pièce suit sa consigne avec un retard du 1er ordre (propre à chaque pièce),
+    // la vanne s'ouvre proportionnellement à l'écart consigne - mesure (lissée). La série entière est
+    // ensuite décalée pour finir sur la valeur affichée par le cadran, et la vanne rejoint en douceur
+    // l'ouverture actuelle sur les derniers points.
+    const cfg = TCH_RANGES[range], times = tchTimes(cfg.stepMin, cfg.n), rnd = tchRng(r.room + '|' + range);
+    const tau = 90 + rnd() * 90;                       // constante de temps de la pièce (minutes)
+    const alpha = 1 - Math.exp(-cfg.stepMin / tau);
+    const cur = parseFloat(r.current), temps = [], valves = [];
+    let t = tchSetpointAt(r, times[0]) - 0.6, v = 0; const dayOff = {};
+    for(const tm of times){
+      const sp = tchSetpointAt(r, tm), gap = sp - t;
+      const target = gap > 0.1 ? Math.min(100, gap * 55) : 0;
+      v += (target - v) * Math.min(1, alpha * 2.5);
+      const day = Math.floor(tm / 86400000);
+      if(!(day in dayOff)) dayOff[day] = (rnd() - .5) * 0.7;   // variation d'un jour à l'autre (météo, occupation)
+      t += (sp - 0.25 + dayOff[day] - t) * alpha + (rnd() - .5) * 0.08;
+      temps.push(t); valves.push(Math.round(v / 5) * 5);
+    }
+    if(isFinite(cur)){ const d = cur - temps[temps.length - 1]; for(let i = 0; i < temps.length; i++) temps[i] += d; }
+    const k = Math.max(3, Math.round(cfg.n * 0.06)), vEnd = rtValveOf(r), v0 = valves[valves.length - k];
+    if(!cfg.daily) for(let i = 0; i < k; i++) valves[valves.length - k + i] = Math.round((v0 + (vEnd - v0) * (i + 1) / k) / 5) * 5;
+    if(cfg.daily){
+      // vue 1 mois : une valeur par jour (moyenne), plus lisible que 8 cycles jour/nuit par jour
+      const g = cfg.daily, T = [], Tm = [], Vm = [];
+      for(let i = 0; i + g <= times.length; i += g){
+        T.push(times[i]);
+        Tm.push(temps.slice(i, i + g).reduce((a, b) => a + b, 0) / g);
+        Vm.push(Math.round(valves.slice(i, i + g).reduce((a, b) => a + b, 0) / g));
+      }
+      return { times: T, temps: r.error ? Tm.map(() => null) : Tm.map(x => +x.toFixed(2)), valves: Vm };
+    }
+    return { times, temps: r.error ? temps.map(() => null) : temps.map(x => +x.toFixed(2)), valves };
+  }
+  function tchExtSeries(range){
+    const cfg = TCH_RANGES[range], fine = 10, per = cfg.extStepMin / fine;
+    const times = tchTimes(cfg.extStepMin, Math.round(cfg.n * cfg.stepMin / cfg.extStepMin));
+    const rnd = tchRng('ext|' + range);
+    const dayOff = {}, dayCloud = {};
+    const mean = [], min = [], max = [], sun = [];
+    for(const tb of times){
+      let s = 0, lo = 99, hi = -99, sunny = 0;
+      for(let k = 0; k < per; k++){
+        const tm = tb + k * fine * 60000, d = new Date(tm), day = d.toDateString(), h = d.getHours() + d.getMinutes() / 60;
+        if(!(day in dayOff)){ dayOff[day] = (rnd() - .5) * 6; dayCloud[day] = rnd(); }
+        const x = 11 + dayOff[day] + 5.5 * Math.sin((h - 9) / 24 * 2 * Math.PI) * (1 - dayCloud[day] * .5) + (rnd() - .5) * 0.6;
+        s += x; lo = Math.min(lo, x); hi = Math.max(hi, x);
+        const day_ = h > 7.3 && h < 19.3;
+        if(day_ && rnd() > dayCloud[day] * 0.9 + (rnd() < .15 ? .3 : 0)) sunny++;
+      }
+      mean.push(+(s / per).toFixed(1)); min.push(+lo.toFixed(1)); max.push(+hi.toFixed(1)); sun.push(Math.round(sunny / per * 100));
+    }
+    return { times, mean, min, max, sun };
+  }
+  function tchFmtTime(t, range, long){
+    const d = new Date(t), hh = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0') + '.' + String(d.getMonth() + 1).padStart(2, '0');
+    if(long) return range === '30j' ? TCH_JOURS[d.getDay()] + ' ' + dd + ' · sur 24 h' : TCH_JOURS[d.getDay()] + ' ' + dd + ' · ' + hh;
+    return range === '24h' ? hh : range === '7j' ? TCH_JOURS[d.getDay()] + ' ' + d.getDate() : dd;
+  }
+  function tchNiceTicks(lo, hi, count){
+    const span = hi - lo || 1, raw = span / count, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => span / s <= count) || 10 * mag;
+    const a = Math.floor(lo / step) * step, b = Math.ceil(hi / step) * step, out = [];
+    for(let v = a; v <= b + 1e-9; v += step) out.push(+v.toFixed(6));
+    return out;
+  }
+  function tchXTicks(times, range){
+    const out = [], t0 = times[0], t1 = times[times.length - 1];
+    if(range === '24h'){ const H = 3600000 * 4; for(let t = Math.ceil(t0 / H) * H; t <= t1; t += H) out.push(t); }
+    else if(range === '7j'){ const d = new Date(t0); d.setHours(24, 0, 0, 0); for(let t = +d; t <= t1; t += 86400000) out.push(t); }
+    else { const d = new Date(t0); d.setHours(24, 0, 0, 0); for(let t = +d; t <= t1; t += 86400000 * 5) out.push(t); }
+    return out;
+  }
+  const TCH_NS = 'http://www.w3.org/2000/svg';
+  // Rendu générique : axe X temporel commun, 1 ou 2 échelles Y, séries lignes / bande / barres.
+  function tchRenderChart(card, spec){
+    const plot = card.querySelector('.tch-plot'), legend = card.querySelector('.tch-legend');
+    legend.textContent = '';
+    spec.legend.forEach(l => {
+      const el = document.createElement('span'); el.className = 'tch-leg' + (l.off ? ' off' : '');
+      const i = document.createElement('i'); if(l.kind) i.className = l.kind; i.style.setProperty('--c', l.color);
+      el.append(i, document.createTextNode(l.name)); legend.appendChild(el);
+    });
+    plot.textContent = '';
+    if(spec.empty){ const e = document.createElement('div'); e.className = 'tch-empty'; e.textContent = spec.empty; plot.appendChild(e); card._tch = null; return; }
+    const W = plot.clientWidth, H = plot.clientHeight;
+    if(W < 50 || H < 50) return;
+    const axis = parseFloat(getComputedStyle(document.getElementById('screen')).getPropertyValue('--gr-axis-size')) || 5;
+    const fs = axis * 2.2;
+    const padL = fs * 3.4 + 6, padR = spec.right ? fs * 3.4 + 6 : 10, padT = 8, padB = fs * 2.2;
+    const iw = W - padL - padR, ih = H - padT - padB;
+    const t0 = spec.times[0], t1 = spec.times[spec.times.length - 1];
+    const X = t => padL + (t - t0) / (t1 - t0) * iw;
+    const mkY = (lo, hi) => v => padT + (1 - (v - lo) / (hi - lo)) * ih;
+    const Y = mkY(spec.left.min, spec.left.max), Y2 = spec.right ? mkY(spec.right.min, spec.right.max) : null;
+    const svg = document.createElementNS(TCH_NS, 'svg'); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const add = (tag, attrs, parent) => { const el = document.createElementNS(TCH_NS, tag); for(const k in attrs) el.setAttribute(k, attrs[k]); (parent || svg).appendChild(el); return el; };
+    // grille + échelle gauche
+    spec.left.ticks.forEach(v => {
+      add('line', { x1: padL, x2: W - padR, y1: Y(v), y2: Y(v), class: v === spec.left.ticks[0] ? 'tch-base' : 'tch-grid' });
+      add('text', { x: padL - 6, y: Y(v) + fs * .35, 'text-anchor': 'end', class: 'tch-ax' }).textContent = spec.left.fmt(v);
+    });
+    if(spec.right) spec.right.ticks.forEach(v => {
+      add('text', { x: W - padR + 6, y: Y2(v) + fs * .35, 'text-anchor': 'start', class: 'tch-ax' }).textContent = spec.right.fmt(v);
+    });
+    tchXTicks(spec.times, spec.range).forEach(t => {
+      add('text', { x: X(t), y: H - fs * .45, 'text-anchor': 'middle', class: 'tch-ax' }).textContent = tchFmtTime(t, spec.range);
+    });
+    // barres (échelle droite), puis bandes, puis lignes
+    (spec.bars || []).forEach(b => {
+      const bw = Math.max(1, iw / b.values.length - 2);
+      b.values.forEach((v, i) => { if(!v) return; const x = X(b.times[i]), y = Y2(v);
+        add('rect', { x: x - bw / 2, y, width: bw, height: Y2(spec.right.min) - y, rx: Math.min(3, bw / 2), class: 'tch-bar', fill: b.color, 'fill-opacity': .55 }); });
+    });
+    const path = (ts, vs, Yf) => { let d = '', pen = false; vs.forEach((v, i) => { if(v == null){ pen = false; return; } d += (pen ? 'L' : 'M') + X(ts[i]).toFixed(1) + ' ' + Yf(v).toFixed(1) + ' '; pen = true; }); return d; };
+    (spec.bands || []).forEach(b => {
+      let d = 'M'; b.hi.forEach((v, i) => { d += X(b.times[i]).toFixed(1) + ' ' + Y(v).toFixed(1) + ' L'; });
+      for(let i = b.lo.length - 1; i >= 0; i--) d += X(b.times[i]).toFixed(1) + ' ' + Y(b.lo[i]).toFixed(1) + (i ? ' L' : ' Z');
+      add('path', { d, class: 'tch-band', fill: b.color, 'fill-opacity': .2 });
+    });
+    spec.lines.forEach(l => add('path', { d: path(l.times, l.values, l.axis === 'right' ? Y2 : Y), class: 'tch-line', stroke: l.color, ...(l.step ? {} : {}) }));
+    // réticule
+    const xh = add('g', { style: 'display:none' });
+    const xl = add('line', { y1: padT, y2: padT + ih, class: 'tch-xh' }, xh);
+    const dots = spec.lines.map(l => add('circle', { r: 4, fill: l.color, class: 'tch-dot' }, xh));
+    plot.appendChild(svg);
+    const tip = document.createElement('div'); tip.className = 'tch-tip'; plot.appendChild(tip);
+    card._tch = {
+      t0, t1,
+      show(t, withTip){
+        if(t < t0 || t > t1){ this.hide(); return; }
+        xh.style.display = ''; const x = X(t); xl.setAttribute('x1', x); xl.setAttribute('x2', x);
+        const rows = [];
+        spec.lines.forEach((l, k) => {
+          let bi = 0, bd = Infinity; l.times.forEach((tt, i) => { const d = Math.abs(tt - t); if(d < bd){ bd = d; bi = i; } });
+          const v = l.values[bi];
+          if(v == null){ dots[k].style.display = 'none'; } else { dots[k].style.display = ''; dots[k].setAttribute('cx', X(l.times[bi])); dots[k].setAttribute('cy', (l.axis === 'right' ? Y2 : Y)(v)); }
+          rows.push({ name: l.name, color: l.color, text: v == null ? '—' : l.fmt(v, bi) });
+        });
+        (spec.extraTip || []).forEach(e => { let bi = 0, bd = Infinity; e.times.forEach((tt, i) => { const d = Math.abs(tt - t); if(d < bd){ bd = d; bi = i; } }); rows.push({ name: e.name, color: e.color, text: e.fmt(bi) }); });
+        if(!withTip){ tip.classList.remove('show'); return; }
+        tip.textContent = '';
+        const hd = document.createElement('div'); hd.className = 'tch-tip-t'; hd.textContent = tchFmtTime(t, spec.range, true); tip.appendChild(hd);
+        rows.forEach(r => { const row = document.createElement('div'); row.className = 'tch-tip-r'; const i = document.createElement('i'); i.style.background = r.color;
+          const b = document.createElement('b'); b.textContent = r.text; row.append(i, b, document.createTextNode(r.name)); tip.appendChild(row); });
+        const tw = tip.offsetWidth, th = tip.offsetHeight;
+        let left = x + 14; if(left + tw > W) left = x - tw - 14;
+        tip.style.left = Math.max(0, left) + 'px'; tip.style.top = Math.max(0, padT + 4) + 'px'; tip.classList.add('show');
+      },
+      hide(){ xh.style.display = 'none'; tip.classList.remove('show'); },
+      timeAt(clientX){ const r = plot.getBoundingClientRect(); const x = clientX - r.left; return t0 + (x - padL) / iw * (t1 - t0); }
+    };
+  }
+  const TCH_COLORS = ['var(--ser-1)', 'var(--ser-2)', 'var(--ser-3)', 'var(--ser-4)', 'var(--ser-5)'];
+  function renderTempCharts(){
+    const f = TEMP_FLOORS.find(x => x.name === tempFloorSel); if(!f) return;
+    document.querySelectorAll('#tchRange button').forEach(b => b.classList.toggle('active', b.dataset.r === tchRange));
+    const rooms = f.rooms.filter(r => r.climate), range = tchRange;
+    const data = rooms.map(r => ({ r, ...tchRoomSeries(r, range) }));
+    const cards = { temps: document.getElementById('tchTemps'), ext: document.getElementById('tchExt'), valves: document.getElementById('tchValves') };
+    if(!cards.temps) return;
+    const color = i => TCH_COLORS[i % TCH_COLORS.length];
+    // (1) températures des pièces
+    if(!rooms.length){
+      tchRenderChart(cards.temps, { legend: [], empty: 'Aucun thermostat raccordé à ce niveau' });
+      tchRenderChart(cards.valves, { legend: [], empty: 'Aucune vanne raccordée à ce niveau' });
+    } else {
+      const all = data.flatMap(d => d.temps.filter(v => v != null));
+      const tk = tchNiceTicks(Math.min(...all) - .3, Math.max(...all) + .3, 4);
+      tchRenderChart(cards.temps, {
+        range, times: data[0].times,
+        legend: data.map((d, i) => ({ name: d.r.room + (d.r.error ? ' (indisponible)' : ''), color: color(i), off: d.r.error })),
+        left: { min: tk[0], max: tk[tk.length - 1], ticks: tk, fmt: v => v.toFixed(Number.isInteger(tk[1] - tk[0]) ? 0 : 1) + '°' },
+        lines: data.map((d, i) => ({ name: d.r.room, color: color(i), times: d.times, values: d.temps, fmt: v => v.toFixed(1) + ' °C' })),
+      });
+      tchRenderChart(cards.valves, {
+        range, times: data[0].times,
+        legend: data.map((d, i) => ({ name: d.r.room, color: color(i) })),
+        left: { min: 0, max: 100, ticks: [0, 25, 50, 75, 100], fmt: v => v + ' %' },
+        lines: data.map((d, i) => ({ name: d.r.room, color: color(i), times: d.times, values: d.valves, fmt: v => Math.round(v) + ' %' })),
+      });
+    }
+    // (2) extérieur : température moyenne + enveloppe min/max (gauche, °C), ensoleillement (droite, %)
+    const ex = tchExtSeries(range);
+    const tk2 = tchNiceTicks(Math.min(...ex.min) - .5, Math.max(...ex.max) + .5, 4);
+    tchRenderChart(cards.ext, {
+      range, times: ex.times,
+      legend: [ { name: 'Température moyenne', color: 'var(--ser-1)' }, { name: 'Min / max', color: 'var(--ser-1)', kind: 'band' }, { name: 'Ensoleillement', color: 'var(--ser-sun)', kind: 'tbar' } ],
+      left: { min: tk2[0], max: tk2[tk2.length - 1], ticks: tk2, fmt: v => Math.round(v) + '°' },
+      right: { min: 0, max: 100, ticks: [0, 25, 50, 75, 100], fmt: v => v + ' %' },
+      bands: [ { times: ex.times, lo: ex.min, hi: ex.max, color: 'var(--ser-1)' } ],
+      bars: [ { times: ex.times, values: ex.sun, color: 'var(--ser-sun)' } ],
+      lines: [ { name: 'Température', color: 'var(--ser-1)', times: ex.times, values: ex.mean, fmt: (v, i) => v.toFixed(1) + ' °C' } ],
+      extraTip: [ { name: 'Min / max', color: 'var(--ser-1)', times: ex.times, fmt: i => ex.min[i].toFixed(1) + ' / ' + ex.max[i].toFixed(1) + ' °C' },
+                  { name: 'Ensoleillement', color: 'var(--ser-sun)', times: ex.times, fmt: i => ex.sun[i] + ' %' } ],
+    });
+  }
+  // Survol synchronisé : le réticule suit le même instant sur les 3 graphes, bulle dans la carte survolée.
+  function tchBindHover(){
+    const side = document.querySelector('#tempFloors .tch-col'); if(!side || side._bound) return; side._bound = true;
+    const cards = () => [...side.querySelectorAll('.tch-card')].filter(c => c._tch);
+    side.addEventListener('pointermove', e => {
+      const plot = e.target.closest('.tch-plot'); if(!plot){ cards().forEach(c => c._tch.hide()); return; }
+      const host = plot.closest('.tch-card'); if(!host._tch) return;
+      const t = host._tch.timeAt(e.clientX);
+      cards().forEach(c => c._tch.show(t, c === host));
+    });
+    side.addEventListener('pointerleave', () => cards().forEach(c => c._tch.hide()));
+    side.addEventListener('click', e => {
+      const b = e.target.closest('#tchRange button'); if(!b || b.dataset.r === tchRange) return;
+      tchRange = b.dataset.r; renderTempCharts();
+    });
+  }
+
   // Volte-face des thermostats au changement de niveau : l'ancienne tuile devient la face avant d'une
   // carte à deux faces, la tuile du niveau choisi (même emplacement de la grille 2×3) la face arrière ;
   // une fois toutes les rotations terminées, l'écran est reconstruit proprement (renderTempLayout).
@@ -4716,11 +4998,31 @@
         </div>
         <div class="temp-grid">${f.rooms.map(tempTileHtml).join('')}</div>
       </div>
-      <div class="reserved-space temp-side">
-        <div class="ph-sub">Espace réservé</div>
-        <div class="temp-floor-sub">Autres informations de l'écran Température — à définir</div>
+      <div class="temp-side tch-col">
+        <div class="tch-range">
+          <span class="tch-range-lbl">Période · 3 graphes</span>
+          <div class="enr-period-toggle" id="tchRange">
+            <button type="button" data-r="24h">24 h</button><button type="button" data-r="7j">1 semaine</button><button type="button" data-r="30j">1 mois</button>
+          </div>
+        </div>
+        <div class="enr-card tch-card" id="tchTemps">
+          <div class="card-sheen"></div>
+          <div class="enr-card-head"><div><div class="enr-card-title">Températures · ${f.name}</div><div class="enr-card-sub">Température mesurée par pièce · exemple simulé</div></div></div>
+          <div class="tch-legend"></div><div class="tch-plot"></div>
+        </div>
+        <div class="enr-card tch-card" id="tchExt">
+          <div class="card-sheen"></div>
+          <div class="enr-card-head"><div><div class="enr-card-title">Extérieur</div><div class="enr-card-sub">Température (min / moy. / max) et ensoleillement · exemple simulé</div></div></div>
+          <div class="tch-legend"></div><div class="tch-plot"></div>
+        </div>
+        <div class="enr-card tch-card" id="tchValves">
+          <div class="card-sheen"></div>
+          <div class="enr-card-head"><div><div class="enr-card-title">Ouverture des vannes · ${f.name}</div><div class="enr-card-sub">Pourcentage d'ouverture par pièce · exemple simulé</div></div></div>
+          <div class="tch-legend"></div><div class="tch-plot"></div>
+        </div>
       </div>`;
     renderTempFloorBtns();
+    requestAnimationFrame(() => { renderTempCharts(); tchBindHover(); });
   }
 
   let tempScreenBuilt = false;
@@ -4750,6 +5052,7 @@
         rtSimRecompute(r);
         rtRedrawTile((st || mb).dataset.key);
         renderTempFloorBtns();
+        renderTempCharts();
         const f = TEMP_FLOORS.find(x => x.name === tempFloorSel), sub = document.getElementById('tempFloorSub');
         if(f && sub){ const s2 = tempFloorStats(f); sub.textContent = `${s2.n} thermostat${s2.n>1?'s':''} raccordé${s2.n>1?'s':''} sur ${f.rooms.length} · ${s2.open} vanne${s2.open>1?'s':''} ouverte${s2.open>1?'s':''}`; }
         return;

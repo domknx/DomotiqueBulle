@@ -161,6 +161,8 @@ Incident résolu le 23–24.08.2026 : après ajout du bloc `http:`/`trusted_prox
 
 - 2026-09-25 — Écran Température réorganisé par niveau (demande utilisateur) : carte 2×3 thermostats d'un seul niveau (Étage par défaut) + espace réservé pour d'autres informations ; 3 boutons de niveau dans le bandeau (icône de vanne, nombre de vannes ouvertes, braise animée selon l'ouverture moyenne du niveau) ; volte-face de 180° des thermostats au changement de niveau. Détail dans `dashboard/CAHIER_DES_CHARGES.md` §9. Sauvegarde avant modification dans `Backups/` (conforme §6).
 
+- 2026-09-26 — Écran Température : 3 graphes dans la colonne de droite (températures des pièces du niveau, extérieur min/moy./max + ensoleillement sur 2 échelles, ouverture des vannes), période commune 24 h / 1 semaine / 1 mois, survol synchronisé. Données simulées en attendant le branchement de l'historique réel. Détail dans `dashboard/CAHIER_DES_CHARGES.md` §9. Sauvegarde avant modification dans `Backups/` (conforme §6).
+
 ## 10. Jalons du projet et sauvegardes
 
 ### 10.1 Jalons principaux
