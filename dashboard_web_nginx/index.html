@@ -3655,26 +3655,33 @@
   // garder aurait double-compté la même puissance de recharge VE sous 2 formes différentes.
   // 7 lignes au lieu de 8 : Réseau/Solaire/Batterie→Maison (3 liaisons "hub") + Solaire→Réseau,
   // Solaire→Batterie, Réseau→Voiture, Batterie→Voiture (4 liaisons directes).
-  // 27.09.2026 (demande utilisateur) : Solaire (y:14->13) et Voiture (y:86->87) légèrement
-  // rapprochés des bords haut/bas -- limite haute atteinte (marge résiduelle du libellé au bord
-  // de la carte réduite à quelques px, voir .pfc-node gap 7->5px ci-dessus) : aller plus loin
-  // sans rogner les libellés "SOLAIRE"/"VOITURE" demanderait de réduire aussi la taille de leurs
-  // anneaux (108px), non demandée ici (seule celle de la Maison l'a été).
+  // 27.09.2026 (demande utilisateur) : Solaire et Voiture rapprochés des bords haut/bas pour
+  // allonger les traits Solaire->Maison et Maison->Voiture. 1ère passe (y:14->13 / y:86->87) trop
+  // prudente : le repère utilisé pour juger de la marge restante était le bord de la zone de
+  // dessin (#accEFlowStage/#enrFlowStage) elle-même, qui n'a pas d'overflow:hidden -- la vraie
+  // limite est le bord de la CARTE (.acc-card/.enr-card, qui ont overflow:hidden). Mesure de la
+  // marge réelle (bord de carte -> haut du libellé) : ~52px côté Solaire, ~11px seulement côté
+  // Voiture (le bas de la carte étant plus proche de la zone de dessin que son haut, où se trouve
+  // l'en-tête). 2e passe : Solaire remonté à y:5 (marge résiduelle ramenée à ~15px, du même ordre
+  // que celle de Voiture, vérifiée sans chevauchement avec l'en-tête ni rognage) ; Voiture laissé
+  // à y:87, déjà proche de sa limite réelle. Aller encore plus loin sur Solaire, ou toucher à
+  // Voiture, demanderait de réduire la taille de leurs anneaux (108px), non demandée ici (seule
+  // celle de la Maison l'a été).
   const PFC_TOPO_FULL = {
     viewBox: '0 0 100 100',
     nodes: [
       { key:'home',     x:50, y:50 },
-      { key:'solaire',  x:50, y:13, labelAbove:true },
+      { key:'solaire',  x:50, y:17, labelAbove:true },
       { key:'reseau',   x:10, y:50 },
       { key:'batterie', x:90, y:50 },
       { key:'voiture',  x:50, y:87 },
     ],
     lines: [
       { key:'reseauMaison',    from:'reseau',   to:'home',     color:'reseau',   d:'M10,50 L50,50' },
-      { key:'solaireMaison',   from:'solaire',  to:'home',     color:'solaire',  d:'M50,13 L50,50' },
+      { key:'solaireMaison',   from:'solaire',  to:'home',     color:'solaire',  d:'M50,17 L50,50' },
       { key:'batterieMaison',  from:'batterie', to:'home',     color:'batterie', d:'M90,50 L50,50' },
-      { key:'solaireReseau',   from:'solaire',  to:'reseau',   color:'solaire',  d:'M44,13 C44,40 26,46 10,46' },
-      { key:'solaireBatterie', from:'solaire',  to:'batterie', color:'solaire',  d:'M56,13 C56,40 74,46 90,46' },
+      { key:'solaireReseau',   from:'solaire',  to:'reseau',   color:'solaire',  d:'M44,17 C44,40 26,46 10,46' },
+      { key:'solaireBatterie', from:'solaire',  to:'batterie', color:'solaire',  d:'M56,17 C56,40 74,46 90,46' },
       { key:'reseauVoiture',   from:'reseau',   to:'voiture',  color:'reseau',   d:'M10,54 C36,54 44,74 44,87' },
       { key:'batterieVoiture', from:'batterie', to:'voiture',  color:'batterie', d:'M90,54 C64,54 56,74 56,87' },
     ],
@@ -3785,11 +3792,22 @@
     function frame(ts){
       if (token.stop) return;
       if (start === null) start = ts;
-      const rect = linesSvg.getBoundingClientRect();
+      // 27.09.2026 (correction bug utilisateur, "le dessin du flux d'énergie... complétement à
+      // côté de la courbe") : getBoundingClientRect() renvoie la taille APRÈS mise à l'échelle
+      // par le transform:scale() de fitScreen() (voir plus haut), qui adapte le gabarit fixe
+      // 2560×1440 à l'écran réel. Utiliser cette taille déjà mise à l'échelle pour calculer une
+      // position CSS left/top revenait à mettre le point à l'échelle une SECONDE fois (il hérite
+      // du même transform ancestral au rendu) — d'où un décalage par rapport à la courbe dès que
+      // l'écran réel n'est pas pile 2560×1440 (le cas quasi systématique en usage réel). clientWidth/
+      // clientHeight renvoient la taille de mise en page LOCALE (avant transform, en pixels du
+      // gabarit) puisqu'un transform CSS n'affecte que le rendu, jamais la mise en page — c'est
+      // exactement le repère dans lequel left/top doivent être exprimés pour être mis à l'échelle
+      // une seule fois, au moment du rendu.
+      const w = linesSvg.clientWidth, h = linesSvg.clientHeight;
       const frac = ((ts - start) % duration) / duration;
       const pt = pathEl.getPointAtLength(frac * len);
-      dot.style.left = (pt.x / 100 * rect.width) + 'px';
-      dot.style.top  = (pt.y / 100 * rect.height) + 'px';
+      dot.style.left = (pt.x / 100 * w) + 'px';
+      dot.style.top  = (pt.y / 100 * h) + 'px';
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
