@@ -4826,9 +4826,11 @@
     });
     // barres (échelle droite), puis bandes, puis lignes
     (spec.bars || []).forEach(b => {
+      const useRight = spec.right && b.axis !== 'left';
+      const Yb = useRight ? Y2 : Y, yMin = useRight ? spec.right.min : spec.left.min;
       const bw = Math.max(1, iw / b.values.length - 2);
-      b.values.forEach((v, i) => { if(!v) return; const x = X(b.times[i]), y = Y2(v);
-        add('rect', { x: x - bw / 2, y, width: bw, height: Y2(spec.right.min) - y, rx: Math.min(3, bw / 2), class: 'tch-bar', fill: b.color, 'fill-opacity': .55 }); });
+      b.values.forEach((v, i) => { if(!v) return; const x = X(b.times[i]), y = Yb(v);
+        add('rect', { x: x - bw / 2, y, width: bw, height: Yb(yMin) - y, rx: Math.min(3, bw / 2), class: 'tch-bar', fill: b.color, 'fill-opacity': .55 }); });
     });
     const path = (ts, vs, Yf) => { let d = '', pen = false; vs.forEach((v, i) => { if(v == null){ pen = false; return; } d += (pen ? 'L' : 'M') + X(ts[i]).toFixed(1) + ' ' + Yf(v).toFixed(1) + ' '; pen = true; }); return d; };
     (spec.bands || []).forEach(b => {
@@ -4875,7 +4877,7 @@
     document.querySelectorAll('#tchRange button').forEach(b => b.classList.toggle('active', b.dataset.r === tchRange));
     const rooms = f.rooms.filter(r => r.climate), range = tchRange;
     const data = rooms.map(r => ({ r, ...tchRoomSeries(r, range) }));
-    const cards = { temps: document.getElementById('tchTemps'), ext: document.getElementById('tchExt'), valves: document.getElementById('tchValves') };
+    const cards = { temps: document.getElementById('tchTemps'), extTemp: document.getElementById('tchExtTemp'), extSun: document.getElementById('tchExtSun'), valves: document.getElementById('tchValves') };
     if(!cards.temps) return;
     const color = i => TCH_COLORS[i % TCH_COLORS.length];
     // (1) températures des pièces
@@ -4898,19 +4900,25 @@
         lines: data.map((d, i) => ({ name: d.r.room, color: color(i), times: d.times, values: d.valves, fmt: v => Math.round(v) + ' %' })),
       });
     }
-    // (2) extérieur : température moyenne + enveloppe min/max (gauche, °C), ensoleillement (droite, %)
+    // (2) extérieur : essai en 2 cartes empilées (au lieu d'un double axe) — température + enveloppe min/max,
+    // puis ensoleillement, chacune sur un seul axe. Même plage horaire, réticule synchronisé entre les 2.
     const ex = tchExtSeries(range);
     const tk2 = tchNiceTicks(Math.min(...ex.min) - .5, Math.max(...ex.max) + .5, 4);
-    tchRenderChart(cards.ext, {
+    tchRenderChart(cards.extTemp, {
       range, times: ex.times,
-      legend: [ { name: 'Température moyenne', color: 'var(--ser-1)' }, { name: 'Min / max', color: 'var(--ser-1)', kind: 'band' }, { name: 'Ensoleillement', color: 'var(--ser-sun)', kind: 'tbar' } ],
+      legend: [ { name: 'Température moyenne', color: 'var(--ser-1)' }, { name: 'Min / max', color: 'var(--ser-1)', kind: 'band' } ],
       left: { min: tk2[0], max: tk2[tk2.length - 1], ticks: tk2, fmt: v => Math.round(v) + '°' },
-      right: { min: 0, max: 100, ticks: [0, 25, 50, 75, 100], fmt: v => v + ' %' },
       bands: [ { times: ex.times, lo: ex.min, hi: ex.max, color: 'var(--ser-1)' } ],
-      bars: [ { times: ex.times, values: ex.sun, color: 'var(--ser-sun)' } ],
       lines: [ { name: 'Température', color: 'var(--ser-1)', times: ex.times, values: ex.mean, fmt: (v, i) => v.toFixed(1) + ' °C' } ],
-      extraTip: [ { name: 'Min / max', color: 'var(--ser-1)', times: ex.times, fmt: i => ex.min[i].toFixed(1) + ' / ' + ex.max[i].toFixed(1) + ' °C' },
-                  { name: 'Ensoleillement', color: 'var(--ser-sun)', times: ex.times, fmt: i => ex.sun[i] + ' %' } ],
+      extraTip: [ { name: 'Min / max', color: 'var(--ser-1)', times: ex.times, fmt: i => ex.min[i].toFixed(1) + ' / ' + ex.max[i].toFixed(1) + ' °C' } ],
+    });
+    tchRenderChart(cards.extSun, {
+      range, times: ex.times,
+      legend: [ { name: 'Ensoleillement', color: 'var(--ser-sun)', kind: 'tbar' } ],
+      left: { min: 0, max: 100, ticks: [0, 25, 50, 75, 100], fmt: v => v + ' %' },
+      bars: [ { times: ex.times, values: ex.sun, color: 'var(--ser-sun)' } ],
+      lines: [],
+      extraTip: [ { name: 'Ensoleillement', color: 'var(--ser-sun)', times: ex.times, fmt: i => ex.sun[i] + ' %' } ],
     });
   }
   // Survol synchronisé : le réticule suit le même instant sur les 3 graphes, bulle dans la carte survolée.
@@ -5010,9 +5018,14 @@
           <div class="enr-card-head"><div><div class="enr-card-title">Températures · ${f.name}</div><div class="enr-card-sub">Température mesurée par pièce · exemple simulé</div></div></div>
           <div class="tch-legend"></div><div class="tch-plot"></div>
         </div>
-        <div class="enr-card tch-card" id="tchExt">
+        <div class="enr-card tch-card" id="tchExtTemp">
           <div class="card-sheen"></div>
-          <div class="enr-card-head"><div><div class="enr-card-title">Extérieur</div><div class="enr-card-sub">Température (min / moy. / max) et ensoleillement · exemple simulé</div></div></div>
+          <div class="enr-card-head"><div><div class="enr-card-title">Extérieur · Température</div><div class="enr-card-sub">Moyenne, min / max · exemple simulé</div></div></div>
+          <div class="tch-legend"></div><div class="tch-plot"></div>
+        </div>
+        <div class="enr-card tch-card" id="tchExtSun">
+          <div class="card-sheen"></div>
+          <div class="enr-card-head"><div><div class="enr-card-title">Extérieur · Ensoleillement</div><div class="enr-card-sub">Taux d'ensoleillement · exemple simulé</div></div></div>
           <div class="tch-legend"></div><div class="tch-plot"></div>
         </div>
         <div class="enr-card tch-card" id="tchValves">
