@@ -543,18 +543,19 @@
   .n-home .pfc-val{ font-size:calc(17px * var(--fs-value-scale)); font-weight:600; }
   .pfc-stage.pfc-compact .n-home .pfc-val{ font-size:calc(12px * var(--fs-value-scale)); }
 
-  /* -- Grille des 4 cartes de température (27.09.2026, refonte demandée par l'utilisateur) :
-     une seule rangée pleine largeur (Extérieur / Studio / RDC / Étage, même hauteur), au lieu des
-     6 cartes en 2×3 confinées au tiers gauche — le tiers resté vide jusqu'ici est maintenant
-     utilisé. Mise en page de chaque carte : bloc icône/valeur/nom à gauche (largeur fixe),
-     courbe 48 h SANS échelle à droite (la valeur exacte s'obtient au survol, voir
+  /* -- Grille des 4 cartes de température (27.09.2026, refonte demandée par l'utilisateur ;
+     révisée le même jour : empilées verticalement plutôt que côte à côte, largeur maximale
+     alignée sur la carte Météo — flex:0 0 33%, comme .acc-weather, au lieu de flex:1 pleine
+     largeur). Extérieur / Studio / RDC / Étage, une colonne × 4 rangées de même hauteur. Mise en
+     page de chaque carte : bloc icône/valeur/nom à gauche (largeur fixe), courbe 48 h SANS
+     échelle à droite (la valeur exacte s'obtient au survol, voir
      renderAccTempCard2/attachChartHover) — remplace l'ancienne colonne de 4 repères de valeurs
      (.tc-card-*, .tc-tip), dont le mécanisme de survol par points fixes est retiré au passage
      (voir plus bas, attachChartHover). */
   .acc-row2{ flex:1; min-height:0; display:flex; padding-bottom:24px; }
   .acc-temp-grid{
-    flex:1; min-height:0; display:grid;
-    grid-template-columns:repeat(4,1fr); grid-template-rows:1fr; gap:16px;
+    flex:0 0 33%; min-height:0; display:grid;
+    grid-template-columns:1fr; grid-template-rows:repeat(4,1fr); gap:14px;
   }
   .acc-temp-card{
     background:linear-gradient(180deg, rgba(9,11,17,.55), rgba(9,11,17,.64)); border:1px solid var(--glass-brd);
