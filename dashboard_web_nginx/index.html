@@ -6024,11 +6024,22 @@ function renderEnergyScreen(){
       const axisVals = [0,1,2,3].map(k => tMin + (tMax-tMin)*k/3);
       const axis = axisVals.map(v =>
           '<line x1="'+padXLeft.toFixed(1)+'" y1="'+yAt(v).toFixed(1)+'" x2="'+(padXLeft+1.5).toFixed(1)+'" y2="'+yAt(v).toFixed(1)+'" stroke="rgba(238,241,246,.26)" stroke-width=".4"/>'
-        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+grAxisSize().toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
+        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+(grAxisSize()*0.5).toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
         ).join('');
+      // Aire colorée sous la courbe (27.09.2026, demande utilisateur : "il manque l'effet coloré
+      // sous la courbe") -- même principe que GlassHome (dégradé vertical vers transparent) mais
+      // teinté par tempColor (couleur selon la température, pas la couleur fixe de la pièce) et
+      // plus léger en opacité pour rester dans l'esprit verre translucide du style.
+      const areaPath = linePath + ' L'+pts[n-1][0].toFixed(1)+' '+H+' L'+pts[0][0].toFixed(1)+' '+H+' Z';
+      const gid = 'accLg'+Math.random().toString(36).slice(2,8);
       svgEl.innerHTML =
-        '<defs><filter id="'+fid+'" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1"/></filter></defs>'
+        '<defs><filter id="'+fid+'" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1"/></filter>'
+        + '<linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1">'
+          + '<stop offset="0%" stop-color="'+tempColor+'" stop-opacity=".28"/>'
+          + '<stop offset="100%" stop-color="'+tempColor+'" stop-opacity="0"/>'
+        + '</linearGradient></defs>'
         + axis
+        + '<path d="'+areaPath+'" fill="url(#'+gid+')" stroke="none"/>'
         + '<path d="'+linePath+'" fill="none" stroke="'+tempColor+'" stroke-width="'+(grLineW()*2.857).toFixed(2)+'" opacity=".32" filter="url(#'+fid+')"/>'
         + '<path d="'+linePath+'" fill="none" stroke="'+tempColor+'" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>'
         + hits;
@@ -6058,7 +6069,7 @@ function renderEnergyScreen(){
       const axisVals = [0,1,2,3].map(k => tMin + (tMax-tMin)*k/3);
       const axis = axisVals.map(v =>
           '<line x1="'+padXLeft.toFixed(1)+'" y1="'+yAt(v).toFixed(1)+'" x2="'+(padXLeft+1.5).toFixed(1)+'" y2="'+yAt(v).toFixed(1)+'" stroke="rgba(51,58,71,.28)" stroke-width=".4"/>'
-        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+grAxisSize().toFixed(2)+'" fill="rgba(51,58,71,.55)">'+v.toFixed(axisDecimals)+'°</text>'
+        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+(grAxisSize()*0.5).toFixed(2)+'" fill="rgba(51,58,71,.55)">'+v.toFixed(axisDecimals)+'°</text>'
         ).join('');
       svgEl.innerHTML =
         axis
@@ -6082,7 +6093,7 @@ function renderEnergyScreen(){
     const axisVals = [0,1,2,3].map(k => tMin + (tMax-tMin)*k/3);
     const axis = axisVals.map(v =>
         '<line x1="'+padXLeft.toFixed(1)+'" y1="'+yAt(v).toFixed(1)+'" x2="'+(padXLeft+1.5).toFixed(1)+'" y2="'+yAt(v).toFixed(1)+'" stroke="rgba(238,241,246,.26)" stroke-width=".4"/>'
-      + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+grAxisSize().toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
+      + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+(grAxisSize()*0.5).toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
       ).join('');
     svgEl.innerHTML =
       '<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1">'
