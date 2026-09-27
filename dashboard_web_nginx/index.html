@@ -275,7 +275,10 @@
   @keyframes shutterMove{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(1.4px); } }
 
   /* Rangée météo + énergie — hauteur fixe, les deux cartes se partagent la largeur. */
-  .acc-row1{ display:flex; gap:24px; flex:0 0 538px; margin-bottom:24px; min-height:0; }
+  /* 27.09.2026 : 538px -> 528px, la carte Énergie côté Énergie ayant très légèrement rétréci
+     (537.6 -> 528.25px) une fois son en-tête compacté (répartition flex 1.15/1 avec Sankey,
+     effet non prévu mais mesuré) -- réajusté pour que les 2 zones de dessin restent alignées. */
+  .acc-row1{ display:flex; gap:24px; flex:0 0 528px; margin-bottom:24px; min-height:0; }
   .acc-card{
     flex:1; min-width:0; position:relative; overflow:hidden; display:flex; flex-direction:column;
     border-radius:28px; border:1px solid var(--glass-brd);
@@ -321,13 +324,20 @@
   .acc-w-chip.wc-min svg{ stroke:#5ac8fa; }
 
   /* -- Carte énergie (widget Accueil). -- */
-  .acc-energy{ flex:0 0 820px; padding:22px 28px 20px; background:linear-gradient(165deg, rgba(52,38,20,.62), rgba(20,16,12,.68)); }
-  .acc-e-head{ display:flex; align-items:center; gap:16px; margin-bottom:4px; flex:none; }
-  .acc-e-badge{ width:40px; height:40px; border-radius:13px; flex:none; display:flex; align-items:center; justify-content:center;
+  /* 27.09.2026 (demande utilisateur) : en-tête compacté (badge/paddings réduits) pour agrandir
+     la zone de dessin -- mêmes proportions que .enr-flow-card côté Énergie, remesurées pour que
+     les 2 zones de dessin restent à la même hauteur (voir commentaire "Power Flow Card" CSS). */
+  .acc-energy{ flex:0 0 820px; padding:12px 28px 12px; background:linear-gradient(165deg, rgba(52,38,20,.62), rgba(20,16,12,.68)); }
+  .acc-e-head{ display:flex; align-items:center; gap:14px; margin-bottom:2px; flex:none; }
+  .acc-e-badge{ width:34px; height:34px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center;
     background:linear-gradient(160deg,#ffd39b,#ff9c54 60%,#e8823a); box-shadow:0 0 24px rgba(255,156,84,.45); }
-  .acc-e-badge svg{ width:22px; height:22px; }
-  .acc-e-title{ font-family:var(--ff-title); font-size:calc(19px * var(--fs-title-scale)); font-weight:460; color:var(--brume); }
-  .acc-e-sub{ font-family:var(--ff-body); font-size:12px; color:var(--brume-dim); margin-top:2px; }
+  .acc-e-badge svg{ width:19px; height:19px; }
+  /* 27.09.2026 : titre/sous-titre ramenés à la taille de .enr-card-title/.enr-card-sub (au lieu
+     de 19px/12px) -- c'est la pile texte (pas le badge) qui pilotait la hauteur de l'en-tête ;
+     la réduire est ce qui dégage vraiment de la hauteur pour la zone de dessin. */
+  .acc-e-title{ font-family:var(--ff-title); font-size:calc(16.5px * var(--fs-title-scale)); font-weight:460; color:var(--brume); }
+  /* 27.09.2026 : idem .enr-card-sub -- le sous-titre peut passer sur plusieurs lignes si besoin. */
+  .acc-e-sub{ font-family:var(--ff-body); font-size:11px; color:var(--brume-dim); margin-top:2px; white-space:normal; line-height:1.35; }
   .acc-e-flow{ position:relative; flex:1; min-height:0; margin-top:2px; }
 
   /* -- Carte "Énergie verte" (widget Accueil), 25.09.2026 (demande utilisateur) : occupe
@@ -449,7 +459,7 @@
   .pfc-stage.pfc-compact .pfc-dot.dot-med{ width:5px; height:5px; }
   .pfc-stage.pfc-compact .pfc-dot.dot-high{ width:6px; height:6px; }
 
-  .pfc-node{ position:absolute; z-index:2; display:flex; flex-direction:column; align-items:center; gap:7px; transform:translate(-50%,-50%); }
+  .pfc-node{ position:absolute; z-index:2; display:flex; flex-direction:column; align-items:center; gap:5px; transform:translate(-50%,-50%); } /* 27.09.2026 : 7->5px, dégage un peu de marge pour Solaire/Voiture (voir PFC_TOPO_FULL) */
   .pfc-node.n-home{ z-index:3; }
   .pfc-stage.pfc-compact .pfc-node{ gap:4px; }
 
@@ -505,8 +515,11 @@
 
   /* Maison : nœud plus gros, anneau tricolore (dégradé conique proportionnel Réseau/Solaire/
      Batterie) porté par .home-ring-arc (masque radial = anneau, pas un disque). */
+  /* 27.09.2026 (demande utilisateur) : taille réduite de 25% (150px -> 112.5px) pour dégager
+     plus de longueur visible sur les traits Solaire->Maison et Maison->Voiture (l'anneau
+     couvrait auparavant une grande partie du tracé direct). */
   .n-home .pfc-ring{
-    width:150px; height:150px; border:none;
+    width:112.5px; height:112.5px; border:none;
     background:radial-gradient(circle at 32% 26%, rgba(255,211,155,.30), rgba(20,16,12,.78) 72%);
   }
   .pfc-stage.pfc-compact .n-home .pfc-ring{ width:88px; height:88px; }
@@ -518,7 +531,7 @@
   [data-card-style="neumorph"] .n-home .pfc-ring.rt-low{ box-shadow:9px 9px 18px rgba(163,177,198,.55), -8px -8px 16px rgba(255,255,255,.9), 0 0 16px rgba(255,178,110,.4); }
   [data-card-style="neumorph"] .n-home .pfc-ring.rt-med{ box-shadow:9px 9px 18px rgba(163,177,198,.55), -8px -8px 16px rgba(255,255,255,.9), 0 0 25px rgba(255,178,110,.5); }
   [data-card-style="neumorph"] .n-home .pfc-ring.rt-high{ box-shadow:9px 9px 18px rgba(163,177,198,.55), -8px -8px 16px rgba(255,255,255,.9), 0 0 36px rgba(255,178,110,.62); }
-  .n-home .pfc-ring::before{ inset:11px; }
+  .n-home .pfc-ring::before{ inset:8px; } /* 27.09.2026 : proportionnel à l'anneau réduit (150->112.5px) */
   .pfc-stage.pfc-compact .n-home .pfc-ring::before{ inset:7px; }
   [data-card-style="neumorph"] .n-home .pfc-ring::before{
     background:linear-gradient(155deg, #e4e8ee, #f4f6f9);
@@ -538,9 +551,9 @@
   .pfc-stage.pfc-compact .home-ring-arc.rt-low{ --arc-w:2px; }
   .pfc-stage.pfc-compact .home-ring-arc.rt-med{ --arc-w:2.5px; }
   .pfc-stage.pfc-compact .home-ring-arc.rt-high{ --arc-w:3.5px; }
-  .n-home .pfc-ring svg{ width:38px; height:38px; }
+  .n-home .pfc-ring svg{ width:29px; height:29px; } /* 27.09.2026 : proportionnel à l'anneau réduit */
   .pfc-stage.pfc-compact .n-home .pfc-ring svg{ width:24px; height:24px; }
-  .n-home .pfc-val{ font-size:calc(17px * var(--fs-value-scale)); font-weight:600; }
+  .n-home .pfc-val{ font-size:calc(13px * var(--fs-value-scale)); font-weight:600; } /* 27.09.2026 : idem */
   .pfc-stage.pfc-compact .n-home .pfc-val{ font-size:calc(12px * var(--fs-value-scale)); }
 
   /* -- Grille des 4 cartes de température (27.09.2026, refonte demandée par l'utilisateur ;
@@ -1470,7 +1483,7 @@
   [data-card-style="neumorph"] .enr-live-gen-mini .val{ color:#333a47; }
   [data-card-style="neumorph"] .enr-live-gen-track{ background:rgba(123,132,148,.18); border-color:transparent; }
   [data-card-style="neumorph"] .enr-live-gen-mini{ background:rgba(123,132,148,.08); border-color:transparent; }
-  .enr-flow-card{ flex:1.15; min-height:0; padding:24px 26px 20px; display:flex; flex-direction:column; }
+  .enr-flow-card{ flex:1.15; min-height:0; padding:12px 26px 12px; display:flex; flex-direction:column; } /* 27.09.2026 : en-tête compacté pour agrandir la zone de dessin (demande utilisateur) */
   .enr-chart-card, .enr-breakdown-card, .enr-sankey-card{ flex:1; min-height:0; padding:20px 24px 16px; display:flex; flex-direction:column; }
   /* 19.09.2026 (11e passe, demande utilisateur) : reglage de cadence du dashboard Live, dans la
      carte qui portait "Bilan reseau du jour" (voir HTML #enrFreqCard) -- reprend .cfg-mini-
@@ -1479,9 +1492,13 @@
   .enr-freq-toggle{ flex:1; align-items:center; align-content:center; margin-top:2px; }
   .enr-freq-toggle button{ font-size:12.5px; padding:11px 6px; }
 
-  .enr-card-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex:none; margin-bottom:8px; position:relative; z-index:2; }
+  .enr-card-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex:none; margin-bottom:4px; position:relative; z-index:2; }
   .enr-card-title{ font-family:var(--ff-title); font-size:calc(16.5px * var(--fs-title-scale)); font-weight:460; color:var(--brume); }
-  .enr-card-sub{ font-family:var(--ff-body); font-size:11px; color:var(--brume-dim); margin-top:2px; }
+  /* 27.09.2026 (demande utilisateur) : le sous-titre peut désormais passer sur plusieurs lignes
+     si besoin (pas de nowrap/ellipsis) -- l'en-tête étant compacté pour agrandir la zone de
+     dessin, une phrase longue (valeurs réelles) n'a plus la garantie de tenir sur une seule
+     ligne à cette largeur de carte. */
+  .enr-card-sub{ font-family:var(--ff-body); font-size:11px; color:var(--brume-dim); margin-top:2px; white-space:normal; line-height:1.35; }
 
   .enr-period-toggle{ display:flex; gap:5px; flex:none; }
   .enr-period-toggle button{
@@ -3586,23 +3603,28 @@
   // garder aurait double-compté la même puissance de recharge VE sous 2 formes différentes.
   // 7 lignes au lieu de 8 : Réseau/Solaire/Batterie→Maison (3 liaisons "hub") + Solaire→Réseau,
   // Solaire→Batterie, Réseau→Voiture, Batterie→Voiture (4 liaisons directes).
+  // 27.09.2026 (demande utilisateur) : Solaire (y:14->13) et Voiture (y:86->87) légèrement
+  // rapprochés des bords haut/bas -- limite haute atteinte (marge résiduelle du libellé au bord
+  // de la carte réduite à quelques px, voir .pfc-node gap 7->5px ci-dessus) : aller plus loin
+  // sans rogner les libellés "SOLAIRE"/"VOITURE" demanderait de réduire aussi la taille de leurs
+  // anneaux (108px), non demandée ici (seule celle de la Maison l'a été).
   const PFC_TOPO_FULL = {
     viewBox: '0 0 100 100',
     nodes: [
       { key:'home',     x:50, y:50 },
-      { key:'solaire',  x:50, y:14, labelAbove:true },
+      { key:'solaire',  x:50, y:13, labelAbove:true },
       { key:'reseau',   x:10, y:50 },
       { key:'batterie', x:90, y:50 },
-      { key:'voiture',  x:50, y:86 },
+      { key:'voiture',  x:50, y:87 },
     ],
     lines: [
       { key:'reseauMaison',    from:'reseau',   to:'home',     color:'reseau',   d:'M10,50 L50,50' },
-      { key:'solaireMaison',   from:'solaire',  to:'home',     color:'solaire',  d:'M50,14 L50,50' },
+      { key:'solaireMaison',   from:'solaire',  to:'home',     color:'solaire',  d:'M50,13 L50,50' },
       { key:'batterieMaison',  from:'batterie', to:'home',     color:'batterie', d:'M90,50 L50,50' },
-      { key:'solaireReseau',   from:'solaire',  to:'reseau',   color:'solaire',  d:'M44,14 C44,40 26,46 10,46' },
-      { key:'solaireBatterie', from:'solaire',  to:'batterie', color:'solaire',  d:'M56,14 C56,40 74,46 90,46' },
-      { key:'reseauVoiture',   from:'reseau',   to:'voiture',  color:'reseau',   d:'M10,54 C36,54 44,74 44,86' },
-      { key:'batterieVoiture', from:'batterie', to:'voiture',  color:'batterie', d:'M90,54 C64,54 56,74 56,86' },
+      { key:'solaireReseau',   from:'solaire',  to:'reseau',   color:'solaire',  d:'M44,13 C44,40 26,46 10,46' },
+      { key:'solaireBatterie', from:'solaire',  to:'batterie', color:'solaire',  d:'M56,13 C56,40 74,46 90,46' },
+      { key:'reseauVoiture',   from:'reseau',   to:'voiture',  color:'reseau',   d:'M10,54 C36,54 44,74 44,87' },
+      { key:'batterieVoiture', from:'batterie', to:'voiture',  color:'batterie', d:'M90,54 C64,54 56,74 56,87' },
     ],
   };
 
