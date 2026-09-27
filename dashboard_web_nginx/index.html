@@ -327,18 +327,32 @@
   /* 27.09.2026 (demande utilisateur) : en-tête compacté (badge/paddings réduits) pour agrandir
      la zone de dessin -- mêmes proportions que .enr-flow-card côté Énergie, remesurées pour que
      les 2 zones de dessin restent à la même hauteur (voir commentaire "Power Flow Card" CSS). */
-  .acc-energy{ flex:0 0 820px; padding:12px 28px 12px; background:linear-gradient(165deg, rgba(52,38,20,.62), rgba(20,16,12,.68)); }
-  .acc-e-head{ display:flex; align-items:center; gap:14px; margin-bottom:2px; flex:none; }
+  .acc-energy{ flex:0 0 820px; padding:12px 28px 12px; background:linear-gradient(165deg, rgba(52,38,20,.62), rgba(20,16,12,.68)); position:relative; }
+  /* 27.09.2026 (demande utilisateur, "limite le texte au tiers de la carte" pour que Solaire
+     puisse monter au-delà du bas de l'en-tête) : en-tête en survol absolu, comme côté Énergie
+     (voir .enr-flow-head) -- ne réserve plus de hauteur dans la carte, la zone de dessin peut
+     s'étendre sous lui. z-index supérieur à celui de la zone de dessin pour rester lisible. */
+  .acc-e-head{ position:absolute; top:12px; left:28px; z-index:3; }
+  /* 27.09.2026 (demande utilisateur, "on uniformise sur les 2 cartes ... une seule variante") :
+     l'en-tête n'est plus badge+pile-texte côte à côte -- c'est désormais une colonne unique
+     (voir .acc-e-headtext) : rangée [badge + titre agrandi] puis sous-titre en dessous, même
+     structure que .enr-flow-headtext côté Énergie (voir ce bloc pour le détail/l'historique). */
+  .acc-e-headtext{ max-width:255px; display:flex; flex-direction:column; gap:6px; }
+  .acc-e-toprow{ display:flex; align-items:center; gap:10px; }
   .acc-e-badge{ width:34px; height:34px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center;
     background:linear-gradient(160deg,#ffd39b,#ff9c54 60%,#e8823a); box-shadow:0 0 24px rgba(255,156,84,.45); }
   .acc-e-badge svg{ width:19px; height:19px; }
-  /* 27.09.2026 : titre/sous-titre ramenés à la taille de .enr-card-title/.enr-card-sub (au lieu
-     de 19px/12px) -- c'est la pile texte (pas le badge) qui pilotait la hauteur de l'en-tête ;
-     la réduire est ce qui dégage vraiment de la hauteur pour la zone de dessin. */
-  .acc-e-title{ font-family:var(--ff-title); font-size:calc(16.5px * var(--fs-title-scale)); font-weight:460; color:var(--brume); }
-  /* 27.09.2026 : idem .enr-card-sub -- le sous-titre peut passer sur plusieurs lignes si besoin. */
-  .acc-e-sub{ font-family:var(--ff-body); font-size:11px; color:var(--brume-dim); margin-top:2px; white-space:normal; line-height:1.35; }
-  .acc-e-flow{ position:relative; flex:1; min-height:0; margin-top:2px; }
+  /* 27.09.2026 : titre agrandi à la hauteur du badge (34px) -- demande utilisateur "tu agrandis
+     le titre Energie de la hauteur de l'icône". line-height:1 pour que le texte ne déborde pas
+     verticalement de sa propre boîte et reste bien aligné avec le badge sur .acc-e-toprow. */
+  .acc-e-title{ font-family:var(--ff-title); font-size:calc(28px * var(--fs-title-scale)); font-weight:460; color:var(--brume); line-height:1; }
+  /* 27.09.2026 : le sous-titre commence désormais sous la rangée badge+titre (plus à côté du
+     badge) -- voir .acc-e-headtext ci-dessus. Toujours 2 lignes stables (pfcFlowSubtitleText()). */
+  .acc-e-sub{ font-family:var(--ff-body); font-size:11px; color:var(--brume-dim); white-space:pre-line; line-height:1.35; }
+  /* 27.09.2026 : flex:1 (rempli l'espace SOUS l'en-tête) -> position:absolute; inset:0 (rempli
+     TOUTE la boîte de padding de .acc-energy, y compris sous l'en-tête désormais en survol
+     absolu). z-index sous l'en-tête (3) mais au-dessus du .card-sheen (1). */
+  #accEFlowStage.acc-e-flow{ position:absolute; inset:12px 28px; width:auto; height:auto; z-index:2; }
 
   /* -- Carte "Énergie verte" (widget Accueil), 25.09.2026 (demande utilisateur) : occupe
      l'espace laissé vide à droite de la rangée Météo+Énergie depuis le redimensionnement du
@@ -671,7 +685,10 @@
     backdrop-filter:blur(32px) saturate(170%); -webkit-backdrop-filter:blur(32px) saturate(170%);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.22), inset 0 0 40px rgba(255,255,255,.04), 0 20px 44px rgba(0,0,0,.42);
   }
-  [data-card-style="liquid"] .acc-e-head, [data-card-style="liquid"] .acc-e-flow{ position:relative; z-index:2; }
+  /* 27.09.2026 : .acc-e-head/.acc-e-flow sont désormais en position:absolute de base (voir plus
+     haut) -- cette règle ne fait plus que réaffirmer leur z-index pour le style liquid (elle
+     forçait auparavant position:relative, ce qui aurait cassé le survol absolu introduit
+     au-dessus si elle était restée telle quelle). */
 
   /* ---------- Style "Neumorphism" (11.09.2026, demande utilisateur : "il faudrait ajouter dans
      la configuration le thème neumorphism") — troisième option de style de carte, ajoutée à côté
@@ -1524,7 +1541,35 @@
   .enr-freq-toggle button{ font-size:12.5px; padding:11px 6px; }
 
   .enr-card-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex:none; margin-bottom:4px; position:relative; z-index:2; }
+  /* 27.09.2026 (demande utilisateur, "limite le texte au tiers de la carte" pour que Solaire
+     puisse monter au-delà du bas de l'en-tête) : SEULE la carte #enrFlowCard passe l'en-tête en
+     survol absolu (les autres cartes -- sankey/chart/dist/freq -- gardent .enr-card-head en flux
+     normal, d'où le scope .enr-flow-head plutôt qu'une modification de la règle partagée
+     ci-dessus). L'en-tête ne réserve donc plus de hauteur dans la colonne flex de la carte -- la
+     zone de dessin (.enr-flow-stage, voir plus bas) peut occuper toute la hauteur intérieure de
+     la carte, y compris sous/à côté du texte. z-index supérieur à celui du stage pour que le
+     texte reste lisible en cas de croisement (en pratique évité : voir .enr-flow-headtext,
+     limité au tiers gauche, alors que les nœuds du diagramme sont centrés horizontalement). */
+  .enr-flow-head{ position:absolute; top:12px; left:26px; right:26px; margin-bottom:0; z-index:3; }
+  /* Limite la colonne titre+sous-titre au tiers de la largeur utile de la carte (~765px ->
+     ~255px) : dégage tout le reste de la largeur, sur toute la hauteur de la carte, pour le
+     diagramme -- au centre duquel (x:50%) le nœud Solaire peut donc remonter bien au-delà du bas
+     de ce texte sans jamais le chevaucher horizontalement. */
+  /* 27.09.2026 (demande utilisateur, "on uniformise sur les 2 cartes ... une seule variante") :
+     colonne = rangée [badge + titre agrandi] puis sous-titre en dessous -- même structure que
+     .acc-e-headtext côté Accueil (voir ce bloc pour le détail/l'historique). */
+  .enr-flow-headtext{ max-width:255px; display:flex; flex-direction:column; gap:6px; }
+  .enr-flow-toprow{ display:flex; align-items:center; gap:10px; }
+  .enr-flow-badge{ width:34px; height:34px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg,#ffd39b,#ff9c54 60%,#e8823a); box-shadow:0 0 24px rgba(255,156,84,.45); }
+  .enr-flow-badge svg{ width:19px; height:19px; }
   .enr-card-title{ font-family:var(--ff-title); font-size:calc(16.5px * var(--fs-title-scale)); font-weight:460; color:var(--brume); }
+  /* 27.09.2026 : .enr-card-title est partagée par toutes les cartes Énergie (Sankey, Consommation,
+     etc.) -- on ne touche donc pas sa règle de base, seul le titre de CETTE carte (dans la rangée
+     .enr-flow-toprow) est agrandi à la hauteur du badge (34px), via un sélecteur composé plus
+     spécifique (2 classes > 1 classe, l'emporte quel que soit l'ordre dans la feuille de style --
+     même logique de prudence que les sélecteurs #id.class utilisés plus haut pour .pfc-stage). */
+  .enr-flow-toprow .enr-card-title{ font-size:calc(28px * var(--fs-title-scale)); line-height:1; }
   /* 27.09.2026 (demande utilisateur) : le sous-titre peut désormais passer sur plusieurs lignes
      si besoin (pas de nowrap/ellipsis) -- l'en-tête étant compacté pour agrandir la zone de
      dessin, une phrase longue (valeurs réelles) n'a plus la garantie de tenir sur une seule
@@ -1547,7 +1592,12 @@
   /* 24.09.2026 : #enrFlowStage rendu maintenant par le composant partagé .pfc-stage (voir plus
      haut, règles "Power Flow Card") -- ancien rendu 100% JS (buildEnrFlowDiagram, photos réelles
      en <image>, pastilles de valeur .enr-line-val positionnées via getBBox) retiré. */
-  .enr-flow-stage{ position:relative; flex:1; min-height:0; z-index:2; }
+  /* 27.09.2026 : flex:1 (rempli l'espace SOUS l'en-tête) -> position:absolute; inset:0 (rempli
+     TOUTE la boîte de padding de .enr-flow-card, y compris sous l'en-tête désormais en survol
+     absolu -- voir .enr-flow-head ci-dessus). z-index inchangé (2, sous l'en-tête à 3, au-dessus
+     du .card-sheen à 1 -- comportement de superposition identique à avant, seule la HAUTEUR
+     disponible change). */
+  #enrFlowStage.enr-flow-stage{ position:absolute; inset:12px 26px; width:auto; height:auto; z-index:2; }
 
   .enr-chart-stage{ position:relative; flex:1; min-height:0; z-index:2; }
   .enr-chart-stage svg{ width:100%; height:100%; display:block; overflow:visible; }
@@ -2435,9 +2485,11 @@
           <div class="acc-card acc-energy" id="accEnergyCard">
             <div class="card-sheen"></div>
             <div class="acc-e-head">
-              <span class="acc-e-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 4l8 7.5M6 10v9h12v-9" stroke="#2b1706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 10.3 9.6 15h2.4l-.8 3.5 3.6-4.9h-2.3l.5-3.3Z" fill="#2b1706"/></svg></span>
-              <div>
-                <div class="acc-e-title">Énergie</div>
+              <div class="acc-e-headtext">
+                <div class="acc-e-toprow">
+                  <span class="acc-e-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 4l8 7.5M6 10v9h12v-9" stroke="#2b1706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 10.3 9.6 15h2.4l-.8 3.5 3.6-4.9h-2.3l.5-3.3Z" fill="#2b1706"/></svg></span>
+                  <div class="acc-e-title">Énergie</div>
+                </div>
                 <div class="acc-e-sub" id="accESub">Le solaire alimente la maison</div>
               </div>
             </div>
@@ -2514,8 +2566,14 @@
           <div class="enr-col-left">
             <div class="enr-card enr-flow-card" id="enrFlowCard">
               <div class="card-sheen"></div>
-              <div class="enr-card-head">
-                <div><div class="enr-card-title">Flux en direct</div><div class="enr-card-sub" id="enrFlowSub">— </div></div>
+              <div class="enr-card-head enr-flow-head">
+                <div class="enr-flow-headtext">
+                  <div class="enr-flow-toprow">
+                    <span class="enr-flow-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 4l8 7.5M6 10v9h12v-9" stroke="#2b1706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 10.3 9.6 15h2.4l-.8 3.5 3.6-4.9h-2.3l.5-3.3Z" fill="#2b1706"/></svg></span>
+                    <div class="enr-card-title">Flux en direct</div>
+                  </div>
+                  <div class="enr-card-sub" id="enrFlowSub">— </div>
+                </div>
                 <button type="button" class="enr-card-expand" aria-label="Agrandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H5a1 1 0 0 0-1 1v4M15 4h4a1 1 0 0 1 1 1v4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"/></svg></button>
               </div>
               <div class="enr-flow-stage" id="enrFlowStage"></div>
@@ -3680,17 +3738,17 @@
     viewBox: '0 0 100 100',
     nodes: [
       { key:'home',     x:50, y:50 },
-      { key:'solaire',  x:50, y:15.5, labelAbove:true },
+      { key:'solaire',  x:50, y:13, labelAbove:true },
       { key:'reseau',   x:10, y:50 },
       { key:'batterie', x:90, y:50 },
       { key:'voiture',  x:50, y:87 },
     ],
     lines: [
       { key:'reseauMaison',    from:'reseau',   to:'home',     color:'reseau',   d:'M10,50 L50,50' },
-      { key:'solaireMaison',   from:'solaire',  to:'home',     color:'solaire',  d:'M50,15.5 L50,50' },
+      { key:'solaireMaison',   from:'solaire',  to:'home',     color:'solaire',  d:'M50,13 L50,50' },
       { key:'batterieMaison',  from:'batterie', to:'home',     color:'batterie', d:'M90,50 L50,50' },
-      { key:'solaireReseau',   from:'solaire',  to:'reseau',   color:'solaire',  d:'M44,15.5 C44,40 26,46 10,46' },
-      { key:'solaireBatterie', from:'solaire',  to:'batterie', color:'solaire',  d:'M56,15.5 C56,40 74,46 90,46' },
+      { key:'solaireReseau',   from:'solaire',  to:'reseau',   color:'solaire',  d:'M44,13 C44,40 26,46 10,46' },
+      { key:'solaireBatterie', from:'solaire',  to:'batterie', color:'solaire',  d:'M56,13 C56,40 74,46 90,46' },
       { key:'reseauVoiture',   from:'reseau',   to:'voiture',  color:'reseau',   d:'M10,54 C36,54 44,74 44,87' },
       { key:'batterieVoiture', from:'batterie', to:'voiture',  color:'batterie', d:'M90,54 C64,54 56,74 56,87' },
     ],
@@ -3890,6 +3948,20 @@
     };
   }
 
+  // 27.09.2026 (demande utilisateur, "on uniformise sur les 2 cartes ... on standardise pour
+  // n'avoir qu'une variante, c'est une règle qu'il faut essayer de suivre le plus que possible") :
+  // format de sous-titre unique pour les 2 cartes énergie (widget Accueil #accESub + carte
+  // "Flux en direct" #enrFlowSub) -- avant ce changement chaque carte avait son propre texte
+  // (phrase descriptive côté Accueil, valeurs+détail entre parenthèses côté Énergie). Désormais
+  // 2 lignes identiques dans les 2 cartes : puissances (Solaire/Maison) puis répartition
+  // (Solaire/Réseau, qui sont les 2 seules sources affichées dans ce résumé -- batterie/voiture
+  // restent visibles dans le diagramme lui-même). \n + white-space:pre-line (voir .pfc-head2-sub)
+  // pour un passage à la ligne stable, même logique que le \n forcé précédent.
+  function pfcFlowSubtitleText(stats){
+    return 'Solaire : ' + (stats.solaireTotal/1000).toFixed(1) + ' kW - Maison : ' + (stats.homeInflow/1000).toFixed(1) + ' kW\n'
+      + 'Solaire : ' + stats.pctSolaire + '% - Réseau : ' + stats.pctReseau + '%';
+  }
+
   // 25.09.2026 (demande utilisateur, carte "Énergie verte" de l'Accueil) : calcule le % de la
   // consommation (maison + voiture, hors ce qui part vers la batterie/le réseau en export) couvert
   // par du "vert" (solaire direct + décharge batterie) plutôt que par le réseau, à partir d'un
@@ -3988,18 +4060,11 @@
     const F = pfcDeriveFlows();
     const stats = pfcUpdate(PFC_HANDLE_ENR, F);
     const sub = document.getElementById('enrFlowSub');
-    if (sub) {
-      // 27.09.2026 (demande utilisateur, "couper la 2e ligne et mettre une partie du texte sur
-      // une 3e ligne") : saut de ligne forcé (\n, restitué grâce à white-space:pre-line sur
-      // .enr-card-sub) entre les valeurs "Solaire/Maison" et le détail entre parenthèses -- avant
-      // ce changement le sous-titre tenait sur 1 seule ligne (2 avec la Voiture en charge, cas
-      // occasionnel) ; il occupe maintenant 2 lignes de façon stable et prévisible dans tous les
-      // cas, ce qui permet de fixer précisément la hauteur de l'en-tête (voir le nudge de Solaire
-      // dans PFC_TOPO_FULL, calé sur cette hauteur désormais constante).
-      sub.textContent = 'Solaire ' + (stats.solaireTotal/1000).toFixed(1) + ' kW · Maison ' + stats.homeInflow + ' W\n('
-        + stats.pctReseau + '% réseau · ' + stats.pctSolaire + '% solaire · ' + stats.pctBatterie + '% batterie)'
-        + (stats.voitureIn > 0 ? ' · Voiture ' + stats.voitureIn + ' W' : '');
-    }
+    // 27.09.2026 (demande utilisateur, "on uniformise sur les 2 cartes") : texte du sous-titre
+    // désormais généré par pfcFlowSubtitleText(), partagé avec applyAccEnergy() -- voir ce
+    // helper (juste après pfcUpdate()) pour le détail du format et l'historique des passes
+    // précédentes sur ce sous-titre.
+    if (sub) sub.textContent = pfcFlowSubtitleText(stats);
 
     renderEnrDailyBalance();
   }
@@ -6007,11 +6072,10 @@ function renderEnergyScreen(){
   function applyAccEnergy(){
     const stats = pfcUpdate(PFC_HANDLE_ACC, ENERGY_MOCK);
     const sub = document.getElementById('accESub');
-    if (sub) {
-      sub.textContent = stats.solaireTotal <= 0 ? 'Réseau en veille'
-        : ENERGY_MOCK.solaireBatterie > 0 ? "Le solaire alimente la maison et charge la batterie"
-        : 'Le solaire alimente la maison';
-    }
+    // 27.09.2026 (demande utilisateur, "on uniformise sur les 2 cartes") : la phrase descriptive
+    // ("Le solaire alimente la maison...") est remplacée par le même format chiffré que la carte
+    // "Flux en direct" -- voir pfcFlowSubtitleText().
+    if (sub) sub.textContent = pfcFlowSubtitleText(stats);
     applyAccEco(ENERGY_MOCK);
   }
   // Carte "Énergie verte" (25.09.2026, demande utilisateur ; révisée le même jour -- "la jauge
