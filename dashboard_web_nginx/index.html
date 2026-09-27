@@ -543,48 +543,33 @@
   .n-home .pfc-val{ font-size:calc(17px * var(--fs-value-scale)); font-weight:600; }
   .pfc-stage.pfc-compact .n-home .pfc-val{ font-size:calc(12px * var(--fs-value-scale)); }
 
-  /* -- Grille des 6 graphes de température (5 jours). 10.09.2026 (demande utilisateur) : les 6
-     cartes doivent tenir sur la même largeur que la carte météo du jour (2 colonnes × 3 lignes,
-     au lieu de 3×2 plein largeur) — .acc-row2 devient une rangée flex comme .acc-row1, et
-     .acc-temp-grid reprend le même flex:0 0 33% que .acc-weather pour un alignement exact. Le
-     tiers restant à droite n'est pas occupé pour l'instant. */
+  /* -- Grille des 4 cartes de température (27.09.2026, refonte demandée par l'utilisateur) :
+     une seule rangée pleine largeur (Extérieur / Studio / RDC / Étage, même hauteur), au lieu des
+     6 cartes en 2×3 confinées au tiers gauche — le tiers resté vide jusqu'ici est maintenant
+     utilisé. Mise en page de chaque carte : bloc icône/valeur/nom à gauche (largeur fixe),
+     courbe 48 h SANS échelle à droite (la valeur exacte s'obtient au survol, voir
+     renderAccTempCard2/attachChartHover) — remplace l'ancienne colonne de 4 repères de valeurs
+     (.tc-card-*, .tc-tip), dont le mécanisme de survol par points fixes est retiré au passage
+     (voir plus bas, attachChartHover). */
   .acc-row2{ flex:1; min-height:0; display:flex; padding-bottom:24px; }
   .acc-temp-grid{
-    flex:0 0 33%; min-height:0; display:grid;
-    grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(3,1fr); gap:12px;
+    flex:1; min-height:0; display:grid;
+    grid-template-columns:repeat(4,1fr); grid-template-rows:1fr; gap:16px;
   }
   .acc-temp-card{
     background:linear-gradient(180deg, rgba(9,11,17,.55), rgba(9,11,17,.64)); border:1px solid var(--glass-brd);
     border-radius:18px; backdrop-filter:blur(18px) saturate(150%); -webkit-backdrop-filter:blur(18px) saturate(150%);
     padding:12px 14px 9px; display:flex; flex-direction:column; min-height:0;
+    position:relative; overflow:hidden;
   }
-  .tc-card-head{ display:flex; align-items:flex-start; justify-content:space-between; flex:none; margin-bottom:4px; }
-  .tc-card-tx{ display:flex; flex-direction:column; gap:2px; min-width:0; }
-  /* 10.09.2026 (demande utilisateur) : le nom de pièce était illisible (10px, ton atténué) —
-     agrandi et éclairci pour rester lisible à distance sur l'écran mural, comme le reste des
-     libellés du dashboard. Retaillé le 10.09.2026 (2e passe) pour les cartes plus petites
-     (2×3 sur le tiers de largeur) sans redescendre sous ce seuil de lisibilité. */
-  .tc-card-label{ font-family:var(--ff-title); font-size:calc(12.5px * var(--fs-title-scale)); letter-spacing:.03em; text-transform:uppercase; color:var(--brume); font-weight:500; }
-  .tc-card-src{ font-family:var(--ff-mono); font-size:9.5px; color:var(--brume-dim); opacity:.75; }
-  .tc-card-now{ font-family:var(--ff-value); font-weight:460; font-size:calc(21px * var(--fs-value-scale)); }
-  .tc-card-chart{ flex:1; min-height:0; position:relative; }
-  .tc-card-chart svg{ width:100%; height:100%; display:block; overflow:visible; }
-  .tc-card-range{ display:flex; justify-content:space-between; flex:none; font-family:var(--ff-mono); font-size:9px; text-transform:uppercase; color:var(--brume-dim); margin-top:2px; }
-  /* 11.09.2026 (demande utilisateur) : infobulle "jour, date, valeur" au survol d'un point de la
-     courbe — un seul élément par carte, repositionné en JS (voir showTcTip). Rendu au-dessus du
-     point par défaut, bascule en dessous si le point est trop haut dans le graphe pour ne pas
-     sortir de la carte (overflow:hidden sur .acc-temp-card). */
-  .tc-tip{
-    position:absolute; z-index:5; pointer-events:none; left:0; top:0;
-    background:rgba(14,16,24,.94); border:1px solid rgba(255,255,255,.16); border-radius:8px;
-    padding:4px 8px; white-space:nowrap; font-family:var(--ff-mono); font-size:10.5px;
-    color:var(--brume-dim); box-shadow:0 6px 18px rgba(0,0,0,.4);
-    opacity:0; transition:opacity .12s ease; transform:translate(-50%,-100%);
-  }
-  .tc-tip.show{ opacity:1; }
-  .tc-tip b{ color:#fff; font-weight:600; }
-  .tc-card-head, .tc-card-chart, .tc-card-range{ position:relative; z-index:2; }
-  .acc-temp-card{ position:relative; overflow:hidden; }
+  .acc-temp-card.tc2{ flex-direction:row; align-items:stretch; gap:16px; padding:18px 22px; }
+  .tc2-side{ flex:none; min-width:92px; display:flex; flex-direction:column; justify-content:center; gap:3px; position:relative; z-index:2; }
+  .tc2-icon{ width:22px; height:22px; margin-bottom:3px; }
+  .tc2-icon svg{ width:100%; height:100%; display:block; }
+  .tc2-value{ font-family:var(--ff-value); font-weight:460; font-size:calc(30px * var(--fs-value-scale)); line-height:1.05; font-variant-numeric:tabular-nums; }
+  .tc2-label{ font-family:var(--ff-title); font-size:calc(12.5px * var(--fs-title-scale)); letter-spacing:.03em; text-transform:uppercase; color:var(--brume-dim); font-weight:500; }
+  .tc2-chart{ flex:1; min-width:0; position:relative; z-index:2; }
+  .tc2-chart svg{ width:100%; height:100%; display:block; overflow:visible; cursor:crosshair; }
 
   /* ---------- Style des cartes : GlassHome / Liquid Glass (10.09.2026, demande utilisateur) ----------
      Réglage persistant (voir setCardStyle en JS, localStorage "villaBulle.cardStyle"), posé en
@@ -714,10 +699,7 @@
   [data-card-style="neumorph"] .acc-e-sub{ color:#7b8494; }
   [data-card-style="neumorph"] .acc-eco-title{ color:#333a47; }
   [data-card-style="neumorph"] .acc-eco-sub{ color:#7b8494; }
-  [data-card-style="neumorph"] .tc-card-label{ color:#333a47; }
-  [data-card-style="neumorph"] .tc-card-src,
-  [data-card-style="neumorph"] .tc-card-range{ color:#7b8494; }
-  [data-card-style="neumorph"] .tc-card-now{ color:#333a47; }
+  [data-card-style="neumorph"] .tc2-label{ color:#7b8494; }
 
   /* ---------- Extension du style de carte à tout le dashboard (12.09.2026, demande
      utilisateur : "cela doit s'appliquer à toutes les pages et aussi aux barres de gauche et
@@ -1277,6 +1259,7 @@
   .cfg-daynight-status{ font-family:var(--ff-body); font-size:12.5px; color:var(--brume-dim); }
   .cfg-daynight-pickers{ display:flex; gap:24px; flex-wrap:wrap; transition:opacity .18s ease; }
   .cfg-daynight-pickers.disabled{ opacity:.4; pointer-events:none; }
+  .cfg-slider-row.disabled{ opacity:.4; pointer-events:none; }
   .cfg-daynight-picker{ flex:1; min-width:220px; display:flex; flex-direction:column; gap:10px; }
   .cfg-daynight-picker-lbl{ display:flex; align-items:center; gap:8px; font-family:var(--ff-title); font-size:calc(14px * var(--fs-title-scale)); font-weight:460; color:var(--brume); }
   .cfg-daynight-picker-lbl svg{ width:16px; height:16px; flex:none; color:var(--ambre); }
@@ -2797,6 +2780,31 @@
           </div>
         </div>
 <div class="cfg-section">
+          <div class="cfg-section-title">Cartes température (Accueil)</div>
+          <div class="cfg-section-sub">Fenêtre affichée par les 4 courbes de température de l'Accueil (Extérieur, Studio, RDC, Étage) — 48 dernières heures, sans échelle visible (la valeur, l'heure et la date exactes s'affichent au survol de la courbe). Par défaut : fenêtre de 4°C centrée sur la valeur actuelle de chaque pièce.</div>
+          <div class="cfg-slider-row">
+            <div class="cfg-slider-head">
+              <span class="cfg-slider-label">Amplitude de la fenêtre</span>
+              <span class="cfg-slider-val" id="cfgAccRangeVal">4 °C</span>
+            </div>
+            <input type="range" class="cfg-slider" id="cfgAccRangeSlider" min="2" max="10" step="0.5" value="4">
+          </div>
+          <div class="cfg-daynight-row" style="margin-top:16px;">
+            <button type="button" class="cfg-switch" id="cfgAccAutoSwitch" aria-pressed="false">
+              <span class="cfg-switch-track"><span class="cfg-switch-knob"></span></span>
+              <span class="cfg-switch-lbl">Centrer sur la moyenne</span>
+            </button>
+            <span class="cfg-daynight-status" id="cfgAccAutoStatus">Désactivé — fenêtre centrée sur la valeur actuelle</span>
+          </div>
+          <div class="cfg-slider-row disabled" id="cfgAccAutoDaysRow" style="margin-top:14px;">
+            <div class="cfg-slider-head">
+              <span class="cfg-slider-label">Moyenne calculée sur</span>
+              <span class="cfg-slider-val" id="cfgAccAutoDaysVal">3 j</span>
+            </div>
+            <input type="range" class="cfg-slider" id="cfgAccAutoDaysSlider" min="1" max="15" step="1" value="3">
+          </div>
+        </div>
+<div class="cfg-section">
           <div class="cfg-section-title">Mode jour / nuit automatique</div>
           <div class="cfg-section-sub">Bascule automatiquement entre deux styles de carte selon le lever et le coucher du soleil (calculé pour Bulle, FR · Suisse). Le style choisi ci-dessus reste utilisé tant que ce mode est désactivé.</div>
           <div class="cfg-daynight-row">
@@ -3207,6 +3215,62 @@
   document.querySelectorAll('.cfg-mini-toggle[data-thermo-grad] button').forEach(btn=>{
     btn.addEventListener('click', ()=> setThermoGrad(btn.dataset.grad));
   });
+
+  // 27.09.2026 (demande utilisateur) : fenêtre affichée par les 4 courbes de température de
+  // l'Accueil — amplitude réglable (défaut 4°C), et mode "auto" qui centre la fenêtre sur la
+  // moyenne des N derniers jours (max 15) plutôt que sur la valeur instantanée, pour amortir les
+  // à-coups d'une lecture ponctuelle. `redraw:false` évite d'appeler refreshRoomSparks() avant
+  // que renderAccRooms() (plus bas dans ce script) ait tourné une première fois.
+  const ACC_RANGE_KEY = 'villaBulle.accRange';
+  const ACC_AUTO_KEY = 'villaBulle.accAuto';
+  const ACC_AUTODAYS_KEY = 'villaBulle.accAutoDays';
+  let accRange = 4, accAuto = false, accAutoDays = 3;
+  function setAccRange(v, opts){
+    opts = opts || {};
+    v = Math.min(10, Math.max(2, Math.round(v*2)/2));
+    accRange = v;
+    try{ localStorage.setItem(ACC_RANGE_KEY, String(v)); }catch(e){ /* stockage indisponible : le réglage reste actif pour la session en cours */ }
+    const val = document.getElementById('cfgAccRangeVal'); if(val) val.textContent = (v%1===0?v.toFixed(0):v.toFixed(1))+' °C';
+    const sl = document.getElementById('cfgAccRangeSlider'); if(sl) sl.value = v;
+    if(opts.redraw !== false && typeof refreshRoomSparks === 'function') refreshRoomSparks();
+  }
+  function setAccAuto(on, opts){
+    opts = opts || {};
+    accAuto = !!on;
+    try{ localStorage.setItem(ACC_AUTO_KEY, accAuto ? '1' : '0'); }catch(e){ /* stockage indisponible : le réglage reste actif pour la session en cours */ }
+    const btn = document.getElementById('cfgAccAutoSwitch');
+    if(btn) btn.setAttribute('aria-pressed', accAuto ? 'true' : 'false');
+    const status = document.getElementById('cfgAccAutoStatus');
+    if(status) status.textContent = accAuto
+      ? 'Activé — fenêtre centrée sur la moyenne des derniers jours ci-dessous'
+      : 'Désactivé — fenêtre centrée sur la valeur actuelle';
+    const daysRow = document.getElementById('cfgAccAutoDaysRow');
+    if(daysRow) daysRow.classList.toggle('disabled', !accAuto);
+    if(opts.redraw !== false && typeof refreshRoomSparks === 'function') refreshRoomSparks();
+  }
+  function setAccAutoDays(v, opts){
+    opts = opts || {};
+    v = Math.min(15, Math.max(1, Math.round(v)));
+    accAutoDays = v;
+    try{ localStorage.setItem(ACC_AUTODAYS_KEY, String(v)); }catch(e){ /* stockage indisponible : le réglage reste actif pour la session en cours */ }
+    const val = document.getElementById('cfgAccAutoDaysVal'); if(val) val.textContent = v+' j';
+    const sl = document.getElementById('cfgAccAutoDaysSlider'); if(sl) sl.value = v;
+    if(opts.redraw !== false && typeof refreshRoomSparks === 'function') refreshRoomSparks();
+  }
+  (function initAccRange(){
+    let v = 4, a = false, d = 3;
+    try{
+      const sv = +localStorage.getItem(ACC_RANGE_KEY); if(isFinite(sv) && sv>=2 && sv<=10) v = sv;
+      a = localStorage.getItem(ACC_AUTO_KEY) === '1';
+      const sd = +localStorage.getItem(ACC_AUTODAYS_KEY); if(isFinite(sd) && sd>=1 && sd<=15) d = sd;
+    }catch(e){ /* mode privé / stockage bloqué : reste sur le défaut */ }
+    setAccRange(v, {redraw:false}); setAccAuto(a, {redraw:false}); setAccAutoDays(d, {redraw:false});
+  })();
+  (function(){
+    const rs = document.getElementById('cfgAccRangeSlider'); if(rs) rs.addEventListener('input', e => setAccRange(+e.target.value));
+    const asw = document.getElementById('cfgAccAutoSwitch'); if(asw) asw.addEventListener('click', () => setAccAuto(!accAuto));
+    const ds = document.getElementById('cfgAccAutoDaysSlider'); if(ds) ds.addEventListener('input', e => setAccAutoDays(+e.target.value));
+  })();
 
   /* =====================================================================
      Mode jour/nuit automatique (13.09.2026, demande utilisateur) : bascule le
@@ -5869,26 +5933,42 @@ function renderEnergyScreen(){
   PFC_HANDLE_ACC = pfcBuild(document.getElementById('accEFlowStage'), 'acc', PFC_TOPO_FULL);
   applyAccEnergy();
 
-  // ---- 6 graphes de température sur 5 jours. "Étage" est sourcé sur la sonde Chambre Lily
-  // (demande utilisateur explicite) ; "Studio" est une annexe absente de la structure
-  // pièces/zones KNX officielle (voir knx_integration.md) — mock plausible comme les autres.
+  // ---- 4 cartes de température (27.09.2026, refonte demandée par l'utilisateur — remplace les
+  // 6 graphes 5 jours). "Étage" est sourcé sur la sonde Chambre Lily (demande utilisateur
+  // explicite) ; "Studio" est une annexe absente de la structure pièces/zones KNX officielle
+  // (voir knx_integration.md) — mock plausible comme les autres. Ordre = ordre demandé
+  // (Extérieur, Studio, RDC, Étage), gauche à droite.
   const ACC_ROOMS = [
     { label:'Extérieure', src:null, base:14, amp:8, accent:'#5ac8fa' },
+    { label:'Studio', src:null, base:19.4, amp:1.8, accent:'#5fd6c4' },
     { label:'RDC', src:null, base:21, amp:1.1, accent:'#ff9c54' },
     { label:'Étage', src:'Chambre Lily', base:20.4, amp:0.9, accent:'#6fcf97' },
-    { label:'Salle de bain étage', src:null, base:22.8, amp:1.4, accent:'#caa06b' },
-    { label:'Garage', src:null, base:15.2, amp:2.6, accent:'#b79bff' },
-    { label:'Studio', src:null, base:19.4, amp:1.8, accent:'#5fd6c4' },
   ];
 
-  // Génère 5 valeurs (mock random-walk borné), même esprit que genForecast/genPast ci-dessus.
-  function genRoomSeries(base, amp){
-    const out = [];
-    for(let i=0;i<5;i++){
-      const v = base + amp*Math.sin(i/1.5 + base) + (Math.random()-0.5)*amp*0.35;
-      out.push(+v.toFixed(1));
-    }
-    return out;
+  // 48h affichées, mais 15 jours d'historique généré (au pas de 20 min) pour permettre la
+  // moyenne "auto" jusqu'à 15 jours (voir setAccAuto ci-dessus) sans regénérer de série séparée.
+  // Réutilise le RNG déterministe des graphes de l'écran Température (tchRng/tchTimes).
+  const ACC48_STEP_MIN = 20, ACC48_DAYS_HISTORY = 15;
+  function accLongSeries(room){
+    const n = Math.round(ACC48_DAYS_HISTORY*24*60/ACC48_STEP_MIN);
+    const times = tchTimes(ACC48_STEP_MIN, n);
+    const rnd = tchRng('acc48|'+room.label);
+    const dayOff = {}, isExt = room.label === 'Extérieure';
+    const values = times.map(tm=>{
+      const d = new Date(tm), h = d.getHours()+d.getMinutes()/60, day = Math.floor(tm/86400000);
+      if(!(day in dayOff)) dayOff[day] = (rnd()-.5)*room.amp*(isExt?0.9:0.5);
+      const wave = Math.sin((h-(isExt?9:7))/24*2*Math.PI) * room.amp * (isExt?1:0.4);
+      return +(room.base + wave + dayOff[day] + (rnd()-.5)*room.amp*0.12).toFixed(2);
+    });
+    return { times, values };
+  }
+  // Formate "jour dd.mm · hh:mm" pour l'infobulle des courbes Accueil, même style que les
+  // graphes de l'écran Température (tchFmtTime(..., true)).
+  function accFmtDT(t){
+    const d = new Date(t);
+    const hh = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    const dd = String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0');
+    return TCH_JOURS[d.getDay()]+' '+dd+' · '+hh;
   }
 
   // Lissage Catmull-Rom -> Bézier cubique (mêmes coefficients 1/6 que la technique standard) :
@@ -5935,202 +6015,110 @@ function renderEnergyScreen(){
   }
 
   // Mémorise les données déjà générées par carte pour pouvoir redessiner la courbe (changement
-  // de style depuis l'écran Configuration) sans régénérer de nouvelles valeurs aléatoires.
+  // de style, de fenêtre ou de mode auto depuis l'écran Configuration) sans régénérer l'historique.
   let ROOM_RENDER_STATE = [];
   function refreshRoomSparks(){
-    ROOM_RENDER_STATE.forEach(st => renderRoomSpark(st.svgEl, st.series, st.color, st.dayDates, st.tipEl));
+    ROOM_RENDER_STATE.forEach(st => renderAccTempCard2(st.card, st.room, st.longSeries));
   }
 
-  // Affiche/positionne l'infobulle "jour, date, valeur" d'une carte (11.09.2026, demande
-  // utilisateur). Position en % du conteneur .tc-card-chart : comme le SVG utilise
-  // preserveAspectRatio="none" et remplit 100%/100% de ce conteneur, un point à (svgX,svgY) dans
-  // le viewBox 100×40 tombe exactement à (svgX%, svgY/40*100%) en pixels — pas besoin de
-  // getBoundingClientRect. Bascule au-dessus/en dessous du point selon sa hauteur pour ne pas
-  // sortir de la carte (overflow:hidden).
-  function showTcTip(tipEl, xPct, yPct, dayDate, value){
-    const jour = JOURS[dayDate.getDay()];
-    const jourCap = jour.charAt(0).toUpperCase()+jour.slice(1);
-    tipEl.innerHTML = '<b>'+jourCap+' '+dayDate.getDate()+' '+MOIS[dayDate.getMonth()]+'</b> — '+value+'°';
-    const clampedX = Math.min(90, Math.max(10, xPct));
-    tipEl.style.left = clampedX+'%';
-    if(yPct < 30){
-      tipEl.style.top = yPct+'%';
-      tipEl.style.transform = 'translate(-50%,10px)';
-    } else {
-      tipEl.style.top = yPct+'%';
-      tipEl.style.transform = 'translate(-50%,-100%)';
-    }
-    tipEl.classList.add('show');
-  }
-  function hideTcTip(tipEl){ tipEl.classList.remove('show'); }
-
-  function renderRoomSpark(svgEl, series, color, dayDates, tipEl){
+  // Courbe 48h sans échelle + infobulle au survol (27.09.2026, refonte demandée par l'utilisateur,
+  // qui remplace renderRoomSpark/showTcTip/hideTcTip). Le survol réutilise désormais la "règle
+  // générale pour tous les graphes" du dashboard (attachChartHover, voir plus haut, déjà utilisée
+  // par le graphe Météo) au lieu de l'ancien mécanisme par points-jours fixes propre à ces cartes
+  // — c'est ce dernier qui causait le bug signalé le 27.09.2026 (popup calé sur le point le plus
+  // proche, dans un rayon de détection large, plutôt que sur la position réelle du curseur) :
+  // attachChartHover positionne via getScreenCTM(), fiable quel que soit le facteur de zoom du
+  // canevas, et suit la courbe en continu plutôt que par à-coups entre quelques points fixes.
+  function renderAccTempCard2(card, room, longSeries){
     const style = screen.dataset.cardStyle === 'glasshome' ? 'glasshome'
       : screen.dataset.cardStyle === 'neumorph' ? 'neumorph' : 'liquid';
-    const W=100, H=40, padY=6;
-    // Les deux styles réservent la même marge à gauche pour l'échelle discrète à 4 valeurs
-    // (demande utilisateur du 10.09.2026, étendue à GlassHome le 11.09.2026 — ce style n'avait
-    // jusqu'ici aucun repère de valeurs).
-    const padXLeft = 11, padXRight = 4;
-    const tMin = Math.min(...series), tMax = Math.max(...series);
-    const yMin = tMin-0.6, yMax = tMax+0.6;
-    const n = series.length;
+    const svgEl = card.querySelector('.tc2-chart svg'), tipEl = card.querySelector('.chart-tip');
+    const n48 = Math.round(48*60/ACC48_STEP_MIN) + 1;
+    const times = longSeries.times.slice(-n48), values = longSeries.values.slice(-n48);
+    const current = values[values.length-1];
+    // Fenêtre verticale : centrée sur la valeur actuelle par défaut, ou sur la moyenne des N
+    // derniers jours si le mode "auto" est activé (Configuration > Cartes température).
+    let center = current;
+    if(accAuto){
+      const cutoff = Date.now() - accAutoDays*86400000;
+      let i0 = longSeries.times.findIndex(t => t >= cutoff);
+      if(i0 === -1) i0 = 0;
+      const slice = longSeries.values.slice(i0);
+      center = slice.reduce((a,b)=>a+b,0) / slice.length;
+    }
+    const half = accRange/2, yMin = center-half, yMax = center+half;
+    const W = 100, H = 40, padY = 4, padXLeft = 3, padXRight = 3;
+    const n = times.length;
     const xAt = i => padXLeft + (i/(n-1))*(W-padXLeft-padXRight);
-    const yAt = t => padY + (1-(t-yMin)/((yMax-yMin)||1))*(H-2*padY);
-    const pts = series.map((t,i)=>[xAt(i), yAt(t)]);
+    const yAt = v => padY + (1-(Math.min(yMax,Math.max(yMin,v))-yMin)/((yMax-yMin)||1))*(H-2*padY);
+    const pts = times.map((t,i)=>[xAt(i), yAt(values[i])]);
     const linePath = smoothLinePath(pts);
+    const color = style === 'liquid' ? tempToColor(current) : room.accent;
 
-    // Points discrets pour chaque jour, taille uniforme (11.09.2026, demande utilisateur : "le
-    // point final c'est moche" — l'ancienne mise en évidence du dernier jour, seule, est
-    // supprimée au profit d'un repère identique sur les 5 jours ; le détail par jour est
-    // maintenant porté par l'infobulle au survol plutôt que par une taille différente).
-    // Chaque cercle visible est doublé d'une cible de survol invisible plus large (r=5, fill
-    // transparent — pas "none" : reste cliquable/survolable en SVG) pour rester utilisable sur
-    // un point de courbe aussi petit.
-    const hitsData = pts.map((p,i)=>({ x:p[0], y:p[1], i }));
-    const hits = hitsData.map(h =>
-      '<circle class="tc-hit" data-i="'+h.i+'" cx="'+h.x.toFixed(1)+'" cy="'+h.y.toFixed(1)+'" r="5" fill="transparent"/>'
-    ).join('');
+    const valEl = card.querySelector('.tc2-value'), iconEl = card.querySelector('.tc2-icon');
+    if(valEl){ valEl.textContent = current.toFixed(1)+'°'; valEl.style.color = color; }
+    if(iconEl) iconEl.style.color = color;
 
-    function wireHits(){
-      if(!tipEl) return;
-      svgEl.onmouseover = ev => {
-        const hit = ev.target.closest && ev.target.closest('.tc-hit');
-        if(!hit) return;
-        const i = +hit.dataset.i;
-        showTcTip(tipEl, (hitsData[i].x/W)*100, (hitsData[i].y/H)*100, dayDates[i], series[i]);
-      };
-      svgEl.onmousemove = svgEl.onmouseover;
-      svgEl.onmouseout = ev => {
-        if(ev.relatedTarget && ev.relatedTarget.closest && ev.relatedTarget.closest('.tc-hit')) return;
-        hideTcTip(tipEl);
-      };
-    }
-
+    const dotStroke = style === 'neumorph' ? '#e4e7ec' : '#0e1018';
+    let inner;
     if(style === 'liquid'){
-      // Liquid glass : trait fin quasi transparent + halo diffus (cf. svgLiquid, graph_proposals.html)
-      // — mais coloré selon la température du jour (tempToColor), jamais blanc/gris fixe, et trait
-      // encore allégé (2e passe du 10.09.2026, demande utilisateur : "l'épaisseur du trait doit
-      // être plus fin").
-      const tempColor = tempToColor(series[n-1]);
-      const fid = 'accLq'+Math.random().toString(36).slice(2,8);
-      // Échelle discrète à gauche (10.09.2026, affinée le 11.09.2026, demande utilisateur : texte
-      // trop gros -> réduit, et 2 repères (max/min) jugés trop grossiers -> 4 repères répartis sur
-      // les vraies bornes de la série (pas la plage paddée yMin/yMax) — un repère de lecture, pas
-      // un vrai axe gradué comme le grand graphe de l'écran Météo.
-      // Pièces à faible amplitude (ex. RDC, Étage) : 4 valeurs arrondies à l'entier peuvent
-      // coïncider (plage < ~3°) — décimale ajoutée dans ce cas pour garder 4 repères distincts.
-      const axisDecimals = (tMax-tMin) < 3 ? 1 : 0;
-      const axisVals = [0,1,2,3].map(k => tMin + (tMax-tMin)*k/3);
-      const axis = axisVals.map(v =>
-          '<line x1="'+padXLeft.toFixed(1)+'" y1="'+yAt(v).toFixed(1)+'" x2="'+(padXLeft+1.5).toFixed(1)+'" y2="'+yAt(v).toFixed(1)+'" stroke="rgba(238,241,246,.26)" stroke-width=".4"/>'
-        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+(grAxisSize()*0.5).toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
-        ).join('');
-      // Aire colorée sous la courbe (27.09.2026, demande utilisateur : "il manque l'effet coloré
-      // sous la courbe") -- même principe que GlassHome (dégradé vertical vers transparent) mais
-      // teinté par tempColor (couleur selon la température, pas la couleur fixe de la pièce) et
-      // plus léger en opacité pour rester dans l'esprit verre translucide du style.
+      // Trait fin + halo diffus, coloré selon la température (jamais couleur fixe de la pièce),
+      // aire dégradée sous la courbe ajoutée le 27.09.2026 (demande utilisateur précédente).
+      const fid = 'acc2Lq'+Math.random().toString(36).slice(2,8);
+      const gid = 'acc2Lg'+Math.random().toString(36).slice(2,8);
       const areaPath = linePath + ' L'+pts[n-1][0].toFixed(1)+' '+H+' L'+pts[0][0].toFixed(1)+' '+H+' Z';
-      const gid = 'accLg'+Math.random().toString(36).slice(2,8);
-      svgEl.innerHTML =
+      inner =
         '<defs><filter id="'+fid+'" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1"/></filter>'
-        + '<linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1">'
-          + '<stop offset="0%" stop-color="'+tempColor+'" stop-opacity=".28"/>'
-          + '<stop offset="100%" stop-color="'+tempColor+'" stop-opacity="0"/>'
-        + '</linearGradient></defs>'
-        + axis
+        + '<linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+color+'" stop-opacity=".28"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0"/></linearGradient></defs>'
         + '<path d="'+areaPath+'" fill="url(#'+gid+')" stroke="none"/>'
-        + '<path d="'+linePath+'" fill="none" stroke="'+tempColor+'" stroke-width="'+(grLineW()*2.857).toFixed(2)+'" opacity=".32" filter="url(#'+fid+')"/>'
-        + '<path d="'+linePath+'" fill="none" stroke="'+tempColor+'" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>'
-        + hits;
-      wireHits();
-      return;
-    }
-
-    if(style === 'neumorph'){
-      // Neumorphism (11.09.2026, demande utilisateur) : la courbe est "gravée" dans la carte
-      // mate plutôt que lumineuse sur du verre — même principe de relief à deux ombres opposées
-      // que les cartes elles-mêmes (voir CSS [data-card-style="neumorph"]), reproduit ici en
-      // dupliquant le tracé légèrement décalé dans chaque sens (un `feDropShadow` SVG ne permet
-      // qu'un seul décalage à la fois, donc deux copies décalées + la vraie couleur par-dessus,
-      // plutôt qu'un filtre). Couleur de la pièce conservée (comme GlassHome) mais légèrement
-      // atténuée pour rester dans l'esprit sobre/mat du style.
-      // 20.09.2026 (demande utilisateur, "règle transversale : pas de points sur la courbe") :
-      // les points "bouton embouti" (empreinte sombre + empreinte claire + point colore) qui
-      // marquaient chaque valeur de la serie sont retires, voir §8 CAHIER_DES_CHARGES.md.
-      // **Révisé le 12.09.2026** (référence utilisateur, base claire au lieu de sombre — voir CSS
-      // ci-dessus) : la teinte sombre passe du noir (`rgba(5,6,10,x)`, pensé pour une carte
-      // sombre) au gris-bleu `rgba(163,177,198,x)` déjà utilisé pour l'ombre portée des cartes —
-      // un noir pur sur fond gris clair aurait fait une tache plutôt qu'une ombre douce. La teinte
-      // claire (blanc) reste blanche, simplement plus opaque (le blanc se voit mieux sur un fond
-      // clair que sur un fond sombre). Échelle/axe repassés en gris sombre (au lieu de gris clair)
-      // pour rester lisibles sur la carte désormais claire.
-      const axisDecimals = (tMax-tMin) < 3 ? 1 : 0;
-      const axisVals = [0,1,2,3].map(k => tMin + (tMax-tMin)*k/3);
-      const axis = axisVals.map(v =>
-          '<line x1="'+padXLeft.toFixed(1)+'" y1="'+yAt(v).toFixed(1)+'" x2="'+(padXLeft+1.5).toFixed(1)+'" y2="'+yAt(v).toFixed(1)+'" stroke="rgba(51,58,71,.28)" stroke-width=".4"/>'
-        + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+(grAxisSize()*0.5).toFixed(2)+'" fill="rgba(51,58,71,.55)">'+v.toFixed(axisDecimals)+'°</text>'
-        ).join('');
-      svgEl.innerHTML =
-        axis
-        + '<path d="'+linePath+'" fill="none" stroke="rgba(163,177,198,.6)" stroke-width="'+(grLineW()*1.4545).toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round" transform="translate(.35,.35)"/>'
+        + '<path d="'+linePath+'" fill="none" stroke="'+color+'" stroke-width="'+(grLineW()*2.857).toFixed(2)+'" opacity=".32" filter="url(#'+fid+')"/>'
+        + '<path d="'+linePath+'" fill="none" stroke="'+color+'" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>';
+    } else if(style === 'neumorph'){
+      // Courbe "gravée" (double décalage clair/sombre), sans aire — cohérent avec le principe
+      // mat/sans transparence du style, comme pour les autres graphes du dashboard.
+      inner =
+        '<path d="'+linePath+'" fill="none" stroke="rgba(163,177,198,.6)" stroke-width="'+(grLineW()*1.4545).toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round" transform="translate(.35,.35)"/>'
         + '<path d="'+linePath+'" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round" transform="translate(-.3,-.3)"/>'
-        + '<path d="'+linePath+'" fill="none" stroke="'+color+'" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>'
-        + hits;
-      wireHits();
-      return;
+        + '<path d="'+linePath+'" fill="none" stroke="'+color+'" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>';
+    } else {
+      // GlassHome : trait franc + aire dégradée, couleur fixe de la pièce.
+      const gid = 'acc2Rg'+Math.random().toString(36).slice(2,8);
+      const areaPath = linePath + ' L'+pts[n-1][0].toFixed(1)+' '+H+' L'+pts[0][0].toFixed(1)+' '+H+' Z';
+      inner =
+        '<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+color+'" stop-opacity=".4"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0"/></linearGradient></defs>'
+        + '<path d="'+areaPath+'" fill="url(#'+gid+')" stroke="none"/>'
+        + '<path d="'+linePath+'" fill="none" stroke="'+color+'" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round"/>';
     }
+    inner += '<circle class="tc2-dot" r="3" fill="'+color+'" stroke="'+dotStroke+'" stroke-width="1.4" opacity="0"/>';
+    svgEl.innerHTML = inner;
 
-    // GlassHome : traitement historique (trait franc + remplissage dégradé, couleur fixe de la
-    // pièce — hors périmètre de la demande de coloration par température), avec la même
-    // infobulle que le style liquid (11.09.2026, demande utilisateur), et désormais
-    // (11.09.2026, 2e demande) un trait moins épais ainsi que la même échelle verticale à 4
-    // valeurs que Liquid Glass, jusque-là absente de ce style. Points uniformes retirés le
-    // 20.09.2026 (règle transversale "pas de points sur la courbe", voir §8 CAHIER_DES_CHARGES.md).
-    const areaPath = linePath + ' L'+pts[n-1][0].toFixed(1)+' '+H+' L'+pts[0][0].toFixed(1)+' '+H+' Z';
-    const gid = 'accRg'+Math.random().toString(36).slice(2,8);
-    const axisDecimals = (tMax-tMin) < 3 ? 1 : 0;
-    const axisVals = [0,1,2,3].map(k => tMin + (tMax-tMin)*k/3);
-    const axis = axisVals.map(v =>
-        '<line x1="'+padXLeft.toFixed(1)+'" y1="'+yAt(v).toFixed(1)+'" x2="'+(padXLeft+1.5).toFixed(1)+'" y2="'+yAt(v).toFixed(1)+'" stroke="rgba(238,241,246,.26)" stroke-width=".4"/>'
-      + '<text x="'+(padXLeft-1.4).toFixed(1)+'" y="'+(yAt(v)+1.1).toFixed(1)+'" text-anchor="end" class="svg-ff-value" font-weight="500" style="font-variant-numeric:tabular-nums" font-size="'+(grAxisSize()*0.5).toFixed(2)+'" fill="rgba(238,241,246,.38)">'+v.toFixed(axisDecimals)+'°</text>'
-      ).join('');
-    svgEl.innerHTML =
-      '<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1">'
-        + '<stop offset="0%" stop-color="'+color+'" stop-opacity=".4"/>'
-        + '<stop offset="100%" stop-color="'+color+'" stop-opacity="0"/>'
-      + '</linearGradient></defs>'
-      + axis
-      + '<path d="'+areaPath+'" fill="url(#'+gid+')" stroke="none"/>'
-      + '<path d="'+linePath+'" fill="none" stroke="'+color+'" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round"/>'
-      + hits;
-    wireHits();
+    const dot = svgEl.querySelector('.tc2-dot');
+    const xs = pts.map(p => p[0]);
+    attachChartHover(svgEl, xs, tipEl, i => {
+      dot.setAttribute('cx', xs[i]); dot.setAttribute('cy', pts[i][1]); dot.setAttribute('opacity','1');
+      return '<div class="tip-date">'+accFmtDT(times[i])+'</div><span class="tip-val">'+values[i].toFixed(1)+'°</span>';
+    }, () => dot.setAttribute('opacity','0'));
   }
 
   function renderAccRooms(){
     const grid = document.getElementById('accRoomGrid');
     grid.innerHTML = '';
     ROOM_RENDER_STATE = [];
-    const now = new Date();
-    const dayLabels = [], dayDates = [];
-    for(let i=4;i>=0;i--){ const d=new Date(now); d.setDate(now.getDate()-i); dayLabels.push(JOURS_ABBR[d.getDay()]); dayDates.push(d); }
     ACC_ROOMS.forEach(room=>{
-      const series = genRoomSeries(room.base, room.amp);
+      const longSeries = accLongSeries(room);
       const card = document.createElement('div');
-      card.className = 'acc-temp-card';
+      card.className = 'acc-temp-card tc2';
       card.innerHTML =
         '<div class="card-sheen"></div>'
-        + '<div class="tc-card-head">'
-          + '<div class="tc-card-tx"><span class="tc-card-label">'+room.label+'</span>'+(room.src?'<span class="tc-card-src">'+room.src+'</span>':'')+'</div>'
-          + '<span class="tc-card-now" style="color:'+room.accent+'">'+series[series.length-1]+'°</span>'
+        + '<div class="tc2-side">'
+          + '<div class="tc2-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 0 0-2 2v9.1a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2Z"/></svg></div>'
+          + '<div class="tc2-value">—°</div>'
+          + '<div class="tc2-label">'+room.label+'</div>'
         + '</div>'
-        + '<div class="tc-card-chart"><svg viewBox="0 0 100 40" preserveAspectRatio="none"></svg><div class="tc-tip"></div></div>'
-        + '<div class="tc-card-range">'+dayLabels.map(d=>'<span>'+d+'</span>').join('')+'</div>';
+        + '<div class="tc2-chart"><svg viewBox="0 0 100 40" preserveAspectRatio="none"></svg><div class="chart-tip"></div></div>';
       grid.appendChild(card);
-      const svgEl = card.querySelector('svg');
-      const tipEl = card.querySelector('.tc-tip');
-      ROOM_RENDER_STATE.push({ svgEl, series, color: room.accent, dayDates, tipEl });
-      renderRoomSpark(svgEl, series, room.accent, dayDates, tipEl);
+      ROOM_RENDER_STATE.push({ card, room, longSeries });
+      renderAccTempCard2(card, room, longSeries);
     });
   }
   renderAccRooms();
