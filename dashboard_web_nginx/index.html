@@ -1529,7 +1529,12 @@
      si besoin (pas de nowrap/ellipsis) -- l'en-tête étant compacté pour agrandir la zone de
      dessin, une phrase longue (valeurs réelles) n'a plus la garantie de tenir sur une seule
      ligne à cette largeur de carte. */
-  .enr-card-sub{ font-family:var(--ff-body); font-size:11px; color:var(--brume-dim); margin-top:2px; white-space:normal; line-height:1.35; }
+  /* 27.09.2026 (2e demande) : white-space normal -> pre-line -- applyEnrData() insère désormais
+     un \n explicite dans #enrFlowSub pour forcer un passage à la ligne stable à un endroit choisi
+     (plutôt que de laisser le retour à la ligne naturel, imprévisible, décider) ; pre-line
+     respecte ce \n tout en gardant le retour à la ligne normal en cas de dépassement. N'affecte
+     pas .enr-dist-card qui réutilise cette classe (son texte ne contient pas de \n). */
+  .enr-card-sub{ font-family:var(--ff-body); font-size:11px; color:var(--brume-dim); margin-top:2px; white-space:pre-line; line-height:1.35; }
 
   .enr-period-toggle{ display:flex; gap:5px; flex:none; }
   .enr-period-toggle button{
@@ -3656,32 +3661,36 @@
   // 7 lignes au lieu de 8 : Réseau/Solaire/Batterie→Maison (3 liaisons "hub") + Solaire→Réseau,
   // Solaire→Batterie, Réseau→Voiture, Batterie→Voiture (4 liaisons directes).
   // 27.09.2026 (demande utilisateur) : Solaire et Voiture rapprochés des bords haut/bas pour
-  // allonger les traits Solaire->Maison et Maison->Voiture. 1ère passe (y:14->13 / y:86->87) trop
-  // prudente : le repère utilisé pour juger de la marge restante était le bord de la zone de
-  // dessin (#accEFlowStage/#enrFlowStage) elle-même, qui n'a pas d'overflow:hidden -- la vraie
-  // limite est le bord de la CARTE (.acc-card/.enr-card, qui ont overflow:hidden). Mesure de la
-  // marge réelle (bord de carte -> haut du libellé) : ~52px côté Solaire, ~11px seulement côté
-  // Voiture (le bas de la carte étant plus proche de la zone de dessin que son haut, où se trouve
-  // l'en-tête). 2e passe : Solaire remonté à y:5 (marge résiduelle ramenée à ~15px, du même ordre
-  // que celle de Voiture, vérifiée sans chevauchement avec l'en-tête ni rognage) ; Voiture laissé
-  // à y:87, déjà proche de sa limite réelle. Aller encore plus loin sur Solaire, ou toucher à
-  // Voiture, demanderait de réduire la taille de leurs anneaux (108px), non demandée ici (seule
-  // celle de la Maison l'a été).
+  // allonger les traits Solaire->Maison et Maison->Voiture. Historique en 3 passes :
+  // 1ère (y:14->13 / y:86->87) trop prudente : le repère utilisé pour juger de la marge restante
+  // était le bord de la zone de dessin (#accEFlowStage/#enrFlowStage) elle-même, qui n'a pas
+  // d'overflow:hidden -- la vraie limite est le bord de la CARTE (.acc-card/.enr-card, qui ont
+  // overflow:hidden). 2e passe : mesure de la marge réelle (bord de carte -> haut du libellé) :
+  // ~52px côté Solaire, ~11px seulement côté Voiture (le bas de la carte étant plus proche de la
+  // zone de dessin que son haut, où se trouve l'en-tête) -- Solaire remonté à y:17, mais en
+  // restant prudent car le sous-titre #enrFlowSub ne tenait alors sur 2 lignes qu'occasionnellement
+  // (Voiture en charge), rendant la hauteur de l'en-tête imprévisible. 3e passe (même jour, 2e
+  // demande utilisateur "Solaire doit être aussi près du bord que Voiture") : #enrFlowSub passe
+  // désormais TOUJOURS sur 2 lignes (voir le \n forcé dans applyEnrData()), ce qui fixe une
+  // hauteur d'en-tête stable et permet de resserrer Solaire à y:15.5 -- marge résiduelle jusqu'au
+  // bas de l'en-tête ramenée à ~11px, calée sur celle de Voiture. Voiture reste à y:87, déjà à sa
+  // limite réelle. Aller plus loin sur l'un ou l'autre demanderait de réduire la taille de leurs
+  // anneaux (108px), non demandée ici (seule celle de la Maison l'a été).
   const PFC_TOPO_FULL = {
     viewBox: '0 0 100 100',
     nodes: [
       { key:'home',     x:50, y:50 },
-      { key:'solaire',  x:50, y:17, labelAbove:true },
+      { key:'solaire',  x:50, y:15.5, labelAbove:true },
       { key:'reseau',   x:10, y:50 },
       { key:'batterie', x:90, y:50 },
       { key:'voiture',  x:50, y:87 },
     ],
     lines: [
       { key:'reseauMaison',    from:'reseau',   to:'home',     color:'reseau',   d:'M10,50 L50,50' },
-      { key:'solaireMaison',   from:'solaire',  to:'home',     color:'solaire',  d:'M50,17 L50,50' },
+      { key:'solaireMaison',   from:'solaire',  to:'home',     color:'solaire',  d:'M50,15.5 L50,50' },
       { key:'batterieMaison',  from:'batterie', to:'home',     color:'batterie', d:'M90,50 L50,50' },
-      { key:'solaireReseau',   from:'solaire',  to:'reseau',   color:'solaire',  d:'M44,17 C44,40 26,46 10,46' },
-      { key:'solaireBatterie', from:'solaire',  to:'batterie', color:'solaire',  d:'M56,17 C56,40 74,46 90,46' },
+      { key:'solaireReseau',   from:'solaire',  to:'reseau',   color:'solaire',  d:'M44,15.5 C44,40 26,46 10,46' },
+      { key:'solaireBatterie', from:'solaire',  to:'batterie', color:'solaire',  d:'M56,15.5 C56,40 74,46 90,46' },
       { key:'reseauVoiture',   from:'reseau',   to:'voiture',  color:'reseau',   d:'M10,54 C36,54 44,74 44,87' },
       { key:'batterieVoiture', from:'batterie', to:'voiture',  color:'batterie', d:'M90,54 C64,54 56,74 56,87' },
     ],
@@ -3980,7 +3989,14 @@
     const stats = pfcUpdate(PFC_HANDLE_ENR, F);
     const sub = document.getElementById('enrFlowSub');
     if (sub) {
-      sub.textContent = 'Solaire ' + (stats.solaireTotal/1000).toFixed(1) + ' kW · Maison ' + stats.homeInflow + ' W ('
+      // 27.09.2026 (demande utilisateur, "couper la 2e ligne et mettre une partie du texte sur
+      // une 3e ligne") : saut de ligne forcé (\n, restitué grâce à white-space:pre-line sur
+      // .enr-card-sub) entre les valeurs "Solaire/Maison" et le détail entre parenthèses -- avant
+      // ce changement le sous-titre tenait sur 1 seule ligne (2 avec la Voiture en charge, cas
+      // occasionnel) ; il occupe maintenant 2 lignes de façon stable et prévisible dans tous les
+      // cas, ce qui permet de fixer précisément la hauteur de l'en-tête (voir le nudge de Solaire
+      // dans PFC_TOPO_FULL, calé sur cette hauteur désormais constante).
+      sub.textContent = 'Solaire ' + (stats.solaireTotal/1000).toFixed(1) + ' kW · Maison ' + stats.homeInflow + ' W\n('
         + stats.pctReseau + '% réseau · ' + stats.pctSolaire + '% solaire · ' + stats.pctBatterie + '% batterie)'
         + (stats.voitureIn > 0 ? ' · Voiture ' + stats.voitureIn + ' W' : '');
     }
