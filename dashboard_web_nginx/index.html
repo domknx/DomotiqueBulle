@@ -2366,6 +2366,66 @@
   .tp-err-row .k{ color:rgba(238,241,246,0.45); font-family:var(--ff-mono); text-transform:uppercase; letter-spacing:.04em; font-size:10px; }
   .tp-err-row .v{ color:rgba(238,241,246,0.85); }
 
+  /* ---------- écran Voiture (27.09.2026, demande utilisateur "Tesla - création d'une page
+     dédiée") — réutilise .enr-card/.enr-stat/.card-sheen tels quels (voir commentaire écran
+     Énergie plus haut : ces classes ne sont pas scopées à #view-energie, déjà réutilisées par
+     Température). Seules les classes nouvelles ci-dessous (.veh-*) ont besoin de leurs propres
+     surcharges Neumorphism -- le reste (titres/sous-titres/valeurs de carte, tag "Réel") hérite
+     automatiquement des règles globales .enr-card-title / .enr-card-sub / .enr-stat-val / .enr-stat-real
+     déjà en place. ---------- */
+  .view-voiture{ flex-direction:column; padding:32px 36px 8px; }
+  .veh-stat-val-sm{ font-size:calc(20px * var(--fs-value-scale)) !important; }
+  .veh-row{ flex:1; min-height:0; display:flex; gap:20px; padding-bottom:24px; }
+  .veh-card-state{ flex:1.35; min-width:0; padding:22px 26px 18px; display:flex; flex-direction:column; }
+  .veh-card-loc{ flex:0.85; min-width:0; padding:22px 26px 18px; display:flex; flex-direction:column; }
+  .veh-card-trips{ flex:1; min-width:0; padding:22px 26px 18px; display:flex; flex-direction:column; }
+
+  .veh-list{ display:flex; flex-direction:column; margin-top:6px; min-height:0; overflow:auto; }
+  .veh-item{ display:flex; align-items:center; gap:14px; padding:12px 2px; border-bottom:1px solid var(--glass-brd); }
+  .veh-item:last-child{ border-bottom:none; }
+  .veh-item .enr-stat-lbl{ flex:none; width:168px; }
+  .veh-item-ic{ width:34px; height:34px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center; }
+  .veh-item-ic svg{ width:18px; height:18px; }
+  .veh-ic-lock{ background:rgba(90,200,250,.16); color:var(--glacier); }
+  .veh-ic-plug{ background:rgba(255,156,84,.16); color:var(--ambre); }
+  .veh-ic-shield{ background:rgba(111,207,151,.16); color:var(--mousse); }
+  .veh-ic-clim{ background:rgba(183,155,255,.16); color:var(--violet); }
+  .veh-ic-eye{ background:rgba(238,241,246,.08); color:var(--brume-dim); }
+  .veh-ic-wifi{ background:rgba(111,207,151,.16); color:var(--mousse); }
+  .veh-item-val{ font-family:var(--ff-value); font-size:14.5px; color:var(--brume); margin-left:auto; text-align:right; }
+  .veh-item-val-ok{ color:var(--mousse); }
+  .veh-item-val-dim{ color:var(--brume-dim); font-size:13px; }
+  [data-card-style="neumorph"] .veh-item{ border-bottom-color:rgba(123,132,148,.18); }
+  [data-card-style="neumorph"] .veh-item-val{ color:#333a47; }
+  [data-card-style="neumorph"] .veh-item-val-ok{ color:#2f9e63; }
+  [data-card-style="neumorph"] .veh-item-val-dim{ color:#7b8494; }
+
+  .veh-loc-body{ flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:6px; padding-top:4px; }
+  .veh-loc-pin{ width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:rgba(111,207,151,.14); color:var(--mousse); box-shadow:0 0 0 0 rgba(111,207,151,.35); margin-bottom:6px;
+    animation:vehPinPulse 2.6s ease-out infinite; }
+  .veh-loc-pin svg{ width:26px; height:26px; }
+  @keyframes vehPinPulse{ 0%{ box-shadow:0 0 0 0 rgba(111,207,151,.35); } 70%{ box-shadow:0 0 0 14px rgba(111,207,151,0); } 100%{ box-shadow:0 0 0 0 rgba(111,207,151,0); } }
+  .veh-loc-state{ font-family:var(--ff-title); font-size:calc(21px * var(--fs-title-scale)); font-weight:460; color:var(--brume); }
+  .veh-loc-sub{ font-family:var(--ff-body); font-size:12.5px; color:var(--brume-dim); }
+  .veh-loc-meta{ font-family:var(--ff-mono); font-size:10px; letter-spacing:.02em; color:var(--brume-dim); margin-top:10px; line-height:1.6; }
+  [data-card-style="neumorph"] .veh-loc-state{ color:#333a47; }
+  [data-card-style="neumorph"] .veh-loc-sub, [data-card-style="neumorph"] .veh-loc-meta{ color:#7b8494; }
+  [data-card-style="neumorph"] .veh-loc-pin{ background:linear-gradient(155deg,#eef1f5,#e2e6ec); color:#2f9e63; box-shadow:2px 2px 5px rgba(163,177,198,.5), -2px -2px 4px rgba(255,255,255,.85); }
+
+  .veh-trips-body{ flex:1; min-height:0; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-end; gap:14px; }
+  .veh-trips-note{ margin:0; }
+  .veh-grafana-btn{
+    display:flex; align-items:center; gap:10px; padding:12px 18px; border-radius:14px; width:100%;
+    background:var(--glass); border:1px solid var(--glass-brd); color:var(--brume);
+    font-family:var(--ff-title); font-size:14px; font-weight:460; text-decoration:none;
+    transition:background .16s ease, border-color .16s ease;
+  }
+  .veh-grafana-btn svg{ width:18px; height:18px; flex:none; color:var(--glacier); }
+  .veh-grafana-btn:hover{ background:var(--glass-2); }
+  [data-card-style="neumorph"] .veh-grafana-btn{ background:linear-gradient(155deg,#eef1f5,#e2e6ec); border:none; color:#333a47; box-shadow:2px 2px 5px rgba(163,177,198,.5), -2px -2px 4px rgba(255,255,255,.85); }
+  [data-card-style="liquid"] .veh-grafana-btn{ background:linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.03)); border-color:rgba(255,255,255,.18); }
+
 </style>
 
 <div id="stage">
@@ -2779,6 +2839,110 @@
           <div class="temp-popup-body" id="tempPopupBody"></div>
         </div>
       </div>
+
+      <!-- Écran Voiture (27.09.2026, demande utilisateur "Tesla - création d'une page dédiée") :
+           Tesla Model S « V&F » (garage), données RÉELLES lues via l'intégration Home Assistant
+           "Tesla Fleet" (connecteur Home_Assistant_Custom_MCP) le 27.09.2026 ~22h26 -- comme pour
+           les relevés réels Réseau/Voiture de l'écran Énergie (12.09.2026), il s'agit d'un
+           instantané figé dans le HTML (VEH_SNAPSHOT, voir JS) : ce fichier est servi en lecture
+           seule par nginx, pas de sondage live depuis ici -- à brancher sur un futur endpoint
+           dashboard-api pour un rafraîchissement en direct, comme noté pour les autres écrans.
+           Les trajets (TeslaMate, voir tesla_integration.md -- 36 trajets enregistrés au
+           12.09.2026) ne sont pas exposés dans Home Assistant : la carte "Trajets & historique"
+           renvoie donc vers le dashboard Grafana déjà fonctionnel plutôt que d'inventer un
+           historique. Cartes construites avec les classes .enr-card/.enr-stat déjà partagées par
+           Énergie/Température (mêmes 3 styles GlassHome/Liquid Glass/Neumorphism sans CSS dupliqué,
+           voir commentaire "écran Énergie" plus haut). -->
+      <section class="view-block view-voiture" id="view-voiture">
+        <div class="acc-header">
+          <div>
+            <div class="ph-title">Voiture</div>
+            <div class="ph-sub" id="vehSub">—</div>
+          </div>
+          <div class="enr-legend"><span class="enr-dot enr-dot-real"></span>Réel (Tesla Fleet, Home Assistant)</div>
+        </div>
+
+        <div class="enr-stats veh-stats">
+          <div class="enr-stat enr-stat-batt enr-stat-real">
+            <span class="enr-stat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="16" height="8" rx="1.5"/><path d="M21 10.5v3"/></svg></span>
+            <span class="enr-stat-tx"><span class="enr-stat-lbl">Batterie</span><span class="enr-stat-val" id="vehBattVal">—</span><span class="enr-stat-tag">Réel</span></span>
+          </div>
+          <div class="enr-stat veh-stat-range enr-stat-real">
+            <span class="enr-stat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15a8 8 0 1 1 16 0"/><path d="M12 15 16 9"/></svg></span>
+            <span class="enr-stat-tx"><span class="enr-stat-lbl">Autonomie</span><span class="enr-stat-val" id="vehRangeVal">—</span><span class="enr-stat-tag">Réel</span></span>
+          </div>
+          <div class="enr-stat enr-stat-solar enr-stat-real">
+            <span class="enr-stat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg></span>
+            <span class="enr-stat-tx"><span class="enr-stat-lbl">État de charge</span><span class="enr-stat-val veh-stat-val-sm" id="vehChargeVal">—</span><span class="enr-stat-tag">Réel</span></span>
+          </div>
+          <div class="enr-stat enr-stat-conso enr-stat-real">
+            <span class="enr-stat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/></svg></span>
+            <span class="enr-stat-tx"><span class="enr-stat-lbl">Limite de recharge</span><span class="enr-stat-val" id="vehLimitVal">—</span><span class="enr-stat-tag">Réel</span></span>
+          </div>
+        </div>
+
+        <div class="veh-row">
+          <div class="enr-card veh-card-state">
+            <div class="card-sheen"></div>
+            <div class="enr-card-head"><div><div class="enr-card-title">État du véhicule</div><div class="enr-card-sub">Verrouillage, ouvertures, climatisation, disponibilité</div></div></div>
+            <div class="veh-list">
+              <div class="veh-item">
+                <span class="veh-item-ic veh-ic-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+                <span class="enr-stat-lbl">Verrouillage</span>
+                <span class="veh-item-val" id="vehLockVal">—</span>
+              </div>
+              <div class="veh-item">
+                <span class="veh-item-ic veh-ic-plug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V3M15 7V3M7 7h10v4a5 5 0 0 1-10 0V7Z"/><path d="M12 16v4"/></svg></span>
+                <span class="enr-stat-lbl">Câble de recharge</span>
+                <span class="veh-item-val" id="vehCableVal">—</span>
+              </div>
+              <div class="veh-item">
+                <span class="veh-item-ic veh-ic-shield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"/><path d="M9 12.5 11 14.5 15 10"/></svg></span>
+                <span class="enr-stat-lbl">Portes · vitres · coffre</span>
+                <span class="veh-item-val veh-item-val-ok" id="vehClosuresVal">—</span>
+              </div>
+              <div class="veh-item">
+                <span class="veh-item-ic veh-ic-clim"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c0-3 2-5 5-5s3 3 1 5-5 1-5 1zm0 0c0 3-2 5-5 5s-3-3-1-5 5-1 5-1zm0 0c3 0 5 2 5 5s-3 3-5 1 1-5 1-5zm0 0c-3 0-5-2-5-5s3-3 5-1-1 5-1 5z"/><circle cx="12" cy="12" r="1.3"/></svg></span>
+                <span class="enr-stat-lbl">Climatisation</span>
+                <span class="veh-item-val" id="vehClimVal">—</span>
+              </div>
+              <div class="veh-item">
+                <span class="veh-item-ic veh-ic-eye"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.6"/></svg></span>
+                <span class="enr-stat-lbl">Mode sentinelle</span>
+                <span class="veh-item-val veh-item-val-dim" id="vehSentryVal">—</span>
+              </div>
+              <div class="veh-item">
+                <span class="veh-item-ic veh-ic-wifi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a12 12 0 0 1 16 0M7 12.5a8 8 0 0 1 10 0M10 16a4 4 0 0 1 4 0"/><circle cx="12" cy="19" r="1"/></svg></span>
+                <span class="enr-stat-lbl">Connectivité</span>
+                <span class="veh-item-val veh-item-val-ok" id="vehConnVal">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="enr-card veh-card-loc">
+            <div class="card-sheen"></div>
+            <div class="enr-card-head"><div><div class="enr-card-title">Localisation</div><div class="enr-card-sub">Position GPS (Tesla Fleet)</div></div></div>
+            <div class="veh-loc-body">
+              <span class="veh-loc-pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg></span>
+              <div class="veh-loc-state" id="vehLocState">—</div>
+              <div class="veh-loc-sub" id="vehLocSub">—</div>
+              <div class="veh-loc-meta" id="vehLocMeta">—</div>
+            </div>
+          </div>
+
+          <div class="enr-card veh-card-trips">
+            <div class="card-sheen"></div>
+            <div class="enr-card-head"><div><div class="enr-card-title">Trajets &amp; historique</div><div class="enr-card-sub" style="white-space:normal;">TeslaMate journalise chaque trajet (36 trajets enregistrés au 12.09.2026), mais cet historique n'est pas encore exposé dans Home Assistant — le détail (distance, efficacité, cartes) reste consultable dans Grafana.</div></div></div>
+            <div class="veh-trips-body">
+              <span class="veh-item-val veh-item-val-dim veh-trips-note">À connecter — pas de pont TeslaMate → dashboard pour l'instant</span>
+              <a class="veh-grafana-btn" href="https://grafanabulle.malnoy.com" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4 10 14"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>
+                Ouvrir les dashboards TeslaMate (Grafana)
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
 <section class="view-block view-placeholder" id="view-placeholder">
         <div class="reserved-space">
@@ -3588,6 +3752,11 @@
     {id:'temperature', label:'Température', icon:'<path d="M12 3a2 2 0 0 0-2 2v9.1a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2Z"/>'},
     {id:'energie', label:'Energie', icon:'<path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/>'},
     {id:'meteo', label:'Météo', icon:'<path d="M7 17a4 4 0 1 1 1.2-7.8A5.5 5.5 0 0 1 18.5 12 3.5 3.5 0 0 1 18 17H7Z"/>'},
+    // 27.09.2026 (demande utilisateur, "création d'une page dédiée" Tesla) : entrée "Voiture"
+    // ajoutée juste avant "Configuration", même icône voiture que PFC_ICON.voiture (nœud
+    // "Voiture" du diagramme de flux énergie, voir plus bas) -- une seule source pour l'icône
+    // voiture dans tout le dashboard.
+    {id:'voiture', label:'Voiture', icon:'<path d="M5 16h14M6 16v2M18 16v2M4 12l1.5-4.5A2 2 0 0 1 7.4 6h9.2a2 2 0 0 1 1.9 1.5L20 12"/><circle cx="8" cy="16" r="1.4"/><circle cx="16" cy="16" r="1.4"/><path d="M11.6 8.2 10 11h2.2l-1.6 3"/>'},
     {id:'configuration', label:'Configuration', icon:'<circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a7.6 7.6 0 0 0 0-3l1.9-1.4-1.8-3-2.2.9a7.4 7.4 0 0 0-2.6-1.5L14.3 3H9.7l-.4 2.5a7.4 7.4 0 0 0-2.6 1.5l-2.2-.9-1.8 3L4.6 10.5a7.6 7.6 0 0 0 0 3L2.7 15l1.8 3 2.2-.9a7.4 7.4 0 0 0 2.6 1.5l.4 2.4h4.6l.4-2.4a7.4 7.4 0 0 0 2.6-1.5l2.2.9 1.8-3-1.9-1.6Z"/>'},
   ];
 
@@ -3633,6 +3802,9 @@
     } else if(item.id === 'temperature'){
       document.getElementById('view-temperature').classList.add('active');
       renderTemperatureScreen();
+    } else if(item.id === 'voiture'){
+      document.getElementById('view-voiture').classList.add('active');
+      renderVoitureScreen();
     } else {
       phTitle.textContent = item.label;
       document.getElementById('view-placeholder').classList.add('active');
@@ -5274,6 +5446,51 @@
       </div>`;
     renderTempFloorBtns();
     requestAnimationFrame(() => { renderTempCharts(); tchBindHover(); });
+  }
+
+  // ---- Écran Voiture (27.09.2026) : VEH_SNAPSHOT = relevé RÉEL unique, lu via
+  // Home_Assistant_Custom_MCP (intégration "Tesla Fleet") le 27.09.2026 ~22h26 (véhicule en
+  // veille -- plusieurs capteurs de charge/vitesse restent "unknown" tant qu'il ne roule/charge
+  // pas, normal pour un pré-2021 sans Fleet Telemetry, voir tesla_integration.md). Comme pour les
+  // relevés réels de l'écran Énergie (12.09.2026), c'est un instantané figé dans ce fichier
+  // statique -- pas de sondage live depuis ici (à brancher sur un futur endpoint dashboard-api).
+  const VEH_SNAPSHOT = {
+    asOf: '27.09.2026 22:26',
+    battPct: 40,
+    rangeKm: 188,
+    chargeState: 'Débranché',
+    chargeLimitPct: 100,
+    locked: true,
+    cableLocked: false,
+    allClosed: true,
+    climateOn: false,
+    interiorC: 22.3,
+    sentryAvailable: false,
+    online: true,
+    atHome: true,
+    lat: 46.6325, lon: 7.0575,
+  };
+
+  let vehScreenBuilt = false;
+  function renderVoitureScreen(){
+    if(vehScreenBuilt) return;
+    vehScreenBuilt = true;
+    const v = VEH_SNAPSHOT;
+    const set = (id, html) => { const el = document.getElementById(id); if(el) el.innerHTML = html; };
+    set('vehSub', `Tesla Model S « V&amp;F » &middot; relevé Home Assistant (Tesla Fleet) — ${v.asOf}, véhicule en veille`);
+    set('vehBattVal', `${v.battPct} %`);
+    set('vehRangeVal', `${v.rangeKm} km`);
+    set('vehChargeVal', v.chargeState);
+    set('vehLimitVal', `${v.chargeLimitPct} %`);
+    set('vehLockVal', v.locked ? 'Verrouillée' : 'Déverrouillée');
+    set('vehCableVal', v.cableLocked ? 'Verrouillé' : 'Débranché');
+    set('vehClosuresVal', v.allClosed ? 'Tout fermé' : 'Ouverture détectée');
+    set('vehClimVal', `${v.climateOn ? 'Allumée' : 'Éteinte'} &middot; ${String(v.interiorC).replace('.', ',')}&nbsp;°C à l'intérieur`);
+    set('vehSentryVal', v.sentryAvailable ? 'Active' : 'Indisponible (véhicule en veille)');
+    set('vehConnVal', v.online ? 'Joignable' : 'Hors ligne');
+    set('vehLocState', v.atHome ? 'À la maison' : 'En déplacement');
+    set('vehLocSub', v.atHome ? 'Garage — Villa Bulle' : 'Position hors domicile');
+    set('vehLocMeta', `${String(v.lat).replace('.', ',')}° N &middot; ${String(v.lon).replace('.', ',')}° E<br/>Dernière position : ${v.asOf}`);
   }
 
   let tempScreenBuilt = false;
