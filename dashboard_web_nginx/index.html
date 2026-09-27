@@ -559,12 +559,26 @@
   /* -- Grille des 4 cartes de température (27.09.2026, refonte demandée par l'utilisateur ;
      révisée le même jour : empilées verticalement plutôt que côte à côte, largeur maximale
      alignée sur la carte Météo — flex:0 0 33%, comme .acc-weather, au lieu de flex:1 pleine
-     largeur). Extérieur / Studio / RDC / Étage, une colonne × 4 rangées de même hauteur. Mise en
-     page de chaque carte : bloc icône/valeur/nom à gauche (largeur fixe), courbe 48 h SANS
-     échelle à droite (la valeur exacte s'obtient au survol, voir
-     renderAccTempCard2/attachChartHover) — remplace l'ancienne colonne de 4 repères de valeurs
-     (.tc-card-*, .tc-tip), dont le mécanisme de survol par points fixes est retiré au passage
-     (voir plus bas, attachChartHover). */
+     largeur). Extérieur / Studio / RDC / Étage, une colonne × 4 rangées de même hauteur.
+
+     Section gauche revue (27.09.2026, 2e demande) : icône + valeur sur une même ligne (au lieu
+     de l'icône seule au-dessus de la valeur), nom de la pièce en dessous, puis min/max de la
+     courbe affichée (.tc2-minmax) — .tc2-side passe en largeur fixe (150px) et démarre en haut
+     de la carte (plus de centrage vertical) pour laisser la place à ces 2 lignes en plus.
+
+     Courbe (27.09.2026, 2e demande) : la carte n'est plus une rangée flex side+chart — .tc2-chart
+     devient un calque plein cadre en position:absolute (inset:0 sur .acc-temp-card.tc2, qui reste
+     position:relative), DERRIÈRE .tc2-side (z-index 1 vs 2), avec un viewBox en pixels réels
+     (mesuré via clientWidth/clientHeight au rendu, voir renderAccTempCard2) au lieu de l'ancien
+     viewBox abstrait 100×40 étiré en preserveAspectRatio="none" — c'est ce viewBox abstrait qui
+     déformait le point de survol en ellipse et le faisait paraître trop gros (même famille de bug
+     que le correctif d'échelle d'axe du 27.09.2026 plus haut dans l'historique). Le passé de la
+     courbe (au-delà des 48h affichées) est prolongé sous la section texte et estompé par un fondu
+     (mask-image linéaire sur .tc2-chart : 0% opaque au bord gauche de la carte — donc sous
+     l'icône — jusqu'à 100% à l'abscisse 166px = largeur de .tc2-side + un interstice de 16px,
+     qui est très exactement l'abscisse où démarrait l'ancienne courbe "actuelle" avant ce
+     chantier ; voir le calcul des points dans renderAccTempCard2, qui conserve la même densité de
+     pixels/heure pour les 48h affichées qu'avant l'ajout de ce fondu). */
   .acc-row2{ flex:1; min-height:0; display:flex; padding-bottom:24px; }
   .acc-temp-grid{
     flex:0 0 33%; min-height:0; display:grid;
@@ -576,14 +590,30 @@
     padding:12px 14px 9px; display:flex; flex-direction:column; min-height:0;
     position:relative; overflow:hidden;
   }
-  .acc-temp-card.tc2{ flex-direction:row; align-items:stretch; gap:16px; padding:18px 22px; }
-  .tc2-side{ flex:none; min-width:92px; display:flex; flex-direction:column; justify-content:center; gap:3px; position:relative; z-index:2; }
-  .tc2-icon{ width:22px; height:22px; margin-bottom:3px; }
+  .acc-temp-card.tc2{ position:relative; padding:18px 22px; }
+  .tc2-side{ width:150px; flex:none; display:flex; flex-direction:column; gap:3px; position:relative; z-index:2; }
+  .tc2-row1{ display:flex; align-items:center; gap:8px; }
+  .tc2-icon{ width:27px; height:27px; flex:none; }
   .tc2-icon svg{ width:100%; height:100%; display:block; }
-  .tc2-value{ font-family:var(--ff-value); font-weight:460; font-size:calc(30px * var(--fs-value-scale)); line-height:1.05; font-variant-numeric:tabular-nums; }
-  .tc2-label{ font-family:var(--ff-title); font-size:calc(12.5px * var(--fs-title-scale)); letter-spacing:.03em; text-transform:uppercase; color:var(--brume-dim); font-weight:500; }
-  .tc2-chart{ flex:1; min-width:0; position:relative; z-index:2; }
-  .tc2-chart svg{ width:100%; height:100%; display:block; overflow:visible; cursor:crosshair; }
+  .tc2-value{ font-family:var(--ff-value); font-weight:460; font-size:calc(30px * var(--fs-value-scale)); line-height:1; font-variant-numeric:tabular-nums; }
+  .tc2-label{ font-family:var(--ff-title); font-size:calc(12.5px * var(--fs-title-scale)); letter-spacing:.03em; text-transform:uppercase; color:var(--brume-dim); font-weight:500; margin-top:2px; }
+  .tc2-minmax{ display:flex; flex-direction:column; gap:2px; margin-top:7px; }
+  .tc2-mm-row{ display:flex; align-items:baseline; gap:5px; font-family:var(--ff-title); font-size:calc(11px * var(--fs-title-scale)); }
+  .tc2-mm-key{ color:var(--brume-dim); opacity:.8; }
+  .tc2-mm-val{ font-variant-numeric:tabular-nums; font-weight:600; }
+  .tc2-mm-row.mm-min .tc2-mm-val{ color:#3aa9e0; }
+  .tc2-mm-row.mm-max .tc2-mm-val{ color:#ff9c54; }
+  .tc2-chart{
+    /* inset aligné sur le padding de la carte (18px/22px) plutôt que 0 : la boîte de
+       positionnement d'un absolu correspond au padding-box du parent (qui INCLUT déjà son
+       padding), donc inset:0 ferait démarrer ce calque au bord de la bordure, décalé de 22px par
+       rapport au vrai bord gauche de .tc2-side — ce qui aurait faussé de 22px l'abscisse du fondu
+       ci-dessous (166px, calculée pour partir du même repère que .tc2-side). */
+    position:absolute; inset:18px 22px; z-index:1;
+    -webkit-mask-image:linear-gradient(to right, transparent 0, #000 166px);
+    mask-image:linear-gradient(to right, transparent 0, #000 166px);
+  }
+  .tc2-chart svg{ width:100%; height:100%; display:block; cursor:crosshair; }
 
   /* ---------- Style des cartes : GlassHome / Liquid Glass (10.09.2026, demande utilisateur) ----------
      Réglage persistant (voir setCardStyle en JS, localStorage "villaBulle.cardStyle"), posé en
@@ -714,6 +744,7 @@
   [data-card-style="neumorph"] .acc-eco-title{ color:#333a47; }
   [data-card-style="neumorph"] .acc-eco-sub{ color:#7b8494; }
   [data-card-style="neumorph"] .tc2-label{ color:#7b8494; }
+  [data-card-style="neumorph"] .tc2-mm-key{ color:#98a1ae; }
 
   /* ---------- Extension du style de carte à tout le dashboard (12.09.2026, demande
      utilisateur : "cela doit s'appliquer à toutes les pages et aussi aux barres de gauche et
@@ -2090,6 +2121,18 @@
   .tch-band{ stroke:none; }
   .tch-bar{ stroke:none; }
   .tch-xh{ stroke:var(--brume); stroke-width:1; opacity:.5; }
+  /* Point de survol mobile — style UNIQUE pour tout le dashboard (27.09.2026, demande
+     utilisateur : "reprends le meme style que sur les courbes de temperature de la page
+     Temperature [...] applique cette regle sur toutes les courbes") : rayon 4px reels, rempli de
+     la couleur de la serie, lisere de 2px dans la couleur de fond de la carte
+     (var(--tch-surface), surchargee en clair pour Neumorphism juste en dessous). Utilise par
+     tchRenderChart (ecran Temperature, ou cette regle est nee), par tcCursorHi/tcCursorLo
+     (graphe Meteo, renderTempChart) et par renderAccTempCard2 (4 cartes temperature de
+     l'Accueil) — ne pas recreer un style de point different pour un nouveau graphe, reutiliser
+     cette classe. Suppose un viewBox SVG en pixels reels (mesure via clientWidth/clientHeight)
+     pour un rendu circulaire correct : un viewBox abstrait etire en preserveAspectRatio="none"
+     deforme le cercle en ellipse (c'est ce qui rendait le point trop gros/ovale sur les cartes
+     Accueil avant ce chantier). */
   .tch-dot{ stroke:var(--tch-surface, #171a22); stroke-width:2; }
   [data-card-style="neumorph"]{ --tch-surface:#e4e7ec; }
   .tch-tip{ position:absolute; z-index:6; pointer-events:none; top:0; left:0; min-width:150px;
@@ -3508,6 +3551,15 @@
     if(item.id !== 'energie' && typeof window.stopEnrLiveLoop === 'function') window.stopEnrLiveLoop();
     if(item.id === 'accueil'){
       document.getElementById('view-accueil').classList.add('active');
+      // 27.09.2026 (demande utilisateur, fondu du passe + viewBox pixels reels des 4 cartes
+      // temperature) : ces cartes mesurent maintenant leur propre taille reelle au rendu
+      // (clientWidth/clientHeight) pour un cercle de survol non deforme ; si un reglage a change
+      // depuis l'ecran Configuration pendant qu'Accueil etait masque (display:none, largeur 0),
+      // renderAccTempCard2 s'est arrete tot sans dessiner — on redessine donc a chaque retour sur
+      // Accueil pour rattraper ce cas. setTimeout(0) par prudence : meme raison que
+      // setTimeout(applyDaynightIfAuto, 0) plus haut (ROOM_RENDER_STATE, en "let", n'est pas
+      // encore initialise lors du tout premier appel de selectView() au chargement).
+      setTimeout(()=>{ if(typeof refreshRoomSparks === 'function') refreshRoomSparks(); }, 0);
     } else if(item.id === 'meteo'){
       document.getElementById('view-meteo').classList.add('active');
     } else if(item.id === 'configuration'){
@@ -5757,8 +5809,11 @@ function renderEnergyScreen(){
       + '<path d="'+loPath+'" fill="none" stroke="#5ac8fa" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round"/>'
       + ticks + yLabels
       + '<line id="tcCursorLine" x1="0" y1="'+padT+'" x2="0" y2="'+(H-padB)+'" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-dasharray="2 3" opacity="0"/>'
-      + '<circle id="tcCursorHi" r="5.5" fill="#ff9c54" stroke="#fff" stroke-width="2.2" opacity="0"/>'
-      + '<circle id="tcCursorLo" r="5.5" fill="#5ac8fa" stroke="#fff" stroke-width="2.2" opacity="0"/>';
+      // Point de survol : classe .tch-dot, style unique dashboard-wide (voir sa documentation
+      // CSS) — repris ici le 27.09.2026 a la demande de l'utilisateur ("applique cette regle sur
+      // toutes les courbes"), a la place de l'ancien rayon 5.5/lisere blanc propre a ce graphe.
+      + '<circle id="tcCursorHi" class="tch-dot" r="4" fill="#ff9c54" opacity="0"/>'
+      + '<circle id="tcCursorLo" class="tch-dot" r="4" fill="#5ac8fa" opacity="0"/>';
 
     const xs = points.map((p,i)=>xAt(i));
     const cursorLine = document.getElementById('tcCursorLine');
@@ -6044,21 +6099,40 @@ function renderEnergyScreen(){
     ROOM_RENDER_STATE.forEach(st => renderAccTempCard2(st.card, st.room, st.longSeries));
   }
 
-  // Courbe 48h sans échelle + infobulle au survol (27.09.2026, refonte demandée par l'utilisateur,
-  // qui remplace renderRoomSpark/showTcTip/hideTcTip). Le survol réutilise désormais la "règle
-  // générale pour tous les graphes" du dashboard (attachChartHover, voir plus haut, déjà utilisée
-  // par le graphe Météo) au lieu de l'ancien mécanisme par points-jours fixes propre à ces cartes
-  // — c'est ce dernier qui causait le bug signalé le 27.09.2026 (popup calé sur le point le plus
-  // proche, dans un rayon de détection large, plutôt que sur la position réelle du curseur) :
-  // attachChartHover positionne via getScreenCTM(), fiable quel que soit le facteur de zoom du
-  // canevas, et suit la courbe en continu plutôt que par à-coups entre quelques points fixes.
+  // Courbe 48h sans échelle + infobulle au survol (27.09.2026, remplace
+  // renderRoomSpark/showTcTip/hideTcTip). Le survol réutilise la "règle générale pour tous les
+  // graphes" du dashboard (attachChartHover, voir plus haut, déjà utilisée par le graphe Météo)
+  // au lieu de l'ancien mécanisme par points-jours fixes propre à ces cartes — c'était lui qui
+  // causait le bug signalé le 27.09.2026 (popup calé sur le point le plus proche, dans un rayon
+  // de détection large, plutôt que sur la position réelle du curseur).
+  //
+  // Révisé le 27.09.2026 (2e demande) : viewBox en pixels réels (mesuré via clientWidth/
+  // clientHeight de .tc2-chart, désormais un calque plein cadre en position:absolute derrière
+  // .tc2-side, voir CSS) à la place de l'ancien viewBox abstrait 100×40 étiré en
+  // preserveAspectRatio="none", qui déformait le point de survol en ellipse et le faisait
+  // paraître trop gros. Le point reprend maintenant EXACTEMENT le style utilisé sur les courbes
+  // de l'écran Température — classe .tch-dot, rayon 4px réels, liseré var(--tch-surface) 2px
+  // (voir tchRenderChart et sa documentation CSS) : c'est la règle dashboard-wide pour tout point
+  // de survol mobile (voir aussi tcCursorHi/tcCursorLo du graphe Météo, alignés sur la même
+  // classe le même jour). Le passé de la courbe (au-delà des 48h affichées) est prolongé sous la
+  // section texte et estompé par le masque CSS de .tc2-chart : ACC2_FADE_END donne l'abscisse où
+  // le fondu atteint 100%, qui est aussi l'abscisse où démarraient les 48h "actuelles" avant ce
+  // chantier — la densité de pixels/heure de ces 48h reste donc inchangée, seul l'historique
+  // au-delà est ajouté (calculé pour occuper exactement l'espace libéré par le fondu).
+  const ACC2_SIDE_W = 150, ACC2_GAP = 16, ACC2_FADE_END = ACC2_SIDE_W + ACC2_GAP, ACC2_PAD_R = 6;
   function renderAccTempCard2(card, room, longSeries){
     const style = screen.dataset.cardStyle === 'glasshome' ? 'glasshome'
       : screen.dataset.cardStyle === 'neumorph' ? 'neumorph' : 'liquid';
-    const svgEl = card.querySelector('.tc2-chart svg'), tipEl = card.querySelector('.chart-tip');
+    const chartBox = card.querySelector('.tc2-chart'), svgEl = chartBox.querySelector('svg'), tipEl = card.querySelector('.chart-tip');
+    const W = chartBox.clientWidth, H = chartBox.clientHeight;
+    // Carte pas encore visible (ex. réglage changé depuis l'écran Configuration pendant
+    // qu'Accueil est masqué, display:none => largeur/hauteur 0) : on ne dessine rien plutôt que
+    // de diviser par une largeur nulle ; le retour sur Accueil redessine (voir selectView).
+    if(W < 20 || H < 20) return;
     const n48 = Math.round(48*60/ACC48_STEP_MIN) + 1;
-    const times = longSeries.times.slice(-n48), values = longSeries.values.slice(-n48);
-    const current = values[values.length-1];
+    const curValues = longSeries.values.slice(-n48);
+    const current = curValues[curValues.length-1];
+    const minV = Math.min(...curValues), maxV = Math.max(...curValues);
     // Fenêtre verticale : centrée sur la valeur actuelle par défaut, ou sur la moyenne des N
     // derniers jours si le mode "auto" est activé (Configuration > Cartes température).
     let center = current;
@@ -6070,10 +6144,19 @@ function renderEnergyScreen(){
       center = slice.reduce((a,b)=>a+b,0) / slice.length;
     }
     const half = accRange/2, yMin = center-half, yMax = center+half;
-    const W = 100, H = 40, padY = 4, padXLeft = 3, padXRight = 3;
-    const n = times.length;
-    const xAt = i => padXLeft + (i/(n-1))*(W-padXLeft-padXRight);
-    const yAt = v => padY + (1-(Math.min(yMax,Math.max(yMin,v))-yMin)/((yMax-yMin)||1))*(H-2*padY);
+    // Les 48h "actuelles" occupent [ACC2_FADE_END, W-ACC2_PAD_R] (même densité px/heure qu'avant
+    // l'ajout du fondu) ; l'historique disponible au-delà (accLongSeries en garde jusqu'à 15
+    // jours) est prolongé à gauche pour remplir exactement [0, ACC2_FADE_END], estompé par le
+    // masque CSS de .tc2-chart plutôt que par une opacité calculée point par point.
+    const curW = Math.max(1, W - ACC2_PAD_R - ACC2_FADE_END);
+    const pxPerHour = curW / 48;
+    const ghostHours = Math.min(ACC48_DAYS_HISTORY*24 - 48, ACC2_FADE_END / pxPerHour);
+    const totalHours = 48 + ghostHours;
+    const n = Math.min(longSeries.times.length, Math.round(totalHours*60/ACC48_STEP_MIN) + 1);
+    const times = longSeries.times.slice(-n), values = longSeries.values.slice(-n);
+    const padTop = 8, padBottom = 6;
+    const xAt = i => (i/(n-1)) * (W - ACC2_PAD_R);
+    const yAt = v => padTop + (1-(Math.min(yMax,Math.max(yMin,v))-yMin)/((yMax-yMin)||1))*(H-padTop-padBottom);
     const pts = times.map((t,i)=>[xAt(i), yAt(values[i])]);
     const linePath = smoothLinePath(pts);
     const color = style === 'liquid' ? tempToColor(current) : room.accent;
@@ -6081,12 +6164,14 @@ function renderEnergyScreen(){
     const valEl = card.querySelector('.tc2-value'), iconEl = card.querySelector('.tc2-icon');
     if(valEl){ valEl.textContent = current.toFixed(1)+'°'; valEl.style.color = color; }
     if(iconEl) iconEl.style.color = color;
+    const minEl = card.querySelector('.tc2-mm-row.mm-min .tc2-mm-val'), maxEl = card.querySelector('.tc2-mm-row.mm-max .tc2-mm-val');
+    if(minEl) minEl.textContent = minV.toFixed(1)+'°';
+    if(maxEl) maxEl.textContent = maxV.toFixed(1)+'°';
 
-    const dotStroke = style === 'neumorph' ? '#e4e7ec' : '#0e1018';
     let inner;
     if(style === 'liquid'){
       // Trait fin + halo diffus, coloré selon la température (jamais couleur fixe de la pièce),
-      // aire dégradée sous la courbe ajoutée le 27.09.2026 (demande utilisateur précédente).
+      // aire dégradée sous la courbe.
       const fid = 'acc2Lq'+Math.random().toString(36).slice(2,8);
       const gid = 'acc2Lg'+Math.random().toString(36).slice(2,8);
       const areaPath = linePath + ' L'+pts[n-1][0].toFixed(1)+' '+H+' L'+pts[0][0].toFixed(1)+' '+H+' Z';
@@ -6112,10 +6197,14 @@ function renderEnergyScreen(){
         + '<path d="'+areaPath+'" fill="url(#'+gid+')" stroke="none"/>'
         + '<path d="'+linePath+'" fill="none" stroke="'+color+'" stroke-width="'+grLineW().toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round"/>';
     }
-    inner += '<circle class="tc2-dot" r="3" fill="'+color+'" stroke="'+dotStroke+'" stroke-width="1.4" opacity="0"/>';
+    // Point de survol : classe .tch-dot, style unique dashboard-wide (voir sa documentation CSS)
+    // — rayon 4px réels (viewBox désormais en pixels réels, voir plus haut), à la place de
+    // l'ancien rayon/liseré propres à cette carte.
+    inner += '<circle class="tch-dot" r="4" fill="'+color+'" opacity="0"/>';
+    svgEl.setAttribute('viewBox', '0 0 '+W+' '+H);
     svgEl.innerHTML = inner;
 
-    const dot = svgEl.querySelector('.tc2-dot');
+    const dot = svgEl.querySelector('.tch-dot');
     const xs = pts.map(p => p[0]);
     attachChartHover(svgEl, xs, tipEl, i => {
       dot.setAttribute('cx', xs[i]); dot.setAttribute('cy', pts[i][1]); dot.setAttribute('opacity','1');
@@ -6133,12 +6222,18 @@ function renderEnergyScreen(){
       card.className = 'acc-temp-card tc2';
       card.innerHTML =
         '<div class="card-sheen"></div>'
+        + '<div class="tc2-chart"><svg></svg><div class="chart-tip"></div></div>'
         + '<div class="tc2-side">'
-          + '<div class="tc2-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 0 0-2 2v9.1a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2Z"/></svg></div>'
-          + '<div class="tc2-value">—°</div>'
+          + '<div class="tc2-row1">'
+            + '<div class="tc2-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 0 0-2 2v9.1a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2Z"/></svg></div>'
+            + '<div class="tc2-value">—°</div>'
+          + '</div>'
           + '<div class="tc2-label">'+room.label+'</div>'
-        + '</div>'
-        + '<div class="tc2-chart"><svg viewBox="0 0 100 40" preserveAspectRatio="none"></svg><div class="chart-tip"></div></div>';
+          + '<div class="tc2-minmax">'
+            + '<div class="tc2-mm-row mm-min"><span class="tc2-mm-key">Min</span><span class="tc2-mm-val">—°</span></div>'
+            + '<div class="tc2-mm-row mm-max"><span class="tc2-mm-key">Max</span><span class="tc2-mm-val">—°</span></div>'
+          + '</div>'
+        + '</div>';
       grid.appendChild(card);
       ROOM_RENDER_STATE.push({ card, room, longSeries });
       renderAccTempCard2(card, room, longSeries);
