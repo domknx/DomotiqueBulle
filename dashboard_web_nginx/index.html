@@ -611,8 +611,22 @@
   .tc2-icon svg{ width:100%; height:100%; display:block; }
   .tc2-value{ font-family:var(--ff-value); font-weight:460; font-size:calc(30px * var(--fs-value-scale)); line-height:1; font-variant-numeric:tabular-nums; }
   .tc2-label{ font-family:var(--ff-title); font-size:calc(12.5px * var(--fs-title-scale)); letter-spacing:.03em; text-transform:uppercase; color:var(--brume-dim); font-weight:500; margin-top:2px; }
-  .tc2-minmax{ display:flex; flex-direction:column; gap:2px; margin-top:7px; }
-  .tc2-mm-row{ display:flex; align-items:baseline; gap:5px; font-family:var(--ff-title); font-size:calc(11px * var(--fs-title-scale)); }
+  /* 28.09.2026, demande utilisateur : Min/Max deplaces du bloc texte gauche vers le coin
+     haut-droit de la carte (meme repere de marge que .tc2-chart, 18px/22px) ; popup date/heure
+     au survol (.tc2-mm-tip), toujours affiche a la meme position fixe sous le bloc, que ce soit
+     Min ou Max qui soit survole (choix utilisateur). */
+  .tc2-mm-corner{ position:absolute; top:18px; right:22px; z-index:2; display:flex; flex-direction:column; gap:2px; align-items:flex-end; }
+  .tc2-mm-row{ display:flex; align-items:baseline; gap:5px; font-family:var(--ff-title); font-size:calc(11px * var(--fs-title-scale)); cursor:pointer; }
+  .tc2-mm-tip{
+    position:absolute; top:100%; right:0; margin-top:6px; z-index:6; pointer-events:none;
+    background:rgba(18,23,34,.94); color:#fff; border-radius:10px; padding:6px 10px;
+    border:1px solid rgba(255,255,255,.14);
+    font-family:var(--ff-mono); white-space:nowrap; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.04em; text-align:center;
+    opacity:0; transition:opacity .15s ease;
+    box-shadow:0 10px 24px rgba(0,0,0,.3);
+  }
+  .tc2-mm-tip.visible{ opacity:1; }
   .tc2-mm-key{ color:var(--brume-dim); opacity:.8; }
   .tc2-mm-val{ font-variant-numeric:tabular-nums; font-weight:600; }
   .tc2-mm-row.mm-min .tc2-mm-val{ color:#3aa9e0; }
@@ -1236,6 +1250,14 @@
     box-shadow:0 12px 28px rgba(0,0,0,.3);
   }
   .chart-tip.visible{ opacity:1; transform:translate(-50%,-112%); }
+  /* 28.09.2026, demande utilisateur (cartes temperature Accueil uniquement, voir
+     attachChartHover opts.side) : le popup doit toujours rester a gauche de la souris et centre
+     verticalement sur la courbe, plutot qu'au-dessus du point comme les autres graphes du
+     dashboard (regle par defaut ci-dessus) -- au-dessus, il sortait de la carte des que la
+     courbe etait proche du bord haut (.acc-temp-card a overflow:hidden). Classe additive : ne
+     change rien pour les graphes qui n'activent pas ce mode. */
+  .chart-tip.tip-left{ transform:translate(-100%,-50%); }
+  .chart-tip.tip-left.visible{ opacity:1; transform:translate(calc(-100% - 14px),-50%); }
   .chart-tip .tip-date{ font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:2px; }
   .chart-tip .tip-val{ display:inline-block; font-family:var(--ff-value); font-size:calc(13px * var(--fs-value-scale)); font-weight:600; animation:tipPop .22s ease; }
   @keyframes tipPop{ from{ opacity:0; transform:translateY(4px) scale(.9); } to{ opacity:1; transform:translateY(0) scale(1); } }
@@ -6029,7 +6051,14 @@ function renderEnergyScreen(){
   // n'est pas a 100%), trouve le point de donnees le plus proche, positionne le tooltip et
   // regenere son contenu (nouveau noeud .tip-val) pour rejouer l'animation d'apparition a
   // chaque changement de point plutot qu'un simple fondu continu.
-  function attachChartHover(svg, xs, tipEl, onHover, onLeave){
+  function attachChartHover(svg, xs, tipEl, onHover, onLeave, ys, opts){
+    // ys/opts optionnels (28.09.2026, demande utilisateur, cartes température Accueil
+    // uniquement) : opts.centerOnCurve verticalement centre le popup sur la courbe (ys[bestI])
+    // plutôt que sur le curseur (comportement par défaut, inchangé pour les autres graphes qui
+    // n'appellent pas attachChartHover avec ces 2 paramètres) ; opts.side==='left' ajoute la
+    // classe .tip-left (voir CSS) pour afficher le popup à gauche du point plutôt qu'au-dessus,
+    // afin qu'il ne sorte plus de la carte quand la courbe est proche du bord haut.
+    opts = opts || {};
     let lastI = -1;
     function pt(evt){
       const p = svg.createSVGPoint();
@@ -6049,8 +6078,10 @@ function renderEnergyScreen(){
       const svgRect = svg.viewBox.baseVal;
       const ratioX = rect.width / svgRect.width;
       const ratioY = rect.height / svgRect.height;
+      const yPx = (ys && opts.centerOnCurve) ? ys[bestI] : p.y;
       tipEl.style.left = ((xs[bestI]) * ratioX) + 'px';
-      tipEl.style.top = ((p.y) * ratioY) + 'px';
+      tipEl.style.top = (yPx * ratioY) + 'px';
+      tipEl.classList.toggle('tip-left', opts.side === 'left');
       tipEl.classList.add('visible');
     });
     svg.addEventListener('mouseleave', ()=>{
@@ -6446,8 +6477,14 @@ function renderEnergyScreen(){
     if(W < 20 || H < 20) return;
     const n48 = Math.round(48*60/ACC48_STEP_MIN) + 1;
     const curValues = longSeries.values.slice(-n48);
+    const curTimes = longSeries.times.slice(-n48);
     const current = curValues[curValues.length-1];
-    const minV = Math.min(...curValues), maxV = Math.max(...curValues);
+    // Indices du min/max (au lieu de Math.min/Math.max seuls) pour retrouver la date/heure de
+    // chaque valeur (28.09.2026, demande utilisateur : popup date/heure au survol de Min/Max).
+    let minIdx = 0, maxIdx = 0;
+    curValues.forEach((v,i)=>{ if(v < curValues[minIdx]) minIdx = i; if(v > curValues[maxIdx]) maxIdx = i; });
+    const minV = curValues[minIdx], maxV = curValues[maxIdx];
+    const minTime = curTimes[minIdx], maxTime = curTimes[maxIdx];
     // Fenêtre verticale : centrée sur la valeur actuelle par défaut, ou sur la moyenne des N
     // derniers jours si le mode "auto" est activé (Configuration > Cartes température).
     let center = current;
@@ -6459,6 +6496,30 @@ function renderEnergyScreen(){
       center = slice.reduce((a,b)=>a+b,0) / slice.length;
     }
     const half = accRange/2, yMin = center-half, yMax = center+half;
+    const color = style === 'liquid' ? tempToColor(current) : room.accent;
+
+    // Valeur/icône/min/max/popup mis à jour ICI (avant le calcul de padTop dynamique ci-dessous) :
+    // le padTop dépend de la position réelle, déjà à son contenu final, du texte de valeur.
+    const valEl = card.querySelector('.tc2-value'), iconEl = card.querySelector('.tc2-icon');
+    if(valEl){ valEl.textContent = current.toFixed(1)+'°'; valEl.style.color = color; }
+    if(iconEl) iconEl.style.color = color;
+    const minEl = card.querySelector('.tc2-mm-row.mm-min .tc2-mm-val'), maxEl = card.querySelector('.tc2-mm-row.mm-max .tc2-mm-val');
+    if(minEl) minEl.textContent = minV.toFixed(1)+'°';
+    if(maxEl) maxEl.textContent = maxV.toFixed(1)+'°';
+    // Popup date/heure au survol de Min ou Max (28.09.2026, demande utilisateur) : position fixe
+    // sous le bloc Min/Max quel que soit le survol (voir .tc2-mm-tip, CSS) — réassigné via une
+    // propriété (onmouseenter, pas addEventListener) à chaque rendu pour ne jamais empiler de
+    // gestionnaires au fil des re-rendus (changement de style, redimensionnement...).
+    const mmMinRow = card.querySelector('.tc2-mm-row.mm-min'), mmMaxRow = card.querySelector('.tc2-mm-row.mm-max'), mmTipEl = card.querySelector('.tc2-mm-tip');
+    if(mmMinRow && mmTipEl){
+      mmMinRow.onmouseenter = () => { mmTipEl.textContent = accFmtDT(minTime); mmTipEl.classList.add('visible'); };
+      mmMinRow.onmouseleave = () => mmTipEl.classList.remove('visible');
+    }
+    if(mmMaxRow && mmTipEl){
+      mmMaxRow.onmouseenter = () => { mmTipEl.textContent = accFmtDT(maxTime); mmTipEl.classList.add('visible'); };
+      mmMaxRow.onmouseleave = () => mmTipEl.classList.remove('visible');
+    }
+
     // Les 48h "actuelles" occupent [ACC2_FADE_END, W-ACC2_PAD_R] (même densité px/heure qu'avant
     // l'ajout du fondu) ; l'historique disponible au-delà (accLongSeries en garde jusqu'à 15
     // jours) est prolongé à gauche pour remplir exactement [0, ACC2_FADE_END], estompé par le
@@ -6469,19 +6530,25 @@ function renderEnergyScreen(){
     const totalHours = 48 + ghostHours;
     const n = Math.min(longSeries.times.length, Math.round(totalHours*60/ACC48_STEP_MIN) + 1);
     const times = longSeries.times.slice(-n), values = longSeries.values.slice(-n);
-    const padTop = 8, padBottom = 6;
+    // Hauteur max de la courbe plafonnée à 5px sous le bas du texte de valeur (28.09.2026,
+    // demande utilisateur) : padTop dynamique, mesuré en pixels réels (mêmes unités que le
+    // viewBox W×H) via getBoundingClientRect() du texte de valeur et du calque de courbe, remis
+    // à l'échelle du facteur de zoom du canevas 2560×1440 (#screen est redimensionné en CSS
+    // transform:scale, qui n'affecte pas clientWidth/clientHeight mais affecte
+    // getBoundingClientRect() — sans cette remise à l'échelle, le padding serait faux dès que la
+    // fenêtre n'est pas affichée à 100%).
+    const chartRect = chartBox.getBoundingClientRect();
+    const scaleK = chartRect.height / H;
+    let padTop = 8;
+    if(valEl){
+      const valRect = valEl.getBoundingClientRect();
+      padTop = Math.max(6, (valRect.bottom - chartRect.top)/scaleK + 5);
+    }
+    const padBottom = 6;
     const xAt = i => (i/(n-1)) * (W - ACC2_PAD_R);
     const yAt = v => padTop + (1-(Math.min(yMax,Math.max(yMin,v))-yMin)/((yMax-yMin)||1))*(H-padTop-padBottom);
     const pts = times.map((t,i)=>[xAt(i), yAt(values[i])]);
     const linePath = smoothLinePath(pts);
-    const color = style === 'liquid' ? tempToColor(current) : room.accent;
-
-    const valEl = card.querySelector('.tc2-value'), iconEl = card.querySelector('.tc2-icon');
-    if(valEl){ valEl.textContent = current.toFixed(1)+'°'; valEl.style.color = color; }
-    if(iconEl) iconEl.style.color = color;
-    const minEl = card.querySelector('.tc2-mm-row.mm-min .tc2-mm-val'), maxEl = card.querySelector('.tc2-mm-row.mm-max .tc2-mm-val');
-    if(minEl) minEl.textContent = minV.toFixed(1)+'°';
-    if(maxEl) maxEl.textContent = maxV.toFixed(1)+'°';
 
     let inner;
     if(style === 'liquid'){
@@ -6521,10 +6588,16 @@ function renderEnergyScreen(){
 
     const dot = svgEl.querySelector('.tch-dot');
     const xs = pts.map(p => p[0]);
+    const ys = pts.map(p => p[1]);
+    // opts {side:'left', centerOnCurve:true} (28.09.2026, demande utilisateur) : popup toujours
+    // à gauche de la souris et centré verticalement sur la courbe (pas sur le curseur), pour ne
+    // plus sortir de la carte quand la courbe est proche du bord haut. Propre à ces 4 cartes —
+    // les autres graphes du dashboard appellent attachChartHover sans ces 2 derniers paramètres
+    // et gardent leur comportement d'origine (popup au-dessus du curseur).
     attachChartHover(svgEl, xs, tipEl, i => {
       dot.setAttribute('cx', xs[i]); dot.setAttribute('cy', pts[i][1]); dot.setAttribute('opacity','1');
       return '<div class="tip-date">'+accFmtDT(times[i])+'</div><span class="tip-val">'+values[i].toFixed(1)+'°</span>';
-    }, () => dot.setAttribute('opacity','0'));
+    }, () => dot.setAttribute('opacity','0'), ys, { side:'left', centerOnCurve:true });
   }
 
   function renderAccRooms(){
@@ -6538,16 +6611,17 @@ function renderEnergyScreen(){
       card.innerHTML =
         '<div class="card-sheen"></div>'
         + '<div class="tc2-chart"><svg></svg><div class="chart-tip"></div></div>'
+        + '<div class="tc2-mm-corner">'
+          + '<div class="tc2-mm-row mm-min"><span class="tc2-mm-key">Min</span><span class="tc2-mm-val">—°</span></div>'
+          + '<div class="tc2-mm-row mm-max"><span class="tc2-mm-key">Max</span><span class="tc2-mm-val">—°</span></div>'
+          + '<div class="tc2-mm-tip"></div>'
+        + '</div>'
         + '<div class="tc2-side">'
           + '<div class="tc2-row1">'
             + '<div class="tc2-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 0 0-2 2v9.1a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2Z"/></svg></div>'
             + '<div class="tc2-value">—°</div>'
           + '</div>'
           + '<div class="tc2-label">'+room.label+'</div>'
-          + '<div class="tc2-minmax">'
-            + '<div class="tc2-mm-row mm-min"><span class="tc2-mm-key">Min</span><span class="tc2-mm-val">—°</span></div>'
-            + '<div class="tc2-mm-row mm-max"><span class="tc2-mm-key">Max</span><span class="tc2-mm-val">—°</span></div>'
-          + '</div>'
         + '</div>';
       grid.appendChild(card);
       ROOM_RENDER_STATE.push({ card, room, longSeries });
