@@ -72,6 +72,8 @@ le Terminal du Mac ne le demande pas.
   version et les problèmes signalés, puis réécrit `ha_release_analysis.json` et
   `state/latest.json`. La surveillance d'une version dure 30 jours à partir de la sortie de sa
   version mensuelle (`monitoring.start`).
+- **Après une mise à jour** : la carte « Principales modifications » continue d'afficher les
+  nouveautés de la version installée, tant que l'analyse disponible porte sur cette version.
 - **Bouton « Vérifier maintenant »** : interroge la source officielle tout de suite. Il met à jour
   les numéros de version, pas l'analyse.
 - **Filet de sécurité** : si aucune vérification n'a eu lieu depuis 8 jours, la page en relance une.

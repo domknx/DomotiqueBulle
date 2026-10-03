@@ -165,7 +165,7 @@ Construit le 03.10.2026 (demande utilisateur, après l'arrêt de Home Assistant 
 - **V1** — Icône, version installée et dernière version publiée de Home Assistant, avec l'état (à jour / mise à jour disponible).
 - **V2** — Vérification automatique chaque vendredi soir (tâche planifiée Claude) et bouton « Vérifier maintenant ».
 - **V3** — Bandeau défilant discret dans l'en-tête de l'Accueil quand une nouvelle version est disponible ; un clic ouvre la page Version.
-- **V4** — Carte « Principales modifications » de la nouvelle version, avec pour chaque point ce qu'il change pour la Villa Bulle. Espace réservé quand il n'y a rien à afficher.
+- **V4** — Carte « Principales modifications » de la nouvelle version, avec pour chaque point ce qu'il change pour la Villa Bulle. Après la mise à jour, les nouveautés de la version installée restent affichées (04.10.2026) ; espace réservé seulement quand aucune analyse ne correspond.
 - **V5** — Carte « Problèmes connus », suivis pendant 30 jours à partir de la sortie de la version mensuelle, classés bloquant / mineur / information.
 - **V6** — Recommandation et bouton « Sauvegarder et mettre à jour » : vert (recommandée), jaune (problèmes mineurs encore ouverts), rouge (déconseillée ou pas encore analysée). Le bouton ouvre une fenêtre qui exige un **mot de passe** pour autoriser la mise à jour (vérifié côté serveur, empreinte hors Git, blocage 10 minutes après 5 erreurs).
 - **V8** — Pendant la mise à jour : liste des étapes et **deux barres de progression** à valeurs réelles — Sauvegarde (taille de l'archive écrite) et Mise à jour (jalons constatés du démarrage, puis décompte du contrôle de stabilité).

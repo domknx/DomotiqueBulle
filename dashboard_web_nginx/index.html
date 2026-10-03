@@ -7176,16 +7176,22 @@ function renderEnergyScreen(){
     $('verCheckMeta').innerHTML = meta;
 
     // ---- principales modifications
-    if(!available){
+    // 04.10.2026 (demande utilisateur) : les nouveautés restent affichées après la mise à jour,
+    // tant que l'analyse disponible porte sur la version installée.
+    const keepNotes = !available && !!a && a.version === d.installed;
+    if(!available && !keepNotes){
       $('verChangesSub').textContent = 'Aucune mise à jour en attente';
       $('verChanges').innerHTML = verEmptyHtml('Rien à signaler', 'Cet espace listera les principales modifications dès qu\'une nouvelle version sera publiée.');
       $('verChangesFoot').textContent = '';
-    } else if(!a){
+    } else if(available && !a){
       $('verChangesSub').textContent = 'Version ' + (latest.version || '') + ' — analyse à venir';
       $('verChanges').innerHTML = verEmptyHtml('Analyse en attente', 'Les principales modifications de cette version seront listées ici après la vérification du vendredi soir.');
       $('verChangesFoot').textContent = '';
     } else {
-      $('verChangesSub').textContent = 'De ' + (d.installed || '?') + ' à ' + a.version;
+      const prev = a.installed_version && a.installed_version !== a.version ? a.installed_version : '';
+      $('verChangesSub').textContent = keepNotes
+        ? ('Version installée ' + a.version + (prev ? ' · nouveautés depuis la ' + prev : ''))
+        : ('De ' + (d.installed || '?') + ' à ' + a.version);
       const hl = Array.isArray(a.highlights) ? a.highlights : [];
       $('verChanges').innerHTML = hl.length
         ? hl.map(h => verItemHtml(h.kind, h.title, h.detail, h.villa, '')).join('')
