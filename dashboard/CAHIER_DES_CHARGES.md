@@ -158,6 +158,22 @@ Chaque ligne est une exigence vérifiable. `Source` renvoie au domaine de donné
 
 **Mise à jour du 08.09.2026** : écran restructuré en un seul bloc verre dépoli unifié (titre en haut à gauche, comme tous les autres écrans, cf. point 10 du §12). Les prévisions sur 15 jours (M2) sont désormais affichées **horizontalement** (une colonne par jour, avec date, icône, texte de condition, température min, température max et humidité empilés verticalement dans chaque colonne) plutôt qu'en liste verticale. Un graphique de températures (7 jours passés + 15 jours à venir) a été ajouté sous les prévisions. Les icônes météo ont été redessinées avec plus de nuance visuelle (dégradés, reflets), dont 3 variantes d'intensité de pluie. Le décor animé de fond (soleil, nuages, pluie, éclairs, neige, étoiles) a été repensé avec des techniques CSS/SVG plus réalistes, recherchées puis appliquées. Détail complet (recherche, itérations, bugs corrigés) dans `custom_dashboard.md`.
 
+### 3.11 Système — Version (Home Assistant)
+
+Construit le 03.10.2026 (demande utilisateur, après l'arrêt de Home Assistant du 27.09 au 03.10.2026). Détail complet, mise en service et format des données dans `dashboard/version/README.md`.
+
+- **V1** — Icône, version installée et dernière version publiée de Home Assistant, avec l'état (à jour / mise à jour disponible).
+- **V2** — Vérification automatique chaque vendredi soir (tâche planifiée Claude) et bouton « Vérifier maintenant ».
+- **V3** — Bandeau défilant discret dans l'en-tête de l'Accueil quand une nouvelle version est disponible ; un clic ouvre la page Version.
+- **V4** — Carte « Principales modifications » de la nouvelle version, avec pour chaque point ce qu'il change pour la Villa Bulle. Espace réservé quand il n'y a rien à afficher.
+- **V5** — Carte « Problèmes connus », suivis pendant 30 jours à partir de la sortie de la version mensuelle, classés bloquant / mineur / information.
+- **V6** — Recommandation et bouton « Sauvegarder et mettre à jour » : vert (recommandée), jaune (problèmes mineurs encore ouverts), rouge (déconseillée ou pas encore analysée). Confirmation obligatoire ; suivi des étapes en direct.
+- **V7** — La mise à jour sauvegarde `HomeAssistant_Data` avant, vérifie le redémarrage et revient seule à l'ancienne version en cas d'échec (`scripts/ha_update.sh`). Elle est exécutée par un agent launchd sur le Mac : `dashboard-api` n'a aucun accès à Docker.
+
+Données réelles uniquement (`/api/ha-version`) : pas de données de démonstration sur cet écran. Icône : pictogramme de maison générique aux couleurs du dashboard, pas le logo officiel de Home Assistant.
+
+Point ouvert : toute personne qui peut ouvrir le dashboard peut presser le bouton — à traiter avec le mode invité (§5.5).
+
 ## 4. Architecture logicielle
 
 ### 4.1 Le problème à résoudre

@@ -24,3 +24,9 @@ CONFIG_DIR=/tmp/dashboard-config uvicorn app.main:app --reload
 ```
 
 (En Docker, `dashboard/config/` est monté directement sur `/config` — voir `docker-compose.yml`.)
+
+## Page Version (03.10.2026)
+
+Deuxième tranche : `app/ha_version.py`, routes `GET /api/ha-version`, `POST /api/ha-version/check` et
+`POST /api/ha-version/update`. Volumes supplémentaires : `dashboard/version` (lecture/écriture) et le seul
+fichier `HomeAssistant_Data/.HA_VERSION` (lecture seule). Voir `dashboard/version/README.md`.

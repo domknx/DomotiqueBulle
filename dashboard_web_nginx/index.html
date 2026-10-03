@@ -17,7 +17,7 @@
     --ambre:#ff9c54; --glacier:#5ac8fa; --mousse:#6fcf97; --cuivre:#caa06b; --rouge:#ff5a5a;
     --glass:rgba(238,241,246,0.10); --glass-2:rgba(238,241,246,0.16); --glass-brd:rgba(238,241,246,0.14);
     --scrim:rgba(6,8,13,0.46);
-    --pageM:24px; --barGap:20px; --violet:#b79bff; --teal:#5fd6c4;
+    --pageM:24px; --barGap:10px; --violet:#b79bff; --teal:#5fd6c4;
     --ff-display:'Fraunces', ui-serif, Georgia, serif;
     --ff-body:'Inter', ui-sans-serif, system-ui, sans-serif;
     --ff-mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
@@ -209,15 +209,40 @@
 
   /* pages pas encore construites : le bloc couvre toute la zone centrale, titre en haut à
      gauche (08.09.2026, demande utilisateur — même traitement que le bloc Météo ci-dessous). */
-  .view-placeholder{ padding:36px; }
+  .view-placeholder{ padding:0 18px 8px; flex-direction:column; }
   /* "Espace réservé" — même convention que les sketches du cahier des charges (verre vide à
      bordure pointillée = emplacement pas encore décidé/construit). Un par entrée de navigation
      pas encore implémentée, y compris Accueil (contenu A3/A5-A9 à venir), pour que chaque menu
      ait visiblement sa place réservée plutôt qu'un centre parfois vide et parfois titré. */
-  .reserved-space{ flex:1; width:100%; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; gap:10px;
-    text-align:left; padding:36px 40px; border-radius:28px;
-    border:2px dashed rgba(238,241,246,.28); background:rgba(238,241,246,.05);
-    backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%); }
+  .reserved-space{ display:flex; flex-direction:column; }
+
+  /* 28.09.2026 (demande utilisateur) : debut de construction de l'ecran Pieces (distinct du
+     placeholder partage avec Lumiere) -- 2 cartes vides 1/4 largeur x 1/4 hauteur, en haut a
+     gauche et en haut a droite, posees dans la zone de contenu sous le bandeau-titre. */
+  .view-pieces{ flex-direction:column; padding:0 18px 8px; }
+  .pieces-content{ flex:1; min-height:0; position:relative; }
+  .pieces-card{ position:absolute; top:0; width:33.333%; height:33.333%; }
+  .pieces-card .enr-card{ width:100%; height:100%; }
+  .pieces-card-left{ left:0; }
+  .pieces-card-right{ right:0; }
+  .pieces-card-mid{ left:33.333%; }
+
+  /* 28.09.2026 (demande utilisateur) : 3 boutons de niveau (Sous-sol / Rez-de-chaussee / Etage)
+     dans le bandeau-titre de Pieces, centres au milieu de la barre (independamment de la
+     largeur du titre) via position absolute + translate. */
+  .view-pieces .acc-header{ position:relative; }
+  .pieces-floorbtns{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; gap:10px; }
+  .pieces-modebtns{ position:absolute; right:0; top:50%; transform:translateY(-50%); display:flex; gap:8px; }
+  .pmb{ appearance:none; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); color:var(--brume-dim,#aab2c2); border-radius:9px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .pmb svg{ width:18px; height:18px; display:block; }
+  .pmb.on{ background:rgba(255,156,84,.16); border-color:rgba(255,156,84,.55); color:#ff9c54; }
+  .pieces-card iframe{ width:100%; height:100%; border:0; display:block; background:#05070c; border-radius:inherit; }
+  .pfb{ height:40px; padding:0 20px; border-radius:20px; border:1px solid var(--glass-brd); background:transparent;
+    color:var(--brume-dim); font-family:var(--ff-mono); font-size:12px; letter-spacing:.05em; text-transform:uppercase;
+    cursor:pointer; display:flex; align-items:center; transition:background .15s ease, color .15s ease, border-color .15s ease; }
+  .pfb:hover{ background:var(--glass); color:var(--brume); }
+  .pfb.on{ background:color-mix(in srgb, var(--ambre) 16%, transparent); border-color:color-mix(in srgb, var(--ambre) 45%, transparent); color:var(--brume); }
+  .pfb:focus-visible{ outline:2px solid var(--ambre); outline-offset:2px; }
   .ph-title{ font-family:var(--ff-title); font-size:calc(44px * var(--fs-title-scale)); font-weight:460; color:var(--brume); text-shadow:0 4px 34px rgba(0,0,0,.55); }
   .ph-sub{ font-family:var(--ff-mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--brume-dim); text-shadow:0 2px 14px rgba(0,0,0,.7); }
 
@@ -233,7 +258,7 @@
      accueil est positionné en absolute inset:0 DANS .main-area (déjà à top:--pageM), donc son
      propre padding-top s'ajoute par-dessus : il faut 0, pas --pageM, pour que .acc-header
      affleure exactement le sommet des barres. */
-  .view-accueil{ flex-direction:column; padding:0 36px 8px; }
+  .view-accueil{ flex-direction:column; padding:0 18px 8px; }
 
   /* 13.09.2026, demande utilisateur : "il faut faire un bloc en haut avec le titre et les
      infos de droite (lampe, volets)" — même esprit que la scission du volet 21 sur l'écran
@@ -244,11 +269,11 @@
      .cfg-section, etc. depuis le volet 20) — les badges restent des pilules imbriquées à
      l'intérieur, même principe que .acc-w-chip dans .acc-weather. */
   .acc-header{
-    display:flex; align-items:center; justify-content:space-between; flex:none; margin-bottom:26px;
+    display:flex; align-items:center; justify-content:space-between; flex:none; margin-bottom:13px;
     border-radius:28px; border:1px solid var(--glass-brd);
     background:linear-gradient(180deg, rgba(9,11,17,.55), rgba(9,11,17,.64));
     backdrop-filter:blur(20px) saturate(150%); -webkit-backdrop-filter:blur(20px) saturate(150%);
-    padding:24px 32px;
+    padding:30px 32px 24px;
   }
   .acc-header .ph-title{ text-shadow:0 4px 34px rgba(0,0,0,.55); }
 
@@ -278,7 +303,7 @@
   /* 27.09.2026 : 538px -> 528px, la carte Énergie côté Énergie ayant très légèrement rétréci
      (537.6 -> 528.25px) une fois son en-tête compacté (répartition flex 1.15/1 avec Sankey,
      effet non prévu mais mesuré) -- réajusté pour que les 2 zones de dessin restent alignées. */
-  .acc-row1{ display:flex; gap:24px; flex:0 0 528px; margin-bottom:24px; min-height:0; }
+  .acc-row1{ display:flex; gap:12px; flex:0 0 528px; margin-bottom:12px; min-height:0; }
   .acc-card{
     flex:1; min-width:0; position:relative; overflow:hidden; display:flex; flex-direction:column;
     border-radius:28px; border:1px solid var(--glass-brd);
@@ -593,10 +618,10 @@
      qui est très exactement l'abscisse où démarrait l'ancienne courbe "actuelle" avant ce
      chantier ; voir le calcul des points dans renderAccTempCard2, qui conserve la même densité de
      pixels/heure pour les 48h affichées qu'avant l'ajout de ce fondu). */
-  .acc-row2{ flex:1; min-height:0; display:flex; padding-bottom:24px; }
+  .acc-row2{ flex:1; min-height:0; display:flex; }
   .acc-temp-grid{
     flex:0 0 33%; min-height:0; display:grid;
-    grid-template-columns:1fr; grid-template-rows:repeat(4,1fr); gap:14px;
+    grid-template-columns:1fr; grid-template-rows:repeat(4,1fr); gap:7px;
   }
   .acc-temp-card{
     background:linear-gradient(180deg, rgba(9,11,17,.55), rgba(9,11,17,.64)); border:1px solid var(--glass-brd);
@@ -794,7 +819,6 @@
   [data-card-style="liquid"] .bar,
   [data-card-style="liquid"] .acc-badge,
   [data-card-style="liquid"] .acc-header,
-  [data-card-style="liquid"] .reserved-space,
   [data-card-style="liquid"] .cfg-section,
   [data-card-style="liquid"] .meteo-forecast{
     border:1px solid rgba(255,255,255,.16);
@@ -807,7 +831,6 @@
   [data-card-style="neumorph"] .bar,
   [data-card-style="neumorph"] .acc-badge,
   [data-card-style="neumorph"] .acc-header,
-  [data-card-style="neumorph"] .reserved-space,
   [data-card-style="neumorph"] .cfg-section,
   [data-card-style="neumorph"] .meteo-forecast{
     border:none;
@@ -884,7 +907,7 @@
      barres latérales" — la marge de 36px en haut de .view-meteo décalait #meteoHero de 36px
      par rapport au sommet des barres (.bar-left/.bar-right, elles, commencent à --pageM). On
      retire uniquement le padding-top ; les trois autres côtés gardent 36px comme avant. */
-  .view-meteo{ padding:0 36px 36px; flex-direction:column; gap:20px; }
+  .view-meteo{ padding:0 18px 8px; flex-direction:column; gap:10px; }
   .meteo-block{
     flex:0 0 auto; width:100%; border-radius:28px; position:relative; overflow:hidden;
     display:flex; flex-direction:column; color:#fff; transition:background 1.2s ease;
@@ -1270,10 +1293,10 @@
   /* Premier réglage réel de cet écran : le style visuel appliqué aux cartes de l'Accueil
      (GlassHome / Liquid Glass, cf. graph_proposals.html). Même trame que .view-accueil
      (bandeau titre en haut, puis contenu) plutôt qu'un nouveau langage visuel. */
-  .view-config{ flex-direction:column; padding:0 36px 8px; }
+  .view-config{ flex-direction:column; padding:0 18px 8px; }
   /* 25.09.2026 : 2 colonnes de réglages (voir commentaire dans le HTML de #view-config). */
-  .cfg-cols{ display:flex; gap:24px; align-items:flex-start; min-height:0; }
-  .cfg-col{ flex:0 1 920px; min-width:0; display:flex; flex-direction:column; gap:20px; }
+  .cfg-cols{ display:flex; gap:12px; align-items:flex-start; min-height:0; }
+  .cfg-col{ flex:0 1 920px; min-width:0; display:flex; flex-direction:column; gap:10px; }
   .cfg-col-side{ flex:1 1 0; }
   .cfg-col-side .cfg-section{ max-width:none; }
   .cfg-section{
@@ -1284,7 +1307,7 @@
   }
   /* 20.09.2026 (demande utilisateur) : ligne du haut de l'écran Configuration -- "Style des
      cartes" à gauche, "Fond d'écran" (largeur plus modeste, .cfg-section-side) plaquée à droite. */
-  .cfg-row-top{ display:flex; gap:20px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; }
+  .cfg-row-top{ display:flex; gap:10px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; }
   .cfg-section-side{ flex:none; max-width:600px; }
   @media (max-width:1500px){ .cfg-row-top{ flex-wrap:wrap; } .cfg-section-side{ margin-top:20px; } }
   .cfg-section-title{ font-family:var(--ff-title); font-size:calc(20px * var(--fs-title-scale)); font-weight:460; color:var(--brume); margin-bottom:6px; }
@@ -1390,7 +1413,7 @@
      Réseau/Maison (myenergi, hub "Villa Bulkle") et Voiture (Zappi + Tesla Fleet) sont des
      RELEVÉS RÉELS pris le 12.09.2026, en attendant un sondage live via dashboard-api. Solaire et
      batterie maison restent ESTIMÉS (mock) tant que l'onduleur Huawei n'est pas reconnecté. */
-  .view-energie{ flex-direction:column; padding:32px 36px 8px; }
+  .view-energie{ flex-direction:column; padding:0 18px 8px; }
   .enr-legend{ display:flex; align-items:center; gap:8px; font-family:var(--ff-mono); font-size:10.5px; color:var(--brume-dim); letter-spacing:.02em; }
 
   /* 19.09.2026 (10e passe, demande utilisateur) : bouton "Live" du bandeau de titre Energie --
@@ -1436,7 +1459,7 @@
     box-shadow:9px 9px 18px rgba(163,177,198,.55), -8px -8px 16px rgba(255,255,255,.9);
   }
 
-  .enr-stats{ display:flex; gap:20px; flex:0 0 156px; margin-bottom:22px; }
+  .enr-stats{ display:flex; gap:10px; flex:0 0 156px; margin-bottom:11px; }
   .enr-stat{ flex:0 0 280px; display:flex; align-items:center; gap:16px; padding:0 26px;
     border-radius:24px; border:1px solid var(--glass-brd);
     background:linear-gradient(180deg, rgba(9,11,17,.55), rgba(9,11,17,.64));
@@ -1469,14 +1492,14 @@
      mise en page (voir setEnrLive() en JS, qui bascule la classe .enr-live-active sur le wrap). */
   .enr-stage-wrap{ flex:1; min-height:0; position:relative; }
   .enr-row2, .enr-live-stage{
-    position:absolute; inset:0; display:flex; gap:20px; padding-bottom:24px;
+    position:absolute; inset:0; display:flex; gap:10px;
     transition:opacity .55s ease, filter .55s ease;
   }
   .enr-live-stage{ display:none; opacity:0; filter:blur(22px); pointer-events:none; }
   .enr-stage-wrap.enr-live-active .enr-row2{ opacity:0; filter:blur(22px); pointer-events:none; }
   .enr-stage-wrap.enr-live-active .enr-live-stage{ opacity:1; filter:blur(0); pointer-events:auto; }
-  .enr-col-left{ flex:0 0 46%; min-width:0; min-height:0; display:flex; flex-direction:column; gap:20px; }
-  .enr-col-right{ flex:1; min-width:0; min-height:0; display:flex; flex-direction:column; gap:20px; }
+  .enr-col-left{ flex:0 0 860px; min-width:0; min-height:0; display:flex; flex-direction:column; gap:10px; }
+  .enr-col-right{ flex:1; min-width:0; min-height:0; display:flex; flex-direction:column; gap:10px; }
 
   /* ---- Contenu du dashboard Live (cartes de gauche : stats reseau + objectif de production) ---- */
   .enr-live-stats-card, .enr-live-gen-card{ padding:22px 24px 20px; display:flex; flex-direction:column; }
@@ -1809,8 +1832,8 @@
      Function chauffage absente/incomplète, ou pièce/studio pas encore
      raccordé dans ETS) affichent un cadran "non raccordé" en pointillés
      plutôt que des valeurs inventées. */
-  .view-temperature{ padding:0 36px 36px; flex-direction:column; }
-  .temp-floors{ flex:1; min-height:0; display:flex; flex-direction:column; gap:18px; }
+  .view-temperature{ padding:0 18px 8px; flex-direction:column; }
+  .temp-floors{ flex:1; min-height:0; display:flex; flex-direction:column; gap:9px; }
   .temp-floor-card{ padding:18px 26px 22px; display:flex; flex-direction:column; gap:12px; flex:1; min-height:0; }
   .temp-floor-title{ position:relative; z-index:2; font-family:var(--ff-title); font-size:calc(18px * var(--fs-title-scale)); font-weight:460; color:var(--brume); }
   .temp-floor-sub{ position:relative; z-index:2; font-family:var(--ff-mono); font-size:10px; color:var(--brume-dim); text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
@@ -2137,9 +2160,9 @@
      (braise animée + lueur) d'autant plus fort et vite que l'ouverture moyenne des vannes du niveau
      est élevée (--heat = moyenne / 100, 0 = icône grise, aucune braise). Tout est recalculé à chaque
      action de la simulation. */
-  .temp-floors{ flex-direction:row; align-items:stretch; gap:24px; }
+  .temp-floors{ flex-direction:row; align-items:stretch; gap:12px; }
   .temp-floor-card.temp-floor-single{ flex:0 0 auto; }
-  .temp-grid{ display:grid; grid-template-columns:repeat(2, 330px); gap:16px; position:relative; z-index:2; }
+  .temp-grid{ display:grid; grid-template-columns:repeat(2, 330px); gap:8px; position:relative; z-index:2; }
   .temp-side{ flex:1; align-self:stretch; min-width:0; }
   .temp-floorbtns{ display:flex; gap:12px; }
   .tfb{ display:flex; align-items:center; gap:14px; padding:10px 18px 10px 20px; border-radius:16px; cursor:pointer;
@@ -2177,7 +2200,7 @@
      entre la carte Températures et la carte Vannes. Données SIMULÉES (historique réel à brancher :
      recorder HA / VictoriaMetrics pour les pièces et vannes, Open-Meteo past_days pour l'extérieur). */
   #screen{ --ser-1:#3987e5; --ser-2:#d95926; --ser-3:#199e70; --ser-4:#c98500; --ser-5:#d55181; --ser-sun:#c98500; }
-  .temp-side.tch-col{ display:flex; flex-direction:column; gap:14px; min-height:0; }
+  .temp-side.tch-col{ display:flex; flex-direction:column; gap:7px; min-height:0; }
   .tch-range{ display:flex; align-items:center; gap:14px; flex:none; position:relative; z-index:2; }
   .tch-range-lbl{ font-family:var(--ff-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--brume-dim); }
   .tch-card{ flex:1; min-height:0; display:flex; flex-direction:column; padding:16px 22px 14px; }
@@ -2395,9 +2418,11 @@
      surcharges Neumorphism -- le reste (titres/sous-titres/valeurs de carte, tag "Réel") hérite
      automatiquement des règles globales .enr-card-title / .enr-card-sub / .enr-stat-val / .enr-stat-real
      déjà en place. ---------- */
-  .view-voiture{ flex-direction:column; padding:32px 36px 8px; }
+  .view-maquette3d{ flex-direction:column; padding:0 18px 8px; }
+  .view-maquette3d iframe{ flex:1; min-height:0; width:100%; border:0; display:block; background:#05070c; border-radius:14px; }
+  .view-voiture{ flex-direction:column; padding:0 18px 8px; }
   .veh-stat-val-sm{ font-size:calc(20px * var(--fs-value-scale)) !important; }
-  .veh-row{ flex:1; min-height:0; display:flex; gap:20px; padding-bottom:24px; }
+  .veh-row{ flex:1; min-height:0; display:flex; gap:10px; }
   .veh-card-state{ flex:1.35; min-width:0; padding:22px 26px 18px; display:flex; flex-direction:column; }
   .veh-card-loc{ flex:0.85; min-width:0; padding:22px 26px 18px; display:flex; flex-direction:column; }
   .veh-card-trips{ flex:1; min-width:0; padding:22px 26px 18px; display:flex; flex-direction:column; }
@@ -2447,6 +2472,173 @@
   .veh-grafana-btn:hover{ background:var(--glass-2); }
   [data-card-style="neumorph"] .veh-grafana-btn{ background:linear-gradient(155deg,#eef1f5,#e2e6ec); border:none; color:#333a47; box-shadow:2px 2px 5px rgba(163,177,198,.5), -2px -2px 4px rgba(255,255,255,.85); }
   [data-card-style="liquid"] .veh-grafana-btn{ background:linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.03)); border-color:rgba(255,255,255,.18); }
+
+  /* ---------- Écran Version (03.10.2026, demande utilisateur) : suivi des versions de Home
+     Assistant -- version installée / dernière version publiée, bouton de vérification manuelle,
+     principales modifications, problèmes connus (surveillance 30 jours), recommandation et bouton
+     « Sauvegarder et mettre à jour » tricolore. Données : /api/ha-version (dashboard-api, voir
+     dashboard/api/app/ha_version.py). Réutilise .acc-header/.enr-card/.card-sheen tels quels,
+     comme l'écran Voiture ; seules les classes .ver-* et .acc-ticker* sont nouvelles.
+     --ver-lv = couleur du niveau de recommandation (vert / jaune / rouge), posée par
+     [data-level] sur la carte, le bandeau de l'Accueil et la fenêtre de confirmation. ---------- */
+  [data-level]{ --ver-lv:var(--brume-dim); }
+  [data-level="green"]{ --ver-lv:var(--mousse); }
+  [data-level="yellow"]{ --ver-lv:#ffd166; }
+  [data-level="red"]{ --ver-lv:var(--rouge); }
+
+  .view-version{ flex-direction:column; padding:0 18px 8px; }
+  .ver-hero{ flex:none; display:flex; align-items:center; gap:30px; padding:26px 32px; margin-bottom:10px; }
+  .ver-hero > :not(.card-sheen){ position:relative; z-index:2; }
+  .ver-logo{ width:92px; height:92px; border-radius:26px; flex:none; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(150deg, color-mix(in srgb, var(--glacier) 92%, #fff), color-mix(in srgb, var(--glacier) 62%, #0b0e16));
+    box-shadow:0 12px 32px color-mix(in srgb, var(--glacier) 26%, transparent); color:#0b0e16; }
+  .ver-logo svg{ width:52px; height:52px; }
+  .ver-name{ display:flex; flex-direction:column; gap:5px; flex:none; }
+  .ver-name-title{ font-family:var(--ff-title); font-size:calc(27px * var(--fs-title-scale)); font-weight:460; color:var(--brume); line-height:1.05; }
+  .ver-name-sub{ font-family:var(--ff-mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--brume-dim); }
+  .ver-versions{ display:flex; align-items:center; gap:28px; margin-left:26px; }
+  .ver-vblock{ display:flex; flex-direction:column; gap:6px; }
+  .ver-vlbl{ font-family:var(--ff-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--brume-dim); }
+  .ver-vnum{ font-family:var(--ff-value); font-size:calc(42px * var(--fs-value-scale)); font-weight:460; line-height:1; color:var(--brume); font-variant-numeric:tabular-nums; }
+  .ver-vmeta{ font-family:var(--ff-body); font-size:12px; color:var(--brume-dim); min-height:15px; }
+  .ver-arrow{ width:36px; height:36px; flex:none; color:var(--brume-dim); }
+  .ver-state{ font-family:var(--ff-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:9px 16px; border-radius:999px;
+    color:var(--brume-dim); background:rgba(238,241,246,.08); white-space:nowrap; }
+  .ver-state[data-s="update"]{ color:var(--ambre); background:color-mix(in srgb, var(--ambre) 16%, transparent); }
+  .ver-state[data-s="ok"]{ color:var(--mousse); background:color-mix(in srgb, var(--mousse) 16%, transparent); }
+  .ver-check{ margin-left:auto; display:flex; flex-direction:column; align-items:flex-end; gap:9px; flex:none; }
+  .ver-btn{
+    display:inline-flex; align-items:center; gap:10px; padding:13px 22px; border-radius:14px; cursor:pointer;
+    background:var(--glass); border:1px solid var(--glass-brd); color:var(--brume);
+    font-family:var(--ff-title); font-size:15px; font-weight:460; transition:background .16s ease, opacity .16s ease;
+  }
+  .ver-btn svg{ width:18px; height:18px; flex:none; color:var(--glacier); }
+  .ver-btn:hover{ background:var(--glass-2); }
+  .ver-btn[disabled]{ opacity:.55; cursor:default; }
+  .ver-btn.is-busy svg{ animation:verSpin 1s linear infinite; }
+  @keyframes verSpin{ to{ transform:rotate(360deg); } }
+  .ver-check-meta{ font-family:var(--ff-mono); font-size:10px; letter-spacing:.02em; color:var(--brume-dim); text-align:right; line-height:1.65; }
+  .ver-check-meta .ver-err{ color:var(--rouge); }
+
+  .ver-row{ flex:1; min-height:0; display:flex; gap:10px; }
+  .ver-card{ min-width:0; padding:22px 26px 20px; display:flex; flex-direction:column; }
+  .ver-card > :not(.card-sheen){ position:relative; z-index:2; }
+  .ver-card-changes{ flex:1.12; }
+  .ver-card-issues{ flex:1.12; }
+  .ver-card-reco{ flex:0.92; }
+  .ver-list{ flex:1; min-height:0; overflow:auto; margin-top:8px; display:flex; flex-direction:column; scrollbar-width:thin; }
+  .ver-item{ display:flex; gap:14px; padding:13px 2px; border-bottom:1px solid var(--glass-brd); }
+  .ver-item:last-child{ border-bottom:none; }
+  .ver-tag{ flex:none; align-self:flex-start; min-width:92px; text-align:center; margin-top:1px; padding:4px 9px; border-radius:999px;
+    font-family:var(--ff-mono); font-size:9px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--brume-dim); background:rgba(238,241,246,.08); }
+  .ver-tag[data-k="new"]{ color:var(--glacier); background:color-mix(in srgb, var(--glacier) 15%, transparent); }
+  .ver-tag[data-k="breaking"]{ color:var(--ambre); background:color-mix(in srgb, var(--ambre) 16%, transparent); }
+  .ver-tag[data-k="fix"]{ color:var(--mousse); background:color-mix(in srgb, var(--mousse) 15%, transparent); }
+  .ver-tag[data-k="blocking"]{ color:var(--rouge); background:color-mix(in srgb, var(--rouge) 16%, transparent); }
+  .ver-tag[data-k="minor"]{ color:#ffd166; background:rgba(255,209,102,.15); }
+  .ver-item-tx{ min-width:0; display:flex; flex-direction:column; gap:5px; }
+  .ver-item-title{ font-family:var(--ff-body); font-size:14.5px; font-weight:500; color:var(--brume); line-height:1.3; }
+  .ver-item-detail{ font-family:var(--ff-body); font-size:12.5px; color:var(--brume-dim); line-height:1.48; }
+  .ver-item-villa{ font-family:var(--ff-body); font-size:12.5px; color:var(--brume); line-height:1.45; padding-left:11px; border-left:2px solid var(--ambre); }
+  .ver-item-foot{ display:flex; align-items:center; gap:14px; font-family:var(--ff-mono); font-size:10px; letter-spacing:.02em; color:var(--brume-dim); }
+  .ver-item-foot a{ color:var(--glacier); text-decoration:none; }
+  .ver-item-foot a:hover{ text-decoration:underline; }
+  .ver-empty{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center;
+    font-family:var(--ff-body); font-size:13.5px; color:var(--brume-dim); line-height:1.55; padding:0 46px;
+    border:1.5px dashed var(--glass-brd); border-radius:18px; margin-top:12px; }
+  .ver-empty b{ font-family:var(--ff-title); font-weight:460; font-size:17px; color:var(--brume); }
+  .ver-card-foot{ flex:none; margin-top:10px; font-family:var(--ff-mono); font-size:10px; letter-spacing:.02em; color:var(--brume-dim); line-height:1.6; }
+  .ver-monitor{ flex:none; margin-top:12px; }
+  .ver-monitor-tx{ display:flex; justify-content:space-between; gap:12px; font-family:var(--ff-mono); font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--brume-dim); margin-bottom:7px; }
+  .ver-monitor-bar{ height:6px; border-radius:999px; background:rgba(238,241,246,.10); overflow:hidden; }
+  .ver-monitor-fill{ height:100%; border-radius:999px; background:var(--glacier); width:0; transition:width .5s ease; }
+
+  .ver-reco-light{ flex:none; display:flex; align-items:center; gap:16px; margin-top:14px; padding:17px 20px; border-radius:18px;
+    background:color-mix(in srgb, var(--ver-lv) 12%, transparent); border:1px solid color-mix(in srgb, var(--ver-lv) 38%, transparent); }
+  .ver-reco-dot{ width:18px; height:18px; border-radius:50%; flex:none; background:var(--ver-lv); box-shadow:0 0 16px color-mix(in srgb, var(--ver-lv) 70%, transparent); }
+  .ver-reco-label{ font-family:var(--ff-title); font-size:calc(20px * var(--fs-title-scale)); font-weight:460; color:var(--brume); line-height:1.2; }
+  .ver-reco-body{ flex:1; min-height:0; overflow:auto; margin-top:14px; scrollbar-width:thin; }
+  .ver-reco-reason{ font-family:var(--ff-body); font-size:13.5px; line-height:1.55; color:var(--brume); white-space:pre-line; }
+  .ver-reco-h{ font-family:var(--ff-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--brume-dim); margin:16px 0 7px; }
+  .ver-reco-checks{ margin:0; padding-left:18px; font-family:var(--ff-body); font-size:12.5px; line-height:1.55; color:var(--brume-dim); }
+  .ver-result{ margin-top:14px; padding:13px 16px; border-radius:14px; font-family:var(--ff-body); font-size:12.5px; line-height:1.5; color:var(--brume);
+    background:rgba(238,241,246,.07); border:1px solid var(--glass-brd); }
+  .ver-result[data-r="success"]{ border-color:color-mix(in srgb, var(--mousse) 45%, transparent); background:color-mix(in srgb, var(--mousse) 10%, transparent); }
+  .ver-result[data-r="failed"], .ver-result[data-r="rolled_back"]{ border-color:color-mix(in srgb, var(--rouge) 45%, transparent); background:color-mix(in srgb, var(--rouge) 10%, transparent); }
+  .ver-result small{ display:block; margin-top:4px; font-family:var(--ff-mono); font-size:10px; color:var(--brume-dim); }
+  .ver-steps{ list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  .ver-steps li{ display:flex; align-items:center; gap:11px; font-family:var(--ff-body); font-size:13px; color:var(--brume-dim); }
+  .ver-steps li::before{ content:""; width:10px; height:10px; border-radius:50%; flex:none; background:rgba(238,241,246,.16); }
+  .ver-steps li.is-done{ color:var(--brume); }
+  .ver-steps li.is-done::before{ background:var(--mousse); }
+  .ver-steps li.is-now{ color:var(--brume); font-weight:500; }
+  .ver-steps li.is-now::before{ background:var(--ambre); animation:verPulse 1.2s ease-in-out infinite; }
+  @keyframes verPulse{ 0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--ambre) 55%, transparent); } 50%{ box-shadow:0 0 0 7px transparent; } }
+  .ver-update-btn{
+    flex:none; margin-top:16px; width:100%; padding:19px 22px 17px; border-radius:18px; border:none; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:5px;
+    background:var(--ver-lv); color:#0b0e16; font-family:var(--ff-title); font-size:calc(19px * var(--fs-title-scale)); font-weight:560;
+    box-shadow:0 14px 36px color-mix(in srgb, var(--ver-lv) 32%, transparent); transition:filter .16s ease, transform .16s ease;
+  }
+  .ver-update-btn small{ font-family:var(--ff-mono); font-size:10.5px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; opacity:.78; }
+  .ver-update-btn:hover{ filter:brightness(1.07); }
+  .ver-update-btn:active{ transform:translateY(1px); }
+  .ver-update-btn[disabled]{ background:rgba(238,241,246,.10); color:var(--brume-dim); box-shadow:none; cursor:default; filter:none; transform:none; }
+  .ver-update-note{ flex:none; margin-top:10px; font-family:var(--ff-mono); font-size:10px; letter-spacing:.02em; color:var(--brume-dim); line-height:1.6; text-align:center; min-height:16px; }
+
+  /* Fenêtre de confirmation : sœur directe de .main-area sous #screen (et non enfant d'un
+     .view-block), pour passer au-dessus des barres latérales -- même leçon que le panneau
+     d'agrandissement des graphes Énergie du 18.09.2026 (contexte d'empilement du parent). */
+  .ver-modal{ position:absolute; inset:0; z-index:60; display:flex; align-items:center; justify-content:center;
+    background:rgba(5,7,12,.66); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+  .ver-modal-box{ width:780px; border-radius:28px; padding:36px 40px 32px; border:1px solid var(--glass-brd);
+    background:linear-gradient(180deg, rgba(20,24,35,.97), rgba(11,14,22,.98)); box-shadow:0 40px 120px rgba(0,0,0,.65); }
+  .ver-modal-title{ font-family:var(--ff-title); font-size:26px; font-weight:460; color:var(--brume); }
+  .ver-modal-ver{ font-family:var(--ff-value); font-size:20px; color:var(--brume); margin-top:8px; font-variant-numeric:tabular-nums; }
+  .ver-modal-list{ margin:20px 0 0; padding-left:20px; font-family:var(--ff-body); font-size:14px; line-height:1.6; color:var(--brume-dim); }
+  .ver-modal-list b{ color:var(--brume); font-weight:500; }
+  .ver-modal-reco{ margin-top:20px; padding:14px 18px; border-radius:14px; font-family:var(--ff-body); font-size:13.5px; line-height:1.5; color:var(--brume);
+    background:color-mix(in srgb, var(--ver-lv) 12%, transparent); border:1px solid color-mix(in srgb, var(--ver-lv) 38%, transparent); }
+  .ver-modal-err{ margin-top:14px; font-family:var(--ff-body); font-size:13px; color:var(--rouge); min-height:18px; }
+  .ver-modal-actions{ display:flex; justify-content:flex-end; gap:12px; margin-top:16px; }
+  .ver-modal-ok{ padding:13px 24px; border-radius:14px; border:none; cursor:pointer; background:var(--ver-lv); color:#0b0e16;
+    font-family:var(--ff-title); font-size:15px; font-weight:560; }
+  .ver-modal-ok[disabled]{ opacity:.6; cursor:default; }
+
+  /* Bandeau défilant de l'Accueil : discret, dans l'en-tête entre le titre et les badges ;
+     n'apparaît que si une nouvelle version est disponible. Le texte est répété pour une boucle
+     sans couture (translation de -50 %). Coupé par la règle globale prefers-reduced-motion. */
+  .acc-ticker{ flex:1; min-width:0; height:38px; margin:0 36px; border-radius:999px; overflow:hidden; cursor:pointer;
+    display:flex; align-items:center; background:rgba(238,241,246,.045); border:1px solid var(--glass-brd);
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+            mask-image:linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+  .acc-ticker-track{ display:flex; flex:none; white-space:nowrap; animation:accTicker 46s linear infinite; }
+  .acc-ticker:hover .acc-ticker-track{ animation-play-state:paused; }
+  .acc-ticker-track span{ display:inline-flex; align-items:center; gap:10px; padding-right:110px;
+    font-family:var(--ff-mono); font-size:11.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--brume-dim); }
+  .acc-ticker-track i{ width:7px; height:7px; border-radius:50%; background:var(--ver-lv); box-shadow:0 0 8px var(--ver-lv); }
+  .acc-ticker-track b{ color:var(--brume); font-weight:500; }
+  @keyframes accTicker{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+
+  [data-card-style="neumorph"] .ver-name-title, [data-card-style="neumorph"] .ver-vnum, [data-card-style="neumorph"] .ver-item-title,
+  [data-card-style="neumorph"] .ver-item-villa, [data-card-style="neumorph"] .ver-reco-label, [data-card-style="neumorph"] .ver-reco-reason,
+  [data-card-style="neumorph"] .ver-empty b, [data-card-style="neumorph"] .ver-result, [data-card-style="neumorph"] .ver-steps li.is-done,
+  [data-card-style="neumorph"] .ver-steps li.is-now, [data-card-style="neumorph"] .acc-ticker-track b{ color:#333a47; }
+  [data-card-style="neumorph"] .ver-name-sub, [data-card-style="neumorph"] .ver-vlbl, [data-card-style="neumorph"] .ver-vmeta,
+  [data-card-style="neumorph"] .ver-check-meta, [data-card-style="neumorph"] .ver-item-detail, [data-card-style="neumorph"] .ver-item-foot,
+  [data-card-style="neumorph"] .ver-empty, [data-card-style="neumorph"] .ver-card-foot, [data-card-style="neumorph"] .ver-monitor-tx,
+  [data-card-style="neumorph"] .ver-reco-h, [data-card-style="neumorph"] .ver-reco-checks, [data-card-style="neumorph"] .ver-update-note,
+  [data-card-style="neumorph"] .ver-steps li, [data-card-style="neumorph"] .acc-ticker-track span, [data-card-style="neumorph"] .ver-arrow{ color:#7b8494; }
+  [data-card-style="neumorph"] .ver-item{ border-bottom-color:rgba(123,132,148,.18); }
+  [data-card-style="neumorph"] .ver-empty{ border-color:rgba(123,132,148,.3); }
+  [data-card-style="neumorph"] .ver-monitor-bar{ background:rgba(123,132,148,.2); }
+  [data-card-style="neumorph"] .ver-btn{ background:linear-gradient(155deg,#eef1f5,#e2e6ec); border:none; color:#333a47; box-shadow:2px 2px 5px rgba(163,177,198,.5), -2px -2px 4px rgba(255,255,255,.85); }
+  [data-card-style="neumorph"] .ver-update-btn[disabled]{ background:rgba(123,132,148,.16); color:#7b8494; }
+  [data-card-style="neumorph"] .ver-tag[data-k="minor"], [data-card-style="neumorph"] [data-level="yellow"]{ --ver-lv:#d79a00; }
+  [data-card-style="neumorph"] .ver-tag[data-k="minor"]{ color:#a87800; }
+  [data-card-style="neumorph"] .ver-tag, [data-card-style="neumorph"] .ver-state{ filter:brightness(.72) saturate(1.35); }
+  [data-card-style="neumorph"] .acc-ticker{ background:rgba(123,132,148,.08); border-color:rgba(123,132,148,.2); }
 
 </style>
 
@@ -2507,6 +2699,9 @@
       <section class="view-block view-accueil" id="view-accueil">
         <div class="acc-header">
           <div class="ph-title">Accueil</div>
+          <!-- 03.10.2026 : bandeau défilant discret, visible seulement si une nouvelle version de
+               Home Assistant est disponible (rempli par renderVersionTicker(), clic = page Version). -->
+          <div class="acc-ticker" id="accTicker" role="button" aria-label="Nouvelle version de Home Assistant disponible" hidden></div>
           <div class="acc-badges">
             <div class="acc-badge">
               <span class="ab-ic ab-ic-lamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle class="lamp-glow" cx="12" cy="10" r="6"/><path d="M9.5 20h5M10 22h4M12 4V2"/><path d="M9 13.5 8 16h8l-1-2.5"/></svg></span>
@@ -2875,6 +3070,10 @@
            historique. Cartes construites avec les classes .enr-card/.enr-stat déjà partagées par
            Énergie/Température (mêmes 3 styles GlassHome/Liquid Glass/Neumorphism sans CSS dupliqué,
            voir commentaire "écran Énergie" plus haut). -->
+      <section class="view-block view-maquette3d" id="view-maquette3d">
+        <iframe id="maquette3dFrame" data-src="maquette3d.html#vue1" title="Villa Bulle — maquette 3D dynamique"></iframe>
+      </section>
+
       <section class="view-block view-voiture" id="view-voiture">
         <div class="acc-header">
           <div>
@@ -2966,10 +3165,111 @@
         </div>
       </section>
 
+<section class="view-block view-pieces" id="view-pieces">
+        <div class="acc-header">
+          <div class="ph-title">Pièces</div>
+          <div class="pieces-floorbtns" id="piecesFloorBtns" role="group" aria-label="Niveau affiché">
+            <button type="button" class="pfb" data-floor="Sous-sol">Sous-sol</button>
+            <button type="button" class="pfb" data-floor="Rez-de-chaussée">Rez-de-chaussée</button>
+            <button type="button" class="pfb on" data-floor="Étage">Étage</button>
+          </div>
+          <div class="pieces-modebtns" id="piecesModeBtns" role="group" aria-label="Mode d'affichage">
+            <button type="button" class="pmb on" data-mode="all" title="Tout afficher" aria-label="Tout afficher">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 16 9 5 9-5"/></svg>
+            </button>
+            <button type="button" class="pmb" data-mode="ghost" title="Transparence : seul l'étage sélectionné est opaque" aria-label="Transparent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" opacity=".35"></rect><rect x="4" y="12" width="16" height="8" rx="2"></rect></svg>
+            </button>
+            <button type="button" class="pmb" data-mode="vignette" title="Vignettage : l'étage sélectionné en lumière, le reste dans l'ombre" aria-label="Vignettage">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" opacity=".25" stroke-dasharray="1 3"></rect><rect x="7" y="10" width="10" height="6" rx="1"></rect></svg>
+            </button>
+          </div>
+        </div>
+        <div class="pieces-content">
+          <div class="pieces-card pieces-card-left"><div class="enr-card"><iframe id="pieces3dV1" data-src="pieces3d.html?view=v1" title="Villa Bulle — vue 1"></iframe></div></div>
+          <div class="pieces-card pieces-card-mid"><div class="enr-card"><iframe id="pieces3dTop" data-src="pieces3d.html?view=top" title="Villa Bulle — vue de dessus"></iframe></div></div>
+          <div class="pieces-rooms" id="piecesRooms"></div>
+          <div class="pieces-card pieces-card-right"><div class="enr-card"><iframe id="pieces3dV2" data-src="pieces3d.html?view=v2" title="Villa Bulle — vue 2"></iframe></div></div>
+        </div>
+      </section>
+
+      <!-- Écran Version (03.10.2026, demande utilisateur) : suivi des versions de Home Assistant.
+           Données réelles via /api/ha-version (dashboard-api) ; aucune donnée de démonstration :
+           si le service est injoignable, l'écran le dit. Rendu dans renderVersion(). -->
+      <section class="view-block view-version" id="view-version">
+        <div class="acc-header">
+          <div>
+            <div class="ph-title">Version</div>
+            <div class="ph-sub" id="verSub">Home Assistant — suivi des mises à jour</div>
+          </div>
+          <div class="enr-legend"><span class="enr-dot enr-dot-real"></span>Vérification automatique chaque vendredi soir</div>
+        </div>
+
+        <div class="enr-card ver-hero">
+          <div class="card-sheen"></div>
+          <span class="ver-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11.5 12 4l8.5 7.5"/><path d="M6 9.8V19a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V9.8"/><path d="M10 20v-5.5h4V20"/></svg></span>
+          <div class="ver-name">
+            <div class="ver-name-title">Home Assistant</div>
+            <div class="ver-name-sub">Conteneur Docker · Mac mini</div>
+          </div>
+          <div class="ver-versions">
+            <div class="ver-vblock">
+              <span class="ver-vlbl">Version installée</span>
+              <span class="ver-vnum" id="verInstalled">—</span>
+              <span class="ver-vmeta" id="verInstalledMeta"></span>
+            </div>
+            <svg class="ver-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5"/></svg>
+            <div class="ver-vblock">
+              <span class="ver-vlbl">Dernière version publiée</span>
+              <span class="ver-vnum" id="verLatest">—</span>
+              <span class="ver-vmeta" id="verLatestMeta"></span>
+            </div>
+            <span class="ver-state" id="verState" data-s="unknown">—</span>
+          </div>
+          <div class="ver-check">
+            <button class="ver-btn" id="verCheckBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v4.5h-4.5"/></svg>
+              Vérifier maintenant
+            </button>
+            <div class="ver-check-meta" id="verCheckMeta">—</div>
+          </div>
+        </div>
+
+        <div class="ver-row">
+          <div class="enr-card ver-card ver-card-changes">
+            <div class="card-sheen"></div>
+            <div class="enr-card-head"><div><div class="enr-card-title">Principales modifications</div><div class="enr-card-sub" id="verChangesSub">—</div></div></div>
+            <div class="ver-list" id="verChanges"></div>
+            <div class="ver-card-foot" id="verChangesFoot"></div>
+          </div>
+
+          <div class="enr-card ver-card ver-card-issues">
+            <div class="card-sheen"></div>
+            <div class="enr-card-head"><div><div class="enr-card-title">Problèmes connus</div><div class="enr-card-sub" id="verIssuesSub">—</div></div></div>
+            <div class="ver-monitor" id="verMonitor" hidden>
+              <div class="ver-monitor-tx"><span id="verMonitorL">—</span><span id="verMonitorR">—</span></div>
+              <div class="ver-monitor-bar"><div class="ver-monitor-fill" id="verMonitorFill"></div></div>
+            </div>
+            <div class="ver-list" id="verIssues"></div>
+          </div>
+
+          <div class="enr-card ver-card ver-card-reco" id="verRecoCard" data-level="none">
+            <div class="card-sheen"></div>
+            <div class="enr-card-head"><div><div class="enr-card-title">Recommandation</div><div class="enr-card-sub" id="verRecoSub">—</div></div></div>
+            <div class="ver-reco-light"><span class="ver-reco-dot"></span><span class="ver-reco-label" id="verRecoLabel">—</span></div>
+            <div class="ver-reco-body" id="verRecoBody"></div>
+            <button class="ver-update-btn" id="verUpdateBtn" type="button" disabled><span id="verUpdateLbl">Sauvegarder et mettre à jour</span><small id="verUpdateSub">—</small></button>
+            <div class="ver-update-note" id="verUpdateNote"></div>
+          </div>
+        </div>
+      </section>
+
 <section class="view-block view-placeholder" id="view-placeholder">
-        <div class="reserved-space">
-          <div class="ph-title" id="phTitle">—</div>
-          <div class="ph-sub">Écran pas encore implémenté — prochaine étape</div>
+        <div class="acc-header">
+          <div class="reserved-space">
+            <div class="ph-title" id="phTitle">—</div>
+            <div class="ph-sub">Écran pas encore implémenté — prochaine étape</div>
+          </div>
         </div>
       </section>
 
@@ -3778,7 +4078,12 @@
     // ajoutée juste avant "Configuration", même icône voiture que PFC_ICON.voiture (nœud
     // "Voiture" du diagramme de flux énergie, voir plus bas) -- une seule source pour l'icône
     // voiture dans tout le dashboard.
+    // 30.09.2026 (demande utilisateur) : page « 3D » = la maquette 3D dynamique complète (artifact « Plans Villa Bulle » v26), servie en iframe depuis maquette3d.html
+    {id:'maquette3d', label:'3D', icon:'<path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/>'},
     {id:'voiture', label:'Voiture', icon:'<path d="M5 16h14M6 16v2M18 16v2M4 12l1.5-4.5A2 2 0 0 1 7.4 6h9.2a2 2 0 0 1 1.9 1.5L20 12"/><circle cx="8" cy="16" r="1.4"/><circle cx="16" cy="16" r="1.4"/><path d="M11.6 8.2 10 11h2.2l-1.6 3"/>'},
+    // 03.10.2026 (demande utilisateur) : page « Version » = suivi des versions de Home Assistant
+    // (installée / publiée, modifications, problèmes connus, recommandation, mise à jour).
+    {id:'version', label:'Version', icon:'<circle cx="12" cy="12" r="8.5"/><path d="M12 16V8.5M8.8 11.5 12 8.3l3.2 3.2"/>'},
     {id:'configuration', label:'Configuration', icon:'<circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a7.6 7.6 0 0 0 0-3l1.9-1.4-1.8-3-2.2.9a7.4 7.4 0 0 0-2.6-1.5L14.3 3H9.7l-.4 2.5a7.4 7.4 0 0 0-2.6 1.5l-2.2-.9-1.8 3L4.6 10.5a7.6 7.6 0 0 0 0 3L2.7 15l1.8 3 2.2-.9a7.4 7.4 0 0 0 2.6 1.5l.4 2.4h4.6l.4-2.4a7.4 7.4 0 0 0 2.6-1.5l2.2.9 1.8-3-1.9-1.6Z"/>'},
   ];
 
@@ -3824,14 +4129,55 @@
     } else if(item.id === 'temperature'){
       document.getElementById('view-temperature').classList.add('active');
       renderTemperatureScreen();
+    } else if(item.id === 'maquette3d'){
+      document.getElementById('view-maquette3d').classList.add('active');
+      const f3 = document.getElementById('maquette3dFrame');
+      if(f3 && !f3.src && f3.dataset.src) f3.src = f3.dataset.src;
     } else if(item.id === 'voiture'){
       document.getElementById('view-voiture').classList.add('active');
       renderVoitureScreen();
+    } else if(item.id === 'version'){
+      document.getElementById('view-version').classList.add('active');
+      refreshVersion();
+    } else if(item.id === 'pieces'){
+      document.getElementById('view-pieces').classList.add('active');
+      initPieces3D();
     } else {
       phTitle.textContent = item.label;
       document.getElementById('view-placeholder').classList.add('active');
     }
   }
+  const piecesState = { level: 'etage', mode: 'all', started: false };
+  const PIECES_LEVEL_MAP = { 'Sous-sol': 'ss', 'Rez-de-chaussée': 'rez', 'Étage': 'etage' };
+  function applyPieces3D(){
+    ['pieces3dV1', 'pieces3dTop', 'pieces3dV2'].forEach(id => {
+      const win = document.getElementById(id)?.contentWindow;
+      if(win && typeof win.focusLevel === 'function') win.focusLevel(piecesState.level, piecesState.mode);
+    });
+  }
+  function initPieces3D(){
+    if(piecesState.started) return;
+    piecesState.started = true;
+    ['pieces3dV1', 'pieces3dTop', 'pieces3dV2'].forEach(id => {
+      const f = document.getElementById(id);
+      if(f && f.dataset.src){ f.src = f.dataset.src + '&t=' + Date.now(); f.addEventListener('load', applyPieces3D, { once:true }); }
+    });
+  }
+  document.getElementById('piecesFloorBtns')?.addEventListener('click', (e)=>{
+    const b = e.target.closest('.pfb'); if(!b) return;
+    document.querySelectorAll('#piecesFloorBtns .pfb').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    piecesState.level = PIECES_LEVEL_MAP[b.dataset.floor] || 'etage';
+    applyPieces3D();
+  });
+  document.getElementById('piecesModeBtns')?.addEventListener('click', (e)=>{
+    const b = e.target.closest('.pmb'); if(!b) return;
+    document.querySelectorAll('#piecesModeBtns .pmb').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    piecesState.mode = b.dataset.mode || 'all';
+    applyPieces3D();
+  });
+
   mainArea.style.display = 'block';
   selectView(NAV_ITEMS[0]); // état initial : Accueil actif, avec son propre espace réservé
 
@@ -6689,10 +7035,305 @@ function renderEnergyScreen(){
     document.getElementById('calRange').textContent = fmt(monday)+' – '+fmt(sunday);
   })();
 
+  /* =====================================================================
+     Écran Version (03.10.2026, demande utilisateur) — suivi des versions de
+     Home Assistant. Une seule source : GET /api/ha-version (dashboard-api),
+     qui assemble la version installée, la dernière version publiée, l'analyse
+     hebdomadaire (modifications, problèmes connus, recommandation) et l'état
+     d'une mise à jour en cours. Aucune donnée de démonstration ici : si le
+     service ne répond pas, l'écran l'indique.
+     - « Vérifier maintenant » : POST /api/ha-version/check
+     - « Sauvegarder et mettre à jour » : POST /api/ha-version/update, après
+       confirmation ; l'exécution réelle est faite par un agent sur le Mac
+       (scripts/ha_update.sh), dashboard-api ne touche pas à Docker.
+     Tout texte venu de l'analyse est échappé (verEsc) avant affichage.
+     ===================================================================== */
+  const VER = { data:null, error:null, busy:false, timer:null };
+  const VER_STEPS = [
+    ['checks','Contrôles'], ['pull','Téléchargement de la nouvelle version'], ['stop','Arrêt de Home Assistant'],
+    ['backup','Sauvegarde complète'], ['update','Démarrage de la nouvelle version'], ['verify','Vérification du démarrage']
+  ];
+  const VER_TAGS = { new:'Nouveauté', breaking:'Changement', fix:'Correctif', blocking:'Bloquant', minor:'Mineur', info:'Information' };
+  const VER_LEVEL_SHORT = { green:'mise à jour recommandée', yellow:'problèmes mineurs en cours', red:'mise à jour déconseillée pour l\'instant' };
+
+  function verEsc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function verSafeUrl(u){ return /^https:\/\/[^\s"'<>]+$/.test(String(u || '')) ? String(u) : ''; }
+  function verDay(iso){
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ''));
+    return m ? (m[3] + '.' + m[2] + '.' + m[1]) : '';
+  }
+  function verDateTime(iso){
+    const d = new Date(iso);
+    if(!iso || isNaN(d)) return '';
+    return d.toLocaleDateString('fr-CH', {weekday:'short', day:'numeric', month:'short'}) + ' à ' + d.toLocaleTimeString('fr-CH', {hour:'2-digit', minute:'2-digit'});
+  }
+  async function verApi(method, path, body){
+    const opt = { method, cache:'no-store' };
+    if(body){ opt.headers = {'Content-Type':'application/json'}; opt.body = JSON.stringify(body); }
+    let r;
+    try{ r = await fetch(path, opt); }
+    catch(e){ throw new Error('dashboard-api injoignable'); }
+    let j = null;
+    try{ j = await r.json(); }catch(e){ /* réponse non JSON (ex. 502 nginx) */ }
+    if(!r.ok) throw new Error((j && typeof j.detail === 'string' && j.detail) || ('Service indisponible (' + r.status + ')'));
+    return j;
+  }
+  function verIsUpdating(){
+    const s = VER.data && VER.data.update && VER.data.update.state;
+    return s === 'running' || s === 'requested';
+  }
+  function verSchedule(){
+    clearTimeout(VER.timer);
+    // Pendant une mise à jour : suivi rapproché ; sinon une simple relecture du cache toutes les 30 min
+    // (la vérification réelle reste hebdomadaire ou manuelle, côté dashboard-api).
+    VER.timer = setTimeout(refreshVersion, verIsUpdating() ? 5000 : 30 * 60 * 1000);
+  }
+  async function refreshVersion(){
+    try{ VER.data = await verApi('GET', '/api/ha-version'); VER.error = null; }
+    catch(e){ VER.error = (e && e.message) || 'Service injoignable'; }
+    renderVersion();
+    renderVersionTicker();
+    verSchedule();
+  }
+
+  function verItemHtml(tagKey, title, detail, villa, foot){
+    return '<div class="ver-item"><span class="ver-tag" data-k="' + verEsc(tagKey) + '">' + verEsc(VER_TAGS[tagKey] || tagKey) + '</span>'
+      + '<div class="ver-item-tx"><div class="ver-item-title">' + verEsc(title) + '</div>'
+      + (detail ? '<div class="ver-item-detail">' + verEsc(detail) + '</div>' : '')
+      + (villa ? '<div class="ver-item-villa">' + verEsc(villa) + '</div>' : '')
+      + (foot ? '<div class="ver-item-foot">' + foot + '</div>' : '')
+      + '</div></div>';
+  }
+  function verEmptyHtml(title, text){
+    return '<div class="ver-empty"><b>' + verEsc(title) + '</b><span>' + verEsc(text) + '</span></div>';
+  }
+
+  function renderVersion(){
+    const $ = id => document.getElementById(id);
+    if(!$('view-version')) return;
+    const d = VER.data;
+    const checkBtn = $('verCheckBtn');
+    checkBtn.classList.toggle('is-busy', VER.busy);
+    checkBtn.disabled = VER.busy;
+
+    if(!d){
+      $('verInstalled').textContent = '—'; $('verLatest').textContent = '—';
+      $('verInstalledMeta').textContent = ''; $('verLatestMeta').textContent = '';
+      $('verState').textContent = 'Indisponible'; $('verState').dataset.s = 'unknown';
+      $('verCheckMeta').innerHTML = '<span class="ver-err">' + verEsc(VER.error || 'Chargement…') + '</span>';
+      const msg = verEmptyHtml('Service de version injoignable', 'dashboard-api ne répond pas. Les informations réapparaîtront dès qu\'il sera de nouveau disponible.');
+      $('verChanges').innerHTML = msg; $('verIssues').innerHTML = msg;
+      $('verChangesSub').textContent = '—'; $('verIssuesSub').textContent = '—'; $('verChangesFoot').textContent = '';
+      $('verMonitor').hidden = true;
+      $('verRecoCard').dataset.level = 'none'; $('verRecoLabel').textContent = 'Indisponible'; $('verRecoSub').textContent = '—';
+      $('verRecoBody').innerHTML = ''; $('verUpdateBtn').disabled = true; $('verUpdateSub').textContent = '—'; $('verUpdateNote').textContent = '';
+      return;
+    }
+
+    const latest = d.latest || {};
+    const a = d.analysis_current ? d.analysis : null;
+    const reco = d.recommendation || {level:'unknown', label:'', reason:''};
+    const upd = d.update || {state:'idle'};
+    const available = !!d.update_available;
+
+    // ---- bandeau du haut : versions + vérification
+    $('verInstalled').textContent = d.installed || 'inconnue';
+    $('verInstalledMeta').textContent = d.installed ? 'en service' : 'lecture impossible';
+    $('verLatest').textContent = latest.version || 'inconnue';
+    $('verLatestMeta').textContent = latest.released_at ? ('publiée le ' + verDay(latest.released_at)) : '';
+    const st = $('verState');
+    if(!d.installed || !latest.version){ st.textContent = 'État inconnu'; st.dataset.s = 'unknown'; }
+    else if(available){ st.textContent = 'Mise à jour disponible'; st.dataset.s = 'update'; }
+    else { st.textContent = 'À jour'; st.dataset.s = 'ok'; }
+    const src = {manual:'manuelle', auto:'automatique', claude:'du vendredi'}[latest.source] || '';
+    let meta = latest.checked_at ? ('Dernière vérification' + (src ? ' ' + src : '') + ' : ' + verEsc(verDateTime(latest.checked_at))) : 'Jamais vérifiée';
+    if(VER.error) meta += '<br><span class="ver-err">' + verEsc(VER.error) + '</span>';
+    else if(d.check_error) meta += '<br><span class="ver-err">' + verEsc(d.check_error) + '</span>';
+    $('verCheckMeta').innerHTML = meta;
+
+    // ---- principales modifications
+    if(!available){
+      $('verChangesSub').textContent = 'Aucune mise à jour en attente';
+      $('verChanges').innerHTML = verEmptyHtml('Rien à signaler', 'Cet espace listera les principales modifications dès qu\'une nouvelle version sera publiée.');
+      $('verChangesFoot').textContent = '';
+    } else if(!a){
+      $('verChangesSub').textContent = 'Version ' + (latest.version || '') + ' — analyse à venir';
+      $('verChanges').innerHTML = verEmptyHtml('Analyse en attente', 'Les principales modifications de cette version seront listées ici après la vérification du vendredi soir.');
+      $('verChangesFoot').textContent = '';
+    } else {
+      $('verChangesSub').textContent = 'De ' + (d.installed || '?') + ' à ' + a.version;
+      const hl = Array.isArray(a.highlights) ? a.highlights : [];
+      $('verChanges').innerHTML = hl.length
+        ? hl.map(h => verItemHtml(h.kind, h.title, h.detail, h.villa, '')).join('')
+        : verEmptyHtml('Aucune modification notable', 'L\'analyse n\'a relevé aucun changement important pour cette installation.');
+      const nSrc = Array.isArray(a.sources) ? a.sources.length : 0;
+      $('verChangesFoot').textContent = 'Analyse du ' + verDay(a.generated_at) + (nSrc ? ' · ' + nSrc + ' source' + (nSrc > 1 ? 's' : '') + ' consultée' + (nSrc > 1 ? 's' : '') : '');
+    }
+
+    // ---- problèmes connus + surveillance 30 jours
+    const mon = $('verMonitor');
+    if(available && a){
+      const issues = Array.isArray(a.known_issues) ? a.known_issues : [];
+      const nBlock = issues.filter(i => i.severity === 'blocking').length;
+      const nMinor = issues.filter(i => i.severity === 'minor').length;
+      $('verIssuesSub').textContent = issues.length
+        ? (nBlock + ' bloquant' + (nBlock > 1 ? 's' : '') + ' · ' + nMinor + ' mineur' + (nMinor > 1 ? 's' : '') + ' · ' + (issues.length - nBlock - nMinor) + ' pour information')
+        : 'Aucun problème relevé';
+      $('verIssues').innerHTML = issues.length
+        ? issues.map(i => {
+            const url = verSafeUrl(i.url);
+            const foot = (i.status ? '<span>' + verEsc(i.status) + '</span>' : '') + (url ? '<a href="' + verEsc(url) + '" target="_blank" rel="noopener noreferrer">Source</a>' : '');
+            return verItemHtml(i.severity, i.title, i.detail, i.villa, foot);
+          }).join('')
+        : verEmptyHtml('Aucun problème connu', 'Aucun problème n\'a été relevé pour cette version lors de la dernière analyse.');
+      const m = a.monitoring || {};
+      const start = new Date((m.start || '') + 'T00:00:00');
+      const days = Number(m.days) || 30;
+      if(!isNaN(start)){
+        const day = Math.max(0, Math.floor((Date.now() - start.getTime()) / 86400000));
+        mon.hidden = false;
+        $('verMonitorL').textContent = 'Surveillance ' + days + ' jours — depuis le ' + verDay(m.start);
+        $('verMonitorR').textContent = day >= days ? ('terminée (jour ' + day + ')') : ('jour ' + day + ' sur ' + days);
+        $('verMonitorFill').style.width = Math.min(100, Math.round(day / days * 100)) + '%';
+      } else { mon.hidden = true; }
+    } else {
+      mon.hidden = true;
+      $('verIssuesSub').textContent = available ? 'Analyse à venir' : 'Aucune mise à jour en attente';
+      $('verIssues').innerHTML = available
+        ? verEmptyHtml('Surveillance en attente', 'Les problèmes connus de cette version seront listés ici et suivis pendant 30 jours.')
+        : verEmptyHtml('Rien à surveiller', 'Les problèmes connus d\'une nouvelle version seront listés ici et suivis pendant 30 jours.');
+    }
+
+    // ---- recommandation + bouton
+    const card = $('verRecoCard');
+    const level = ['green','yellow','red'].includes(reco.level) ? reco.level : 'none';
+    card.dataset.level = level;
+    $('verRecoLabel').textContent = reco.label || '—';
+    $('verRecoSub').textContent = available ? ('Pour passer à la version ' + (latest.version || '')) : 'Aucune action nécessaire';
+
+    let body = '';
+    if(upd.state === 'running' || upd.state === 'requested'){
+      const idx = VER_STEPS.findIndex(s => s[0] === upd.step);
+      body += '<div class="ver-reco-h">Mise à jour en cours' + (upd.to ? ' vers ' + verEsc(upd.to) : '') + '</div>';
+      if(upd.step === 'rollback'){
+        body += '<div class="ver-result" data-r="rolled_back">' + verEsc(upd.message || 'Retour à la version précédente en cours.') + '</div>';
+      } else {
+        body += '<ul class="ver-steps">' + VER_STEPS.map((s, i) =>
+          '<li class="' + (idx > i ? 'is-done' : (idx === i ? 'is-now' : '')) + '">' + verEsc(s[1]) + '</li>').join('') + '</ul>';
+        if(upd.message) body += '<div class="ver-result">' + verEsc(upd.message) + '</div>';
+      }
+    } else {
+      if(reco.reason) body += '<div class="ver-reco-reason">' + verEsc(reco.reason) + '</div>';
+      const checks = a && a.recommendation && Array.isArray(a.recommendation.after_update_checks) ? a.recommendation.after_update_checks : [];
+      if(available && checks.length) body += '<div class="ver-reco-h">À contrôler après la mise à jour</div><ul class="ver-reco-checks">' + checks.map(c => '<li>' + verEsc(c) + '</li>').join('') + '</ul>';
+      if(['success','failed','rolled_back'].includes(upd.state) && upd.message){
+        body += '<div class="ver-reco-h">Dernière mise à jour</div><div class="ver-result" data-r="' + upd.state + '">' + verEsc(upd.message)
+          + (upd.finished_at ? '<small>' + verEsc(verDateTime(upd.finished_at)) + '</small>' : '') + '</div>';
+      }
+    }
+    $('verRecoBody').innerHTML = body;
+
+    const btn = $('verUpdateBtn');
+    const agentOk = !!(d.agent && d.agent.alive);
+    let note = '';
+    if(verIsUpdating()){
+      btn.disabled = true; $('verUpdateLbl').textContent = 'Mise à jour en cours…'; $('verUpdateSub').textContent = 'ne pas éteindre le Mac mini';
+    } else if(!available){
+      btn.disabled = true; $('verUpdateLbl').textContent = 'Sauvegarder et mettre à jour'; $('verUpdateSub').textContent = 'aucune mise à jour disponible';
+    } else {
+      btn.disabled = !agentOk;
+      $('verUpdateLbl').textContent = 'Sauvegarder et mettre à jour';
+      $('verUpdateSub').textContent = (d.installed || '?') + ' → ' + (latest.version || '?');
+      note = agentOk ? 'Sauvegarde complète avant mise à jour · retour automatique si Home Assistant ne redémarre pas'
+                     : 'Bouton inactif : l\'agent de mise à jour ne répond pas sur le Mac mini (scripts/install_ha_update_agent.sh)';
+    }
+    $('verUpdateNote').textContent = note;
+  }
+
+  function renderVersionTicker(){
+    const el = document.getElementById('accTicker');
+    if(!el) return;
+    const d = VER.data;
+    if(!d || !d.update_available || !d.latest || !d.latest.version){ el.hidden = true; el.innerHTML = ''; return; }
+    const level = (d.recommendation && d.recommendation.level) || 'none';
+    el.dataset.level = ['green','yellow','red'].includes(level) ? level : 'none';
+    const msg = '<span><i></i>Home Assistant <b>' + verEsc(d.latest.version) + '</b> est disponible · version installée ' + verEsc(d.installed || '?')
+      + (VER_LEVEL_SHORT[level] ? ' · ' + verEsc(VER_LEVEL_SHORT[level]) : '') + ' · toucher pour ouvrir la page Version</span>';
+    // 6 répétitions (2 moitiés identiques de 3) : la translation de -50 % boucle sans couture.
+    el.innerHTML = '<div class="acc-ticker-track">' + msg.repeat(6) + '</div>';
+    el.hidden = false;
+  }
+
+  function verCloseModal(){
+    const m = document.getElementById('verModal');
+    if(m) m.remove();
+    document.removeEventListener('keydown', verModalKey);
+  }
+  function verModalKey(e){ if(e.key === 'Escape') verCloseModal(); }
+  function verOpenModal(){
+    const d = VER.data;
+    if(!d || !d.update_available || verIsUpdating()) return;
+    const reco = d.recommendation || {};
+    const level = ['green','yellow','red'].includes(reco.level) ? reco.level : 'red';
+    const target = d.latest.version;
+    verCloseModal();
+    const m = document.createElement('div');
+    m.className = 'ver-modal'; m.id = 'verModal'; m.dataset.level = level;
+    m.innerHTML = '<div class="ver-modal-box" role="dialog" aria-modal="true" aria-labelledby="verModalTitle">'
+      + '<div class="ver-modal-title" id="verModalTitle">Sauvegarder et mettre à jour Home Assistant ?</div>'
+      + '<div class="ver-modal-ver">' + verEsc(d.installed) + ' → ' + verEsc(target) + '</div>'
+      + '<ul class="ver-modal-list">'
+      + '<li><b>Home Assistant sera indisponible</b> pendant 5 à 15 minutes ; les interrupteurs KNX continuent de fonctionner.</li>'
+      + '<li><b>Une sauvegarde complète</b> des données est faite juste avant, Home Assistant arrêté.</li>'
+      + '<li><b>Retour automatique</b> à la version ' + verEsc(d.installed) + ' si la nouvelle version ne redémarre pas.</li>'
+      + '</ul>'
+      + '<div class="ver-modal-reco"><b>' + verEsc(reco.label || '') + '</b>' + (reco.reason ? ' — ' + verEsc(reco.reason) : '') + '</div>'
+      + '<div class="ver-modal-err" id="verModalErr"></div>'
+      + '<div class="ver-modal-actions"><button class="ver-btn" type="button" id="verModalCancel">Annuler</button>'
+      + '<button class="ver-modal-ok" type="button" id="verModalOk">' + (level === 'red' ? 'Mettre à jour malgré l\'avis défavorable' : 'Sauvegarder et mettre à jour') + '</button></div>'
+      + '</div>';
+    m.addEventListener('click', e => { if(e.target === m) verCloseModal(); });
+    document.getElementById('screen').appendChild(m);
+    document.addEventListener('keydown', verModalKey);
+    document.getElementById('verModalCancel').addEventListener('click', verCloseModal);
+    document.getElementById('verModalOk').addEventListener('click', async ev => {
+      const ok = ev.currentTarget;
+      ok.disabled = true;
+      try{
+        await verApi('POST', '/api/ha-version/update', {version: target, confirm: true});
+        verCloseModal();
+        await refreshVersion();
+      }catch(e){
+        document.getElementById('verModalErr').textContent = (e && e.message) || 'La demande a échoué.';
+        ok.disabled = false;
+      }
+    });
+  }
+
+  (function initVersion(){
+    const checkBtn = document.getElementById('verCheckBtn');
+    if(!checkBtn) return;
+    checkBtn.addEventListener('click', async () => {
+      if(VER.busy) return;
+      VER.busy = true; renderVersion();
+      try{ VER.data = await verApi('POST', '/api/ha-version/check'); VER.error = null; }
+      catch(e){ VER.error = (e && e.message) || 'Vérification impossible'; }
+      VER.busy = false;
+      renderVersion(); renderVersionTicker(); verSchedule();
+    });
+    document.getElementById('verUpdateBtn').addEventListener('click', verOpenModal);
+    const ticker = document.getElementById('accTicker');
+    if(ticker) ticker.addEventListener('click', () => selectView(NAV_ITEMS.find(i => i.id === 'version')));
+    refreshVersion();
+  })();
+
+
 })();
 </script>
 
 
 
+<link rel="stylesheet" href="room-cards.css?v=20260930b">
+<script src="room-cards.js?v=20260930b"></script>
 </body>
 </html>

@@ -1,0 +1,159 @@
+{
+  "schema": 1,
+  "generated_at": "2026-10-03T23:45:00+02:00",
+  "generated_by": "Claude — première analyse (session du 03.10.2026)",
+  "installed_version": "2026.8.3",
+  "version": "2026.9.4",
+  "released_at": "2026-09-27",
+  "line": "2026.9",
+  "line_released_at": "2026-09-02",
+  "monitoring": {
+    "start": "2026-09-02",
+    "end": "2026-10-02",
+    "days": 30
+  },
+  "highlights": [
+    {
+      "kind": "breaking",
+      "title": "KNX : les « expose » n'envoient plus leur valeur au démarrage",
+      "detail": "Une valeur exposée vers le bus n'est plus émise à l'initialisation, sauf option send_on_init.",
+      "villa": "Sans effet ici : knx.yaml ne contient aucun bloc expose."
+    },
+    {
+      "kind": "breaking",
+      "title": "Installer ou ignorer une mise à jour demande un compte administrateur",
+      "detail": "Les actions install, skip et clear des entités de mise à jour sont réservées aux administrateurs. Même restriction pour la gestion des codes de serrure Z-Wave JS.",
+      "villa": "Sans effet attendu : le compte principal (Villa Bulle) est administrateur, et il n'y a pas de Z-Wave sur cette instance."
+    },
+    {
+      "kind": "breaking",
+      "title": "API des assistants (LLM) : noms d'outils préfixés par le domaine",
+      "detail": "Les outils exposés aux assistants changent de nom (ex. homeassistant__GetLiveContext).",
+      "villa": "Le connecteur Claude passe par ha-mcp, pas par cette API : à contrôler quand même après mise à jour."
+    },
+    {
+      "kind": "breaking",
+      "title": "Autres changements sans objet ici",
+      "detail": "Flexit Nordic, UniFi Protect (version 7.2.105 minimum), aspirateurs (battery_level retiré), notifications persistantes (type updated au lieu de added).",
+      "villa": "Aucun de ces équipements n'est installé, et aucune automatisation n'existe encore sur cette instance."
+    },
+    {
+      "kind": "fix",
+      "title": "Tesla Fleet : démarrage et réveil du véhicule mieux bornés",
+      "detail": "Le premier rafraîchissement du véhicule a désormais un délai maximal, et la gestion du réveil est améliorée.",
+      "villa": "Concerne directement la Model S : devrait limiter les démarrages lents quand la voiture dort."
+    },
+    {
+      "kind": "new",
+      "title": "Modbus modernisé, configurable depuis l'interface",
+      "detail": "Nouvelle base commune pour les onduleurs solaires, pompes à chaleur et compteurs d'énergie.",
+      "villa": "Piste à réévaluer pour l'onduleur Huawei SUN2000, dont l'intégration est en pause."
+    },
+    {
+      "kind": "new",
+      "title": "Activité : la chaîne d'événements qui explique un changement",
+      "detail": "L'historique d'activité montre désormais pourquoi un état a changé (quelle automatisation, quel déclencheur).",
+      "villa": ""
+    },
+    {
+      "kind": "new",
+      "title": "Interface : cartes tuile enrichies, tableau de bord Sécurité, panneaux Série et MQTT",
+      "detail": "Nouvelles fonctions de carte tuile pour lampes et thermostats, alertes actives dans le tableau de bord Sécurité, indicateurs d'occupation des stockages réseau.",
+      "villa": ""
+    },
+    {
+      "kind": "fix",
+      "title": "Quatre correctifs publiés depuis la 2026.9.0",
+      "detail": "2026.9.1 (5 sept.) : boucle de redémarrage et sauvegardes. 2026.9.2 (11 sept.) : chiffrement des sauvegardes. 2026.9.3 (18 sept.). 2026.9.4 (27 sept.) : filtre de sécurité HTTP.",
+      "villa": ""
+    }
+  ],
+  "known_issues": [
+    {
+      "severity": "minor",
+      "title": "KNX : connexion en échec signalée sur une configuration YAML",
+      "detail": "Un utilisateur rapporte, en 2026.9.1, une connexion KNX qui ne s'établit plus avec des appareils définis en YAML ; il est revenu en 2026.8.3. Cause non établie, pas de ticket GitHub, personne d'autre ne confirme le problème KNX.",
+      "status": "Non confirmé · dernier message le 15.09.2026",
+      "villa": "Toute la configuration KNX d'ici est en YAML : c'est le premier point à vérifier après la mise à jour.",
+      "url": "https://community.home-assistant.io/t/knx-and-hikvision-nvr-issues-on-core-2026-9-x-tried-2026-9-1-forced-to-roll-back-to-2026-8-3/1024306"
+    },
+    {
+      "severity": "minor",
+      "title": "Home Assistant qui ne répond plus, sans cause identifiée",
+      "detail": "Des cas de cœur figé (sans pic de mémoire) sont rapportés en 2026.9.x. Sur les installations avec Supervisor, celui-ci relance le cœur.",
+      "status": "Ouvert au 01.10.2026 · cause inconnue",
+      "villa": "Ici il n'y a pas de Supervisor : un blocage ne serait pas relancé automatiquement et pourrait passer inaperçu.",
+      "url": "https://ha-expert.com/en/home-assistant-2026-9-update-issues/"
+    },
+    {
+      "severity": "minor",
+      "title": "Intégrations personnalisées : compatibilité non vérifiée",
+      "detail": "Plusieurs intégrations hors catalogue officiel ont cessé de fonctionner en 2026.9 jusqu'à leur propre mise à jour (Homematic(IP) Local, Livisi).",
+      "status": "Dépend de chaque intégration",
+      "villa": "Quatre intégrations personnalisées ici (HACS, ha-mcp, myenergi, Suunto) : leur compatibilité avec 2026.9 n'a pas été vérifiée.",
+      "url": "https://community.simon42.com/t/probleme-mit-home-assistant-update-ab-version-2026-9-aktuell-2026-9-2-video-von-simon42/92030"
+    },
+    {
+      "severity": "minor",
+      "title": "card-mod : « Could not load Home Assistant » sur certains tableaux de bord",
+      "detail": "Le problème touche les installations qui chargent card-mod par une ancienne entrée extra_module_url dans configuration.yaml. Contournement : retirer cette entrée.",
+      "status": "Ouvert au 01.10.2026",
+      "villa": "A priori non concerné : card-mod est chargé ici comme ressource de tableau de bord, sans extra_module_url. Seul le tableau de bord de test l'utilise.",
+      "url": "https://ha-expert.com/en/home-assistant-2026-9-update-issues/"
+    },
+    {
+      "severity": "info",
+      "title": "KNX : sync_state: false refusé pour lampes, stores et thermostats",
+      "detail": "Depuis la 2026.9, les entités KNX créées dans l'interface avec sync_state: false ne sont plus chargées. Comportement voulu selon les mainteneurs ; correction manuelle du fichier de stockage.",
+      "status": "Fermé (changement volontaire)",
+      "villa": "Non concerné : aucune entité KNX créée dans l'interface, et knx.yaml n'utilise pas sync_state.",
+      "url": "https://github.com/home-assistant/core/issues/181567"
+    },
+    {
+      "severity": "info",
+      "title": "« KNX mort après la 2026.9.4 » : fausse alerte",
+      "detail": "Le fil de discussion conclut à une panne du routeur KNX IP, résolue en le redémarrant, sans lien avec la mise à jour.",
+      "status": "Résolu le 02.10.2026 · cause matérielle",
+      "villa": "",
+      "url": "https://community.home-assistant.io/t/after-update-to-2026-9-4-knx-integration-dead/1026864"
+    },
+    {
+      "severity": "info",
+      "title": "Boucle de redémarrage avec pic de mémoire (2026.9.0)",
+      "detail": "Le cœur redémarrait en boucle avec plusieurs gigaoctets de mémoire consommés, à cause du registre des appareils.",
+      "status": "Corrigé en 2026.9.1",
+      "villa": "",
+      "url": "https://ha-expert.com/en/home-assistant-2026-9-update-issues/"
+    }
+  ],
+  "recommendation": {
+    "level": "yellow",
+    "label": "Mise à jour possible, problèmes mineurs",
+    "reason": "La 2026.9.4 est le quatrième correctif d'une version sortie il y a 31 jours, et aucun problème bloquant confirmé ne concerne cette installation.\n\nTrois points mineurs restent ouverts : un signalement KNX non confirmé sur une configuration YAML comme celle-ci, des blocages du cœur sans cause identifiée, et quatre intégrations personnalisées dont la compatibilité n'a pas été vérifiée.\n\nLa 2026.10 est attendue vers le 7 octobre : passer par la 2026.9.4 avant reste plus sûr que de sauter directement sur une version toute neuve.",
+    "after_update_checks": [
+      "KNX : allumer une lampe et bouger un store depuis Home Assistant",
+      "Tesla et myenergi : valeurs à jour",
+      "HACS, ha-mcp et Suunto : chargés sans erreur dans le journal",
+      "Accès externe par domotiquebulle.malnoy.com",
+      "Prometheus : cible home_assistant à l'état UP"
+    ]
+  },
+  "next_release": {
+    "version": "2026.10",
+    "expected": "2026-10-07",
+    "note": "Date déduite du calendrier habituel (premier mercredi du mois), non annoncée."
+  },
+  "sources": [
+    {"title": "Notes de version 2026.9", "url": "https://www.home-assistant.io/blog/2026/09/02/release-20269/"},
+    {"title": "Journal complet des changements 2026.9", "url": "https://www.home-assistant.io/changelogs/core-2026.9/"},
+    {"title": "Version stable officielle", "url": "https://version.home-assistant.io/stable.json"},
+    {"title": "Problèmes de mise à jour 2026.9 (ha-expert)", "url": "https://ha-expert.com/en/home-assistant-2026-9-update-issues/"},
+    {"title": "Problèmes avec la 2026.9 (communauté simon42)", "url": "https://community.simon42.com/t/probleme-mit-home-assistant-update-ab-version-2026-9-aktuell-2026-9-2-video-von-simon42/92030"},
+    {"title": "KNX et Hikvision en 2026.9.x (communauté HA)", "url": "https://community.home-assistant.io/t/knx-and-hikvision-nvr-issues-on-core-2026-9-x-tried-2026-9-1-forced-to-roll-back-to-2026-8-3/1024306"},
+    {"title": "KNX après la 2026.9.4 (communauté HA)", "url": "https://community.home-assistant.io/t/after-update-to-2026-9-4-knx-integration-dead/1026864"},
+    {"title": "KNX sync_state: false (ticket 181567)", "url": "https://github.com/home-assistant/core/issues/181567"}
+  ],
+  "history": [
+    {"date": "2026-10-03", "version": "2026.9.4", "level": "yellow", "note": "Première analyse : aucun bloquant confirmé, trois points mineurs ouverts."}
+  ]
+}

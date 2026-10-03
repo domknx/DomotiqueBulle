@@ -9,7 +9,11 @@ services:
 
   homeassistant:
     container_name: homeassistant
-    image: homeassistant/home-assistant:stable
+    # Version de Home Assistant : fixée par HA_IMAGE_TAG dans .env dès la première mise à jour
+    # faite depuis la page Version du dashboard (scripts/ha_update.sh) ; « stable » tant que la
+    # variable est absente. Ne pas lancer « docker compose pull homeassistant » à la main : la
+    # mise à jour passe par ce script, qui sauvegarde avant et sait revenir en arrière.
+    image: homeassistant/home-assistant:${HA_IMAGE_TAG:-stable}
     restart: unless-stopped
     networks:
       - domotique_net
@@ -208,6 +212,12 @@ services:
       - "8000"  # jamais publié sur l'hôte : joignable uniquement depuis dashboard-proto (proxy /api/), sur domotique_net
     volumes:
       - ./dashboard/config:/config:ro
+      # Page Version (03.10.2026) : analyse hebdomadaire + fichiers échangés avec l'agent de mise à
+      # jour du Mac (dashboard/version/README.md). Seul le fichier .HA_VERSION de Home Assistant est
+      # monté, en lecture seule : dashboard-api ne voit rien d'autre de HomeAssistant_Data, et n'a
+      # aucun accès au socket Docker.
+      - ./dashboard/version:/data
+      - ./HomeAssistant_Data/.HA_VERSION:/ha/HA_VERSION:ro
     # Première tranche réelle de la couche dashboard-api prévue au §4 du cahier des charges
     # (dashboard/CAHIER_DES_CHARGES.md) — pour l'instant un seul endpoint (/api/weather, proxy
     # Open-Meteo, config dans dashboard/config/weather.yaml), voir dashboard/api/README.md.

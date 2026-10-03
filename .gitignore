@@ -48,3 +48,7 @@ Tunet/
 dashboard/api/__pycache__/
 dashboard/api/**/__pycache__/
 dashboard/api/.venv/
+
+# Page Version du dashboard : fichiers d'état échangés avec l'agent de mise à jour du Mac
+# (cache de la dernière version, demandes, journal) — régénérés, jamais versionnés.
+dashboard/version/state/
