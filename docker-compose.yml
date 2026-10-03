@@ -17,7 +17,10 @@ services:
       - "8123:8123"
     volumes:
       - ./HomeAssistant_Data:/config
-      - /etc/localtime:/etc/localtime:ro
+      # Montage /etc/localtime retiré le 03.10.2026 : sur macOS ce fichier est un lien vers
+      # /private/var/db/timezone/tz/<version>/..., chemin qui change à chaque mise à jour des
+      # fuseaux par macOS et que Docker Desktop ne peut plus monter (conteneur impossible à
+      # démarrer). Le fuseau est fourni par la variable TZ ci-dessous, ce qui suffit.
     environment:
       - TZ=${TZ}
     # NOTE KNX : si l'interface KNX utilisée fonctionne en mode "routage"
