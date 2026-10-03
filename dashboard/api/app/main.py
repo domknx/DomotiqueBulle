@@ -71,6 +71,7 @@ async def get_weather() -> dict[str, Any]:
 
 class UpdateRequest(BaseModel):
     version: str
+    password: str = ""
     confirm: bool = False
 
 
@@ -95,10 +96,10 @@ async def check_ha_version() -> dict[str, Any]:
 
 @app.post("/api/ha-version/update")
 async def update_ha_version(req: UpdateRequest) -> dict[str, Any]:
-    """Bouton « Sauvegarder et mettre à jour » : dépose une demande pour l'agent du Mac."""
+    """Bouton « Sauvegarder et mettre à jour » : mot de passe exigé, puis demande pour l'agent du Mac."""
     if not req.confirm:
         raise HTTPException(status_code=400, detail="Confirmation manquante.")
     try:
-        return await ha_version.request_update(req.version)
+        return await ha_version.request_update(req.version, req.password)
     except ha_version.VersionError as exc:
         raise _version_http_error(exc) from exc

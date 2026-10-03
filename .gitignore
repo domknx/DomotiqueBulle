@@ -52,3 +52,5 @@ dashboard/api/.venv/
 # Page Version du dashboard : fichiers d'état échangés avec l'agent de mise à jour du Mac
 # (cache de la dernière version, demandes, journal) — régénérés, jamais versionnés.
 dashboard/version/state/
+# Empreinte du mot de passe de mise à jour (jamais versionnée, même sous forme d'empreinte).
+dashboard/version/update_password.hash

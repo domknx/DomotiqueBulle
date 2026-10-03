@@ -10,6 +10,11 @@ Ce module répond à quatre questions, et rien d'autre :
    vendredi soir par une tâche planifiée — voir dashboard/version/README.md) ;
 4. où en est une mise à jour demandée depuis la page ?
 
+Le bouton de mise à jour est protégé par un mot de passe, vérifié ICI (côté serveur) et jamais
+dans la page : seule son empreinte salée (PBKDF2-SHA256) est conservée, dans
+/data/update_password.hash, hors Git. Cinq erreurs de suite bloquent le bouton dix minutes.
+Pour le changer : docker exec -it dashboard-api python -m app.set_password
+
 IMPORTANT — ce service ne touche jamais à Docker. Le bouton « Sauvegarder et mettre à jour » se
 contente de déposer un fichier de demande dans /data/state/requests/ ; c'est un agent launchd côté
 Mac (scripts/ha_update_agent.sh) qui le ramasse et lance scripts/ha_update.sh. Aucun accès au
@@ -20,9 +25,12 @@ dépendre de Python ou de jq sur le Mac.
 
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
 import os
 import re
+import secrets
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -38,6 +46,8 @@ LATEST_CACHE_PATH = STATE_DIR / "latest.json"
 STATUS_PATH = STATE_DIR / "update_status"
 HEARTBEAT_PATH = STATE_DIR / "agent_heartbeat"
 REQUEST_PATH = REQUESTS_DIR / "update_request"
+PASSWORD_PATH = DATA_DIR / "update_password.hash"
+AUTH_STATE_PATH = STATE_DIR / "auth_failures.json"
 HA_VERSION_FILE = Path(os.environ.get("HA_VERSION_FILE", "/ha/HA_VERSION"))
 
 # Sources officielles ; surchargeables par variable d'environnement pour les tests hors ligne.
@@ -59,6 +69,11 @@ AGENT_ALIVE_WITHIN_S = 5 * 60
 REQUEST_STALE_AFTER_S = 10 * 60
 
 LEVELS = ("green", "yellow", "red")
+
+# Mot de passe du bouton de mise à jour.
+PBKDF2_ITERATIONS = 200_000
+MAX_PASSWORD_FAILURES = 5
+PASSWORD_LOCK_S = 10 * 60
 
 
 class VersionError(Exception):
@@ -119,6 +134,61 @@ def _read_keyvalue(path: Path) -> dict[str, str]:
     except OSError:
         pass
     return out
+
+
+def hash_password(password: str, salt: bytes | None = None, iterations: int = PBKDF2_ITERATIONS) -> str:
+    """Empreinte au format « pbkdf2_sha256:itérations:sel:empreinte » (hexadécimal)."""
+    salt = salt or secrets.token_bytes(16)
+    digest = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, iterations)
+    return f"pbkdf2_sha256:{iterations}:{salt.hex()}:{digest.hex()}"
+
+
+def password_is_set() -> bool:
+    return _password_record() is not None
+
+
+def _password_record() -> tuple[int, bytes, bytes] | None:
+    try:
+        algo, iterations, salt, digest = PASSWORD_PATH.read_text(encoding="utf-8").strip().split(":")
+        if algo != "pbkdf2_sha256":
+            return None
+        return int(iterations), bytes.fromhex(salt), bytes.fromhex(digest)
+    except (OSError, ValueError):
+        return None
+
+
+def check_password(password: str) -> None:
+    """Lève VersionError si le mot de passe est absent, faux, ou si le bouton est bloqué."""
+    record = _password_record()
+    if record is None:
+        raise VersionError(
+            "Aucun mot de passe de mise à jour n'est configuré : mise à jour refusée "
+            "(docker exec -it dashboard-api python -m app.set_password).",
+            503,
+        )
+
+    now = time.time()
+    state = _read_json(AUTH_STATE_PATH)
+    state = state if isinstance(state, dict) else {}
+    locked_until = float(state.get("locked_until") or 0)
+    if now < locked_until:
+        minutes = max(1, int((locked_until - now + 59) // 60))
+        raise VersionError(f"Trop d'essais. Nouvel essai possible dans {minutes} min.", 429)
+
+    iterations, salt, expected = record
+    digest = hashlib.pbkdf2_hmac("sha256", (password or "").encode("utf-8"), salt, iterations)
+    if hmac.compare_digest(digest, expected):
+        if state:
+            _write_atomic(AUTH_STATE_PATH, json.dumps({"failures": 0, "locked_until": 0}))
+        return
+
+    failures = int(state.get("failures") or 0) + 1
+    if failures >= MAX_PASSWORD_FAILURES:
+        _write_atomic(AUTH_STATE_PATH, json.dumps({"failures": 0, "locked_until": now + PASSWORD_LOCK_S}))
+        raise VersionError("Mot de passe incorrect. Trop d'essais : bouton bloqué pendant 10 minutes.", 429)
+    _write_atomic(AUTH_STATE_PATH, json.dumps({"failures": failures, "locked_until": 0}))
+    left = MAX_PASSWORD_FAILURES - failures
+    raise VersionError(f"Mot de passe incorrect ({left} essai{'s' if left > 1 else ''} restant{'s' if left > 1 else ''}).", 401)
 
 
 async def fetch_latest(source: str) -> dict[str, Any]:
@@ -213,6 +283,14 @@ def agent_state() -> dict[str, Any]:
     return {"alive": age <= AGENT_ALIVE_WITHIN_S, "last_seen_s": int(age)}
 
 
+def _pct(value: str | None) -> int | None:
+    """Pourcentage écrit par le script (0 à 100), ou None s'il n'a pas commencé."""
+    try:
+        return max(0, min(100, int(value)))  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return None
+
+
 def update_state() -> dict[str, Any]:
     """État de la mise à jour, vu depuis les fichiers échangés avec l'agent du Mac."""
     status = _read_keyvalue(STATUS_PATH)
@@ -224,6 +302,8 @@ def update_state() -> dict[str, Any]:
         "from": status.get("from", ""),
         "to": status.get("to", ""),
         "backup": status.get("backup", ""),
+        "backup_pct": _pct(status.get("backup_pct")),
+        "update_pct": _pct(status.get("update_pct")),
         "started_at": status.get("started_at", ""),
         "finished_at": status.get("finished_at", ""),
     }
@@ -276,12 +356,17 @@ async def get_status(force_check: bool = False, source: str = "manual") -> dict[
         "analysis_current": bool(analysis and analysis["version"] == latest_version),
         "recommendation": build_recommendation(installed, latest_version, analysis),
         "agent": agent_state(),
+        "password_set": password_is_set(),
         "update": update_state(),
     }
 
 
-async def request_update(version: str) -> dict[str, Any]:
-    """Dépose la demande de mise à jour pour l'agent du Mac, après toutes les vérifications."""
+async def request_update(version: str, password: str) -> dict[str, Any]:
+    """Dépose la demande de mise à jour pour l'agent du Mac, après toutes les vérifications.
+
+    Le mot de passe est contrôlé en dernier : une demande refusée pour une autre raison (version
+    périmée, mise à jour déjà en cours, agent absent) ne consomme pas d'essai.
+    """
     version = (version or "").strip()
     if not parse_version(version):
         raise VersionError("Numéro de version invalide.")
@@ -302,6 +387,8 @@ async def request_update(version: str) -> dict[str, Any]:
         raise VersionError(
             "L'agent de mise à jour ne répond pas sur le Mac mini (voir scripts/install_ha_update_agent.sh).", 503
         )
+
+    check_password(password)
 
     reco = build_recommendation(installed, version, load_analysis())
     _write_atomic(

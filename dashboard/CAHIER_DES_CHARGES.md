@@ -167,12 +167,13 @@ Construit le 03.10.2026 (demande utilisateur, après l'arrêt de Home Assistant 
 - **V3** — Bandeau défilant discret dans l'en-tête de l'Accueil quand une nouvelle version est disponible ; un clic ouvre la page Version.
 - **V4** — Carte « Principales modifications » de la nouvelle version, avec pour chaque point ce qu'il change pour la Villa Bulle. Espace réservé quand il n'y a rien à afficher.
 - **V5** — Carte « Problèmes connus », suivis pendant 30 jours à partir de la sortie de la version mensuelle, classés bloquant / mineur / information.
-- **V6** — Recommandation et bouton « Sauvegarder et mettre à jour » : vert (recommandée), jaune (problèmes mineurs encore ouverts), rouge (déconseillée ou pas encore analysée). Confirmation obligatoire ; suivi des étapes en direct.
+- **V6** — Recommandation et bouton « Sauvegarder et mettre à jour » : vert (recommandée), jaune (problèmes mineurs encore ouverts), rouge (déconseillée ou pas encore analysée). Le bouton ouvre une fenêtre qui exige un **mot de passe** pour autoriser la mise à jour (vérifié côté serveur, empreinte hors Git, blocage 10 minutes après 5 erreurs).
+- **V8** — Pendant la mise à jour : liste des étapes et **deux barres de progression** à valeurs réelles — Sauvegarde (taille de l'archive écrite) et Mise à jour (jalons constatés du démarrage, puis décompte du contrôle de stabilité).
 - **V7** — La mise à jour sauvegarde `HomeAssistant_Data` avant, vérifie le redémarrage et revient seule à l'ancienne version en cas d'échec (`scripts/ha_update.sh`). Elle est exécutée par un agent launchd sur le Mac : `dashboard-api` n'a aucun accès à Docker.
 
 Données réelles uniquement (`/api/ha-version`) : pas de données de démonstration sur cet écran. Icône : pictogramme de maison générique aux couleurs du dashboard, pas le logo officiel de Home Assistant.
 
-Point ouvert : toute personne qui peut ouvrir le dashboard peut presser le bouton — à traiter avec le mode invité (§5.5).
+Le bouton est visible de toute personne qui ouvre le dashboard, mais sans le mot de passe aucune mise à jour ne part. Sur le réseau local le dashboard est en HTTP : le mot de passe y circule en clair.
 
 ## 4. Architecture logicielle
 

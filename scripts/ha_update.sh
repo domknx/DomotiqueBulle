@@ -10,11 +10,14 @@
 # lancé à la main dans le Terminal. Déroulé :
 #   1. contrôles (Docker, versions, place disque) ;
 #   2. téléchargement de la nouvelle image — HA tourne encore, rien n'est modifié si ça échoue ;
-#   3. arrêt de HA, archive complète de HomeAssistant_Data dans Backups/ha_update/ ;
+#   3. arrêt de HA, archive complète de HomeAssistant_Data dans Backups/ha_update/ (non
+#      compressée à ce stade : plus rapide, et compressée une fois HA reparti) ;
 #   4. démarrage de la nouvelle version (HA_IMAGE_TAG dans .env) ;
 #   5. vérification : conteneur démarré, interface joignable, bonne version, encore là 60 s après ;
 #   6. en cas d'échec : restauration de l'archive et redémarrage de l'ancienne version.
-# L'avancement est écrit dans dashboard/version/state/update_status (lu par la page) et le détail
+# L'avancement est écrit dans dashboard/version/state/update_status (lu par la page), avec deux
+# pourcentages réels : backup_pct (taille de l'archive écrite) et update_pct (jalons constatés du
+# démarrage de la nouvelle version, puis décompte du contrôle de stabilité). Le détail est
 # dans dashboard/version/state/update.log.
 
 set -u
@@ -55,7 +58,7 @@ rollback() {
   if ! mv "$HA_DATA_DIR" "$failed_copy"; then
     fail "rollback" "Retour arrière impossible : le dossier de données n'a pas pu être mis de côté. Sauvegarde intacte dans ${ST_BACKUP}. Voir scripts/ha_restore.sh."
   fi
-  if ! tar -xzf "${BK}/${HA_DATA_NAME}.tar.gz" -C "$PROJECT_ROOT"; then
+  if ! tar -xf "$(archive_path "$BK")" -C "$PROJECT_ROOT"; then
     fail "rollback" "Retour arrière impossible : l'archive n'a pas pu être restaurée. Les données d'après mise à jour sont dans ${failed_copy}."
   fi
   set_image_tag "$ST_FROM" || fail "rollback" "Retour arrière incomplet : .env n'a pas pu être corrigé (HA_IMAGE_TAG=${ST_FROM})."
@@ -90,7 +93,7 @@ fi
 
 # ---- 2. Téléchargement (HA tourne encore) ----------------------------------------------------
 write_status "running" "pull" "Téléchargement de Home Assistant ${TARGET}."
-docker pull "${HA_IMAGE_REPO}:${TARGET}" || fail "pull" "Téléchargement de l'image ${TARGET} impossible. Home Assistant n'a pas été touché."
+pull_with_progress "${HA_IMAGE_REPO}:${TARGET}" || fail "pull" "Téléchargement de l'image ${TARGET} impossible. Home Assistant n'a pas été touché."
 
 # L'image actuelle est étiquetée avec son numéro de version, pour pouvoir y revenir même si
 # l'étiquette « stable » a bougé entre-temps.
@@ -119,8 +122,7 @@ backup_failed() {
 }
 
 mkdir -p "$BK" || backup_failed "Dossier de sauvegarde impossible à créer."
-tar -czf "${BK}/${HA_DATA_NAME}.tar.gz" -C "$PROJECT_ROOT" "$HA_DATA_NAME" || backup_failed "L'archive de sauvegarde a échoué."
-tar -tzf "${BK}/${HA_DATA_NAME}.tar.gz" >/dev/null || backup_failed "L'archive de sauvegarde est illisible."
+backup_with_progress "${BK}/${HA_DATA_NAME}.tar" || backup_failed "L'archive de sauvegarde a échoué ou est illisible."
 cp "$ENV_FILE" "${BK}/env.backup" && chmod 600 "${BK}/env.backup"
 {
   echo "date=$(now_utc)"
@@ -129,16 +131,17 @@ cp "$ENV_FILE" "${BK}/env.backup" && chmod 600 "${BK}/env.backup"
   echo "image_from=${OLD_IMAGE_ID}"
   echo "git_commit=$(cd "$PROJECT_ROOT" && git rev-parse HEAD 2>/dev/null || echo inconnu)"
 } > "${BK}/info.txt"
-log "Sauvegarde créée : ${BK} ($(du -sh "${BK}/${HA_DATA_NAME}.tar.gz" | awk '{print $1}'))"
+log "Sauvegarde créée : ${BK} ($(du -sh "${BK}/${HA_DATA_NAME}.tar" | awk '{print $1}'))"
 
 # ---- 4. Mise à jour --------------------------------------------------------------------------
 write_status "running" "update" "Démarrage de Home Assistant ${TARGET}."
+set_progress update 5
 set_image_tag "$TARGET" || rollback "le fichier .env n'a pas pu être modifié"
 dc up -d "$HA_SERVICE" || rollback "le conteneur n'a pas pu être recréé"
 
 # ---- 5. Vérification -------------------------------------------------------------------------
 write_status "running" "verify" "Vérification du démarrage (migration de la base possible, jusqu'à 15 minutes)."
-wait_for_ha "$TARGET" "$HA_VERIFY_TIMEOUT" || rollback "pas de réponse correcte dans le délai imparti"
+wait_for_ha "$TARGET" "$HA_VERIFY_TIMEOUT" progress || rollback "pas de réponse correcte dans le délai imparti"
 
 # dashboard-api lit .HA_VERSION par un montage de fichier : on vérifie qu'il voit la nouvelle valeur.
 if [ "$(docker exec dashboard-api cat /ha/HA_VERSION 2>/dev/null | tr -d '[:space:]')" != "$TARGET" ]; then
@@ -147,7 +150,8 @@ fi
 
 write_status "success" "done" "Home Assistant est passé de ${ST_FROM} à ${TARGET}. Sauvegarde conservée dans ${ST_BACKUP}."
 
-# ---- 6. Copie externe et rétention (sans incidence sur le résultat) ---------------------------
+# ---- 6. Compression, copie externe et rétention (sans incidence sur le résultat) --------------
+gzip "${BK}/${HA_DATA_NAME}.tar" || log "Compression de l'archive impossible : elle reste au format .tar."
 copy_backup_to_nas "$BK"
 apply_retention
 log "===== Terminé ====="

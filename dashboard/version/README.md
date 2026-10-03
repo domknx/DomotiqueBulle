@@ -11,6 +11,7 @@ jour ». Un bandeau défilant apparaît sur l'Accueil quand une nouvelle version
 |---|---|
 | `dashboard/api/app/ha_version.py` | Lit la version installée, interroge `version.home-assistant.io`, sert l'analyse, dépose les demandes de mise à jour. **Ne touche jamais à Docker.** |
 | `dashboard/version/ha_release_analysis.json` | Analyse rédigée par Claude : modifications, problèmes connus, recommandation. Réécrite chaque vendredi soir par une tâche planifiée. |
+| `dashboard/version/update_password.hash` | Empreinte du mot de passe de mise à jour. Non versionnée. |
 | `dashboard/version/state/` | Fichiers d'état, non versionnés : cache de la dernière version, demandes, avancement, journaux. |
 | `scripts/ha_update_agent.sh` | Agent launchd sur le Mac : ramasse les demandes et lance la mise à jour. Seul lien entre le dashboard et Docker. |
 | `scripts/ha_update.sh` | Sauvegarde, mise à jour, vérification, retour arrière automatique. |
@@ -49,6 +50,22 @@ Le bouton reste cliquable en rouge : la fenêtre de confirmation rappelle l'avis
 version publiée après la dernière analyse est toujours rouge (« pas encore analysée ») jusqu'à la
 vérification du vendredi suivant.
 
+## Mot de passe de mise à jour
+
+Le bouton ouvre une fenêtre qui demande un mot de passe avant d'autoriser la mise à jour. Il est
+vérifié par `dashboard-api`, jamais dans la page. Seule son empreinte salée (PBKDF2-SHA256) est
+conservée, dans `update_password.hash`, hors Git. Cinq erreurs de suite bloquent le bouton
+pendant dix minutes. Sans fichier d'empreinte, toute mise à jour est refusée.
+
+Pour le changer (saisie masquée, demandée deux fois) :
+
+```bash
+docker exec -it dashboard-api python -m app.set_password
+```
+
+Le mot de passe ne protège que le bouton de la page. Lancer `scripts/ha_update.sh` à la main dans
+le Terminal du Mac ne le demande pas.
+
 ## Vérifications
 
 - **Vendredi soir** : une tâche planifiée Claude relève la dernière version, relit les notes de
@@ -64,11 +81,23 @@ vérification du vendredi suivant.
 1. Contrôles : Docker répond, version valide et plus récente, place disque suffisante.
 2. Téléchargement de la nouvelle image. Home Assistant tourne encore ; un échec ici ne change rien.
 3. Arrêt de Home Assistant, puis archive complète de `HomeAssistant_Data` dans
-   `Backups/ha_update/<date>_<ancienne>_vers_<nouvelle>/`.
+   `Backups/ha_update/<date>_<ancienne>_vers_<nouvelle>/`. L'archive est écrite sans compression
+   (plus rapide), puis compressée une fois Home Assistant reparti.
 4. Démarrage de la nouvelle version (`HA_IMAGE_TAG` dans `.env`).
 5. Vérification pendant 15 minutes au plus : conteneur démarré, interface joignable, bonne version,
    encore en place 60 secondes plus tard.
 6. En cas d'échec : restauration de l'archive et redémarrage de l'ancienne version.
+
+Pendant la mise à jour, la page affiche deux barres de progression, alimentées par des mesures
+réelles et non par une estimation de durée :
+
+- **Sauvegarde** : taille de l'archive déjà écrite, rapportée à la taille du dossier.
+- **Mise à jour** : jalons constatés (15 % conteneur démarré, 35 % nouvelle version annoncée par
+  Home Assistant, 60 % interface joignable), puis de 60 à 100 % le décompte du contrôle de
+  stabilité de 60 secondes.
+
+Le téléchargement de l'image n'a pas de barre : son avancement apparaît en nombre de couches
+reçues dans le message d'état.
 
 La sauvegarde est copiée sur le disque externe `Sauvegardes/0_Domotique/ha_update/` s'il est
 branché. Les cinq dernières sauvegardes restent en local ; une plus ancienne n'est supprimée que si
@@ -104,6 +133,6 @@ affichés tels quels sur la page (échappés) : pas de HTML dedans.
   `.HA_VERSION`, en lecture seule.
 - Une demande ne peut porter que sur la dernière version connue, plus récente que la version
   installée, au format `AAAA.M.P`. L'agent revalide ce format avant d'exécuter quoi que ce soit.
-- Toute personne qui peut ouvrir le dashboard peut presser le bouton. Tant que
-  `dashboardbulle.malnoy.com` est protégé par Cloudflare Access, cela se limite au réseau local et
-  aux comptes autorisés ; à revoir avant d'ouvrir un accès invité.
+- Toute personne qui peut ouvrir le dashboard voit le bouton, mais la mise à jour exige le mot de
+  passe (voir plus haut). Sur le réseau local, le dashboard est servi en HTTP : le mot de passe y
+  circule en clair ; par `dashboardbulle.malnoy.com`, il passe en HTTPS.

@@ -21,7 +21,7 @@ if [ $# -lt 1 ]; then
   for d in "$BACKUP_ROOT"/*/; do
     [ -f "${d}info.txt" ] || continue
     found=1
-    echo "  $(basename "$d")   (version $(sed -n 's/^from=//p' "${d}info.txt"), $(du -sh "${d}${HA_DATA_NAME}.tar.gz" 2>/dev/null | awk '{print $1}'))"
+    echo "  $(basename "$d")   (version $(sed -n 's/^from=//p' "${d}info.txt"), $(du -sh "$(archive_path "${d%/}")" 2>/dev/null | awk '{print $1}'))"
   done
   [ "$found" -eq 1 ] || echo "  (aucune)"
   echo
@@ -30,8 +30,8 @@ if [ $# -lt 1 ]; then
 fi
 
 BK="${BACKUP_ROOT}/$(basename "$1")"
-ARCHIVE="${BK}/${HA_DATA_NAME}.tar.gz"
-[ -f "$ARCHIVE" ] && [ -f "${BK}/info.txt" ] || { echo "Sauvegarde introuvable ou incomplète : ${BK}" >&2; exit 1; }
+ARCHIVE="$(archive_path "$BK")"
+[ -n "$ARCHIVE" ] && [ -f "${BK}/info.txt" ] || { echo "Sauvegarde introuvable ou incomplète : ${BK}" >&2; exit 1; }
 
 VERSION="$(sed -n 's/^from=//p' "${BK}/info.txt" | head -n 1)"
 valid_version "$VERSION" || { echo "Version illisible dans ${BK}/info.txt" >&2; exit 1; }
@@ -51,7 +51,7 @@ acquire_lock || { echo "Une mise à jour ou une restauration est déjà en cours
 trap 'release_lock' EXIT
 
 docker info >/dev/null 2>&1 || { echo "Docker ne répond pas." >&2; exit 1; }
-tar -tzf "$ARCHIVE" >/dev/null || { echo "Archive illisible : rien n'a été modifié." >&2; exit 1; }
+tar -tf "$ARCHIVE" >/dev/null || { echo "Archive illisible : rien n'a été modifié." >&2; exit 1; }
 if ! docker image inspect "${HA_IMAGE_REPO}:${VERSION}" >/dev/null 2>&1; then
   echo "Téléchargement de l'image ${VERSION}…"
   docker pull "${HA_IMAGE_REPO}:${VERSION}" || { echo "Image ${VERSION} indisponible : rien n'a été modifié." >&2; exit 1; }
@@ -71,7 +71,7 @@ if ! mv "$HA_DATA_DIR" "$ASIDE"; then
   write_status "failed" "rollback" "Restauration annulée : le dossier de données n'a pas pu être mis de côté. Home Assistant relancé tel quel."
   exit 1
 fi
-if ! tar -xzf "$ARCHIVE" -C "$PROJECT_ROOT"; then
+if ! tar -xf "$ARCHIVE" -C "$PROJECT_ROOT"; then
   rm -rf "${HA_DATA_DIR:?}" 2>/dev/null
   mv "$ASIDE" "$HA_DATA_DIR"
   dc up -d "$HA_SERVICE"

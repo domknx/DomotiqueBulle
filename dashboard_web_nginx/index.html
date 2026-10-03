@@ -2575,6 +2575,21 @@
   .ver-steps li.is-now{ color:var(--brume); font-weight:500; }
   .ver-steps li.is-now::before{ background:var(--ambre); animation:verPulse 1.2s ease-in-out infinite; }
   @keyframes verPulse{ 0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--ambre) 55%, transparent); } 50%{ box-shadow:0 0 0 7px transparent; } }
+  /* 03.10.2026 (demande utilisateur) : deux barres de progression pendant une mise à jour --
+     Sauvegarde (taille de l'archive déjà écrite) et Mise à jour (jalons constatés du démarrage
+     puis décompte du contrôle de stabilité). Valeurs réelles lues dans update.backup_pct /
+     update.update_pct ; les barres sont créées une fois puis mises à jour sur place, pour que
+     la transition de largeur reste fluide d'une lecture à l'autre. */
+  .ver-prog{ margin-top:18px; display:flex; flex-direction:column; gap:16px; }
+  .ver-prog-tx{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:8px;
+    font-family:var(--ff-mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--brume-dim); }
+  .ver-prog-tx b{ font-family:var(--ff-value); font-size:14px; font-weight:500; letter-spacing:0; text-transform:none; color:var(--brume); font-variant-numeric:tabular-nums; }
+  .ver-prog-bar{ height:10px; border-radius:999px; background:rgba(238,241,246,.10); overflow:hidden; }
+  .ver-prog-fill{ height:100%; width:0; border-radius:999px; background:var(--glacier); transition:width .7s ease; }
+  .ver-prog-row[data-k="update"] .ver-prog-fill{ background:var(--ambre); }
+  .ver-prog-row.is-done .ver-prog-fill{ background:var(--mousse); }
+  .ver-prog-row.is-wait{ opacity:.55; }
+  .ver-prog-row.is-wait .ver-prog-tx b{ font-family:var(--ff-mono); font-size:10.5px; color:var(--brume-dim); }
   .ver-update-btn{
     flex:none; margin-top:16px; width:100%; padding:19px 22px 17px; border-radius:18px; border:none; cursor:pointer;
     display:flex; flex-direction:column; align-items:center; gap:5px;
@@ -2600,6 +2615,12 @@
   .ver-modal-list b{ color:var(--brume); font-weight:500; }
   .ver-modal-reco{ margin-top:20px; padding:14px 18px; border-radius:14px; font-family:var(--ff-body); font-size:13.5px; line-height:1.5; color:var(--brume);
     background:color-mix(in srgb, var(--ver-lv) 12%, transparent); border:1px solid color-mix(in srgb, var(--ver-lv) 38%, transparent); }
+  .ver-modal-pw{ display:flex; flex-direction:column; gap:9px; margin-top:20px;
+    font-family:var(--ff-mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--brume-dim); }
+  .ver-modal-pw input{ height:54px; border-radius:14px; padding:0 18px; outline:none; width:100%;
+    border:1px solid var(--glass-brd); background:rgba(238,241,246,.07); color:var(--brume);
+    font-family:var(--ff-body); font-size:20px; letter-spacing:.18em; }
+  .ver-modal-pw input:focus{ border-color:var(--ver-lv); box-shadow:0 0 0 3px color-mix(in srgb, var(--ver-lv) 24%, transparent); }
   .ver-modal-err{ margin-top:14px; font-family:var(--ff-body); font-size:13px; color:var(--rouge); min-height:18px; }
   .ver-modal-actions{ display:flex; justify-content:flex-end; gap:12px; margin-top:16px; }
   .ver-modal-ok{ padding:13px 24px; border-radius:14px; border:none; cursor:pointer; background:var(--ver-lv); color:#0b0e16;
@@ -2632,7 +2653,9 @@
   [data-card-style="neumorph"] .ver-steps li, [data-card-style="neumorph"] .acc-ticker-track span, [data-card-style="neumorph"] .ver-arrow{ color:#7b8494; }
   [data-card-style="neumorph"] .ver-item{ border-bottom-color:rgba(123,132,148,.18); }
   [data-card-style="neumorph"] .ver-empty{ border-color:rgba(123,132,148,.3); }
-  [data-card-style="neumorph"] .ver-monitor-bar{ background:rgba(123,132,148,.2); }
+  [data-card-style="neumorph"] .ver-monitor-bar, [data-card-style="neumorph"] .ver-prog-bar{ background:rgba(123,132,148,.2); }
+  [data-card-style="neumorph"] .ver-prog-tx{ color:#7b8494; }
+  [data-card-style="neumorph"] .ver-prog-tx b{ color:#333a47; }
   [data-card-style="neumorph"] .ver-btn{ background:linear-gradient(155deg,#eef1f5,#e2e6ec); border:none; color:#333a47; box-shadow:2px 2px 5px rgba(163,177,198,.5), -2px -2px 4px rgba(255,255,255,.85); }
   [data-card-style="neumorph"] .ver-update-btn[disabled]{ background:rgba(123,132,148,.16); color:#7b8494; }
   [data-card-style="neumorph"] .ver-tag[data-k="minor"], [data-card-style="neumorph"] [data-level="yellow"]{ --ver-lv:#d79a00; }
@@ -7044,7 +7067,8 @@ function renderEnergyScreen(){
      service ne répond pas, l'écran l'indique.
      - « Vérifier maintenant » : POST /api/ha-version/check
      - « Sauvegarder et mettre à jour » : POST /api/ha-version/update, après
-       confirmation ; l'exécution réelle est faite par un agent sur le Mac
+       confirmation ET mot de passe (vérifié côté serveur, jamais ici : la page
+       ne connaît ni le mot de passe ni son empreinte) ; l'exécution réelle est faite par un agent sur le Mac
        (scripts/ha_update.sh), dashboard-api ne touche pas à Docker.
      Tout texte venu de l'analyse est échappé (verEsc) avant affichage.
      ===================================================================== */
@@ -7086,7 +7110,7 @@ function renderEnergyScreen(){
     clearTimeout(VER.timer);
     // Pendant une mise à jour : suivi rapproché ; sinon une simple relecture du cache toutes les 30 min
     // (la vérification réelle reste hebdomadaire ou manuelle, côté dashboard-api).
-    VER.timer = setTimeout(refreshVersion, verIsUpdating() ? 5000 : 30 * 60 * 1000);
+    VER.timer = setTimeout(refreshVersion, verIsUpdating() ? 2000 : 30 * 60 * 1000);
   }
   async function refreshVersion(){
     try{ VER.data = await verApi('GET', '/api/ha-version'); VER.error = null; }
@@ -7211,18 +7235,11 @@ function renderEnergyScreen(){
     $('verRecoLabel').textContent = reco.label || '—';
     $('verRecoSub').textContent = available ? ('Pour passer à la version ' + (latest.version || '')) : 'Aucune action nécessaire';
 
-    let body = '';
+    const bodyEl = $('verRecoBody');
     if(upd.state === 'running' || upd.state === 'requested'){
-      const idx = VER_STEPS.findIndex(s => s[0] === upd.step);
-      body += '<div class="ver-reco-h">Mise à jour en cours' + (upd.to ? ' vers ' + verEsc(upd.to) : '') + '</div>';
-      if(upd.step === 'rollback'){
-        body += '<div class="ver-result" data-r="rolled_back">' + verEsc(upd.message || 'Retour à la version précédente en cours.') + '</div>';
-      } else {
-        body += '<ul class="ver-steps">' + VER_STEPS.map((s, i) =>
-          '<li class="' + (idx > i ? 'is-done' : (idx === i ? 'is-now' : '')) + '">' + verEsc(s[1]) + '</li>').join('') + '</ul>';
-        if(upd.message) body += '<div class="ver-result">' + verEsc(upd.message) + '</div>';
-      }
+      verRenderRunning(bodyEl, upd);
     } else {
+      let body = '';
       if(reco.reason) body += '<div class="ver-reco-reason">' + verEsc(reco.reason) + '</div>';
       const checks = a && a.recommendation && Array.isArray(a.recommendation.after_update_checks) ? a.recommendation.after_update_checks : [];
       if(available && checks.length) body += '<div class="ver-reco-h">À contrôler après la mise à jour</div><ul class="ver-reco-checks">' + checks.map(c => '<li>' + verEsc(c) + '</li>').join('') + '</ul>';
@@ -7230,8 +7247,9 @@ function renderEnergyScreen(){
         body += '<div class="ver-reco-h">Dernière mise à jour</div><div class="ver-result" data-r="' + upd.state + '">' + verEsc(upd.message)
           + (upd.finished_at ? '<small>' + verEsc(verDateTime(upd.finished_at)) + '</small>' : '') + '</div>';
       }
+      bodyEl.dataset.mode = 'idle';
+      bodyEl.innerHTML = body;
     }
-    $('verRecoBody').innerHTML = body;
 
     const btn = $('verUpdateBtn');
     const agentOk = !!(d.agent && d.agent.alive);
@@ -7241,13 +7259,51 @@ function renderEnergyScreen(){
     } else if(!available){
       btn.disabled = true; $('verUpdateLbl').textContent = 'Sauvegarder et mettre à jour'; $('verUpdateSub').textContent = 'aucune mise à jour disponible';
     } else {
-      btn.disabled = !agentOk;
+      btn.disabled = !agentOk || !d.password_set;
       $('verUpdateLbl').textContent = 'Sauvegarder et mettre à jour';
       $('verUpdateSub').textContent = (d.installed || '?') + ' → ' + (latest.version || '?');
-      note = agentOk ? 'Sauvegarde complète avant mise à jour · retour automatique si Home Assistant ne redémarre pas'
-                     : 'Bouton inactif : l\'agent de mise à jour ne répond pas sur le Mac mini (scripts/install_ha_update_agent.sh)';
+      if(!agentOk) note = 'Bouton inactif : l\'agent de mise à jour ne répond pas sur le Mac mini (scripts/install_ha_update_agent.sh)';
+      else if(!d.password_set) note = 'Bouton inactif : aucun mot de passe de mise à jour n\'est configuré';
+      else note = 'Mot de passe demandé · sauvegarde complète avant mise à jour · retour automatique en cas d\'échec';
     }
     $('verUpdateNote').textContent = note;
+  }
+
+  // Mise à jour en cours : liste des étapes + deux barres (Sauvegarde, Mise à jour). La structure
+  // est créée une seule fois puis mise à jour sur place, pour garder la transition des barres.
+  function verRenderRunning(bodyEl, upd){
+    if(bodyEl.dataset.mode !== 'running'){
+      bodyEl.dataset.mode = 'running';
+      bodyEl.innerHTML = '<div class="ver-reco-h" id="verRunTitle"></div>'
+        + '<ul class="ver-steps" id="verRunSteps">' + VER_STEPS.map(s => '<li data-step="' + s[0] + '">' + verEsc(s[1]) + '</li>').join('') + '</ul>'
+        + '<div class="ver-prog">'
+        + [['backup','Sauvegarde'],['update','Mise à jour']].map(b =>
+            '<div class="ver-prog-row is-wait" data-k="' + b[0] + '" role="progressbar" aria-label="' + b[1] + '" aria-valuemin="0" aria-valuemax="100">'
+            + '<div class="ver-prog-tx"><span>' + b[1] + '</span><b>en attente</b></div>'
+            + '<div class="ver-prog-bar"><div class="ver-prog-fill"></div></div></div>').join('')
+        + '</div>'
+        + '<div class="ver-result" id="verRunMsg" hidden></div>';
+    }
+    document.getElementById('verRunTitle').textContent = 'Mise à jour en cours' + (upd.to ? ' vers ' + upd.to : '');
+    const idx = upd.step === 'rollback' ? -1 : VER_STEPS.findIndex(s => s[0] === upd.step);
+    bodyEl.querySelectorAll('#verRunSteps li').forEach((li, i) => {
+      li.classList.toggle('is-done', idx > i);
+      li.classList.toggle('is-now', idx === i);
+    });
+    [['backup', upd.backup_pct], ['update', upd.update_pct]].forEach(([k, v]) => {
+      const row = bodyEl.querySelector('.ver-prog-row[data-k="' + k + '"]');
+      const has = typeof v === 'number';
+      const pct = has ? Math.max(0, Math.min(100, v)) : 0;
+      row.classList.toggle('is-wait', !has);
+      row.classList.toggle('is-done', pct >= 100);
+      row.setAttribute('aria-valuenow', String(pct));
+      row.querySelector('.ver-prog-fill').style.width = pct + '%';
+      row.querySelector('b').textContent = !has ? 'en attente' : (pct >= 100 ? 'terminée' : pct + ' %');
+    });
+    const msg = document.getElementById('verRunMsg');
+    msg.hidden = !upd.message;
+    msg.textContent = upd.message || '';
+    if(upd.step === 'rollback') msg.dataset.r = 'rolled_back'; else delete msg.dataset.r;
   }
 
   function renderVersionTicker(){
@@ -7280,7 +7336,7 @@ function renderEnergyScreen(){
     const m = document.createElement('div');
     m.className = 'ver-modal'; m.id = 'verModal'; m.dataset.level = level;
     m.innerHTML = '<div class="ver-modal-box" role="dialog" aria-modal="true" aria-labelledby="verModalTitle">'
-      + '<div class="ver-modal-title" id="verModalTitle">Sauvegarder et mettre à jour Home Assistant ?</div>'
+      + '<div class="ver-modal-title" id="verModalTitle">Autoriser la mise à jour de Home Assistant</div>'
       + '<div class="ver-modal-ver">' + verEsc(d.installed) + ' → ' + verEsc(target) + '</div>'
       + '<ul class="ver-modal-list">'
       + '<li><b>Home Assistant sera indisponible</b> pendant 5 à 15 minutes ; les interrupteurs KNX continuent de fonctionner.</li>'
@@ -7288,26 +7344,37 @@ function renderEnergyScreen(){
       + '<li><b>Retour automatique</b> à la version ' + verEsc(d.installed) + ' si la nouvelle version ne redémarre pas.</li>'
       + '</ul>'
       + '<div class="ver-modal-reco"><b>' + verEsc(reco.label || '') + '</b>' + (reco.reason ? ' — ' + verEsc(reco.reason) : '') + '</div>'
-      + '<div class="ver-modal-err" id="verModalErr"></div>'
+      + '<label class="ver-modal-pw"><span>Mot de passe de mise à jour</span>'
+      + '<input type="password" id="verModalPw" name="ver-update-auth" maxlength="64" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></label>'
+      + '<div class="ver-modal-err" id="verModalErr" role="alert"></div>'
       + '<div class="ver-modal-actions"><button class="ver-btn" type="button" id="verModalCancel">Annuler</button>'
-      + '<button class="ver-modal-ok" type="button" id="verModalOk">' + (level === 'red' ? 'Mettre à jour malgré l\'avis défavorable' : 'Sauvegarder et mettre à jour') + '</button></div>'
+      + '<button class="ver-modal-ok" type="button" id="verModalOk" disabled>' + (level === 'red' ? 'Autoriser malgré l\'avis défavorable' : 'Autoriser la mise à jour') + '</button></div>'
       + '</div>';
     m.addEventListener('click', e => { if(e.target === m) verCloseModal(); });
     document.getElementById('screen').appendChild(m);
     document.addEventListener('keydown', verModalKey);
     document.getElementById('verModalCancel').addEventListener('click', verCloseModal);
-    document.getElementById('verModalOk').addEventListener('click', async ev => {
-      const ok = ev.currentTarget;
-      ok.disabled = true;
+    const pw = document.getElementById('verModalPw');
+    const ok = document.getElementById('verModalOk');
+    const err = document.getElementById('verModalErr');
+    let sending = false;
+    const submit = async () => {
+      if(sending || !pw.value) return;
+      sending = true; ok.disabled = true; err.textContent = '';
       try{
-        await verApi('POST', '/api/ha-version/update', {version: target, confirm: true});
+        await verApi('POST', '/api/ha-version/update', {version: target, password: pw.value, confirm: true});
         verCloseModal();
         await refreshVersion();
       }catch(e){
-        document.getElementById('verModalErr').textContent = (e && e.message) || 'La demande a échoué.';
-        ok.disabled = false;
+        err.textContent = (e && e.message) || 'La demande a échoué.';
+        pw.value = ''; pw.focus();
+        sending = false;
       }
-    });
+    };
+    pw.addEventListener('input', () => { ok.disabled = sending || !pw.value; });
+    pw.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); submit(); } });
+    ok.addEventListener('click', submit);
+    pw.focus();
   }
 
   (function initVersion(){
